@@ -1,0 +1,51 @@
+import { Field, useField } from "formik";
+import React, { useEffect, useRef } from "react";
+import { FormFeedback } from "reactstrap";
+
+export default function TextInput({
+    type = "text",
+    className = "",
+    isFocused = false,
+    icon,
+    ...props
+}) {
+    const [field, meta] = useField(props);
+
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        if (isFocused && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [isFocused]);
+
+    return (
+        <React.Fragment>
+            <div className="relative">
+                {icon && (
+                    <div className="absolute inset-y-0 left-0 pl-3 pt-[2px] flex items-center pointer-events-none">
+                        {icon}
+                    </div>
+                )}
+                <Field
+                    {...field}
+                    {...props}
+                    type={type}
+                    className={
+                        `border-gray-300 transition-shadow duration-300 ${
+                            meta.touched && meta.error
+                                ? "border-red-500 ring-red-500 focus:ring-red-500 focus:border-red-500 focus:shadow-[0_4px_6px_rgba(255,0,0,0.2)]"
+                                : "focus:ring-light-primary focus:border-light-primary focus:shadow-[0_4px_6px_rgba(0,123,255,0.3)]"
+                        } rounded-md shadow-sm ${icon ? 'pl-10' : ''} ` + className
+                    }
+                    innerRef={inputRef}
+                />
+            </div>
+            {meta.touched && meta.error && (
+                <FormFeedback className="text-red-400 my-[3px] body">
+                    {meta.error}
+                </FormFeedback>
+            )}
+        </React.Fragment>
+    );
+}

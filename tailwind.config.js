@@ -1,19 +1,38 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
-import forms from '@tailwindcss/forms';
+import defaultTheme from "tailwindcss/defaultTheme";
+import forms from "@tailwindcss/forms";
 
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
-        './resources/js/**/*.jsx',
+        "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
+        "./storage/framework/views/*.php",
+        "./resources/views/**/*.blade.php",
+        "./resources/js/**/*.jsx",
     ],
 
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+            },
+            fontFamily: {
+                roboto: ["Roboto", "sans-serif"],
+                dancing: ["Dancing Script", "cursive"],
+                vina: ["Vina Sans", "sans-serif"],
+                alfa: ["Alfa Slab One", "serif"],
+            },
+            colors: {
+                primary: "#2D5074",
+                lightblue: "#1B3046",
+                secondary: "#CAD8E7",
+                light: "#FDFDFD",
+                dark: "#202020",
+                grey: "#8F8F8F",
+                "light-grey": "#C6C6C6",
+                "dark-grey": "#585858",
+                background: "#EBF0F6",
+                income: "#317E3D",
+                expense: "#C02317",
             },
         },
     },

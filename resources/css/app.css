@@ -1,3 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@layer utilities {
+    .container{
+        @apply max-w-[1320px] mx-auto;
+    }
+
+    .padding-container {
+        @apply px-4 lg:px-20 py-8 md:py-12;
+    }
+
+    .flexCenter {
+        @apply flex items-center justify-center;
+    }
+
+    .flexBetween {
+        @apply flex items-center justify-between;
+    }
+
+    .flexStart {
+        @apply flex items-center justify-start;
+    }
+
+    .flexEnd {
+        @apply flex items-center justify-end;
+    }
+  
+    /* Header Bold */
+    .header-1 {
+        @apply font-roboto text-[40px] font-[700] leading-[60px];
+    }
+    .header-2 {
+        @apply font-roboto text-[32px] font-[700] leading-[48px];
+    }
+    .header-3 {
+        @apply font-roboto text-[28px] font-[700] leading-[42px];
+    }
+    .header-4 {
+        @apply font-roboto text-[24px] font-[700] leading-[36px];
+    }
+    .header-5 {
+        @apply font-roboto text-[20px] font-[700] leading-[30px];
+    }
+
+    /* Header Light */
+    .header-1-light {
+        @apply font-roboto text-[40px] font-[700] leading-[60px];
+    }
+    .header-3-light {
+        @apply font-roboto text-[28px] font-[400] leading-[42px];
+    }
+    .header-5-light {
+        @apply font-roboto text-[20px] font-[400] leading-[30px];
+    }
+  
+    /* Body */
+    .body {
+        @apply font-roboto text-[16px] font-[400] leading-[24px];
+    }
+    .sub-body{
+        @apply font-roboto text-[12px] font-[400] leading-[18px];
+    }
+    .sub-body-bold{
+        @apply font-roboto text-[12px] font-[700] leading-[18px];
+    }
+    .button{
+        @apply font-roboto text-[16px] font-[700] leading-[24px];
+    }
+}
