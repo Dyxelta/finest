@@ -4,6 +4,14 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Wallet;
+use App\Models\Category;
+use App\Models\Budget;
+use App\Models\Transaction;
+use App\Models\RecurringTransaction;
+use App\Models\Reminder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +26,15 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $this->call([
+            UserSeeder::class,
+            WalletSeeder::class,
+            CategorySeeder::class,
+            BudgetSeeder::class,
+            TransactionSeeder::class,
+            RecurringTransactionSeeder::class,
+            ReminderSeeder::class
+        ]);
     }
 }
