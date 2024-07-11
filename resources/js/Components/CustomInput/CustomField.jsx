@@ -1,6 +1,5 @@
 import { Field, useField } from "formik";
 import React, { useEffect, useRef } from "react";
-import { FormFeedback } from "reactstrap";
 
 export default function TextInput({
     type = "text",
@@ -42,9 +41,10 @@ export default function TextInput({
                 />
             </div>
             {meta.touched && meta.error && (
-                <FormFeedback className="text-red-400 my-[3px] body">
+                <div className="text-red-400 my-[3px] text-[14px]">
+                 
                     {meta.error}
-                </FormFeedback>
+                </div>
             )}
         </React.Fragment>
     );

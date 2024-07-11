@@ -14,13 +14,13 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
-            },
-            fontFamily: {
                 roboto: ["Roboto", "sans-serif"],
                 dancing: ["Dancing Script", "cursive"],
                 vina: ["Vina Sans", "sans-serif"],
                 alfa: ["Alfa Slab One", "serif"],
+                oxanium: ["Oxanium", "sans-serif"]
             },
+         
             colors: {
                 primary: "#2D5074",
                 lightblue: "#1B3046",
