@@ -103,7 +103,7 @@ class TransactionController extends Controller
 
         $walletId = $wallet->id;
 
-        $transactions = Transaction::where('user_id', $userId)->andWhere('wallet_id', $walletId)->get();
+        $transactions = Transaction::where('user_id', $userId)->where('wallet_id', $walletId)->get();
 
         return Inertia::render('WalletDetail', ['transactions' => $transactions]);
     }
@@ -114,7 +114,7 @@ class TransactionController extends Controller
 
         $categoryId = $category->id;
 
-        $transactions = Transaction::where('user_id', $userId)->andWhere('category_id', $categoryId)->get();
+        $transactions = Transaction::where('user_id', $userId)->where('category_id', $categoryId)->get();
 
         return Inertia::render('TransactionReport', ['transactions' => $transactions]);
     }
