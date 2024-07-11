@@ -50,7 +50,7 @@ class TransactionController extends Controller
         return redirect()->back();
     }
 
-    public function updateTransaction(Request $request) {
+    public function editTransaction(Request $request) {
 
         $request->validate([
             'wallet_name' => 'required|string',
