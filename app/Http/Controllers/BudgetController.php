@@ -81,6 +81,14 @@ class BudgetController extends Controller
     }
 
     public function showReccommendedDailyExpense() {
-        
+        $user = auth()->user();
+        $budget = Budget::firstWhere('user_id', $user->id)->get()->first()->budget_amount;
+        $year = date('Y');
+        $month = date('m');
+        $day = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+        $rec_budget = $budget/$day;
+        $rec_budget = (int)floor($rec_budget/1000)*1000;
+        return Inertia::render('Welcome', ['budget' => number_format($rec_budget)]);
     }
 }
