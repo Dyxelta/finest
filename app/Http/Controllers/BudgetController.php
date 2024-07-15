@@ -22,7 +22,8 @@ class BudgetController extends Controller
         
         Budget::create([
             'user_id' => $user->id,
-            'category_id' => Category::where('category_name', $request->category_name)->id,
+            //fix: add budget firstWhere
+            'category_id' => Category::firstWhere('category_name', $request->category_name)->id,
             'budget_name' => $request->budget_name,
             'budget_amount' => $request->budget_amount,
             'budget_description' => $request->budget_description,
@@ -32,7 +33,7 @@ class BudgetController extends Controller
     }
 
     public function deleteBudget(Request $request) {
-        $budget = Budget::where('id', $request->budget_id);
+        $budget = Budget::findOrFail('id', $request->budget_id);
 
         $budget->delete();
         return redirect()->back();
@@ -67,7 +68,7 @@ class BudgetController extends Controller
 
     public function showBudgetById($id) {
         $user = auth()->user();
-        $budget = Budget::where('user_id', 1)->where('id', $id)->get();
+        $budget = Budget::firstWhere('user_id', 1)->where('id', $id)->get();
 
         return Inertia::render('Welcome', ['budget' => $budget]);
     }
