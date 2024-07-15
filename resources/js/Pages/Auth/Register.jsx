@@ -12,6 +12,10 @@ import lowerLeftMotive from "../../../../public/image/register/lowerLeftMotive.p
 import lowerRightMotive from "../../../../public/image/register/lowerRightMotive.png";
 import logo from "../../../../public/image/app/Logo.png";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
+import Modal from "@/Components/Modal";
+import { useState } from "react";
+import SecondaryButton from "@/Components/SecondaryButton";
+import DangerButton from "@/Components/DangerButton";
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -37,22 +41,41 @@ const SignupSchema = Yup.object().shape({
         )
         .min(8, "Password must be at least 8 characters")
         .required("Password is required"),
-    confirmPassword: Yup.string()
+    confirm_pass: Yup.string()
         .oneOf([Yup.ref("password"), null], "Passwords must match")
         .required("Confirm password is required"),
 });
 
-export default function Login({ status, canResetPassword }) {
+export default function Register({ status, canResetPassword }) {
+    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+
+    const closeModal = () => {
+        setConfirmingUserDeletion(false);
+    };
+    const openModal = () => {
+        setConfirmingUserDeletion(true);
+    };
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: "",
+        username: "",
         email: "",
         password: "",
-        password_confirmation: "",
+        confirm_pass: "",
     });
-    const submit = (e) => {
-        e.preventDefault();
 
-        post(route("register"));
+    const submit = async (values) => {
+        post(route("register-account"), {
+            onError: (errors) => {
+                if (errors.username) {
+                    openModal();
+                } else if (errors.email) {
+                    openModal();
+                } else if (errors.password) {
+                    openModal()
+                } else if (errors.confirm_pass) {
+                    openModal()
+                }
+            },
+        });
     };
 
     return (
@@ -74,7 +97,7 @@ export default function Login({ status, canResetPassword }) {
             />
             <Head title="Register" />
 
-            <div className="h-full container z-100 relative">
+            <div className="h-full container z-40 relative">
                 <div className="h-full py-6 flex">
                     <div className="flex-1 hidden justify-center items-center flex-col lg:flex">
                         <img
@@ -105,6 +128,7 @@ export default function Login({ status, canResetPassword }) {
                             {({
                                 errors,
                                 touched,
+                                values,
                                 setFieldValue,
                                 handleSubmit,
                             }) => (
@@ -112,7 +136,6 @@ export default function Login({ status, canResetPassword }) {
                                     onSubmit={handleSubmit}
                                     className="font-roboto flex flex-col justify-center md:w-[450px] "
                                 >
-                                    
                                     <FormGroup className="max-h-[650px] h-full flex flex-col justify-between">
                                         <FormGroup className="">
                                             <img
@@ -137,25 +160,36 @@ export default function Login({ status, canResetPassword }) {
                                                     placeholder="with a placeholder"
                                                     type="email"
                                                     className="w-full mt-1"
+                                                    value={data.email}
                                                     icon={
                                                         <Mail
                                                             size={18}
                                                             color="grey"
                                                         />
                                                     }
+                                                    onChange={(e) => {
+                                                        setData(
+                                                            "email",
+                                                            e.target.value
+                                                        );
+                                                        setFieldValue(
+                                                            "email",
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                             </FormGroup>
-                                            <FormGroup className="mt-3">
+                                            <FormGroup className="mt-1">
                                                 <CustomLabel
                                                     labelFor="Username"
                                                     className="button text-primary"
                                                 />
 
                                                 <CustomField
-                                                    id="password"
+                                                    id="username"
                                                     name="username"
                                                     placeholder="with a placeholder"
-                                                    type="password"
+                                                    type="text"
                                                     className="w-full mt-1"
                                                     icon={
                                                         <User
@@ -163,9 +197,20 @@ export default function Login({ status, canResetPassword }) {
                                                             color="grey"
                                                         />
                                                     }
+                                                    value={data.username}
+                                                    onChange={(e) => {
+                                                        setData(
+                                                            "username",
+                                                            e.target.value
+                                                        );
+                                                        setFieldValue(
+                                                            "username",
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                             </FormGroup>
-                                            <FormGroup className="mt-3">
+                                            <FormGroup className="mt-1">
                                                 <CustomLabel
                                                     labelFor="Password"
                                                     className="button text-primary"
@@ -183,17 +228,28 @@ export default function Login({ status, canResetPassword }) {
                                                             color="grey"
                                                         />
                                                     }
+                                                    value={data.password}
+                                                    onChange={(e) => {
+                                                        setData(
+                                                            "password",
+                                                            e.target.value
+                                                        );
+                                                        setFieldValue(
+                                                            "password",
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                             </FormGroup>
-                                            <FormGroup className="mt-3">
+                                            <FormGroup className="mt-1">
                                                 <CustomLabel
                                                     labelFor="Confirm Password"
                                                     className="button text-primary"
                                                 />
 
                                                 <CustomField
-                                                    id="password"
-                                                    name="confirmPassword"
+                                                    id="confirmPassword"
+                                                    name="confirm_pass"
                                                     placeholder="with a placeholder"
                                                     type="password"
                                                     className="w-full mt-1"
@@ -203,12 +259,27 @@ export default function Login({ status, canResetPassword }) {
                                                             color="grey"
                                                         />
                                                     }
+                                                    onChange={(e) => {
+                                                        setData(
+                                                            "confirm_pass",
+                                                            e.target.value
+                                                        );
+                                                        setFieldValue(
+                                                            "confirm_pass",
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                             </FormGroup>
                                         </FormGroup>
+
                                         <div className="flex flex-col mb-4">
-                                            <PrimaryButton className=" w-full">
-                                                Log in
+                                            <PrimaryButton
+                                                className=" w-full"
+                                                type="submit"
+                                                onClick={() => openModal()}
+                                            >
+                                                Register
                                             </PrimaryButton>
 
                                             <span className="text-center pt-2 text-sm">
@@ -227,6 +298,28 @@ export default function Login({ status, canResetPassword }) {
                                 </Form>
                             )}
                         </Formik>
+
+                        <Modal
+                            show={confirmingUserDeletion}
+                            onClose={closeModal}
+                        >
+                            <h2 className="text-lg font-medium text-gray-900">
+                                Are you sure you want to delete your account?
+                            </h2>
+
+                            <div className="mt-6 flex justify-end">
+                                <SecondaryButton onClick={closeModal}>
+                                    Cancel
+                                </SecondaryButton>
+
+                                <DangerButton
+                                    className="ms-3"
+                                    disabled={processing}
+                                >
+                                    Delete Account
+                                </DangerButton>
+                            </div>
+                        </Modal>
                     </div>
                 </div>
             </div>

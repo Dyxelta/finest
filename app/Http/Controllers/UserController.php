@@ -11,9 +11,10 @@ class UserController extends Controller
 {
 
     public function register(Request $request){
+      
         $request->validate([
-            'username' => 'required|alpha_num|min:5|maax:25',
-            'email' => 'required|email|unique:email',
+            'username' => 'required|alpha_num|min:5|max:25',
+            'email' => 'required|email|unique:users,email',
             'password' => [
                 'required',
                 'string',
@@ -21,7 +22,7 @@ class UserController extends Controller
                 'regex:/[a-z]/',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                'regex:/[@$!%*?&]/',
+                'regex:/[!@#$%^&*(),.?":{}|<>]/',
             ],
             'confirm_pass' => 'required_with:password|same:password',
         ]);
@@ -45,10 +46,10 @@ class UserController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('home'));
+            return redirect()->intended(route('dashboard'));
         }
 
-        return redirect('dashboard')->withErrors([
+        return redirect()->back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
     }

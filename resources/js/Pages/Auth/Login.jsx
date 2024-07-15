@@ -21,15 +21,13 @@ const SignupSchema = Yup.object().shape({
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: "",
         email: "",
         password: "",
-        password_confirmation: "",
     });
-    const submit = (e) => {
-        e.preventDefault();
+    const submit = () => {
 
-        post(route("login"));
+
+        post(route("login-user"));
     };
 
     return (
@@ -114,6 +112,16 @@ export default function Login({ status, canResetPassword }) {
                                                             color="grey"
                                                         />
                                                     }
+                                                    onChange={(e) => {
+                                                        setData(
+                                                            "email",
+                                                            e.target.value
+                                                        );
+                                                        setFieldValue(
+                                                            "email",
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                             </FormGroup>
 
@@ -135,6 +143,16 @@ export default function Login({ status, canResetPassword }) {
                                                             color="grey"
                                                         />
                                                     }
+                                                    onChange={(e) => {
+                                                        setData(
+                                                            "password",
+                                                            e.target.value
+                                                        );
+                                                        setFieldValue(
+                                                            "password",
+                                                            e.target.value
+                                                        );
+                                                    }}
                                                 />
                                                 <div className="text-end pt-1 text-sm ">
                                                     <Link
@@ -150,7 +168,7 @@ export default function Login({ status, canResetPassword }) {
                                         </FormGroup>
 
                                         <div className="flex flex-col mb-6">
-                                            <PrimaryButton className=" w-full ">
+                                            <PrimaryButton className=" w-full " type="submit">
                                                 Log in
                                             </PrimaryButton>
 
