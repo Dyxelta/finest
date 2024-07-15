@@ -16,8 +16,11 @@ import logoLetter from "../../../../public/image/app/Logo-letter.png";
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     username: Yup.string()
-        .min(5, "Username must have at least 5 letters")
+        .min(5, "Username contains 5-25 letters")
+        .max(25, "Username contains 5-25 letters")
+        .matches(/^[a-zA-Z0-9]*$/, "Username must be alphanumeric")
         .required("Username is required"),
+
     password: Yup.string()
         .matches(
             /[A-Z]+/,
@@ -74,7 +77,11 @@ export default function Login({ status, canResetPassword }) {
             <div className="h-full container z-100 relative">
                 <div className="h-full py-6 flex">
                     <div className="flex-1 hidden justify-center items-center flex-col lg:flex">
-                        <img src={logo} alt="Logo" className="w-[150px] h-[150px]" />
+                        <img
+                            src={logo}
+                            alt="Logo"
+                            className="w-[150px] h-[150px]"
+                        />
                         <div className="text-center pt-4 flex flex-col items-center">
                             <h1 className="text-primary header-4-light">
                                 Take control of your finances effortlessly
@@ -89,8 +96,8 @@ export default function Login({ status, canResetPassword }) {
                             initialValues={{
                                 email: "",
                                 password: "",
-                                username:"",
-                                confirmPassword:""
+                                username: "",
+                                confirmPassword: "",
                             }}
                             validationSchema={SignupSchema}
                             onSubmit={submit}
@@ -103,102 +110,107 @@ export default function Login({ status, canResetPassword }) {
                             }) => (
                                 <Form
                                     onSubmit={handleSubmit}
-                                    className="font-roboto flex flex-col justify-between md:w-[450px]"
+                                    className="font-roboto flex flex-col justify-center md:w-[450px] "
                                 >
-                                    <FormGroup>
-                                       
-                                        <img src={logoLetter} alt="Logo" className="mx-auto h-[45px] md:h-[55px]" />
-                                        <CustomTitle
-                                            title="Welcome"
-                                            subtitle="Let’s register your account first"
-                                            className={"pt-6 pb-3 "}
-                                        />
-                                        <FormGroup>
-                                            <CustomLabel
-                                                labelFor="Email"
-                                                className="button text-primary"
+                                    
+                                    <FormGroup className="max-h-[650px] h-full flex flex-col justify-between">
+                                        <FormGroup className="">
+                                            <img
+                                                src={logoLetter}
+                                                alt="Logo"
+                                                className="mx-auto h-[35px] md:h-[45px]"
                                             />
+                                            <CustomTitle
+                                                title="Welcome"
+                                                subtitle="Let’s register your account first"
+                                                className={"pt-6 pb-3 "}
+                                            />
+                                            <FormGroup>
+                                                <CustomLabel
+                                                    labelFor="Email"
+                                                    className="button text-primary"
+                                                />
 
-                                            <CustomField
-                                                id="email"
-                                                name="email"
-                                                placeholder="with a placeholder"
-                                                type="email"
-                                                className="w-full mt-1"
-                                                icon={
-                                                    <Mail
-                                                        size={18}
-                                                        color="grey"
-                                                    />
-                                                }
-                                            />
-                                        </FormGroup>
-                                        <FormGroup className="mt-3">
-                                            <CustomLabel
-                                                labelFor="Username"
-                                                className="button text-primary"
-                                            />
+                                                <CustomField
+                                                    id="email"
+                                                    name="email"
+                                                    placeholder="with a placeholder"
+                                                    type="email"
+                                                    className="w-full mt-1"
+                                                    icon={
+                                                        <Mail
+                                                            size={18}
+                                                            color="grey"
+                                                        />
+                                                    }
+                                                />
+                                            </FormGroup>
+                                            <FormGroup className="mt-3">
+                                                <CustomLabel
+                                                    labelFor="Username"
+                                                    className="button text-primary"
+                                                />
 
-                                            <CustomField
-                                                id="password"
-                                                name="username"
-                                                placeholder="with a placeholder"
-                                                type="password"
-                                                className="w-full mt-1"
-                                                icon={
-                                                    <User
-                                                        size={18}
-                                                        color="grey"
-                                                    />
-                                                }
-                                            />
-                                        </FormGroup>
-                                        <FormGroup className="mt-3">
-                                            <CustomLabel
-                                                labelFor="Password"
-                                                className="button text-primary"
-                                            />
+                                                <CustomField
+                                                    id="password"
+                                                    name="username"
+                                                    placeholder="with a placeholder"
+                                                    type="password"
+                                                    className="w-full mt-1"
+                                                    icon={
+                                                        <User
+                                                            size={18}
+                                                            color="grey"
+                                                        />
+                                                    }
+                                                />
+                                            </FormGroup>
+                                            <FormGroup className="mt-3">
+                                                <CustomLabel
+                                                    labelFor="Password"
+                                                    className="button text-primary"
+                                                />
 
-                                            <CustomField
-                                                id="password"
-                                                name="password"
-                                                placeholder="with a placeholder"
-                                                type="password"
-                                                className="w-full mt-1"
-                                                icon={
-                                                    <Lock
-                                                        size={18}
-                                                        color="grey"
-                                                    />
-                                                }
-                                            />
-                                        </FormGroup>
-                                        <FormGroup className="mt-3">
-                                            <CustomLabel
-                                                labelFor="Confirm Password"
-                                                className="button text-primary"
-                                            />
+                                                <CustomField
+                                                    id="password"
+                                                    name="password"
+                                                    placeholder="with a placeholder"
+                                                    type="password"
+                                                    className="w-full mt-1"
+                                                    icon={
+                                                        <Lock
+                                                            size={18}
+                                                            color="grey"
+                                                        />
+                                                    }
+                                                />
+                                            </FormGroup>
+                                            <FormGroup className="mt-3">
+                                                <CustomLabel
+                                                    labelFor="Confirm Password"
+                                                    className="button text-primary"
+                                                />
 
-                                            <CustomField
-                                                id="password"
-                                                name="confirmPassword"
-                                                placeholder="with a placeholder"
-                                                type="password"
-                                                className="w-full mt-1"
-                                                icon={
-                                                    <Lock
-                                                        size={18}
-                                                        color="grey"
-                                                    />
-                                                }
-                                            />
+                                                <CustomField
+                                                    id="password"
+                                                    name="confirmPassword"
+                                                    placeholder="with a placeholder"
+                                                    type="password"
+                                                    className="w-full mt-1"
+                                                    icon={
+                                                        <Lock
+                                                            size={18}
+                                                            color="grey"
+                                                        />
+                                                    }
+                                                />
+                                            </FormGroup>
                                         </FormGroup>
-                                    </FormGroup>
-                                    <div className="flex flex-col mb-4">
-                                        <PrimaryButton className=" w-full">
-                                            Log in
-                                        </PrimaryButton>
-                               
+                                        <div className="flex flex-col mb-4">
+                                            <PrimaryButton className=" w-full">
+                                                Log in
+                                            </PrimaryButton>
+
                                             <span className="text-center pt-2 text-sm">
                                                 Already have an account? {""}
                                                 <Link
@@ -210,8 +222,8 @@ export default function Login({ status, canResetPassword }) {
                                                     Sign in
                                                 </Link>
                                             </span>
-                                  
-                                    </div>
+                                        </div>
+                                    </FormGroup>
                                 </Form>
                             )}
                         </Formik>
