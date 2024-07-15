@@ -7,15 +7,16 @@ import { Form, Formik } from "formik";
 import { Lock, Mail, User } from "react-feather";
 import { FormGroup } from "reactstrap";
 import * as Yup from "yup";
-import upperMotive from "../../../../public/image/login/Component 10.png";
-import lowerLeftMotive from "../../../../public/image/login/lowerLeftMotive.png";
-import lowerRightMotive from "../../../../public/image/login/lowerRightMotive.png";
+import upperMotive from "../../../../public/image/register/Component 10.png";
+import lowerLeftMotive from "../../../../public/image/register/lowerLeftMotive.png";
+import lowerRightMotive from "../../../../public/image/register/lowerRightMotive.png";
 import logo from "../../../../public/image/app/Logo.png";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
+
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     username: Yup.string()
-        .min(5, "Username must have minimum 5 letters")
+        .min(5, "Username must have at least 5 letters")
         .required("Username is required"),
     password: Yup.string()
         .matches(
@@ -68,7 +69,7 @@ export default function Login({ status, canResetPassword }) {
                 alt="Logo"
                 className=" absolute right-0 bottom-0 w-0 md:w-[45%] -z-0"
             />
-            <Head title="Log in" />
+            <Head title="Register" />
 
             <div className="h-full container z-100 relative">
                 <div className="h-full py-6 flex">
@@ -88,6 +89,8 @@ export default function Login({ status, canResetPassword }) {
                             initialValues={{
                                 email: "",
                                 password: "",
+                                username:"",
+                                confirmPassword:""
                             }}
                             validationSchema={SignupSchema}
                             onSubmit={submit}
@@ -100,11 +103,11 @@ export default function Login({ status, canResetPassword }) {
                             }) => (
                                 <Form
                                     onSubmit={handleSubmit}
-                                    className="font-roboto flex flex-col justify-between md:w-[500px]"
+                                    className="font-roboto flex flex-col justify-between md:w-[450px]"
                                 >
                                     <FormGroup>
                                        
-                                        <img src={logoLetter} alt="Logo" className="mx-auto h-[45px] md:h-[60px]" />
+                                        <img src={logoLetter} alt="Logo" className="mx-auto h-[45px] md:h-[55px]" />
                                         <CustomTitle
                                             title="Welcome"
                                             subtitle="Let’s register your account first"
@@ -130,7 +133,7 @@ export default function Login({ status, canResetPassword }) {
                                                 }
                                             />
                                         </FormGroup>
-                                        <FormGroup className="mt-2">
+                                        <FormGroup className="mt-3">
                                             <CustomLabel
                                                 labelFor="Username"
                                                 className="button text-primary"
@@ -150,7 +153,7 @@ export default function Login({ status, canResetPassword }) {
                                                 }
                                             />
                                         </FormGroup>
-                                        <FormGroup className="mt-2">
+                                        <FormGroup className="mt-3">
                                             <CustomLabel
                                                 labelFor="Password"
                                                 className="button text-primary"
@@ -170,7 +173,7 @@ export default function Login({ status, canResetPassword }) {
                                                 }
                                             />
                                         </FormGroup>
-                                        <FormGroup className="mt-2">
+                                        <FormGroup className="mt-3">
                                             <CustomLabel
                                                 labelFor="Confirm Password"
                                                 className="button text-primary"
@@ -202,7 +205,7 @@ export default function Login({ status, canResetPassword }) {
                                                     href={route(
                                                         "password.request"
                                                     )}
-                                                    className="underline  text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 "
+                                                    className="underline  text-primary  rounded-md fhover:outline-none  hover:ring-darker-primary hover:opacity-85  "
                                                 >
                                                     Sign in
                                                 </Link>

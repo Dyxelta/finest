@@ -23,8 +23,8 @@ export default {
          
             colors: {
                 primary: "#2D5074",
-                lightblue: "#1B3046",
-                secondary: "#CAD8E7",
+                "darker-primary": "#1B3046",
+                "lighter-primary": "#CAD8E7",
                 light: "#FDFDFD",
                 dark: "#202020",
                 grey: "#8F8F8F",
