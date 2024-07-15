@@ -49,7 +49,7 @@ export default function Login({ status, canResetPassword }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("login"));
+        post(route("register"));
     };
 
     return (
@@ -106,7 +106,7 @@ export default function Login({ status, canResetPassword }) {
                                     className="font-roboto flex flex-col justify-between md:w-[450px]"
                                 >
                                     <FormGroup>
-                                       
+
                                         <img src={logoLetter} alt="Logo" className="mx-auto h-[45px] md:h-[55px]" />
                                         <CustomTitle
                                             title="Welcome"
@@ -198,7 +198,7 @@ export default function Login({ status, canResetPassword }) {
                                         <PrimaryButton className=" w-full">
                                             Log in
                                         </PrimaryButton>
-                               
+
                                             <span className="text-center pt-2 text-sm">
                                                 Already have an account? {""}
                                                 <Link
@@ -210,7 +210,7 @@ export default function Login({ status, canResetPassword }) {
                                                     Sign in
                                                 </Link>
                                             </span>
-                                  
+
                                     </div>
                                 </Form>
                             )}

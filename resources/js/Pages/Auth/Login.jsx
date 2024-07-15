@@ -147,7 +147,6 @@ export default function Login({ status, canResetPassword }) {
                                                     </Link>
                                                 </div>
                                             </FormGroup>
-                                            
                                         </FormGroup>
 
                                         <div className="flex flex-col mb-6">
@@ -158,9 +157,7 @@ export default function Login({ status, canResetPassword }) {
                                             <span className="text-center pt-2 text-sm">
                                                 Don’t have an account? {""}
                                                 <Link
-                                                    href={route(
-                                                        "password.request"
-                                                    )}
+                                                    href={route("register")}
                                                     className="underline  text-primary  rounded-md fhover:outline-none  hover:ring-darker-primary hover:opacity-85 "
                                                 >
                                                     Register
