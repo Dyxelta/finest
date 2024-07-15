@@ -10,7 +10,7 @@ import * as Yup from "yup";
 import logoLogin from "../../../../public/image/login/LoginLogo.png";
 import lowerLeftMotive from "../../../../public/image/login/LowerLeftMotive.png";
 import upperLeftMotive from "../../../../public/image/login/UpperLeftMotive.png";
-import logo from "../../../../public/image/app/Logo.png";
+
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
 
 const SignupSchema = Yup.object().shape({
