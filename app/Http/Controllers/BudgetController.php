@@ -33,7 +33,7 @@ class BudgetController extends Controller
     }
 
     public function deleteBudget(Request $request) {
-        $budget = Budget::findOrFail('id', $request->budget_id);
+        $budget = Budget::findOrFail($request->id);
 
         $budget->delete();
         return redirect()->back();
@@ -53,7 +53,7 @@ class BudgetController extends Controller
         $budget_description = $request->input('budget_description');
         $category_name = $request->input('category_name');
 
-        $budget = Budget::findOrFail('budget_id', $budgetId);
+        $budget = Budget::findOrFail($budgetId);
 
         $budget->budget_name = $budget_name;
         $budget->category_id = Category::where('category_name', $category_name)->id;

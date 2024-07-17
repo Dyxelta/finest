@@ -54,5 +54,38 @@ class UserController extends Controller
         ]);
     }
 
+    public function editUserData(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'username' => 'required|alpha_num|min:5|max:25',
+            'email' => 'required|email|unique:users,email',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[!@#$%^&*(),.?":{}|<>]/',
+            ],
+            'confirm_pass' => 'required_with:password|same:password',
+        ]);
+
+        $new_username = $request->username;
+        $new_email= $request->email;
+        $new_password = $request->password;
+
+        $user = User::findOrFail($user->id);
+
+        $user->username = $new_username;
+        $user->email = $new_email;
+        $user->password = $new_password;
+        $user->updated_at = now();
+
+        $user->save();
+    }
+
 
 }
