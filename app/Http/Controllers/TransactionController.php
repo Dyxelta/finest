@@ -23,23 +23,22 @@ class TransactionController extends Controller
 
         $user = auth()->user();
 
-        $transactionAmount = 0;
-        $transactionIsIncome = Category::firstWhere('category_name', $request->category_name)->transaction_is_income;
+        $category = Category::where('category_name', $request->category_name)->firstOrFail();
 
-        if($transactionIsIncome == true) {
-            $transactionAmount += $request->transaction_amount;
-        } else {
-            $transactionAmount -= $request->transaction_amount;
-        }
+        $transactionAmount = $category->transaction_is_income ? $request->transaction_amount : -$request->transaction_amount;
+
+        $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
 
         Transaction::create([
             'user_id' => $user->id,
-            'wallet_id' => Wallet::firstWhere('wallet_name', $request->wallet_name)->id,
-            'category_id' => Category::firstWhere('category_name', $request->category_name)->id,
+            'wallet_id' => $wallet->id,
+            'category_id' => $category->id,
             'transaction_amount' => $transactionAmount,
             'transaction_note' => $request->transaction_note,
             'transaction_date' => $request->transaction_date,
         ]);
+
+        $this->changeWalletBalance($wallet, $transactionAmount);
 
         return redirect()->back();
     }
@@ -60,33 +59,39 @@ class TransactionController extends Controller
             'transaction_date' => 'required'
         ]);
 
+
         $transactionId = $request->id;
 
-        $walletId = Wallet::firstWhere('wallet_name', $request->wallet_name)->id;
-        $categoryId = Category::firstWhere('category_name', $request->category_name)->id;
+        $transaction = Transaction::findOrFail($transactionId);
 
-        $transactionAmount = 0;
-        $transactionIsIncome = Category::firstWhere('id', $categoryId)->transaction_is_income;
-        if($transactionIsIncome == true) {
-            $transactionAmount += $request->transaction_amount;
-        } else {
-            $transactionAmount -= $request->transaction_amount;
-        }
+        $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+        $category = Category::where('category_name', $request->category_name)->firstOrFail();
+
+        $originalAmount = $transaction->transaction_amount;
+
+        $transactionAmount = $category->transaction_is_income ? $request->transaction_amount : -$request->transaction_amount;
+
 
         $transactionNote = $request->transaction_note;
         $transactionDate = $request->transaction_date;
 
-        $transaction = Transaction::findOrFail($transactionId);
-
-        $transaction->wallet_id = $walletId;
-        $transaction->category_id = $categoryId;
+        $transaction->wallet_id = $wallet->id;
+        $transaction->category_id = $category->id;
         $transaction->transaction_amount = $transactionAmount;
         $transaction->transaction_note = $transactionNote;
         $transaction->transaction_date = $transactionDate;
 
+        $amountDifference = $transactionAmount - $originalAmount;
+        $this->changeWalletBalance($wallet, $amountDifference);
+
         $transaction->save();
 
         return redirect()->back();
+    }
+
+    private function changeWalletBalance(Wallet $wallet, $amount) {
+        $wallet->wallet_balance += $amount;
+        $wallet->save();
     }
 
     public function showAllUserTransaction() {
