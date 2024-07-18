@@ -10,9 +10,8 @@ use Inertia\Inertia;
 class BudgetController extends Controller
 {
     public function addBudget(Request $request) {
-
         $request->validate([
-            'budget_name' => 'required,unique:budgets',
+            'budget_name' => 'required|unique:budgets',
             'budget_amount' => 'required|numeric',
             'budget_description' => 'required|max:250',
             'category_name' => 'required|string'
@@ -22,11 +21,10 @@ class BudgetController extends Controller
         
         Budget::create([
             'user_id' => $user->id,
-            //fix: add budget firstWhere
             'category_id' => Category::firstWhere('category_name', $request->category_name)->id,
             'budget_name' => $request->budget_name,
             'budget_amount' => $request->budget_amount,
-            'budget_description' => $request->budget_description,
+            'budget_description' => $request->budget_description
         ]);
 
         return redirect()->back();
@@ -41,25 +39,24 @@ class BudgetController extends Controller
 
     public function editBudget(Request $request) {
         $request->validate([
-            'budget_name' => 'required,unique:budgets',
+            'budget_name' => 'required',
             'budget_amount' => 'required|numeric',
             'budget_description' => 'required|max:250',
             'category_name' => 'required|string'
         ]);
 
         $budgetId = $request->id;
-        $budget_name = $request->input('budget_name');
-        $budget_amount = $request->input('budget_amount');
-        $budget_description = $request->input('budget_description');
-        $category_name = $request->input('category_name');
+        $budget_name = $request->budget_name;
+        $budget_amount = $request->budget_amount;
+        $budget_description = $request->budget_description;
+        $category_name = $request->category_name;
 
         $budget = Budget::findOrFail($budgetId);
 
         $budget->budget_name = $budget_name;
-        $budget->category_id = Category::where('category_name', $category_name)->id;
+        $budget->category_id = Category::firstWhere('category_name', $category_name)->id;
         $budget->budget_amount = $budget_amount;
         $budget->budget_description = $budget_description;
-        $budget->updated_at = now();
 
         $budget->save();
 
