@@ -33,7 +33,7 @@ class BudgetController extends Controller
     }
 
     public function deleteBudget(Request $request) {
-        $budget = Budget::findOrFail('id', $request->budget_id);
+        $budget = Budget::findOrFail($request->id);
 
         $budget->delete();
         return redirect()->back();
@@ -53,7 +53,7 @@ class BudgetController extends Controller
         $budget_description = $request->input('budget_description');
         $category_name = $request->input('category_name');
 
-        $budget = Budget::findOrFail('budget_id', $budgetId);
+        $budget = Budget::findOrFail($budgetId);
 
         $budget->budget_name = $budget_name;
         $budget->category_id = Category::where('category_name', $category_name)->id;
@@ -81,6 +81,14 @@ class BudgetController extends Controller
     }
 
     public function showReccommendedDailyExpense() {
-        
+        $user = auth()->user();
+        $budget = Budget::firstWhere('user_id', $user->id)->get()->first()->budget_amount;
+        $year = date('Y');
+        $month = date('m');
+        $day = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+        $rec_budget = $budget/$day;
+        $rec_budget = (int)floor($rec_budget/1000)*1000;
+        return Inertia::render('Welcome', ['budget' => number_format($rec_budget)]);
     }
 }
