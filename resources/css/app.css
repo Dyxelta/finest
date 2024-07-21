@@ -10,7 +10,9 @@
     .container {
         @apply max-w-[1320px] mx-auto;
     }
-
+    .container-open-nav {
+        @apply max-w-[1050px] mx-auto;
+    }
     .padding-container {
         @apply px-4 lg:px-20 py-8 md:py-12;
     }
@@ -72,6 +74,9 @@
     .sub-body {
         @apply font-roboto text-[12px] font-[400] leading-[18px];
     }
+    .sub-body-14 {
+        @apply font-roboto text-[14px] font-[400] leading-[20px];
+    }
     .sub-body-bold {
         @apply font-roboto text-[12px] font-[700] leading-[18px];
     }
@@ -79,3 +84,5 @@
         @apply font-roboto text-[16px] font-[700] leading-[24px];
     }
 }
+
+

@@ -1,19 +1,19 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { Button } from "reactstrap";
 
-export default function Modal({
+export default function CustomModal({
     children,
     title,
-headerColor,
+    headerColor,
     show = false,
     maxWidth = "2xl",
-    closeable = true,
+    content,
     onClose = () => {},
+    showButton = false,
 }) {
     const close = () => {
-        if (closeable) {
-            onClose();
-        }
+        onClose();
     };
 
     const maxWidthClass = {
@@ -31,7 +31,7 @@ headerColor,
     }[headerColor];
 
     return (
-        <Transition show={show} as={Fragment} leave="duration-200">
+        <Transition show={show} as={Fragment} leave="duration-200 font-roboto">
             <Dialog
                 as="div"
                 id="modal"
@@ -62,10 +62,10 @@ headerColor,
                     <Dialog.Panel
                         className={`mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass}`}
                     >
-                        <div className={`bg-gray-100 px-4 py-2 flex justify-between items-center border-b border-gray-200 ${titleColor}`}>
-                            <h2 className={`text-lg font-medium `}>
-                                {title}
-                            </h2>
+                        <div
+                            className={`bg-gray-100 px-4 py-2 flex justify-between items-center border-b border-gray-200 ${titleColor}`}
+                        >
+                            <h2 className={`text-lg font-medium `}>{title}</h2>
                             <button
                                 type="button"
                                 className="text-gray-400 hover:text-gray-500"
@@ -88,7 +88,16 @@ headerColor,
                                 </svg>
                             </button>
                         </div>
-                        <div className="p-4">{children}</div>
+                        <div className="p-4 w-full">
+                            <span className="header-5-light">
+                            {content}
+                            </span>
+                            <div className="w-full mt-4 flex justify-end ">
+                                {showButton && (
+                                    <Button onClick={() => close()} className={`self-end mt-2 mb-1 ${titleColor} px-6 py-2 rounded-md body mr-4`}>Confirm</Button>
+                                )}
+                            </div>
+                        </div>
                     </Dialog.Panel>
                 </Transition.Child>
             </Dialog>
