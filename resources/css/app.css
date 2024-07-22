@@ -8,10 +8,10 @@
 @layer utilities {
     /* util */
     .container {
-        @apply max-w-[1320px] mx-auto;
+        @apply max-w-[1300px] ml-auto;
     }
     .container-open-nav {
-        @apply max-w-[1050px] mx-auto;
+        @apply max-w-[1120px] ml-auto ;
     }
     .padding-container {
         @apply px-4 lg:px-20 py-8 md:py-12;

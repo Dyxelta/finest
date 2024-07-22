@@ -121,14 +121,25 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                     </div>
                     <div className="px-4">
                         {menuArray.map((menu, index) => (
-                            <div className="pt-1 ">
+                            <div className={`${openNav ? "pt-1" : ""}`}>
                                 <div
-                                    className={`transition-opacity duration-300 ease-in-out ${
-                                        openNav ? "opacity-100" : "opacity-0"
+                                    className={`transition-opacity duration-300 ease-in-out cursor-default ${
+                                        openNav ? "opacity-100" : "opacity-0 w-0"
                                     } text-grey`}
                                 >
                                     {menu.Title}
                                 </div>
+                                {index !== 0 && (
+                                    <div
+                                        className={`transition-opacity duration-100 ease-in-out ${
+                                            openNav
+                                                ? "opacity-0 "
+                                                : "opacity-100 delay-300"
+                                        }`}
+                                    >
+                                        <hr className="border-primary" />
+                                    </div>
+                                )}
                                 <div className=" py-1 flex flex-col gap-1 pt-2 ">
                                     {menu.Children.map((subMenu, index) => (
                                         <div
@@ -136,7 +147,15 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                                 openNav ? "py-3 px-4" : "p-3"
                                             }  rounded-md  hover:bg-off-white `}
                                         >
-                                            <h2 class={openNav ? 'hidden' : 'w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre text-gray-900 rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1'}>{subMenu.Title}</h2>
+                                            <h2
+                                                class={
+                                                    openNav
+                                                        ? "hidden"
+                                                        : "w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre text-gray-900 rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1"
+                                                }
+                                            >
+                                                {subMenu.Title}
+                                            </h2>
                                             <div
                                                 className={`transition-transform flex  duration-500 ease-in-out ${
                                                     openNav
@@ -181,7 +200,6 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                 : "w-0 opacity-0 overflow-hidden"
                         }`}
                         style={{
-                      
                             whiteSpace: "nowrap",
                         }}
                     >

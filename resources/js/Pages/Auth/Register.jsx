@@ -65,16 +65,16 @@ export default function Register({ status, canResetPassword }) {
             onError: (errors) => {
                 if (errors.username) {
                     openModal();
-                    setError(errors.username)
+                    setError(errors.username);
                 } else if (errors.email) {
                     openModal();
-                    setError(errors.email)
+                    setError(errors.email);
                 } else if (errors.password) {
                     openModal();
-                    setError(errors.password)
+                    setError(errors.password);
                 } else if (errors.confirm_pass) {
                     openModal();
-                    setError(errors.confirm_pass)
+                    setError(errors.confirm_pass);
                 }
             },
         });
@@ -82,6 +82,7 @@ export default function Register({ status, canResetPassword }) {
 
     return (
         <div className="relative h-screen">
+            <Head title="Register" />
             <img
                 src={upperMotive}
                 alt="Logo"
@@ -97,7 +98,6 @@ export default function Register({ status, canResetPassword }) {
                 alt="Logo"
                 className=" absolute right-0 bottom-0 w-0 md:w-[45%] -z-0"
             />
-            <Head title="Register" />
 
             <div className="h-full container z-40 relative">
                 <div className="h-full py-6 flex">
@@ -145,7 +145,7 @@ export default function Register({ status, canResetPassword }) {
                                                 alt="Logo"
                                                 className="mx-auto h-[35px] md:h-[45px]"
                                             />
-                                            
+
                                             <CustomTitle
                                                 title="Welcome"
                                                 subtitle="Let’s register your account first"
@@ -284,7 +284,6 @@ export default function Register({ status, canResetPassword }) {
                                             <PrimaryButton
                                                 className=" w-full"
                                                 type="submit"
-                                         
                                             >
                                                 Register
                                             </PrimaryButton>
@@ -313,9 +312,8 @@ export default function Register({ status, canResetPassword }) {
                             headerColor="red"
                             maxWidth="sm"
                             content={error}
-                            showButton= {true}
+                            showButton={true}
                         />
-                       
                     </div>
                 </div>
             </div>
