@@ -50,5 +50,9 @@ Route::post('/register-account', [UserController::class, 'register'])->name('reg
 
 Route::post('/login-user', [UserController::class, 'login'])->name('login-user');
 
+// punya wete
+Route::get('/addTransaction', function () {
+    return Inertia::render('AddTransactionPage');
+})->middleware(['auth', 'verified'])->name('AddTransactionPage');
 
 require __DIR__.'/auth.php';
