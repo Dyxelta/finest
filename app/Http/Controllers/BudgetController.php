@@ -67,14 +67,14 @@ class BudgetController extends Controller
         $user = auth()->user();
         $budget = Budget::firstWhere('user_id', 1)->where('id', $id)->get();
 
-        return Inertia::render('Welcome', ['budget' => $budget]);
+        return ['budget' => $budget];
     }
 
     public function showAllUserBudget() {
         $user = auth()->user();
         $budgets = Budget::where('user_id', $user->id)->get();
 
-        return Inertia::render('Welcome', ['budgets' => $budgets]);
+        return ['budgets' => $budgets];
     }
 
     public function showReccommendedDailyExpense() {
@@ -86,6 +86,6 @@ class BudgetController extends Controller
 
         $rec_budget = $budget/$day;
         $rec_budget = (int)floor($rec_budget/1000)*1000;
-        return Inertia::render('Welcome', ['budget' => number_format($rec_budget)]);
+        return ['budget' => number_format($rec_budget)];
     }
 }
