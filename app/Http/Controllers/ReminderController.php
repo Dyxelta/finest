@@ -12,6 +12,6 @@ class ReminderController extends Controller
         $user = auth()->user();
         $reminder = Reminder::where('user_id', $user->id)->get();
 
-        return Inertia::render('Welcome', ['reminder' => $reminder]);
+        return ['reminder' => $reminder];
     }
 }

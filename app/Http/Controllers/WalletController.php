@@ -61,7 +61,7 @@ class WalletController extends Controller
 
         $wallets = Wallet::where('user_id', $user->id)->get();
 
-        return Inertia::render('Wallets', ['wallets' => $wallets]);
+        return ['wallets' => $wallets];
     }
 
     public function showWalletById(Request $request) {
@@ -69,6 +69,6 @@ class WalletController extends Controller
 
         $wallet = Wallet::where('wallet_id', $walletId)->get()->first();
 
-        return Inertia::render('WalletDetail', ['wallet' => $wallet]);
+        return ['wallet' => $wallet];
     }
 }

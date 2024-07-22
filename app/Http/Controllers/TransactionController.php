@@ -99,7 +99,7 @@ class TransactionController extends Controller
 
         $transactions = Transaction::where('user_id' == $user->id)->get();
 
-        return Inertia::render('Dashboard', ['transactions' => $transactions]);
+        return ['transactions' => $transactions];
     }
 
     public function showTransactionByWallet(Wallet $wallet) {
@@ -110,7 +110,7 @@ class TransactionController extends Controller
 
         $transactions = Transaction::where('user_id', $userId)->where('wallet_id', $walletId)->get();
 
-        return Inertia::render('WalletDetail', ['transactions' => $transactions]);
+        return ['transactions' => $transactions];
     }
 
     public function showTransactionByCategory(Category $category) {
@@ -121,7 +121,7 @@ class TransactionController extends Controller
 
         $transactions = Transaction::where('user_id', $userId)->where('category_id', $categoryId)->get();
 
-        return Inertia::render('TransactionReport', ['transactions' => $transactions]);
+        return ['transactions' => $transactions];
     }
 
     public function showTransactionByMonth(Request $request) {
@@ -137,7 +137,7 @@ class TransactionController extends Controller
             ->whereBetween('date', [$startDate, $endDate])
             ->get();
 
-        return Inertia::render('TransactionReport', ['transactions' => $transactions]);
+        return ['transactions' => $transactions];
     }
 
 }
