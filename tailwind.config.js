@@ -1,6 +1,7 @@
 import defaultTheme from "tailwindcss/defaultTheme";
 import forms from "@tailwindcss/forms";
 
+
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
@@ -33,6 +34,7 @@ export default {
                 background: "#EBF0F6",
                 income: "#317E3D",
                 expense: "#C02317",
+                 "off-white": "#E5E5E5"
             },
         },
     },

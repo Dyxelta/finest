@@ -12,6 +12,8 @@ import lowerLeftMotive from "../../../../public/image/login/LowerLeftMotive.png"
 import upperLeftMotive from "../../../../public/image/login/UpperLeftMotive.png";
 
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
+import CustomModal from "@/Components/Modal/CustomFastModal";
+import { useState } from "react";
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -24,10 +26,23 @@ export default function Login({ status, canResetPassword }) {
         email: "",
         password: "",
     });
+
+    const [showModal, setShowModal] = useState(false);
+    const [error, setError] = useState();
+    const openModal = () => setShowModal(true);
+    const closeModal = () => setShowModal(false);
     const submit = () => {
-
-
-        post(route("login-user"));
+        post(route("login-user"), {
+            onError: (errors) => {
+               if (errors.email) {
+                    openModal();
+                    setError(errors.email)
+                } else if (errors.password) {
+                    openModal();
+                    setError(errors.password)
+                }
+            },
+        });
     };
 
     return (
@@ -87,7 +102,7 @@ export default function Login({ status, canResetPassword }) {
                                     onSubmit={handleSubmit}
                                     className="font-roboto flex flex-col justify-center max-w-[400px] w-full md:max-w-none sm:w-[400px] md:w-[450px] h-full"
                                 >
-                                    <div className=" flex flex-col justify-between bg-light px-8 sm:px-12 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[450px] md:h-[500px]">
+                                    <div className=" flex flex-col justify-between bg-light px-8 sm:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[450px] md:h-[500px]">
                                         <FormGroup className="w-full">
                                             <CustomTitle
                                                 title="Welcome"
@@ -103,7 +118,7 @@ export default function Login({ status, canResetPassword }) {
                                                 <CustomField
                                                     id="email"
                                                     name="email"
-                                                    placeholder="with a placeholder"
+                                                    placeholder="example@gmail.com"
                                                     type="email"
                                                     className="w-full mt-1"
                                                     icon={
@@ -125,7 +140,7 @@ export default function Login({ status, canResetPassword }) {
                                                 />
                                             </FormGroup>
 
-                                            <FormGroup className="mt-3 md:mt-5 w-full">
+                                            <FormGroup className="mt-3 md:mt-4 w-full">
                                                 <CustomLabel
                                                     labelFor="Password"
                                                     className="button text-primary"
@@ -134,7 +149,7 @@ export default function Login({ status, canResetPassword }) {
                                                 <CustomField
                                                     id="password"
                                                     name="password"
-                                                    placeholder="with a placeholder"
+                                                    placeholder="Must be 8-20 Characters"
                                                     type="password"
                                                     className="w-full mt-1"
                                                     icon={
@@ -186,6 +201,16 @@ export default function Login({ status, canResetPassword }) {
                                 </Form>
                             )}
                         </Formik>
+
+                        <CustomModal
+                            show={showModal}
+                            onClose={closeModal}
+                            title="Error"
+                            headerColor="red"
+                            maxWidth="md"
+                            content={error}
+                            showButton= {true}
+                        />
                     </div>
                 </div>
             </div>

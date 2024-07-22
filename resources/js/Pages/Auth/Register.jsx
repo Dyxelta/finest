@@ -16,6 +16,7 @@ import Modal from "@/Components/Modal";
 import { useState } from "react";
 import SecondaryButton from "@/Components/SecondaryButton";
 import DangerButton from "@/Components/DangerButton";
+import CustomModal from "@/Components/Modal/CustomFastModal";
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -47,14 +48,11 @@ const SignupSchema = Yup.object().shape({
 });
 
 export default function Register({ status, canResetPassword }) {
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [error, setError] = useState();
+    const openModal = () => setShowModal(true);
+    const closeModal = () => setShowModal(false);
 
-    const closeModal = () => {
-        setConfirmingUserDeletion(false);
-    };
-    const openModal = () => {
-        setConfirmingUserDeletion(true);
-    };
     const { data, setData, post, processing, errors, reset } = useForm({
         username: "",
         email: "",
@@ -67,12 +65,16 @@ export default function Register({ status, canResetPassword }) {
             onError: (errors) => {
                 if (errors.username) {
                     openModal();
+                    setError(errors.username)
                 } else if (errors.email) {
                     openModal();
+                    setError(errors.email)
                 } else if (errors.password) {
-                    openModal()
+                    openModal();
+                    setError(errors.password)
                 } else if (errors.confirm_pass) {
-                    openModal()
+                    openModal();
+                    setError(errors.confirm_pass)
                 }
             },
         });
@@ -143,11 +145,13 @@ export default function Register({ status, canResetPassword }) {
                                                 alt="Logo"
                                                 className="mx-auto h-[35px] md:h-[45px]"
                                             />
+                                            
                                             <CustomTitle
                                                 title="Welcome"
                                                 subtitle="Let’s register your account first"
                                                 className={"pt-6 pb-3 "}
                                             />
+
                                             <FormGroup>
                                                 <CustomLabel
                                                     labelFor="Email"
@@ -157,7 +161,7 @@ export default function Register({ status, canResetPassword }) {
                                                 <CustomField
                                                     id="email"
                                                     name="email"
-                                                    placeholder="with a placeholder"
+                                                    placeholder="example@gmail.com"
                                                     type="email"
                                                     className="w-full mt-1"
                                                     value={data.email}
@@ -179,6 +183,7 @@ export default function Register({ status, canResetPassword }) {
                                                     }}
                                                 />
                                             </FormGroup>
+
                                             <FormGroup className="mt-1">
                                                 <CustomLabel
                                                     labelFor="Username"
@@ -188,7 +193,7 @@ export default function Register({ status, canResetPassword }) {
                                                 <CustomField
                                                     id="username"
                                                     name="username"
-                                                    placeholder="with a placeholder"
+                                                    placeholder="example123"
                                                     type="text"
                                                     className="w-full mt-1"
                                                     icon={
@@ -210,6 +215,7 @@ export default function Register({ status, canResetPassword }) {
                                                     }}
                                                 />
                                             </FormGroup>
+
                                             <FormGroup className="mt-1">
                                                 <CustomLabel
                                                     labelFor="Password"
@@ -219,7 +225,7 @@ export default function Register({ status, canResetPassword }) {
                                                 <CustomField
                                                     id="password"
                                                     name="password"
-                                                    placeholder="with a placeholder"
+                                                    placeholder="Must be 8-20 Characters"
                                                     type="password"
                                                     className="w-full mt-1"
                                                     icon={
@@ -241,6 +247,7 @@ export default function Register({ status, canResetPassword }) {
                                                     }}
                                                 />
                                             </FormGroup>
+
                                             <FormGroup className="mt-1">
                                                 <CustomLabel
                                                     labelFor="Confirm Password"
@@ -250,7 +257,7 @@ export default function Register({ status, canResetPassword }) {
                                                 <CustomField
                                                     id="confirmPassword"
                                                     name="confirm_pass"
-                                                    placeholder="with a placeholder"
+                                                    placeholder="Must be 8-20 Characters"
                                                     type="password"
                                                     className="w-full mt-1"
                                                     icon={
@@ -277,7 +284,7 @@ export default function Register({ status, canResetPassword }) {
                                             <PrimaryButton
                                                 className=" w-full"
                                                 type="submit"
-                                                onClick={() => openModal()}
+                                         
                                             >
                                                 Register
                                             </PrimaryButton>
@@ -299,27 +306,16 @@ export default function Register({ status, canResetPassword }) {
                             )}
                         </Formik>
 
-                        <Modal
-                            show={confirmingUserDeletion}
+                        <CustomModal
+                            show={showModal}
                             onClose={closeModal}
-                        >
-                            <h2 className="text-lg font-medium text-gray-900">
-                                Are you sure you want to delete your account?
-                            </h2>
-
-                            <div className="mt-6 flex justify-end">
-                                <SecondaryButton onClick={closeModal}>
-                                    Cancel
-                                </SecondaryButton>
-
-                                <DangerButton
-                                    className="ms-3"
-                                    disabled={processing}
-                                >
-                                    Delete Account
-                                </DangerButton>
-                            </div>
-                        </Modal>
+                            title="Error"
+                            headerColor="red"
+                            maxWidth="sm"
+                            content={error}
+                            showButton= {true}
+                        />
+                       
                     </div>
                 </div>
             </div>
