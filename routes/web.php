@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
+use App\Models\Transaction;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,8 +31,13 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    [WalletController::class, 'showAllWalletByUserID'];
-    return Inertia::render('Dashboard');
+    $transactionData = app(TransactionController::class)->showAllUserTransaction();
+
+    $walletData = app(WalletController::class)->showAllWalletByUserID();
+
+    $budgetData = app(BudgetController::class)->showAllUserBudget();
+
+    return Inertia::render('Dashboard', array_merge($transactionData, $walletData, $budgetData));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
