@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
 
-    public function register(Request $request){
-      
+    public function register(Request $request)
+    {
+
         $request->validate([
             'username' => 'required|alpha_num|min:5|max:25',
             'email' => 'required|email|unique:users,email',
@@ -74,7 +75,7 @@ class UserController extends Controller
         ]);
 
         $new_username = $request->username;
-        $new_email= $request->email;
+        $new_email = $request->email;
         $new_password = $request->password;
 
         $user = User::findOrFail($user->id);
@@ -87,5 +88,12 @@ class UserController extends Controller
         $user->save();
     }
 
+    public function redirectWhenAppOpened()
+    {
+        if (Auth::check()) {
+            return redirect('dashboard');
+        }
 
+        return redirect('login');
+    }
 }

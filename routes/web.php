@@ -21,30 +21,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-Route::get('/dashboard', function () {
-    $transactionData = app(TransactionController::class)->showAllUserTransaction();
-
-    $walletData = app(WalletController::class)->showAllWalletByUserID();
-
-    $budgetData = app(BudgetController::class)->showAllUserBudget();
-
-    return Inertia::render('Dashboard', array_merge($transactionData, $walletData, $budgetData));
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::get('/', [UserController::class, 'redirectWhenAppOpened']);
 
 Route::middleware('guest')->group(function() {
     Route::get('/login', function () {
@@ -54,15 +31,41 @@ Route::middleware('guest')->group(function() {
     Route::get('/register', function() {
         return Inertia::render('Register');
     })->name('register');
+
+    Route::post('/create-account', [UserController::class, 'register'])->name('createAccount');
+
+    Route::post('/login-user', [UserController::class, 'login'])->name('loginUser');
 });
 
-Route::post('/register-account', [UserController::class, 'register'])->name('register-account');
+Route::middleware('auth')->group(function () {
 
-Route::post('/login-user', [UserController::class, 'login'])->name('login-user');
+    //dashboard
+    Route::get('/dashboard', function () {
+        $transactionData = app(TransactionController::class)->showAllUserTransaction();
 
-// punya wete
-Route::get('/addTransaction', function () {
-    return Inertia::render('AddTransactionPage');
-})->middleware(['auth', 'verified'])->name('AddTransactionPage');
+        $walletData = app(WalletController::class)->showAllWalletByUserID();
+
+        $budgetData = app(BudgetController::class)->showAllUserBudget();
+
+        return Inertia::render('Dashboard', array_merge($transactionData, $walletData, $budgetData));
+    })->name('dashboard');
+
+
+    //wallet
+    Route::post('/create-wallet', [WalletController::class, 'addWallet'])->name('createWallet');
+
+
+    //transaction
+    Route::get('add-transaction', function () {
+        return Inertia::render('AddTransactionPage');
+    })->name('addTransasction');
+
+    Route::post('create-transaction', [TransactionController::class, 'addTransaction'])->name('createTransaction');
+
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
 require __DIR__.'/auth.php';
