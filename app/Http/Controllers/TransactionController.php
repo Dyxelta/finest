@@ -97,7 +97,7 @@ class TransactionController extends Controller
     public function showAllUserTransaction() {
         $user = auth()->user();
 
-        $transactions = Transaction::where('user_id' == $user->id)->get();
+        $transactions = Transaction::where('user_id', $user->id)->get();
 
         return ['transactions' => $transactions];
     }

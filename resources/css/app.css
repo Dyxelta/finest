@@ -35,22 +35,22 @@
 
     /* Header Bold */
     .logo {
-        @apply font-roboto text-[64px] font-[700] leading-[72px];
+        @apply font-roboto text-[64px] font-[600] leading-[72px];
     }
     .header-1 {
-        @apply font-roboto text-[40px] font-[700] leading-[60px];
+        @apply font-roboto text-[40px] font-[600] leading-[60px];
     }
     .header-2 {
-        @apply font-roboto text-[32px] font-[700] leading-[48px];
+        @apply font-roboto text-[32px] font-[600] leading-[48px];
     }
     .header-3 {
-        @apply font-roboto text-[28px] font-[700] leading-[42px];
+        @apply font-roboto text-[28px] font-[600] leading-[42px];
     }
     .header-4 {
-        @apply font-roboto text-[24px] font-[700] leading-[36px];
+        @apply font-roboto text-[24px] font-[600] leading-[36px];
     }
     .header-5 {
-        @apply font-roboto text-[20px] font-[700] leading-[30px];
+        @apply font-roboto text-[20px] font-[600] leading-[30px];
     }
 
     /* Header Light */

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Button } from "reactstrap";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 export default function CustomModal({
     children,
@@ -25,9 +26,9 @@ export default function CustomModal({
     }[maxWidth];
 
     const titleColor = {
-        red: "bg-red-500 text-light",
-        blue: "bg-blue-500 text-light",
-        green: "bg-green-500",
+        red: "bg-expense text-light",
+        blue: "bg-primary text-light",
+        green: "bg-income text-light",
     }[headerColor];
 
     return (
@@ -89,8 +90,8 @@ export default function CustomModal({
                             </button>
                         </div>
                         <div className="p-4 w-full">
-                            <span className="header-5-light">
-                            {content}
+                            <span className="header-5-light" >
+                             {content}
                             </span>
                             <div className="w-full mt-4 flex justify-end ">
                                 {showButton && (

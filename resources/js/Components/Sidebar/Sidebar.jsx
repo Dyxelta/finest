@@ -14,6 +14,8 @@ import {
 } from "react-icons/tb";
 import { Button } from "reactstrap";
 
+import { Link } from "@inertiajs/react";
+
 const Sidebar = ({ openNav, setOpenNav }) => {
     const changeWidth = [
         "max-w-[270px]",
@@ -124,7 +126,9 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                             <div className={`${openNav ? "pt-1" : ""}`}>
                                 <div
                                     className={`transition-opacity duration-300 ease-in-out cursor-default ${
-                                        openNav ? "opacity-100" : "opacity-0 w-0"
+                                        openNav
+                                            ? "opacity-100"
+                                            : "opacity-0 w-0"
                                     } text-grey`}
                                 >
                                     {menu.Title}
@@ -148,7 +152,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                             }  rounded-md  hover:bg-off-white `}
                                         >
                                             <h2
-                                                class={
+                                                className={
                                                     openNav
                                                         ? "hidden"
                                                         : "w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre text-gray-900 rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1"
@@ -187,8 +191,11 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                     </div>
                 </div>
 
-                <div
-                    className={`text-expense py-4 flex items-center button px-8  border-t-2 border-off-white transition-transform duration-500 ease-in-out hover:translate-x-2`}
+                <Link
+                    method="post"
+                    href={route("logout")}
+                    as="button"
+                    className={`text-expense py-4 flex items-center button px-8  border-t-2 border-off-white transition-transform duration-500 ease-in-out hover:translate-x-2 text-left`}
                 >
                     <div>
                         <IoIosLogOut size={24} />
@@ -197,7 +204,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                         className={`transition-all ease-in-out ${
                             openNav
                                 ? "w-full opacity-100 pl-4 delay-300"
-                                : "w-0 opacity-0 overflow-hidden"
+                                : "w-0 opacity-0 overflow-hidden "
                         }`}
                         style={{
                             whiteSpace: "nowrap",
@@ -205,7 +212,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                     >
                         Log Out
                     </div>
-                </div>
+                </Link>
             </div>
         </nav>
     );
