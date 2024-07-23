@@ -34,7 +34,7 @@ export default function TextInput({
                         `border-gray-300 transition-shadow duration-300 ${
                             meta.touched && meta.error
                                 ? "border-red-500 ring-red-500 focus:ring-red-500 focus:border-red-500 focus:shadow-[0_4px_6px_rgba(255,0,0,0.2)]"
-                                : "focus:ring-light-primary focus:border-light-primary focus:shadow-[0_4px_6px_rgba(0,123,255,0.3)]"
+                                : "focus:ring-primary focus:border-primary focus:shadow-[0_4px_6px_rgba(0,123,255,0.3)]"
                         } rounded-md shadow-sm ${icon ? 'pl-10' : ''} ` + className
                     }
                     innerRef={inputRef}

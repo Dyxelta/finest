@@ -21,6 +21,7 @@ export default function AddWalletPopup({
     maxWidth = "2xl",
     showCancel = true,
     onClose = () => {},
+    data,
 }) {
     const close = () => {};
 
@@ -78,18 +79,18 @@ export default function AddWalletPopup({
                             </div>
                             <div className="flex flex-col">
                                 <h1 className="text-primary header-4">
-                                    Add Wallet
+                                    Edit Wallet{" "}
                                 </h1>
                                 <h5 className="text-grey sub-body-14">
-                                    Add New Wallet
+                                    Edit your existing wallet{" "}
                                 </h5>
                             </div>
                         </div>
                         <Formik
                             initialValues={{
-                                wallet_name: "",
-                                wallet_balance: "",
-                                description: "",
+                                wallet_name: data?.wallet_name,
+                                wallet_balance: data?.wallet_balance,
+                                description: data?.description,
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
