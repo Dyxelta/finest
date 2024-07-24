@@ -139,7 +139,7 @@ export default function Login() {
                                                 />
                                             </FormGroup>
 
-                                            <FormGroup className="mt-3 md:mt-4 w-full">
+                                            <FormGroup className="mt-3 md:mt-6 w-full">
                                                 <CustomLabel
                                                     labelFor="Password"
                                                     className="button text-primary"

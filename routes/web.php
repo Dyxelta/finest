@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Wallet/WalletPage');
     })->name('WalletPage');
 
-    Route::post('logout', [UserController::class, 'logout'])
+    Route::get('logout', [UserController::class, 'logout'])
     ->name('logout');
 });
 

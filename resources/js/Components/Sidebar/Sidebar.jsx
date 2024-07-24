@@ -192,8 +192,8 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 </div>
 
                 <Link
-                    method="post"
-                    // href={route("logout")}
+                    method="GET"
+                    href={route("logout")}
                     as="button"
                     className={`text-expense py-4 flex items-center button px-8  border-t-2 border-off-white transition-transform duration-500 ease-in-out hover:translate-x-2 text-left`}
                 >
