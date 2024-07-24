@@ -21,19 +21,16 @@ class RecurringTransactionController extends Controller
 
         $user = auth()->user();
 
-        $recurringTransactionAmount = 0;
-        $recurringTransactionIsIncome = Category::firstWhere('category_name', $request->category_name)->transaction_is_income;
+        $category = Category::where('category_name', $request->category_name)->firstOrFail();
 
-        if($recurringTransactionIsIncome == true) {
-            $recurringTransactionAmount += $request->recurring_transaction_amount;
-        } else {
-            $recurringTransactionAmount -= $request->recurring_transaction_amount;
-        }
+        $recurringTransactionAmount = $category->transaction_is_income ? $request->recurring_transaction_amount : -$request->recurring_transaction_amount;
+
+        $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
 
         RecurringTransaction::create([
             'user_id' => $user->id,
-            'wallet_id' => Wallet::firstWhere('wallet_name', $request->wallet_name)->id,
-            'category_id' => Category::firstWhere('category_name', $request->category_name)->id,
+            'wallet_id' => $wallet->id,
+            'category_id' => $category->id,
             'recurring_transaction_amount' => $recurringTransactionAmount,
             'recurring_transaction_note' => $request->transaction_note,
             'recurring_transaction_date' => $request->transaction_date,
@@ -60,25 +57,21 @@ class RecurringTransactionController extends Controller
 
         $recurringTransactionId = $request->id;
 
-        $walletId = Wallet::firstWhere('wallet_name', $request->wallet_name)->id;
-        $categoryId = Category::firstWhere('category_name', $request->category_name)->id;
-
-        $transactionAmount = 0;
-        $transactionIsIncome = Category::firstWhere('id', $categoryId)->transaction_is_income;
-        if($transactionIsIncome == true) {
-            $transactionAmount += $request->transaction_amount;
-        } else {
-            $transactionAmount -= $request->transaction_amount;
-        }
-
-        $recurringTransactionNote = $request->recurring_transaction_note;
-        $recurringTransactionDate = $request->recurring_transaction_date;
-
         $recurringTransaction = RecurringTransaction::findOrFail($recurringTransactionId);
 
-        $recurringTransaction->wallet_id = $walletId;
-        $recurringTransaction->category_id = $categoryId;
-        $recurringTransaction->transaction_amount = $transactionAmount;
+        $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+        $category = Category::where('category_name', $request->category_name)->firstOrFail();
+
+        $originalAmount = $recurringTransaction->transaction_amount;
+
+        $recurringTransactionAmount = $category->transaction_is_income ? $request->recurring_transaction_amount : -$request->recurring_transaction_amount;
+
+        $recurringTransactionNote = $request->transaction_note;
+        $recurringTransactionDate = $request->transaction_date;
+
+        $recurringTransaction->wallet_id = $wallet->id;
+        $recurringTransaction->category_id = $category->id;
+        $recurringTransaction->transaction_amount = $recurringTransactionAmount;
         $recurringTransaction->transaction_note = $recurringTransactionNote;
         $recurringTransaction->transaction_date = $recurringTransactionDate;
 
