@@ -1,22 +1,20 @@
 import CustomField from "@/Components/CustomInput/CustomField";
 import CustomLabel from "@/Components/CustomLabel";
 import CustomTitle from "@/Components/CustomTitle";
+import CustomModal from "@/Components/Modal/CustomFastModal";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { Form, Formik } from "formik";
+import { useState } from "react";
 import { Lock, Mail, User } from "react-feather";
 import { FormGroup } from "reactstrap";
 import * as Yup from "yup";
+import logoLetter from "../../../../public/image/app/Logo-letter.png";
+import logo from "../../../../public/image/app/Logo.png";
 import upperMotive from "../../../../public/image/register/Component 10.png";
 import lowerLeftMotive from "../../../../public/image/register/lowerLeftMotive.png";
 import lowerRightMotive from "../../../../public/image/register/lowerRightMotive.png";
-import logo from "../../../../public/image/app/Logo.png";
-import logoLetter from "../../../../public/image/app/Logo-letter.png";
-import Modal from "@/Components/Modal";
-import { useState } from "react";
-import SecondaryButton from "@/Components/SecondaryButton";
-import DangerButton from "@/Components/DangerButton";
-import CustomModal from "@/Components/Modal/CustomFastModal";
+import { showErrorModal } from "@/Helpers/utils";
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -48,10 +46,11 @@ const SignupSchema = Yup.object().shape({
 });
 
 export default function Register({ status, canResetPassword }) {
-    const [showModal, setShowModal] = useState(false);
-    const [error, setError] = useState();
-    const openModal = () => setShowModal(true);
-    const closeModal = () => setShowModal(false);
+
+    const openModal = (error) => {
+        showErrorModal("Error", error);
+    };
+
 
     const { data, setData, post, processing, errors, reset } = useForm({
         username: "",
@@ -61,20 +60,20 @@ export default function Register({ status, canResetPassword }) {
     });
 
     const submit = async (values) => {
-        post(route("register-account"), {
+        post(route("createAccount"), {
             onError: (errors) => {
                 if (errors.username) {
-                    openModal();
-                    setError(errors.username);
+                    openModal(errors.username);
+            
                 } else if (errors.email) {
-                    openModal();
-                    setError(errors.email);
+                    openModal(errors.email);
+               
                 } else if (errors.password) {
-                    openModal();
-                    setError(errors.password);
+                    openModal(errors.password);
+              
                 } else if (errors.confirm_pass) {
-                    openModal();
-                    setError(errors.confirm_pass);
+                    openModal(errors.confirm_pass);
+              
                 }
             },
         });
@@ -305,15 +304,7 @@ export default function Register({ status, canResetPassword }) {
                             )}
                         </Formik>
 
-                        <CustomModal
-                            show={showModal}
-                            onClose={closeModal}
-                            title="Error"
-                            headerColor="red"
-                            maxWidth="sm"
-                            content={error}
-                            showButton={true}
-                        />
+                      
                     </div>
                 </div>
             </div>

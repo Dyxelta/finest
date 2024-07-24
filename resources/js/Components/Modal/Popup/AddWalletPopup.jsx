@@ -1,17 +1,17 @@
 import CustomField from "@/Components/CustomInput/CustomField";
 import CustomLabel from "@/Components/CustomLabel";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
+import { useForm } from "@inertiajs/react";
 import { Form, Formik } from "formik";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { FaWallet } from "react-icons/fa";
 import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
-    wallet_balance: Yup.number()
-        .typeError("Balance must be number")
-        .required("Wallet balance is required"),
+    wallet_balance: Yup.number().typeError("Balance must be number").required("Wallet balance is required"),
     description: Yup.string(),
 });
 
@@ -20,9 +20,38 @@ export default function AddWalletPopup({
     show = false,
     maxWidth = "2xl",
     showCancel = true,
+
     onClose = () => {},
 }) {
-    const close = () => {};
+    const { setData, post } = useForm({
+        wallet_name: "",
+        wallet_balance: "",
+        wallet_description: "",
+    });
+
+    const openModal = (error) => {
+        showErrorModal("Error", error);
+    };
+
+    const closeModal = () => {
+        onClose();
+        showSuccessModal("Success", "Wallet has been created successfully");
+    };
+
+    const close = () => {
+        post(route("createWallet"), {
+            onError: (errors) => {
+                if (errors.wallet_balance) {
+                    openModal(errors.wallet_balance);
+                } else if (errors.wallet_balance) {
+                    openModal(errors.wallet_balance);
+                } else if (errors.description) {
+                    openModal(errors.description);
+                }
+            },
+            onSuccess: () => closeModal(),
+        });
+    };
 
     const maxWidthClass = {
         sm: "sm:max-w-sm",
@@ -122,6 +151,10 @@ export default function AddWalletPopup({
                                                             "wallet_name",
                                                             e.target.value
                                                         );
+                                                        setData(
+                                                            "wallet_name",
+                                                            e.target.value
+                                                        );
                                                     }}
                                                 />
                                             </FormGroup>
@@ -142,19 +175,23 @@ export default function AddWalletPopup({
                                                             "wallet_balance",
                                                             e.target.value
                                                         );
+                                                        setData(
+                                                            "wallet_balance",
+                                                            e.target.value
+                                                        );
                                                     }}
                                                 />
                                             </FormGroup>
                                         </FormGroup>
 
-                                        <FormGroup className="mt-3 md:mt-4 w-full">
+                                        <FormGroup className="mt-3 w-full">
                                             <CustomLabel
                                                 labelFor="Description"
                                                 className="button text-primary"
                                             />
                                             <CustomField
-                                                id="description"
-                                                name="description"
+                                                id="wallet_description"
+                                                name="wallet_description"
                                                 placeholder="Describe your wallet "
                                                 component="textarea"
                                                 className="w-full mt-1 resize-none"
@@ -162,7 +199,11 @@ export default function AddWalletPopup({
                                                 cols="50"
                                                 onChange={(e) => {
                                                     setFieldValue(
-                                                        "description",
+                                                        "wallet_description",
+                                                        e.target.value
+                                                    );
+                                                    setData(
+                                                        "wallet_description",
                                                         e.target.value
                                                     );
                                                 }}
@@ -180,7 +221,7 @@ export default function AddWalletPopup({
                                                     </Button>
                                                 )}
                                                 <Button
-                                                    onClick={close}
+                                                    type="submit"
                                                     className={`self-end mt-2  ${titleColor} px-10 py-2 rounded-md body mr-2 transition-colors hover:bg-darker-primary duration-300 ease-in-out`}
                                                 >
                                                     Confirm

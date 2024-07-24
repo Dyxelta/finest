@@ -12,7 +12,7 @@ class WalletController extends Controller
         $request->validate([
             'wallet_name' => 'required|string',
             'wallet_balance' => 'required|numeric|min:1',
-            'description' => 'string|max:255'
+            'wallet_description' => 'string|max:255'
         ]);
 
         $user = auth()->user();
@@ -21,10 +21,10 @@ class WalletController extends Controller
             'user_id' => $user->id,
             'wallet_name' => $request->wallet_name,
             'wallet_balance' => $request->wallet_balance,
-            'wallet_description' => $request->wallet_decription,
+            'wallet_description' => $request->wallet_description,
         ]);
 
-        return redirect('/wallets');
+        // return redirect('/wallets');
     }
 
     public function deleteWallet(Wallet $wallet) {
@@ -37,7 +37,7 @@ class WalletController extends Controller
         $request->validate([
             'wallet_name' => 'required|string',
             'wallet_balance' => 'required|numeric|min:1',
-            'description' => 'string|max:255'
+            'wallet_description' => 'string|max:255'
         ]);
 
         $walletId = $request->id;

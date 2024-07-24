@@ -4,16 +4,15 @@ import CustomTitle from "@/Components/CustomTitle";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { Form, Formik } from "formik";
-import { Lock, Mail, User } from "react-feather";
+import { Lock, Mail } from "react-feather";
 import { FormGroup } from "reactstrap";
 import * as Yup from "yup";
 import logoLogin from "../../../../public/image/login/LoginLogo.png";
 import lowerLeftMotive from "../../../../public/image/login/LowerLeftMotive.png";
 import upperLeftMotive from "../../../../public/image/login/UpperLeftMotive.png";
 
+import { showErrorModal } from "@/Helpers/utils";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
-import CustomModal from "@/Components/Modal/CustomFastModal";
-import { useState } from "react";
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -21,25 +20,25 @@ const SignupSchema = Yup.object().shape({
     password: Yup.string().required("Password is required"),
 });
 
-export default function Login({ status, canResetPassword }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
+export default function Login() {
+    const { setData, post } = useForm({
         email: "",
         password: "",
     });
 
-    const [showModal, setShowModal] = useState(false);
-    const [error, setError] = useState();
-    const openModal = () => setShowModal(true);
-    const closeModal = () => setShowModal(false);
+    const openModal = (error) => {
+        showErrorModal("Error", error);
+    };
+
     const submit = () => {
-        post(route("login-user"), {
+        post(route("loginUser"), {
             onError: (errors) => {
                if (errors.email) {
-                    openModal();
-                    setError(errors.email)
+                    openModal(errors.email);
+       
                 } else if (errors.password) {
-                    openModal();
-                    setError(errors.password)
+                    openModal(errors.password);
+           
                 }
             },
         });
@@ -65,7 +64,7 @@ export default function Login({ status, canResetPassword }) {
             />
             <Head title="Log in" />
 
-            <div className="h-full container z-100 relative px-4">
+            <div className="h-full container z-100 relative px-2 md:px-4">
                 <div className="h-full py-6  flex ">
                     <div className="flex-1 hidden justify-center  flex-col lg:flex">
                         <img
@@ -102,7 +101,7 @@ export default function Login({ status, canResetPassword }) {
                                     onSubmit={handleSubmit}
                                     className="font-roboto flex flex-col justify-center max-w-[400px] w-full md:max-w-none sm:w-[400px] md:w-[450px] h-full"
                                 >
-                                    <div className=" flex flex-col justify-between bg-light px-8 sm:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[450px] md:h-[500px]">
+                                    <div className=" flex flex-col justify-between bg-light px-5 sm:px-8 md:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[450px] md:h-[500px]">
                                         <FormGroup className="w-full">
                                             <CustomTitle
                                                 title="Welcome"
@@ -169,16 +168,7 @@ export default function Login({ status, canResetPassword }) {
                                                         );
                                                     }}
                                                 />
-                                                <div className="text-end pt-1 text-sm ">
-                                                    <Link
-                                                        href={route(
-                                                            "password.request"
-                                                        )}
-                                                        className="underline  text-primary  rounded-md fhover:outline-none  hover:ring-darker-primary hover:opacity-85 font-bold"
-                                                    >
-                                                        Forgot Password?
-                                                    </Link>
-                                                </div>
+                                            
                                             </FormGroup>
                                         </FormGroup>
 
@@ -202,15 +192,7 @@ export default function Login({ status, canResetPassword }) {
                             )}
                         </Formik>
 
-                        <CustomModal
-                            show={showModal}
-                            onClose={closeModal}
-                            title="Error"
-                            headerColor="red"
-                            maxWidth="md"
-                            content={error}
-                            showButton= {true}
-                        />
+                      
                     </div>
                 </div>
             </div>

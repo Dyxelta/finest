@@ -2,17 +2,13 @@
 import AlertModal from '@/Components/Modal/AlertModal';
 import AddWalletPopup from '@/Components/Modal/Popup/AddWalletPopup';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Dashboard({ auth,  wallets }) {
-    const [checkWallet, setCheckWallet] = useState(wallets ? true : false)
+    const [checkWallet, setCheckWallet] = useState(wallets && wallets.length !== 0 ? false : true)
     const [Popup, setPopup] = useState()
-    const {setData, post} = useForm({
-        wallet_name:"", 
-        wallet_balance:"",
-        description: ""
-    })
+ 
 
     return (
         <AuthenticatedLayout
@@ -24,7 +20,7 @@ export default function Dashboard({ auth,  wallets }) {
                 setPopup(true)
                 setCheckWallet(false)
                 }}/>
-            <AddWalletPopup show={Popup} headerColor={'blue'} setData={setData} post={post} onClose={() => {
+            <AddWalletPopup show={Popup} headerColor={'blue'}  onClose={() => {
                 setPopup(false)
             }}/>
         </AuthenticatedLayout>

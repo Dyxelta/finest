@@ -4,7 +4,6 @@ import { Button } from "reactstrap";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 export default function AlertModal({
-    children,
     title,
     headerColor,
     show = false,
@@ -20,6 +19,7 @@ export default function AlertModal({
     const removeClose = () => {
 
     }
+    
     const maxWidthClass = {
         sm: "sm:max-w-sm",
         md: "sm:max-w-md",
@@ -70,13 +70,13 @@ export default function AlertModal({
                     leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
                     <Dialog.Panel
-                        className={`mb-6 bg-light rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto flex flex-col justify-center items-center py-4 text-center ${maxWidthClass}`}
+                        className={`mb-4 bg-light rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto flex flex-col justify-center items-center py-4 text-center ${maxWidthClass}`}
                     >
-                        <h2 className={`text-[32px] font-[600] ${titleColor}`}>{title}</h2>
                         <AiOutlineExclamationCircle
                             size={120}
                             className={`${titleColor}`}
                         />
+                        <h2 className={`text-[32px] font-[600] ${titleColor}`}>{title}</h2>
                         <div className="p-4 w-full">
                             <span
                                 className="header-5-light text-grey"

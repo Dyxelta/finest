@@ -23,13 +23,13 @@ use Inertia\Inertia;
 
 Route::get('/', [UserController::class, 'redirectWhenAppOpened']);
 
-Route::middleware('guest')->group(function() {
+Route::middleware('guest')->group(function () {
     Route::get('/login', function () {
-        return Inertia::render('Login');
+        return Inertia::render('Auth/Login');
     })->name('login');
 
-    Route::get('/register', function() {
-        return Inertia::render('Register');
+    Route::get('/register', function () {
+        return Inertia::render('Auth/Register');
     })->name('register');
 
     Route::post('/create-account', [UserController::class, 'register'])->name('createAccount');
@@ -66,6 +66,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //Sementara untuk wete 
+    Route::get('/wallet', function () {
+        return Inertia::render('Wallet/WalletPage');
+    })->name('WalletPage');
+
+    Route::post('logout', [UserController::class, 'logout'])
+    ->name('logout');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

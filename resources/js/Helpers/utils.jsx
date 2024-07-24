@@ -1,0 +1,98 @@
+import CustomShowAlertModal from '@/Components/Modal/CustomFunctionAlertModal';
+import React, { useEffect } from 'react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+
+const MySwal = withReactContent(Swal);
+
+const ModalContent = ({
+    title,
+    headerColor,
+    content,
+    onClose,
+    maxWidth,
+    showButton,
+}) => {
+    useEffect(() => {
+        return () => {
+            onClose();
+        };
+    }, [onClose]);
+
+    return (
+        <CustomShowAlertModal
+            title={title}
+            headerColor={headerColor}
+            content={content}
+            maxWidth={maxWidth}
+            showButton={showButton}
+            onClose={onClose}
+        />
+    );
+};
+
+export const showSuccessModal = (
+    title,
+    content,
+    onClose = () => {},
+    maxWidth,
+    showButton = true
+) => {
+    MySwal.fire({
+        position: 'center',
+        html: (
+            <div id="custom-modal-container">
+                <ModalContent
+                    title={title}
+                    headerColor={'blue'}
+                    content={content}
+                    maxWidth={maxWidth}
+                    showButton={showButton}
+                    onClose={() => {
+                        MySwal.close();
+                        onClose();
+                    }}
+                />
+            </div>
+        ),
+        showDenyButton: false,
+        showCancelButton: false,
+        showConfirmButton: false,
+        padding: '0',
+        allowOutsideClick: false,
+    });
+};
+
+export const showErrorModal = (
+    title,
+    content,
+
+    onClose = () => {},
+    maxWidth,
+    showButton = true
+) => {
+    MySwal.fire({
+        position: 'center',
+        html: (
+            <div id="custom-modal-container">
+                <ModalContent
+                    title={title}
+                    headerColor={'red'}
+                    content={content}
+                    maxWidth={maxWidth}
+                    showButton={showButton}
+                    onClose={() => {
+                        MySwal.close();
+                        onClose();
+                    }}
+                />
+            </div>
+        ),
+        showDenyButton: false,
+        showCancelButton: false,
+        showConfirmButton: false,
+        padding: '0',
+        allowOutsideClick: false,
+    });
+};

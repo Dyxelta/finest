@@ -7,22 +7,24 @@ export default function Authenticated({ user, header, children }) {
     const [openNav, setOpenNav] = useState(false);
 
     return (
-        <div className="min-h-screen bg-background w-full relative">
+        <div className="min-h-screen bg-background w-full relative font-roboto">
             <Sidebar openNav={openNav} setOpenNav={setOpenNav} />
 
-            <div className="w-full">
-                <main className="container flex justify-end w-full mx-auto">
+            <div className={`w-full transition-all duration-500 pl-[30px] ${
+                            openNav ? "md:pl-[280px] " : " md:pl-[80px]"
+                        }`}>
+                <main className="container flex justify-end w-full mx-auto xl:ml-auto ">
                     <div
-                        className={`w-full py-4 transition-width duration-500  ${
+                        className={`w-full py-4 transition-width duration-500 px-4  ${
                             openNav ? "container-open-nav " : "container delay-200"
                         }`}
                     >
-                        <div className="w-full flex justify-between items-center px-2">
+                        <div className="w-full flex justify-between items-center px-2 mb-3">
                             <div>
                                 <img
                                     src={logoLetter}
                                     alt="Logo"
-                                    className="h-[30px] md:h-[40px]"
+                                    className="h-[30px] md:h-[35px]"
                                 />
                             </div>
                             <div className="bg-white p-3 rounded-md text-primary">
