@@ -39,6 +39,10 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+    //Authentication
+    Route::get('logout', [UserController::class, 'logout'])->name('logout');
+
+
     //dashboard
     Route::get('/dashboard', function () {
         $transactionData = app(TransactionController::class)->showAllUserTransaction();
@@ -52,7 +56,17 @@ Route::middleware('auth')->group(function () {
 
 
     //wallet
+    Route::get('/wallets', function () {
+        $walletData = app(WalletController::class)->showAllWalletByUserID();
+
+        return Inertia::render('Wallet/WalletPage', $walletData);
+    })->name('WalletPage');
+
     Route::post('/create-wallet', [WalletController::class, 'addWallet'])->name('createWallet');
+
+    Route::put('/edit-wallet', [WalletController::class, 'editWallet'])->name('editWallet');
+
+    Route::delete('/delete-wallet/{wallet:id}', [WalletController::class, 'deleteWallet'])->name('deleteWallet');
 
 
     //transaction
@@ -63,17 +77,9 @@ Route::middleware('auth')->group(function () {
     Route::post('create-transaction', [TransactionController::class, 'addTransaction'])->name('createTransaction');
 
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    //Sementara untuk wete 
-    Route::get('/wallet', function () {
-        return Inertia::render('Wallet/WalletPage');
-    })->name('WalletPage');
-
-    Route::get('logout', [UserController::class, 'logout'])
-    ->name('logout');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
