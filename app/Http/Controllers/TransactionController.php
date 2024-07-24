@@ -71,7 +71,6 @@ class TransactionController extends Controller
 
         $transactionAmount = $category->transaction_is_income ? $request->transaction_amount : -$request->transaction_amount;
 
-
         $transactionNote = $request->transaction_note;
         $transactionDate = $request->transaction_date;
 
