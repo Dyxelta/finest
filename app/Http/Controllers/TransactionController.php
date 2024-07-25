@@ -96,7 +96,9 @@ class TransactionController extends Controller
     public function showAllUserTransaction() {
         $user = auth()->user();
 
-        $transactions = Transaction::where('user_id', $user->id)->get();
+        $transactions = Transaction::where('user_id', $user->id)
+            ->orderBy('transaction_date', 'desc')
+            ->get();
 
         return ['transactions' => $transactions];
     }
@@ -107,7 +109,10 @@ class TransactionController extends Controller
 
         $walletId = $wallet->id;
 
-        $transactions = Transaction::where('user_id', $userId)->where('wallet_id', $walletId)->get();
+        $transactions = Transaction::where('user_id', $userId)
+            ->where('wallet_id', $walletId)
+            ->orderBy('transaction_date', 'desc')
+            ->get();
 
         return ['transactions' => $transactions];
     }
@@ -118,7 +123,10 @@ class TransactionController extends Controller
 
         $categoryId = $category->id;
 
-        $transactions = Transaction::where('user_id', $userId)->where('category_id', $categoryId)->get();
+        $transactions = Transaction::where('user_id', $userId)
+            ->where('category_id', $categoryId)
+            ->orderBy('transaction_date', 'desc')->orderBy('transaction_date', 'desc')
+            ->get();
 
         return ['transactions' => $transactions];
     }
@@ -134,6 +142,7 @@ class TransactionController extends Controller
 
         $transactions = Transaction::where('user_id', $userId)
             ->whereBetween('date', [$startDate, $endDate])
+            ->orderBy('transaction_date', 'desc')
             ->get();
 
         return ['transactions' => $transactions];
