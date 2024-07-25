@@ -48,8 +48,7 @@ export default function Dashboard({ auth, wallets }) {
                 );
             } else {
                 const onClose = () => {
-
-                    destroy(route('deleteWallet', selectedWallet.id), {
+                    destroy(route("deleteWallet", selectedWallet.id), {
                         onSuccess: () => {
                             setSelectedWallet(null);
                             showSuccessModal(
@@ -66,7 +65,7 @@ export default function Dashboard({ auth, wallets }) {
                 showErrorModal(
                     "Error",
                     "Are you sure to delete this wallet? ",
-                    () => onClose(),
+                    onClose(),
                     undefined,
                     true,
                     true
@@ -234,26 +233,7 @@ export default function Dashboard({ auth, wallets }) {
                         </Button>
                     </div>
                 </div>
-                <div className="h-full border-l-4 border-primary px-4 py-3 bg-light flex-1 w-full flex justify-between">
-                    <div className="flex h-fit items-center text-light gap-2">
-                        <div className="p-3 bg-primary rounded-md ">
-                            <BiDetail size={24} />
-                        </div>
-                        <h6 className="text-primary header-3-light">Details</h6>
-                    </div>
-                    <div className="flex gap-4 h-fit">
-                        <Button
-                        
-                            className="border-2 border-expense p-3 rounded-full"
-                            onClick={() => handleDelete()}
-                        >
-                            <FaRegTrashCan className="text-expense" size={20} />
-                        </Button>
-                        <Button className="bg-primary text-light rounded-full p-3 ">
-                            <HiPencil size={20} />
-                        </Button>
-                    </div>
-                </div>
+                <div className="h-full border-l-4 border-primary px-4 py-3 bg-light flex-1 w-full flex justify-between"></div>
             </div>
 
             <AddWalletPopup
