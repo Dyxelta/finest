@@ -19,4 +19,12 @@ class Wallet extends Model
     public function User() {
         return $this->belongsTo(User::class);
     }
+
+    public function Transactions() {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function RecurringTransactions() {
+        return $this->hasMany(RecurringTransaction::class);
+    }
 }
