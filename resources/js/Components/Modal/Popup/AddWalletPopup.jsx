@@ -184,7 +184,7 @@ export default function AddWalletPopup({
                                             </FormGroup>
                                         </FormGroup>
 
-                                        <FormGroup className="mt-3 w-full">
+                                        <FormGroup className="mt-1 w-full">
                                             <CustomLabel
                                                 labelFor="Description"
                                                 className="button text-primary"

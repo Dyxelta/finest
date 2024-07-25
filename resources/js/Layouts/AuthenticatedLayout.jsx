@@ -5,7 +5,7 @@ import { FaBell } from "react-icons/fa";
 
 export default function Authenticated({ user, header, children }) {
     const [openNav, setOpenNav] = useState(false);
-
+    
     return (
         <div className="min-h-screen bg-background w-full relative font-roboto">
             <Sidebar openNav={openNav} setOpenNav={setOpenNav} />
