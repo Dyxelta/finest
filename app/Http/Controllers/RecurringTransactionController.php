@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\RecurringTransaction;
+use App\Models\Transaction;
 use App\Models\Wallet;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RecurringTransactionController extends Controller
 {
-    public function addRecurringTransaction(Request $request) {
+    public function addRecurringTransaction(Request $request)
+    {
 
         $request->validate([
             'wallet_name' => 'required|string',
@@ -27,7 +30,7 @@ class RecurringTransactionController extends Controller
 
         $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
 
-        RecurringTransaction::create([
+        $recurringTransaction = RecurringTransaction::create([
             'user_id' => $user->id,
             'wallet_id' => $wallet->id,
             'category_id' => $category->id,
@@ -36,16 +39,20 @@ class RecurringTransactionController extends Controller
             'recurring_transaction_date' => $request->transaction_date,
         ]);
 
+        $this->addPastTransactions($recurringTransaction);
+
         return redirect()->back();
     }
 
-    public function deleteRecurringTransaction(RecurringTransaction $recurringTransaction) {
+    public function deleteRecurringTransaction(RecurringTransaction $recurringTransaction)
+    {
         $recurringTransaction->delete();
 
         return redirect()->back();
     }
 
-    public function editRecurringTransaction(Request $request) {
+    public function editRecurringTransaction(Request $request)
+    {
 
         $request->validate([
             'wallet_name' => 'required|string',
@@ -78,5 +85,43 @@ class RecurringTransactionController extends Controller
         $recurringTransaction->save();
 
         return redirect()->back();
+    }
+
+    private function addPastTransactions($recurringTransaction)
+    {
+        $today = now();
+        $start = Carbon::parse($recurringTransaction->recurring_transaction_date);
+        $end = $today->copy()->startOfMonth();
+
+        while ($start < $end) {
+            $this->createTransaction($recurringTransaction, $start);
+            $start->addMonth();
+        }
+    }
+
+    private function createTransaction($recurringTransaction, $date)
+    {
+        $category = $recurringTransaction->category;
+        $transactionAmount = $category->transaction_is_income
+            ? $recurringTransaction->recurring_transaction_amount
+            : -$recurringTransaction->recurring_transaction_amount;
+
+        Transaction::create([
+            'user_id' => $recurringTransaction->user_id,
+            'wallet_id' => $recurringTransaction->wallet_id,
+            'category_id' => $recurringTransaction->category_id,
+            'transaction_amount' => $transactionAmount,
+            'transaction_note' => $recurringTransaction->recurring_transaction_note,
+            'transaction_date' => $date,
+        ]);
+
+        $wallet = $recurringTransaction->wallet;
+        $this->changeWalletBalance($wallet, $transactionAmount);
+    }
+
+    private function changeWalletBalance(Wallet $wallet, $amount)
+    {
+        $wallet->wallet_balance += $amount;
+        $wallet->save();
     }
 }
