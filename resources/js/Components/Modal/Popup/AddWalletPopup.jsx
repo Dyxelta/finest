@@ -52,7 +52,9 @@ export default function AddWalletPopup({
             onSuccess: () => closeModal(),
         });
     };
-
+    const empty = () => {
+     
+    };
     const maxWidthClass = {
         sm: "sm:max-w-sm",
         md: "sm:max-w-md",
@@ -73,7 +75,7 @@ export default function AddWalletPopup({
                 as="div"
                 id="modal"
                 className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
-                onClose={close}
+                onClose={empty}
             >
                 <Transition.Child
                     as={Fragment}
@@ -214,7 +216,7 @@ export default function AddWalletPopup({
                                             <div className="w-full flex justify-end items-center">
                                                 {showCancel && (
                                                     <Button
-                                                        onClick={close}
+                                                        onClick={onClose}
                                                         className={`self-end mt-2  border-expense border px-6 py-[7px] rounded-md body mr-4 text-expense transition-colors duration-500 hover:bg-expense hover:text-light`}
                                                     >
                                                         Cancel

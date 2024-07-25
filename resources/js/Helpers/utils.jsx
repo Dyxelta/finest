@@ -13,6 +13,7 @@ const ModalContent = ({
     onClose,
     maxWidth,
     showButton,
+
 }) => {
     useEffect(() => {
         return () => {
@@ -28,6 +29,7 @@ const ModalContent = ({
             maxWidth={maxWidth}
             showButton={showButton}
             onClose={onClose}
+      
         />
     );
 };
@@ -37,7 +39,8 @@ export const showSuccessModal = (
     content,
     onClose = () => {},
     maxWidth,
-    showButton = true
+    showButton = true,
+    outsideClick = false
 ) => {
     MySwal.fire({
         position: 'center',
@@ -53,6 +56,9 @@ export const showSuccessModal = (
                         MySwal.close();
                         onClose();
                     }}
+                    exit= {() => {
+                        MySwal.close();
+                    }}
                 />
             </div>
         ),
@@ -60,7 +66,7 @@ export const showSuccessModal = (
         showCancelButton: false,
         showConfirmButton: false,
         padding: '0',
-        allowOutsideClick: false,
+        allowOutsideClick: outsideClick,
     });
 };
 
@@ -70,7 +76,8 @@ export const showErrorModal = (
 
     onClose = () => {},
     maxWidth,
-    showButton = true
+    showButton = true,
+    outsideClick = false
 ) => {
     MySwal.fire({
         position: 'center',
@@ -83,8 +90,12 @@ export const showErrorModal = (
                     maxWidth={maxWidth}
                     showButton={showButton}
                     onClose={() => {
-                        MySwal.close();
+                        
                         onClose();
+                        MySwal.close();
+                    }}
+                    exit= {() => {
+                        MySwal.close();
                     }}
                 />
             </div>
@@ -93,6 +104,6 @@ export const showErrorModal = (
         showCancelButton: false,
         showConfirmButton: false,
         padding: '0',
-        allowOutsideClick: false,
+        allowOutsideClick: outsideClick,
     });
 };

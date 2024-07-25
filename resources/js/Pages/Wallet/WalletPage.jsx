@@ -1,16 +1,29 @@
 import AddWalletPopup from "@/Components/Modal/Popup/AddWalletPopup";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+
+import { Head, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { Plus } from "react-feather";
+import { BiDetail } from "react-icons/bi";
 import { FaWallet } from "react-icons/fa";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { HiPencil } from "react-icons/hi2";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Button } from "reactstrap";
 
 export default function Dashboard({ auth, wallets }) {
-    const [selectedWallet, setSelectedWallet] = useState();
+    const [selectedWallet, setSelectedWallet] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState();
     const [openAddWallet, setOpenAddWallet] = useState(false);
+
+    const {
+        data,
+        setData,
+        delete: destroy,
+    } = useForm({
+        id: "",
+    });
 
     const SlideLeft = () => {
         let Slider = document.getElementById("Slider");
@@ -20,6 +33,55 @@ export default function Dashboard({ auth, wallets }) {
     const SlideRight = () => {
         let Slider = document.getElementById("Slider");
         Slider.scrollLeft = Slider.scrollLeft + 500;
+    };
+
+    const handleDelete = () => {
+        if (selectedWallet) {
+            if (wallets.length == 1) {
+                showErrorModal(
+                    "Error",
+                    "You cannot destroy your main wallet",
+                    undefined,
+                    undefined,
+                    true,
+                    true
+                );
+            } else {
+                const onClose = () => {
+
+                    destroy(route('deleteWallet', selectedWallet.id), {
+                        onSuccess: () => {
+                            setSelectedWallet(null);
+                            showSuccessModal(
+                                "Success",
+                                "Wallet has been deleted successfully"
+                            );
+                        },
+                        onError: () => {
+                            showErrorModal("Error", "something went wrong");
+                        },
+                    });
+                };
+
+                showErrorModal(
+                    "Error",
+                    "Are you sure to delete this wallet? ",
+                    () => onClose(),
+                    undefined,
+                    true,
+                    true
+                );
+            }
+        } else {
+            showErrorModal(
+                "Error",
+                "No Wallet Selected!",
+                undefined,
+                undefined,
+                true,
+                true
+            );
+        }
     };
 
     console.log(selectedIndex, "selectedIndex");
@@ -55,8 +117,7 @@ export default function Dashboard({ auth, wallets }) {
                         <Plus />
                     </Button>
                 </div>
-
-                <div className="relative flex items-center flex-1 md:max-w-[50%]">
+                <div className="h-full relative flex items-center flex-1 md:max-w-[50%]">
                     {wallets.length === 3 && (
                         <div className="absolute top-[50%] translate-y-[-50%] left-[-15px] p-2 bg-primary rounded-full z-50 text-light border-white border">
                             <IoIosArrowBack onClick={SlideLeft} size={24} />
@@ -66,7 +127,6 @@ export default function Dashboard({ auth, wallets }) {
                         id="Slider"
                         className="inline-flex w-full h-full scrollbar-hide whitespace-nowrap scroll-smooth overflow-y-hidden"
                     >
-                        {console.log(wallets, "odfjgojdfgdfjgojpdf")}
                         {wallets.map((wallet, index) => (
                             <div
                                 key={index}
@@ -134,6 +194,7 @@ export default function Dashboard({ auth, wallets }) {
                                             onClick={() => {
                                                 setSelectedIndex(index);
                                                 setSelectedWallet(wallet);
+                                                setData("id", wallet.id);
                                             }}
                                         >
                                             Details
@@ -153,6 +214,48 @@ export default function Dashboard({ auth, wallets }) {
                     )}
                 </div>
             </div>
+            <div className="flex mt-4 h-[560px] md:h-[280px] gap-8 ">
+                <div className="h-full border-l-4 border-primary px-4 py-3 bg-light flex-1 w-full flex justify-between">
+                    <div className="flex h-fit items-center text-light gap-2">
+                        <div className="p-3 bg-primary rounded-md ">
+                            <BiDetail size={24} />
+                        </div>
+                        <h6 className="text-primary header-3-light">Details</h6>
+                    </div>
+                    <div className="flex gap-4 h-fit">
+                        <Button
+                            className="border-2 border-expense p-3 rounded-full"
+                            onClick={() => handleDelete()}
+                        >
+                            <FaRegTrashCan className="text-expense" size={20} />
+                        </Button>
+                        <Button className="bg-primary text-light rounded-full p-3 ">
+                            <HiPencil size={20} />
+                        </Button>
+                    </div>
+                </div>
+                <div className="h-full border-l-4 border-primary px-4 py-3 bg-light flex-1 w-full flex justify-between">
+                    <div className="flex h-fit items-center text-light gap-2">
+                        <div className="p-3 bg-primary rounded-md ">
+                            <BiDetail size={24} />
+                        </div>
+                        <h6 className="text-primary header-3-light">Details</h6>
+                    </div>
+                    <div className="flex gap-4 h-fit">
+                        <Button
+                        
+                            className="border-2 border-expense p-3 rounded-full"
+                            onClick={() => handleDelete()}
+                        >
+                            <FaRegTrashCan className="text-expense" size={20} />
+                        </Button>
+                        <Button className="bg-primary text-light rounded-full p-3 ">
+                            <HiPencil size={20} />
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
             <AddWalletPopup
                 show={openAddWallet}
                 headerColor={"blue"}

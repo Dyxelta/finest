@@ -8,6 +8,7 @@ export default function CustomShowAlertModal({
     content,
     onClose = () => {},
     showButton,
+
 }) {
     const maxWidthClass = {
         sm: "sm:max-w-sm",
@@ -32,6 +33,7 @@ export default function CustomShowAlertModal({
     return (
         <div
             className={` rounded-lg overflow-hidden transform transition-all sm:w-full sm:mx-auto flex flex-col justify-center items-center py-4 text-center ${maxWidthClass}`}
+        
         >
             <AiOutlineExclamationCircle
                 size={120}
@@ -41,7 +43,7 @@ export default function CustomShowAlertModal({
                 {title}
             </h2>
             <div className="p-4 w-full">
-                <span className="header-5-light text-grey">{content}</span>
+                <span className="header-5-light text-black">{content}</span>
                 <div className="w-full mt-4">
                     {showButton && (
                         <Button

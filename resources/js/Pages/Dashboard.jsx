@@ -20,8 +20,8 @@ export default function Dashboard({ auth,  wallets }) {
                 setPopup(true)
                 setCheckWallet(false)
                 }}/>
-            <AddWalletPopup show={Popup} headerColor={'blue'}  onClose={() => {
-                setPopup(false)
+            <AddWalletPopup show={Popup} showCancel={false} headerColor={'blue'}  onClose={() => {
+                setPopup(false) 
             }}/>
         </AuthenticatedLayout>
     );

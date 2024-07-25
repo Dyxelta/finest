@@ -8,7 +8,8 @@ use Inertia\Inertia;
 
 class WalletController extends Controller
 {
-    public function addWallet(Request $request) {
+    public function addWallet(Request $request)
+    {
         $request->validate([
             'wallet_name' => 'required|string',
             'wallet_balance' => 'required|numeric|min:1',
@@ -27,13 +28,15 @@ class WalletController extends Controller
         // return redirect('/wallets');
     }
 
-    public function deleteWallet(Wallet $wallet) {
+    public function deleteWallet(Wallet $wallet)
+    {
         $wallet->delete();
 
-        return redirect()->back();
+        return redirect('dashboard');
     }
 
-    public function editWallet(Request $request) {
+    public function editWallet(Request $request)
+    {
         $request->validate([
             'wallet_name' => 'required|string',
             'wallet_balance' => 'required|numeric|min:1',
@@ -56,15 +59,17 @@ class WalletController extends Controller
         return redirect()->back();
     }
 
-    public function showAllWalletByUserID() {
+    public function showAllWalletByUserID()
+    {
         $user = auth()->user();
 
-        $wallets = Wallet::where('user_id', $user->id)->get();
+        $wallets = Wallet::where('user_id', $user->id)->with('transactions')->get();
 
         return ['wallets' => $wallets];
     }
 
-    public function showWalletById(Request $request) {
+    public function showWalletById(Request $request)
+    {
         $walletId = $request->id;
 
         $wallet = Wallet::where('wallet_id', $walletId)->get()->first();
