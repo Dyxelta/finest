@@ -81,7 +81,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
     ];
     return (
         <nav
-            className={`fixed transition-all duration-500 ease-in-out h-screen ${
+            className={`fixed transition-all duration-500 ease-in-out h-screen z-50 ${
                 openNav ? changeWidth[0] : changeWidth[1]
             } w-full bg-light font-roboto `}
         >

@@ -99,9 +99,9 @@ export default function Login() {
                             }) => (
                                 <Form
                                     onSubmit={handleSubmit}
-                                    className="font-roboto flex flex-col justify-center max-w-[400px] w-full md:max-w-none sm:w-[400px] md:w-[450px] h-full"
+                                    className="font-roboto flex flex-col justify-center max-w-[400px] w-full md:max-w-none sm:w-[400px] md:w-[420px] h-full"
                                 >
-                                    <div className=" flex flex-col justify-between bg-light px-5 sm:px-8 md:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[450px] md:h-[500px]">
+                                    <div className=" flex flex-col justify-between bg-light px-5 sm:px-8 md:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[440px] md:h-[475px]">
                                         <FormGroup className="w-full">
                                             <CustomTitle
                                                 title="Welcome"
@@ -139,7 +139,7 @@ export default function Login() {
                                                 />
                                             </FormGroup>
 
-                                            <FormGroup className="mt-3 md:mt-6 w-full">
+                                            <FormGroup className="mt-3 md:mt-4 w-full">
                                                 <CustomLabel
                                                     labelFor="Password"
                                                     className="button text-primary"

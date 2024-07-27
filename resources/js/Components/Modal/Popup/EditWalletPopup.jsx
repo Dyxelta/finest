@@ -18,23 +18,24 @@ const validationSchema = Yup.object().shape({
     description: Yup.string(),
 });
 
-export default function AddWalletPopup({
+export default function EditWalletPopup({
     headerColor,
     show = false,
     maxWidth = "2xl",
     showCancel = true,
-  
+    wallet,
     onClose = () => {},
 }) {
-    const {setData, post} = useForm({
-        wallet_name:"", 
-        wallet_balance:"",
-        wallet_description: ""
+    const {setData, put} = useForm({
+        id:wallet?.id,
+        wallet_name:wallet?.wallet_name, 
+        wallet_balance:wallet?.wallet_balance,
+        wallet_description: wallet?.wallet_description
     })
+
     const [error, setError] = useState();
 
     const openModal = () => {
-
         showErrorModal(
             'Error', 
             error
@@ -45,13 +46,13 @@ export default function AddWalletPopup({
         onClose()
         showSuccessModal(
             'Success', 
-            'Wallet has been created successfully'
+            'Wallet has been edited successfully'
         )
     };
 
 
     const close = () => {
-        post(route('createWallet'), {
+        put(route('editWallet'), {
             onError: (errors) => {
                 if (errors.wallet_balance) {
                     openModal();
@@ -131,23 +132,26 @@ export default function AddWalletPopup({
                         </div>
                         <Formik
                             initialValues={{
-                                wallet_name: "",
-                                wallet_balance: "",
-                                description: "",
+                                wallet_name: wallet?.wallet_name || "",
+                                wallet_balance: wallet?.wallet_balance || "",
+                                wallet_description: wallet?.wallet_description || "",
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
+                            enableReinitialize={true}
                         >
                             {({
                                 errors,
                                 touched,
                                 setFieldValue,
+                                values,
                                 handleSubmit,
                             }) => (
                                 <Form
                                     onSubmit={handleSubmit}
                                     className="font-roboto flex flex-col justify-center  w-full h-full"
                                 >
+                                    {console.log(wallet, "sodiuhgiosdhfhsdihf")}
                                     <div className="flex flex-col justify-between bg-light px-2 sm:px-4 pt-3 md:pt-3 pb-2 md:pb-3 w-full rounded-md ">
                                         <FormGroup className="w-full sm:flex  gap-2">
                                             <FormGroup className="flex-1">
@@ -161,6 +165,7 @@ export default function AddWalletPopup({
                                                     placeholder="Name of the wallet"
                                                     type="text"
                                                     className="w-full mt-1"
+                                                    values={values?.wallet_name}
                                                     onChange={(e) => {
                                                         setFieldValue(
                                                             "wallet_name",
@@ -199,7 +204,7 @@ export default function AddWalletPopup({
                                             </FormGroup>
                                         </FormGroup>
 
-                                        <FormGroup className="mt-3 md:mt-4 w-full">
+                                        <FormGroup className="  w-full">
                                             <CustomLabel
                                                 labelFor="Description"
                                                 className="button text-primary"
@@ -229,7 +234,7 @@ export default function AddWalletPopup({
                                             <div className="w-full flex justify-end items-center">
                                                 {showCancel && (
                                                     <Button
-                                                        onClick={close}
+                                                        onClick={onClose}
                                                         className={`self-end mt-2  border-expense border px-6 py-[7px] rounded-md body mr-4 text-expense transition-colors duration-500 hover:bg-expense hover:text-light`}
                                                     >
                                                         Cancel

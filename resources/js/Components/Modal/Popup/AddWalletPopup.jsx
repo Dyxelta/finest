@@ -23,6 +23,7 @@ export default function AddWalletPopup({
 
     onClose = () => {},
 }) {
+    const [loading, setLoading] = useState(false)
     const { setData, post } = useForm({
         wallet_name: "",
         wallet_balance: "",

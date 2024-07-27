@@ -47,7 +47,7 @@ export default function CustomShowAlertModal({
                 <div className="w-full mt-4">
                     {showButton && (
                         <Button
-                            onClick={onClose}
+                            onClick={() => onClose()}
                             className={`self-end mt-2 mb-1 ${bgColor} px-8 py-2 rounded-md body hover:opacity-90 transition-opacity duration-300`}
                         >
                             Confirm

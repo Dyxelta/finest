@@ -10,7 +10,7 @@ export default function Authenticated({ user, header, children }) {
         <div className="min-h-screen bg-background w-full relative font-roboto">
             <Sidebar openNav={openNav} setOpenNav={setOpenNav} />
 
-            <div className={`w-full transition-all duration-500 pl-[30px] ${
+            <div className={`w-full transition-all duration-500 z-10 ${
                             openNav ? "md:pl-[280px] " : " md:pl-[80px]"
                         }`}>
                 <main className="container flex justify-end w-full mx-auto xl:ml-auto ">
@@ -19,7 +19,7 @@ export default function Authenticated({ user, header, children }) {
                             openNav ? "container-open-nav " : "container delay-200"
                         }`}
                     >
-                        <div className="w-full flex justify-between items-center px-2 mb-3">
+                        <div className="w-full flex justify-between items-center px-2 mb-3 pl-[40px] md:pl-[20px]">
                             <div>
                                 <img
                                     src={logoLetter}

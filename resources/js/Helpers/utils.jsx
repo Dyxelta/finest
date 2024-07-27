@@ -15,11 +15,7 @@ const ModalContent = ({
     showButton,
 
 }) => {
-    useEffect(() => {
-        return () => {
-            onClose();
-        };
-    }, [onClose]);
+
 
     return (
         <CustomShowAlertModal
