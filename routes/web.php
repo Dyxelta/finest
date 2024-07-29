@@ -71,9 +71,10 @@ Route::middleware('auth')->group(function () {
 
     //transaction
     Route::get('/transaction', function(Request $request) {
+        $walletData = app(WalletController::class)->showAllWalletByUserID();
         $transactionData = app(TransactionController::class)->showTransactionByMonth($request);
 
-        return Inertia::render('Transaction/TransactionRecords', $transactionData);
+        return Inertia::render('Transaction/TransactionRecords', array_merge($transactionData, $walletData));
     })->name('transactionPage');
 
     Route::get('/add-transaction', function () {
