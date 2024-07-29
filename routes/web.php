@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
 use App\Models\Transaction;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -40,7 +41,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
 
     //Authentication
-    Route::get('logout', [UserController::class, 'logout'])->name('logout');
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 
     //dashboard
@@ -60,7 +61,7 @@ Route::middleware('auth')->group(function () {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
 
         return Inertia::render('Wallet/WalletPage', $walletData);
-    })->name('WalletPage');
+    })->name('walletPage');
 
     Route::post('/create-wallet', [WalletController::class, 'addWallet'])->name('createWallet');
 
@@ -68,13 +69,18 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-wallet/{wallet:id}', [WalletController::class, 'deleteWallet'])->name('deleteWallet');
 
-
     //transaction
-    Route::get('add-transaction', function () {
+    Route::get('/transaction', function(Request $request) {
+        $transactionData = app(TransactionController::class)->showTransactionByMonth($request);
+
+        return Inertia::render('Transaction/TransactionRecords', $transactionData);
+    })->name('transactionPage');
+
+    Route::get('/add-transaction', function () {
         return Inertia::render('AddTransactionPage');
     })->name('addTransasction');
 
-    Route::post('create-transaction', [TransactionController::class, 'addTransaction'])->name('createTransaction');
+    Route::post('/create-transaction', [TransactionController::class, 'addTransaction'])->name('createTransaction');
 
 
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

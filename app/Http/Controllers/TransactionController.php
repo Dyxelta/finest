@@ -132,17 +132,19 @@ class TransactionController extends Controller
     }
 
     public function showTransactionByMonth(Request $request) {
-
         $userId = auth()->user()->id;
-
         $selectedMonth = $request->month;
+        $currentYear = now()->year;
 
-        $startDate = Carbon::createFromFormat('Y-m', $selectedMonth)->startOfMonth();
-        $endDate = Carbon::createFromFormat('Y-m', $selectedMonth)->endOfMonth();
+        $year = ($selectedMonth > now()->month) ? $currentYear - 1 : $currentYear;
+
+        $startDate = Carbon::createFromDate($year, $selectedMonth, 1)->startOfMonth();
+        $endDate = Carbon::createFromDate($year, $selectedMonth, 1)->endOfMonth();
 
         $transactions = Transaction::where('user_id', $userId)
-            ->whereBetween('date', [$startDate, $endDate])
+            ->whereBetween('transaction_date', [$startDate, $endDate])
             ->orderBy('transaction_date', 'desc')
+            ->with(['wallet', 'category'])
             ->get();
 
         return ['transactions' => $transactions];
