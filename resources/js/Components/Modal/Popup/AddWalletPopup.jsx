@@ -1,5 +1,6 @@
 import CustomField from "@/Components/CustomInput/CustomField";
 import CustomLabel from "@/Components/CustomLabel";
+import Loader from "@/Components/Loader";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
@@ -11,7 +12,9 @@ import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
-    wallet_balance: Yup.number().typeError("Balance must be number").required("Wallet balance is required"),
+    wallet_balance: Yup.number()
+        .typeError("Balance must be number")
+        .required("Wallet balance is required"),
     description: Yup.string(),
 });
 
@@ -23,7 +26,7 @@ export default function AddWalletPopup({
 
     onClose = () => {},
 }) {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
     const { setData, post } = useForm({
         wallet_name: "",
         wallet_balance: "",
@@ -35,11 +38,13 @@ export default function AddWalletPopup({
     };
 
     const closeModal = () => {
+        setLoading(false);
         onClose();
         showSuccessModal("Success", "Wallet has been created successfully");
     };
 
     const close = () => {
+        setLoading(true);
         post(route("createWallet"), {
             onError: (errors) => {
                 if (errors.wallet_balance) {
@@ -54,7 +59,7 @@ export default function AddWalletPopup({
         });
     };
     const empty = () => {
-     
+        onClose()
     };
     const maxWidthClass = {
         sm: "sm:max-w-sm",
@@ -76,7 +81,7 @@ export default function AddWalletPopup({
                 as="div"
                 id="modal"
                 className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
-                onClose={empty}
+                onClose={() => empty()}
             >
                 <Transition.Child
                     as={Fragment}
@@ -225,9 +230,21 @@ export default function AddWalletPopup({
                                                 )}
                                                 <Button
                                                     type="submit"
-                                                    className={`self-end mt-2  ${titleColor} px-10 py-2 rounded-md body mr-2 transition-colors hover:bg-darker-primary duration-300 ease-in-out`}
+                                                    className={`self-end mt-2  ${titleColor} px-10 py-2 rounded-md body mr-2 transition-colors hover:bg-darker-primary duration-300 ease-in-out flex items-center`}
+                                                    disabled={loading}
                                                 >
-                                                    Confirm
+                                                    {loading ? (
+                                                        <div className="flex items-center">
+                                                        <Loader
+                                                            className={`w-[30px] h-6 mr-1`}
+                                                        />
+                                                        <span>
+                                                            Loading...
+                                                        </span>
+                                                    </div>
+                                                    ) : (
+                                                        "Confirm"
+                                                    )}
                                                 </Button>
                                             </div>
                                         </div>

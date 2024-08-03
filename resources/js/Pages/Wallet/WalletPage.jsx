@@ -18,15 +18,15 @@ import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import logo from "../../../../public/image/app/Logo.png";
 import Left from "../../../../public/image/wallet/Left.png";
 import Right from "../../../../public/image/wallet/Right.png";
+
 export default function Dashboard({ auth, wallets }) {
     const [selectedWallet, setSelectedWallet] = useState(wallets[0] ?? null);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [openAddWallet, setOpenAddWallet] = useState(false);
     const [openEditWallet, setOpenEditWallet] = useState(false);
 
-    const { data, setData, delete: destroy } = useForm({ id: "" });
+    const { setData, delete: destroy } = useForm({ id: "" });
 
-    // Flag to track deletion process
     const [isDeleting, setIsDeleting] = useState(false);
 
     const SlideLeft = () => {
@@ -56,13 +56,9 @@ export default function Dashboard({ auth, wallets }) {
                     true,
                     true
                 );
-            } else if (isDeleting) {
-                // Avoid multiple deletions
-                return;
-            } else {
-                setIsDeleting(true);
-
+            } else if (!isDeleting) {
                 const onClose = () => {
+                    setIsDeleting(true);
                     destroy(route("deleteWallet", selectedWallet.id), {
                         onSuccess: () => {
                             setSelectedWallet(null);
@@ -88,6 +84,8 @@ export default function Dashboard({ auth, wallets }) {
                     true,
                     true
                 );
+            } else {
+                return;
             }
         } else {
             showErrorModal(
@@ -111,7 +109,7 @@ export default function Dashboard({ auth, wallets }) {
             }
         >
             <Head title="Dashboard" />
-            <div className="flex h-[370px] md:h-[400px] lg:h-[250px] gap-4 lg:gap-8 flex-col lg:flex-row ">
+            <div className="flex h-[370px] md:h-[400px] lg:h-[250px] gap-4 lg:gap-8 flex-col-reverse lg:flex-row ">
                 <div className="h-fit lg:h-full w-full bg-primary rounded-md  lg:flex-1 rounded-e-3xl flex ">
                     <div className="w-2/3 sm:w-3/4 pl-3 lg:pl-6  xl:pl-12 py-4 lg:py-2 flex flex-col justify-center text-light">
                         <div className="header-5 sm:header-3 lg:header-2 mb-1">
@@ -324,7 +322,6 @@ export default function Dashboard({ auth, wallets }) {
                         </div>
                     </div>
                 </div>
-       
             </div>
 
             <div className="flex justify-center items-center  mt-4 h-[200px] gap-4 lg:gap-8 bg-light relative text-primary">
@@ -336,15 +333,23 @@ export default function Dashboard({ auth, wallets }) {
                     />
                     <div className="flex flex-col">
                         <div className="body lg:header-4-light">
-                        Take control of your finances effortlessly
+                            Take control of your finances effortlessly
                         </div>
                         <div className=" w-full md:max-w-[360px] header-5 md:header-3 lg:header-2 ">
-                        Simplify Your Finances, Amplify Your Life
+                            Simplify Your Finances, Amplify Your Life
                         </div>
                     </div>
                 </div>
-                <img src={Left} alt="Logo" className="w-[50px] md:w-[140px] lg:w-[200px] xl:w-[350px] h-full absolute top-0 left-0" />
-                <img src={Right} alt="Logo" className="w-[50px] md:w-[140px] lg:w-[200px] xl:w-[350px] h-full absolute top-0 right-0" />
+                <img
+                    src={Left}
+                    alt="Logo"
+                    className="w-[50px] md:w-[140px] lg:w-[200px] xl:w-[350px] h-full absolute top-0 left-0"
+                />
+                <img
+                    src={Right}
+                    alt="Logo"
+                    className="w-[50px] md:w-[140px] lg:w-[200px] xl:w-[350px] h-full absolute top-0 right-0"
+                />
             </div>
             <AddWalletPopup
                 show={openAddWallet}

@@ -133,7 +133,7 @@ class TransactionController extends Controller
 
     public function showTransactionByMonth(Request $request) {
         $userId = auth()->user()->id;
-        $selectedMonth = $request->month;
+        $selectedMonth = $request->month ?? now()->month;
         $currentYear = now()->year;
 
         $year = ($selectedMonth > now()->month) ? $currentYear - 1 : $currentYear;
@@ -147,7 +147,7 @@ class TransactionController extends Controller
             ->with(['wallet', 'category'])
             ->get();
 
-        return ['transactions' => $transactions];
+        return ['transactions' => $transactions,'currMonth' => $selectedMonth];
     }
 
 }

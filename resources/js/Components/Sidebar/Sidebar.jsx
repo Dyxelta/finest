@@ -152,16 +152,16 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                             }  rounded-md  hover:bg-off-white `}
                                         >
                                             <h2
-                                                className={
+                                                className={ 
                                                     openNav
                                                         ? "hidden"
-                                                        : "w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre text-gray-900 rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1"
+                                                        : " w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre text-gray-900 rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1"
                                                 }
                                             >
                                                 {subMenu.Title}
                                             </h2>
                                             <div
-                                                className={`transition-transform flex  duration-500 ease-in-out ${
+                                                className={` transition-transform flex  duration-500 ease-in-out ${
                                                     openNav
                                                         ? "group-hover:translate-x-2"
                                                         : "justify-center items-center"
@@ -169,10 +169,10 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                             >
                                                 <div>{subMenu.icon}</div>
                                                 <div
-                                                    className={`transition-all ease-in-out overflow-hidden ${
+                                                    className={`transition-all ease-in-out overflow-hidden  ${
                                                         openNav
-                                                            ? "max-w-full opacity-100 delay-300  duration-500"
-                                                            : "max-w-[0] opacity-0 duration-100"
+                                                            ? " max-w-full opacity-100 delay-300  duration-500"
+                                                            : " max-w-[0] opacity-0 duration-100"
                                                     }`}
                                                     style={{
                                                         minWidth: openNav
@@ -180,7 +180,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                                             : "max-content",
                                                     }}
                                                 >
-                                                    {subMenu.Title}
+                                                    {openNav? subMenu.Title : ''}
                                                 </div>
                                             </div>
                                         </div>

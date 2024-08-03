@@ -11,7 +11,9 @@ import logoLogin from "../../../../public/image/login/LoginLogo.png";
 import lowerLeftMotive from "../../../../public/image/login/LowerLeftMotive.png";
 import upperLeftMotive from "../../../../public/image/login/UpperLeftMotive.png";
 
+import Loader from "@/Components/Loader";
 import { showErrorModal } from "@/Helpers/utils";
+import { useState } from "react";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
 
 const SignupSchema = Yup.object().shape({
@@ -25,22 +27,23 @@ export default function Login() {
         email: "",
         password: "",
     });
-
+    const [loading, setLoading] = useState(false);
     const openModal = (error) => {
+        setLoading(false);
         showErrorModal("Error", error);
     };
 
     const submit = () => {
+        setLoading(true);
         post(route("loginUser"), {
             onError: (errors) => {
-               if (errors.email) {
+                if (errors.email) {
                     openModal(errors.email);
-       
                 } else if (errors.password) {
                     openModal(errors.password);
-           
                 }
             },
+            onSuccess: () => setLoading(false),
         });
     };
 
@@ -64,7 +67,7 @@ export default function Login() {
             />
             <Head title="Log in" />
 
-            <div className="h-full container z-100 relative px-2 md:px-4">
+            <div className="h-full container z-100 relative px-2 md:px-4 mx-auto">
                 <div className="h-full py-6  flex ">
                     <div className="flex-1 hidden justify-center  flex-col lg:flex">
                         <img
@@ -168,13 +171,25 @@ export default function Login() {
                                                         );
                                                     }}
                                                 />
-                                            
                                             </FormGroup>
                                         </FormGroup>
 
                                         <div className="flex flex-col mb-6">
-                                            <PrimaryButton className=" w-full " type="submit">
-                                                Log in
+                                            <PrimaryButton
+                                                className=" w-full"
+                                                type="submit"
+                                                disabled={loading}
+                                            >
+                                                {loading ? (
+                                                    <div className="flex items-center">
+                                                        <Loader
+                                                            className={`w-[30px] h-6 mr-1`}
+                                                        />
+                                                        <span>Loading...</span>
+                                                    </div>
+                                                ) : (
+                                                    "Login"
+                                                )}
                                             </PrimaryButton>
 
                                             <span className="text-center pt-2 text-sm">
@@ -191,8 +206,6 @@ export default function Login() {
                                 </Form>
                             )}
                         </Formik>
-
-                      
                     </div>
                 </div>
             </div>

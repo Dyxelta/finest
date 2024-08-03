@@ -1,14 +1,14 @@
 import CustomField from "@/Components/CustomInput/CustomField";
 import CustomLabel from "@/Components/CustomLabel";
+import Loader from "@/Components/Loader";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import { Form, Formik } from "formik";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { FaWallet } from "react-icons/fa";
 import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
-
 
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
@@ -26,33 +26,40 @@ export default function EditWalletPopup({
     wallet,
     onClose = () => {},
 }) {
-    const {setData, put} = useForm({
-        id:wallet?.id,
-        wallet_name:wallet?.wallet_name, 
-        wallet_balance:wallet?.wallet_balance,
-        wallet_description: wallet?.wallet_description
-    })
+    
+    const [loading, setLoading] = useState(false);
+    const { setData, put,data } = useForm({
+        id: wallet?.id,
+        wallet_name: wallet?.wallet_name,
+        wallet_balance: wallet?.wallet_balance,
+        wallet_description: wallet?.wallet_description,
+    });
+
+    useEffect(() => {
+        setData({
+            id: wallet?.id,
+            wallet_name: wallet?.wallet_name,
+            wallet_balance: wallet?.wallet_balance,
+            wallet_description: wallet?.wallet_description,
+        });
+    }, [wallet]);
 
     const [error, setError] = useState();
 
     const openModal = () => {
-        showErrorModal(
-            'Error', 
-            error
-        )
+        showErrorModal("Error", error);
     };
 
     const closeModal = () => {
-        onClose()
-        showSuccessModal(
-            'Success', 
-            'Wallet has been edited successfully'
-        )
+        setLoading(false)
+        onClose();
+        showSuccessModal("Success", "Wallet has been edited successfully");
     };
 
-
     const close = () => {
-        put(route('editWallet'), {
+        setLoading(true)
+        put(route("editWallet"), {
+            
             onError: (errors) => {
                 if (errors.wallet_balance) {
                     openModal();
@@ -63,10 +70,10 @@ export default function EditWalletPopup({
                 } else if (errors.description) {
                     openModal();
                     setError(errors.description);
-                } 
+                }
             },
             onSuccess: () => closeModal(),
-        })
+        });
     };
 
     const maxWidthClass = {
@@ -89,7 +96,7 @@ export default function EditWalletPopup({
                 as="div"
                 id="modal"
                 className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
-                onClose={close}
+                onClose={() => onClose()}
             >
                 <Transition.Child
                     as={Fragment}
@@ -134,7 +141,8 @@ export default function EditWalletPopup({
                             initialValues={{
                                 wallet_name: wallet?.wallet_name || "",
                                 wallet_balance: wallet?.wallet_balance || "",
-                                wallet_description: wallet?.wallet_description || "",
+                                wallet_description:
+                                    wallet?.wallet_description || "",
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
@@ -243,8 +251,20 @@ export default function EditWalletPopup({
                                                 <Button
                                                     type="submit"
                                                     className={`self-end mt-2  ${titleColor} px-10 py-2 rounded-md body mr-2 transition-colors hover:bg-darker-primary duration-300 ease-in-out`}
+                                                    disabled={loading}
                                                 >
-                                                    Confirm
+                                                    {loading ? (
+                                                        <div className="flex items-center">
+                                                            <Loader
+                                                                className={`w-[30px] h-6 mr-1`}
+                                                            />
+                                                            <span>
+                                                                Loading...
+                                                            </span>
+                                                        </div>
+                                                    ) : (
+                                                        "Confirm"
+                                                    )}
                                                 </Button>
                                             </div>
                                         </div>
@@ -252,7 +272,6 @@ export default function EditWalletPopup({
                                 </Form>
                             )}
                         </Formik>
-                       
                     </Dialog.Panel>
                 </Transition.Child>
             </Dialog>
