@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -78,7 +79,10 @@ Route::middleware('auth')->group(function () {
     })->name('transactionPage');
 
     Route::get('/transaction/add-transaction', function () {
-        return Inertia::render('Transaction/AddTransactionPage');
+        $walletData = app(WalletController::class)->showAllWalletByUserID();
+        $categories = app(CategoryController::class)->showAllCategories();
+
+        return Inertia::render('AddTransactionPage', array_merge($walletData, $categories));
     })->name('addTransasction');
 
     Route::post('/create-transaction', [TransactionController::class, 'addTransaction'])->name('createTransaction');
