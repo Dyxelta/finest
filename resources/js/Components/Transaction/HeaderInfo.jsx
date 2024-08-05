@@ -2,9 +2,9 @@ import { Plus } from "react-feather";
 import { GrTransaction } from "react-icons/gr";
 import { MdHistory } from "react-icons/md";
 import PrimaryButton from "../PrimaryButton";
-import { BsBoxArrowInLeft  , BsBoxArrowRight  } from "react-icons/bs";
+import { BsBoxArrowInLeft, BsBoxArrowRight } from "react-icons/bs";
 import { FiPlus } from "react-icons/fi";
-
+import { Link } from "@inertiajs/react";
 
 const HeaderInfo = ({ transactions }) => {
     console.log(transactions);
@@ -38,17 +38,17 @@ const HeaderInfo = ({ transactions }) => {
         {
             title: "Total Transactions",
             content: transactions?.length || "No Transaction Yet",
-            icon: <GrTransaction  />,
+            icon: <GrTransaction />,
         },
         {
             title: "Total Income Amount",
             content: calculateTotalIncome(transactions || []),
-            icon: <BsBoxArrowInLeft  />,
+            icon: <BsBoxArrowInLeft />,
         },
         {
             title: "Total Expense Amount",
             content: calculateTotalExpense(transactions || []),
-            icon: <BsBoxArrowRight  />,
+            icon: <BsBoxArrowRight />,
         },
     ];
 
@@ -75,7 +75,7 @@ const HeaderInfo = ({ transactions }) => {
             <div className="flex  w-full justify-between">
                 <div className="flex items-center px-2 md:px-4 gap-2 md:gap-3">
                     <div className="bg-lighter-primary rounded-xl text-primary p-2 md:p-3 text-[16px] md:text-[26px]">
-                        <MdHistory  />
+                        <MdHistory />
                     </div>
                     <div className="">
                         <h1 className="body md:header-5 text-primary ">
@@ -86,17 +86,20 @@ const HeaderInfo = ({ transactions }) => {
                         </h6>
                     </div>
                 </div>
-                <div className="flex items-center px-2 md:px-4 gap-1 md:gap-3">
+                <Link
+                    href={route("addTransasction")}
+                    className="flex items-center px-2 md:px-4 gap-1 md:gap-3"
+                >
                     <PrimaryButton
                         className=" w-full gap-2 rounded-lg py-3 px-1 sm:px-4 md:px-8 button flex items-center"
                         type="submit"
                     >
                         <div className="text-[14px] md:text-[20px]">
-                        <FiPlus />
+                            <FiPlus />
                         </div>
                         <div className="hidden md:block">Add Transaction</div>
                     </PrimaryButton>
-                </div>
+                </Link>
             </div>
         </div>
     );

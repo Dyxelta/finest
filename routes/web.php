@@ -77,8 +77,8 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Transaction/TransactionRecords', array_merge($transactionData, $walletData));
     })->name('transactionPage');
 
-    Route::get('/add-transaction', function () {
-        return Inertia::render('AddTransactionPage');
+    Route::get('/transaction/add-transaction', function () {
+        return Inertia::render('Transaction/AddTransactionPage');
     })->name('addTransasction');
 
     Route::post('/create-transaction', [TransactionController::class, 'addTransaction'])->name('createTransaction');

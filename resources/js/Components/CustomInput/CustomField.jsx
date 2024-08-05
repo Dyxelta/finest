@@ -1,7 +1,7 @@
 import { Field, useField } from "formik";
 import React, { useEffect, useRef } from "react";
 
-export default function TextInput({
+export default function CustomField({
     type = "text",
     className = "",
     isFocused = false,
@@ -20,7 +20,7 @@ export default function TextInput({
 
     return (
         <React.Fragment>
-            <div className="relative">
+            <div className='relative'>
                 {icon && (
                     <div className="absolute inset-y-0 left-0 pl-3 pt-[2px] flex items-center pointer-events-none">
                         {icon}
@@ -35,7 +35,7 @@ export default function TextInput({
                             meta.touched && meta.error
                                 ? "border-red-500 ring-red-500 focus:ring-red-500 focus:border-red-500 focus:shadow-[0_4px_6px_rgba(255,0,0,0.2)]"
                                 : "focus:ring-primary focus:border-primary focus:shadow-[0_4px_6px_rgba(0,123,255,0.3)]"
-                        } rounded-md shadow-sm ${icon ? 'pl-10' : ''} ` + className
+                        } rounded-md shadow-sm ${icon ? 'pl-10' : ''}  ${props.disabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''} ` + className
                     }
                     innerRef={inputRef}
                 />

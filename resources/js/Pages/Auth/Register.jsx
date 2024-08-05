@@ -282,6 +282,7 @@ export default function Register({ status, canResetPassword }) {
                                                     className=" w-full "
                                                     type="submit"
                                                     disabled={loading}
+                                                    loading={loading}
                                                 >
                                                       {loading ? (
                                                         <div className="flex items-center">

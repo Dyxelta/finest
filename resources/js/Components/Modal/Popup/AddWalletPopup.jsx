@@ -1,6 +1,7 @@
 import CustomField from "@/Components/CustomInput/CustomField";
 import CustomLabel from "@/Components/CustomLabel";
 import Loader from "@/Components/Loader";
+import PrimaryButton from "@/Components/PrimaryButton";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
@@ -228,10 +229,11 @@ export default function AddWalletPopup({
                                                         Cancel
                                                     </Button>
                                                 )}
-                                                <Button
+                                                <PrimaryButton
                                                     type="submit"
-                                                    className={`self-end mt-2  ${titleColor} px-10 py-2 rounded-md body mr-2 transition-colors hover:bg-darker-primary duration-300 ease-in-out flex items-center`}
+                                                    className={`self-end mt-2  ${titleColor} !px-10 py-2 rounded-md body mr-2 transition-colors hover:bg-darker-primary duration-300 ease-in-out flex items-center`}
                                                     disabled={loading}
+                                                    loading={loading}
                                                 >
                                                     {loading ? (
                                                         <div className="flex items-center">
@@ -245,7 +247,7 @@ export default function AddWalletPopup({
                                                     ) : (
                                                         "Confirm"
                                                     )}
-                                                </Button>
+                                                </PrimaryButton>
                                             </div>
                                         </div>
                                     </div>

@@ -1,28 +1,19 @@
 import HeaderInfo from "@/Components/Transaction/HeaderInfo";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-import { Head, useForm } from "@inertiajs/react";
-import {
-    Card,
-    CardBody,
-    Collapse,
-    Option,
-    Select,
-    Typography,
-} from "@material-tailwind/react";
-import { Formik } from "formik";
-import { useEffect, useState } from "react";
-import { Table } from "reactstrap";
-import { HiMiniEllipsisVertical } from "react-icons/hi2";
-import { BiSolidPencil } from "react-icons/bi";
-import { FaRegTrashCan } from "react-icons/fa6";
 import PaginationTransaction from "@/Components/Transaction/PaginationTransaction";
 import { formatDate, formatToRupiah } from "@/Helpers/helperFormat";
-import { debounce } from "lodash";
+import { Head, useForm } from "@inertiajs/react";
+import { Option, Select } from "@material-tailwind/react";
+import { Formik } from "formik";
+import { useEffect, useState } from "react";
+import { BiSolidPencil } from "react-icons/bi";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { HiMiniEllipsisVertical } from "react-icons/hi2";
 import { TbMoodEmpty } from "react-icons/tb";
+import { Table } from "reactstrap";
 
 const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
-
     return (
         <tr className="bg-white pt-2 mt-1 rounded-xl w-full flex justify-between items-center text-primary">
             <td className="py-2 px-4 text-center w-[100px]">
@@ -68,7 +59,7 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
     );
 };
 
-export default function Dashboard({ auth, transactions, wallets,currMonth }) {
+export default function TransactionRecordsPage({ auth, transactions, wallets, currMonth }) {
     const [pagination, setPagination] = useState(1);
     const [category, setCategory] = useState("Income");
     const [selectedWallet, setSelectedWallet] = useState("All1");
@@ -76,22 +67,20 @@ export default function Dashboard({ auth, transactions, wallets,currMonth }) {
     let getCurrentStartSlice = 1 * ((pagination - 1) * 10);
     let getCurrentEndSlice = pagination * 10;
 
-    
     const allWallet = {
         id: "All1",
         wallet_name: "All Wallet",
     };
     const initialWallets = [allWallet, ...wallets];
-    
+
     const { post, get, setData, data } = useForm({
         month: "",
     });
-    
+
     const monthValue = parseInt(currMonth) ?? new Date().getMonth() + 1;
 
     const getCurrentMonth = () => {
-        const currentMonth =  new Date().getMonth();
-       
+        const currentMonth = new Date().getMonth();
 
         const months = [];
         for (let i = 0; i < 12; i++) {
