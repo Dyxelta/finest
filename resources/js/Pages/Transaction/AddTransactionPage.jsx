@@ -5,8 +5,9 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function AddTransactionPage({ auth, wallets, categories }) {
-    const [selectedWallet, setSelectedWallet] = useState()
+export default function AddTransactionPage({ auth, wallets, expenseCategories,incomeCategories }) {
+    const [selectedWallet, setSelectedWallet] = useState(wallets[0])
+    console.log(wallets, incomeCategories, expenseCategories,"uisdghfuisdgufugisdfugsdfus")
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -14,7 +15,7 @@ export default function AddTransactionPage({ auth, wallets, categories }) {
         >
             <Head title="Add Transaction" />
 
-            <div className='flex flex-col-reverse md:flex-row w-full  py-2 gap-4'>
+            <div className='flex flex-col-reverse md:flex-row w-full  py-1 gap-4'>
                 <FirstSection classname="w-2/3"/>
                 <SecondSection classname="w-1/3" selectedWallet={selectedWallet} setSelectedWallet={setSelectedWallet}/>
             </div>

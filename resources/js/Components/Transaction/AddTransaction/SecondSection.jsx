@@ -1,5 +1,6 @@
 import CustomField from "@/Components/CustomInput/CustomField";
 import CustomLabel from "@/Components/CustomLabel";
+import { formatDate } from "@/Helpers/helperFormat";
 import { Formik } from "formik";
 import React from "react";
 import { BiCalendar, BiWallet } from "react-icons/bi";
@@ -7,9 +8,10 @@ import { BsExclamation } from "react-icons/bs";
 import { FormGroup } from "reactstrap";
 
 const SecondSection = ({ classname, selectedWallet, setSelectedWallet }) => {
+    console.log(selectedWallet,"idouhfuisdhfuiosdfhusdf")
     return (
         <div
-            className={`${classname} bg-light py-4 md:py-8  rounded-xl px-4 md:px-8 text-primary`}
+            className={`${classname} bg-light py-4 md:py-6  rounded-xl px-4 md:px-8 text-primary`}
         >
             <div className="flex items-center gap-4">
                 <div
@@ -25,7 +27,7 @@ const SecondSection = ({ classname, selectedWallet, setSelectedWallet }) => {
                 <Formik
                     initialValues={{
                         wallet_name: selectedWallet?.wallet_name,
-                        created_date: selectedWallet?.created_date,
+                        created_date: formatDate(selectedWallet?.created_at),
                     }}
                     enableReinitialize
                 >
@@ -38,8 +40,8 @@ const SecondSection = ({ classname, selectedWallet, setSelectedWallet }) => {
                                 />
 
                                 <CustomField
-                                    id="email"
-                                    name="email"
+                                    id="wallet_name"
+                                    name="wallet_name"
                         
                                     type="email"
                                     className="w-full mt-1"
@@ -55,8 +57,8 @@ const SecondSection = ({ classname, selectedWallet, setSelectedWallet }) => {
                                 />
 
                                 <CustomField
-                                    id="email"
-                                    name="email"
+                                    id="created_date"
+                                    name="created_date"
                          
                                     type="email"
                                     className="w-full mt-1"
@@ -68,7 +70,9 @@ const SecondSection = ({ classname, selectedWallet, setSelectedWallet }) => {
                         </>
                     )}
                 </Formik>
+                <div className=""></div>
             </div>
+            <div></div>
         </div>
     );
 };
