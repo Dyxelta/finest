@@ -87,6 +87,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/create-transaction', [TransactionController::class, 'addTransaction'])->name('createTransaction');
 
+    Route::put('/edit-transaction', [TransactionController::class, 'editTransaction'])->name('editTransaction');
+
+    Route::delete('/delete-transaction', [TransactionController::class, 'deleteTransaction'])->name('deleteTransaction');
+
 
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
