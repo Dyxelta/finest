@@ -15,9 +15,9 @@ export default function AddTransactionPage({ auth, wallets, expenseCategories,in
         >
             <Head title="Add Transaction" />
 
-            <div className='flex flex-col-reverse md:flex-row w-full  py-1 gap-4'>
-                <FirstSection classname="w-2/3"/>
-                <SecondSection classname="w-1/3" selectedWallet={selectedWallet} setSelectedWallet={setSelectedWallet}/>
+            <div className='flex flex-col-reverse md:flex-row w-full py-1 gap-4 '>
+                <FirstSection classname="w-2/3" selectedWallet={selectedWallet} setSelectedWallet={setSelectedWallet} wallets={wallets}/>
+                <SecondSection classname="w-1/3" selectedWallet={selectedWallet} />
             </div>
            
         </AuthenticatedLayout>

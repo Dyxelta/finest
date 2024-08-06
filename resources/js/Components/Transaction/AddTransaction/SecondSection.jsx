@@ -1,14 +1,14 @@
 import CustomField from "@/Components/CustomInput/CustomField";
 import CustomLabel from "@/Components/CustomLabel";
-import { formatDate } from "@/Helpers/helperFormat";
+import { formatDate, formatToRupiah } from "@/Helpers/helperFormat";
 import { Formik } from "formik";
 import React from "react";
 import { BiCalendar, BiWallet } from "react-icons/bi";
 import { BsExclamation } from "react-icons/bs";
 import { FormGroup } from "reactstrap";
 
-const SecondSection = ({ classname, selectedWallet, setSelectedWallet }) => {
-    console.log(selectedWallet,"idouhfuisdhfuiosdfhusdf")
+const SecondSection = ({ classname, selectedWallet }) => {
+
     return (
         <div
             className={`${classname} bg-light py-4 md:py-6  rounded-xl px-4 md:px-8 text-primary`}
@@ -50,7 +50,7 @@ const SecondSection = ({ classname, selectedWallet, setSelectedWallet }) => {
                                     disabled
                                 />
                             </FormGroup>{" "}
-                            <FormGroup>
+                            <FormGroup className="mt-2">
                                 <CustomLabel
                                     labelFor="Created Date"
                                     className="button text-primary"
@@ -70,7 +70,16 @@ const SecondSection = ({ classname, selectedWallet, setSelectedWallet }) => {
                         </>
                     )}
                 </Formik>
-                <div className=""></div>
+                <div className="border-t-2 mt-8 py-2"> 
+                    <div className="flex items-center justify-between">
+                        <div className="header-5">
+                            Balance:
+                        </div>
+                        <div className="header-5-light">
+                            {formatToRupiah(selectedWallet?.wallet_balance)}
+                        </div>
+                    </div>
+                </div>
             </div>
             <div></div>
         </div>

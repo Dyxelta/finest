@@ -179,6 +179,7 @@ export default function Login() {
                                                 className=" w-full"
                                                 type="submit"
                                                 disabled={loading}
+                                                loading={loading}
                                             >
                                                 {loading ? (
                                                     <div className="flex items-center">

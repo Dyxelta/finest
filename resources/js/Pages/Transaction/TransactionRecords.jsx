@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import PaginationTransaction from "@/Components/Transaction/PaginationTransaction";
 import { formatDate, formatToRupiah } from "@/Helpers/helperFormat";
 import { Head, useForm } from "@inertiajs/react";
-import { Option, Select } from "@material-tailwind/react";
+
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
 import { BiSolidPencil } from "react-icons/bi";
@@ -12,6 +12,8 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { HiMiniEllipsisVertical } from "react-icons/hi2";
 import { TbMoodEmpty } from "react-icons/tb";
 import { Table } from "reactstrap";
+
+import CustomSelectInput from "@/Components/CustomSelectInput";
 
 const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
     return (
@@ -59,7 +61,12 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
     );
 };
 
-export default function TransactionRecordsPage({ auth, transactions, wallets, currMonth }) {
+export default function TransactionRecordsPage({
+    auth,
+    transactions,
+    wallets,
+    currMonth,
+}) {
     const [pagination, setPagination] = useState(1);
     const [category, setCategory] = useState("Income");
     const [selectedWallet, setSelectedWallet] = useState("All1");
@@ -78,7 +85,11 @@ export default function TransactionRecordsPage({ auth, transactions, wallets, cu
     });
 
     const monthValue = parseInt(currMonth) ?? new Date().getMonth() + 1;
-
+    const currentYear = new Date().getFullYear();
+    const monthName = new Date(currentYear, monthValue - 1).toLocaleString(
+        "default",
+        { month: "long" }
+    );
     const getCurrentMonth = () => {
         const currentMonth = new Date().getMonth();
 
@@ -93,7 +104,7 @@ export default function TransactionRecordsPage({ auth, transactions, wallets, cu
                 { month: "long" }
             );
             months.push({
-                month: monthName,
+                label: monthName,
                 value: adjustedMonth + 1,
             });
         }
@@ -122,7 +133,10 @@ export default function TransactionRecordsPage({ auth, transactions, wallets, cu
     );
 
     const [wait, setWait] = useState(false);
-
+    const walletOptions = initialWallets.map((wallet) => ({
+        value: wallet?.id,
+        label: wallet?.wallet_name,
+    }));
     useEffect(() => {
         const waitSetMonthData = () => {
             if (wait) {
@@ -200,50 +214,51 @@ export default function TransactionRecordsPage({ auth, transactions, wallets, cu
 
                                 <div className="pb-1 flex flex-col md:flex-row gap-2 justify-between ">
                                     <div className="w-52">
-                                        <Select
-                                            label="Select Month"
-                                            value={monthValue}
-                                            onChange={(val) => {
+                                        <CustomSelectInput
+                                            defaultValue={
+                                                values?.defaultMonthValue
+                                                    ? {
+                                                          value: monthValue,
+                                                          label: monthName,
+                                                      }
+                                                    : {
+                                                          value: "",
+                                                          label: "",
+                                                      }
+                                            }
+                                            options={getCurrentMonth()}
+                                            onChange={(e) => {
+                                                console.log(e, "pilihhhh");
                                                 setFieldValue(
                                                     "defaultMonthValue",
-                                                    val
+                                                    e.value
                                                 );
-                                                setData("month", val);
+                                                setData("month", e.value);
                                                 setWait(true);
                                                 setPagination(1);
                                             }}
-                                        >
-                                            {getCurrentMonth().map((month) => (
-                                                <Option
-                                                    key={month.value}
-                                                    value={month.value}
-                                                >
-                                                    {month.month}
-                                                </Option>
-                                            ))}
-                                        </Select>
+                                        />
                                     </div>
 
                                     <div className="w-52 mt-4 md:mt-0">
-                                        <Select
-                                            label="Select Wallet"
-                                            value={values.defaultWallet}
-                                            onChange={(val) => {
-                                                setSelectedWallet(val);
+                                        <CustomSelectInput
+                                            defaultValue={
+                                                values?.defaultWallet
+                                                    ? {
+                                                          value: values?.defaultWallet,
+                                                          label: values?.defaultWallet,
+                                                      }
+                                                    : {
+                                                          value: "",
+                                                          label: "",
+                                                      }
+                                            }
+                                            options={walletOptions}
+                                            onChange={(e) => {
+                                                setSelectedWallet(e.value);
                                                 setPagination(1);
                                             }}
-                                        >
-                                            {initialWallets?.map(
-                                                (wallet, index) => (
-                                                    <Option
-                                                        key={index}
-                                                        value={wallet.id}
-                                                    >
-                                                        {wallet.wallet_name}
-                                                    </Option>
-                                                )
-                                            )}
-                                        </Select>
+                                        />
                                     </div>
                                 </div>
                             </div>
