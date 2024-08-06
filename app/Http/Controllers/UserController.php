@@ -88,6 +88,40 @@ class UserController extends Controller
         $user->save();
     }
 
+    public function editPassword(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'current_password' => ['required', function ($value, $fail) use ($user) {
+                if (!Hash::check($value, $user->password)) {
+                    $fail('The current password is incorrect.');
+                }
+            }],
+            'new_password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[!@#$%^&*(),.?":{}|<>]/',
+            ],
+            'confirm_password' => 'required_with:password|same:password',
+        ]);
+
+        $new_password = $request->password;
+
+        $user_data = User::findOrFail($user->id);
+
+        $user->password = $new_password;
+        $user->updated_at = now();
+
+        $user_data->save();
+
+        return response()->json(['message' => 'Password updated successfully.']);
+    }
+
     public function redirectWhenAppOpened()
     {
         if (Auth::check()) {
@@ -97,7 +131,8 @@ class UserController extends Controller
         return redirect('login');
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::logout();
 
         $request->session()->flush();
