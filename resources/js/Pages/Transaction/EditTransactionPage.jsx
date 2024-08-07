@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function AddTransactionPage({
+export default function EditTransactionPage({
     auth,
     wallets,
     expenseCategories,

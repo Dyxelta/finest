@@ -35,7 +35,7 @@ const SignupSchema = Yup.object().shape({
         )
         .matches(/[0-9]+/, "Password must contain at least one digit")
         .matches(
-            /[!@#$%^&*(),.?":{}|<>]+/,
+            /[!@#$%^&*()_,.?":{}|<>]+/,
             "Password must contain at least one special character"
         )
         .min(8, "Password must be at least 8 characters")

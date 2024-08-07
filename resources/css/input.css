@@ -7,3 +7,22 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.react-datepicker {
+  border-radius: 0.75rem; 
+}
+
+.react-datepicker__header {
+  background-color: #2D5074;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #2D5074 !important;
+  color: white;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__current-month {
+  color: white;
+}

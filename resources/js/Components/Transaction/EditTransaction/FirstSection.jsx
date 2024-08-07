@@ -18,6 +18,7 @@ import { Link, useForm } from "@inertiajs/react";
 import moment from "moment";
 import * as Yup from "yup";
 
+
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
     category_name: Yup.string().required("Category name is required"),
@@ -33,27 +34,19 @@ const FirstSection = ({
     categories,
 }) => {
     const [loading, setLoading] = useState(false);
-
+    const [startDate, setStartDate] = useState(new Date());
 
     const openModal = (error) => {
         showErrorModal("Error", error);
         setLoading(false);
     };
-    
-    const handleRefresh = () => {
-        window.location.reload();
-    };
 
     const closeModal = () => {
         setLoading(false);
-        showSuccessModal(
-            "Success",
-            "Transaction has been added successfully",
-            () => handleRefresh()
-        );
+        showSuccessModal("Success", "Transaction has been added successfully");
     };
 
-    const { setData, data, post } = useForm({
+    const { setData,data, post } = useForm({
         wallet_name: selectedWallet?.wallet_name,
         category_name: "",
         transaction_amount: "",
@@ -227,11 +220,11 @@ const FirstSection = ({
                                     placeholder="Select Date"
                                     selected={values?.transaction_date}
                                     onChange={(e) => {
-                                        setFieldValue("transaction_date", e);
-                                        setData(
+                                        setFieldValue(
                                             "transaction_date",
-                                            moment(e).format("YYYY-MM-DD")
+                                            e
                                         );
+                                        setData("transaction_date", moment(e).format('YYYY-MM-DD'));
                                     }}
                                 />
                                 {console.log(data, "sduifhsduifshodif")}
