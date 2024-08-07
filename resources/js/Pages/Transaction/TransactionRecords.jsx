@@ -13,7 +13,7 @@ import { HiMiniEllipsisVertical } from "react-icons/hi2";
 import { TbMoodEmpty } from "react-icons/tb";
 import { Table } from "reactstrap";
 
-import CustomSelectInput from "@/Components/CustomSelectInput";
+import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 
 const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
     return (
@@ -133,10 +133,12 @@ export default function TransactionRecordsPage({
     );
 
     const [wait, setWait] = useState(false);
+
     const walletOptions = initialWallets.map((wallet) => ({
         value: wallet?.id,
         label: wallet?.wallet_name,
     }));
+    
     useEffect(() => {
         const waitSetMonthData = () => {
             if (wait) {

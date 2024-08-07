@@ -18,7 +18,7 @@ class TransactionController extends Controller
             'category_name' => 'required|string',
             'transaction_amount' => 'required|numeric|min:1',
             'transaction_note' => 'string|max:255',
-            'transaction_date' => 'required'
+            'transaction_date' => 'required|date'
         ]);
 
         $user = auth()->user();
@@ -40,7 +40,7 @@ class TransactionController extends Controller
 
         $this->changeWalletBalance($wallet, $transactionAmount);
 
-        return redirect()->back();
+        return redirect()->back()->with('form_reset', true);
     }
 
     public function deleteTransaction(Transaction $transaction) {

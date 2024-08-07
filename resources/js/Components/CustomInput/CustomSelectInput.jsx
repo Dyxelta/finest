@@ -40,9 +40,8 @@ const customStyles = {
         },
     }),
 };
-import React from "react";
 
-const MySelectComponent = ({ defaultValue, options,onChange, props }) => {
+const CustomSelectInput = ({ defaultValue, options, onChange, props }) => {
     return (
         <>
             {console.log(defaultValue)}
@@ -63,10 +62,9 @@ const MySelectComponent = ({ defaultValue, options,onChange, props }) => {
                 placeholder="Choose Month"
                 isSearchable={false}
                 styles={customStyles}
-          
             />
         </>
     );
 };
 
-export default MySelectComponent;
+export default CustomSelectInput;
