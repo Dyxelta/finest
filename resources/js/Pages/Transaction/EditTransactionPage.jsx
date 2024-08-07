@@ -9,6 +9,7 @@ export default function EditTransactionPage({
     wallets,
     expenseCategories,
     incomeCategories,
+    transaction
 }) {
     const [selectedWallet, setSelectedWallet] = useState(wallets[0]);
 

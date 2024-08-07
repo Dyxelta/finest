@@ -11,33 +11,18 @@ import { BiSolidPencil } from "react-icons/bi";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { HiMiniEllipsisVertical } from "react-icons/hi2";
 import { TbMoodEmpty } from "react-icons/tb";
-import { Table } from "reactstrap";
+import { Button, Table } from "reactstrap";
 
 import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
+import PrimaryButton from "@/Components/PrimaryButton";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 
 const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
-    const openModal = (error) => {
-        showErrorModal("Error", error);
-        setLoading(false);
-    };
-    
- 
+    const { delete: destroy, data, setData } = useForm({ id: "" });
 
-    const closeModal = () => {
-        setLoading(false);
-        showSuccessModal(
-            "Success",
-            "Transaction has been added successfully",
-            () => handleRefresh()
-        );
-    };
-
-    const {  delete: destroy } = useForm({ id: "" });
-
-    const deleteTransaction = () => {
+    const deleteTransaction = (id) => {
         const onClose = () => {
-            setIsDeleting(true);
-            destroy(route("deleteTransaction", selectedWallet.id), {
+            destroy(route("deleteTransaction", id), {
                 onSuccess: () => {
                     showSuccessModal(
                         "Success",
@@ -89,13 +74,19 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
                         }`}
                     >
                         <div className="py-2 bg-white border rounded-md flex flex-col gap-2 shadow-lg">
-                            <div className="px-2 w-full flex items-center gap-2">
+                            <Button className="px-2 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all">
                                 <BiSolidPencil size={16} /> Edit
-                            </div>
+                            </Button>
                             <hr />
-                            <div className="px-2 w-full flex items-center gap-2 text-expense">
+                            <Button
+                                className="px-2 w-full flex items-center gap-2 text-expense hover:bg-gray-100 hover:opacity-70 duration-300 transition-all"
+                                onClick={() => {
+                                    setData("id", transaction?.id);
+                                    deleteTransaction(transaction?.id);
+                                }}
+                            >
                                 <FaRegTrashCan size={16} /> Delete
-                            </div>
+                            </Button>
                         </div>
                     </div>
                 )}
@@ -110,7 +101,6 @@ export default function TransactionRecordsPage({
     wallets,
     currMonth,
 }) {
-
     const [pagination, setPagination] = useState(1);
     const [category, setCategory] = useState("Income");
     const [selectedWallet, setSelectedWallet] = useState("All1");
@@ -183,7 +173,7 @@ export default function TransactionRecordsPage({
         value: wallet?.id,
         label: wallet?.wallet_name,
     }));
-    
+
     useEffect(() => {
         const waitSetMonthData = () => {
             if (wait) {
