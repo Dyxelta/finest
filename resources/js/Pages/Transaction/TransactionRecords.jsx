@@ -16,6 +16,49 @@ import { Table } from "reactstrap";
 import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 
 const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
+    const openModal = (error) => {
+        showErrorModal("Error", error);
+        setLoading(false);
+    };
+    
+ 
+
+    const closeModal = () => {
+        setLoading(false);
+        showSuccessModal(
+            "Success",
+            "Transaction has been added successfully",
+            () => handleRefresh()
+        );
+    };
+
+    const {  delete: destroy } = useForm({ id: "" });
+
+    const deleteTransaction = () => {
+        const onClose = () => {
+            setIsDeleting(true);
+            destroy(route("deleteTransaction", selectedWallet.id), {
+                onSuccess: () => {
+                    showSuccessModal(
+                        "Success",
+                        "Transaction has been deleted successfully"
+                    );
+                },
+                onError: () => {
+                    showErrorModal("Error", "Something went wrong");
+                },
+            });
+        };
+
+        showErrorModal(
+            "Error",
+            "Are you sure you want to delete this Transaction?",
+            () => onClose(),
+            undefined,
+            true,
+            true
+        );
+    };
     return (
         <tr className="bg-white pt-2 mt-1 rounded-xl w-full flex justify-between items-center text-primary">
             <td className="py-2 px-4 text-center w-[100px]">
@@ -27,7 +70,7 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
             <td className="py-2 px-4 text-center  w-[300px]">
                 {transaction?.transaction_note}
             </td>
-            <td className="py-2 px-4 text-center  w-[150px]">
+            <td className="py-2 px-4 text-center  w-[200px]">
                 {formatToRupiah(transaction?.transaction_amount)}
             </td>
             <td className="py-2 px-4 text-center w-[150px]">
@@ -67,6 +110,7 @@ export default function TransactionRecordsPage({
     wallets,
     currMonth,
 }) {
+
     const [pagination, setPagination] = useState(1);
     const [category, setCategory] = useState("Income");
     const [selectedWallet, setSelectedWallet] = useState("All1");
@@ -90,6 +134,7 @@ export default function TransactionRecordsPage({
         "default",
         { month: "long" }
     );
+
     const getCurrentMonth = () => {
         const currentMonth = new Date().getMonth();
 
@@ -278,7 +323,7 @@ export default function TransactionRecordsPage({
                                                 <th className="py-2 px-4 text-center w-[300px] ">
                                                     Note
                                                 </th>
-                                                <th className="py-2 px-4 text-center w-[150px]">
+                                                <th className="py-2 px-4 text-center w-[200px]">
                                                     Amount
                                                 </th>
                                                 <th className="py-2 px-4 text-center w-[150px]">
