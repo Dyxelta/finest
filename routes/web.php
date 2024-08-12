@@ -86,9 +86,16 @@ Route::middleware('auth')->group(function () {
     })->name('addTransasction');
 
     Route::get('/transaction/edit-transaction/{transaction:id}', function (Transaction $transaction) {
+        $transaction->load(['wallet', 'category']);
+
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $categories = app(CategoryController::class)->showAllCategories();
-        $transactionData = ['transaction' => $transaction];
+
+        $transactionData = [
+            'transaction' => $transaction,
+            'wallet' => $transaction->wallet,
+            'category' => $transaction->category,
+        ];
 
         return Inertia::render('Transaction/EditTransactionPage', array_merge($walletData, $categories, $transactionData));
     })->name('editTransactionPage');
