@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 import PaginationTransaction from "@/Components/Transaction/PaginationTransaction";
 import { formatDate, formatToRupiah } from "@/Helpers/helperFormat";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
@@ -11,11 +11,38 @@ import { BiSolidPencil } from "react-icons/bi";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { HiMiniEllipsisVertical } from "react-icons/hi2";
 import { TbMoodEmpty } from "react-icons/tb";
-import { Table } from "reactstrap";
+import { Button, Table } from "reactstrap";
 
 import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 
 const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
+    const { delete: destroy, data, setData } = useForm({ id: "" });
+
+    const deleteTransaction = (id) => {
+        const onClose = () => {
+            destroy(route("deleteTransaction", id), {
+                onSuccess: () => {
+                    showSuccessModal(
+                        "Success",
+                        "Transaction has been deleted successfully"
+                    );
+                },
+                onError: () => {
+                    showErrorModal("Error", "Something went wrong");
+                },
+            });
+        };
+
+        showErrorModal(
+            "Error",
+            "Are you sure you want to delete this Transaction?",
+            () => onClose(),
+            undefined,
+            true,
+            true
+        );
+    };
     return (
         <tr className="bg-white pt-2 mt-1 rounded-xl w-full flex justify-between items-center text-primary">
             <td className="py-2 px-4 text-center w-[100px]">
@@ -27,7 +54,7 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
             <td className="py-2 px-4 text-center  w-[300px]">
                 {transaction?.transaction_note}
             </td>
-            <td className="py-2 px-4 text-center  w-[150px]">
+            <td className="py-2 px-4 text-center  w-[200px]">
                 {formatToRupiah(transaction?.transaction_amount)}
             </td>
             <td className="py-2 px-4 text-center w-[150px]">
@@ -39,20 +66,36 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
                 </button>
                 {isOpen && (
                     <div
-                        className={`absolute z-50 w-[100px] right-[45px] transition-opacity duration-300 delay-300 ${
+                        className={`absolute z-50 w-[100px] right-[25px] transition-opacity duration-300 delay-300 ${
                             isOpen
                                 ? "opacity-100"
                                 : "opacity-0 pointer-events-none"
                         }`}
                     >
-                        <div className="py-2 bg-white border rounded-md flex flex-col gap-2 shadow-lg">
-                            <div className="px-2 w-full flex items-center gap-2">
-                                <BiSolidPencil size={16} /> Edit
-                            </div>
+                        <div className=" bg-white border rounded-md flex flex-col  shadow-lg">
+                            <Link
+                                href={route(
+                                    "editTransactionPage",
+                                    transaction?.id
+                                )}
+                            >
+                                <Button
+                                    type="button"
+                                    className="py-2 px-2 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all"
+                                >
+                                    <BiSolidPencil size={16} /> Edit
+                                </Button>
+                            </Link>
                             <hr />
-                            <div className="px-2 w-full flex items-center gap-2 text-expense">
+                            <Button
+                                className="py-2 px-2 w-full flex items-center gap-2 text-expense hover:bg-gray-100 hover:opacity-70 duration-300 transition-all"
+                                onClick={() => {
+                                    setData("id", transaction?.id);
+                                    deleteTransaction(transaction?.id);
+                                }}
+                            >
                                 <FaRegTrashCan size={16} /> Delete
-                            </div>
+                            </Button>
                         </div>
                     </div>
                 )}
@@ -90,6 +133,7 @@ export default function TransactionRecordsPage({
         "default",
         { month: "long" }
     );
+
     const getCurrentMonth = () => {
         const currentMonth = new Date().getMonth();
 
@@ -138,7 +182,7 @@ export default function TransactionRecordsPage({
         value: wallet?.id,
         label: wallet?.wallet_name,
     }));
-    
+
     useEffect(() => {
         const waitSetMonthData = () => {
             if (wait) {
@@ -217,6 +261,7 @@ export default function TransactionRecordsPage({
                                 <div className="pb-1 flex flex-col md:flex-row gap-2 justify-between ">
                                     <div className="w-52">
                                         <CustomSelectInput
+                                            placeholder={"Select Month"}
                                             defaultValue={
                                                 values?.defaultMonthValue
                                                     ? {
@@ -244,6 +289,7 @@ export default function TransactionRecordsPage({
 
                                     <div className="w-52 mt-4 md:mt-0">
                                         <CustomSelectInput
+                                            placeholder={"Select Wallet"}
                                             defaultValue={
                                                 values?.defaultWallet
                                                     ? {
@@ -278,7 +324,7 @@ export default function TransactionRecordsPage({
                                                 <th className="py-2 px-4 text-center w-[300px] ">
                                                     Note
                                                 </th>
-                                                <th className="py-2 px-4 text-center w-[150px]">
+                                                <th className="py-2 px-4 text-center w-[200px]">
                                                     Amount
                                                 </th>
                                                 <th className="py-2 px-4 text-center w-[150px]">

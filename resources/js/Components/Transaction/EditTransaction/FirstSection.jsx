@@ -18,7 +18,6 @@ import { Link, useForm } from "@inertiajs/react";
 import moment from "moment";
 import * as Yup from "yup";
 
-
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
     category_name: Yup.string().required("Category name is required"),
@@ -46,7 +45,7 @@ const FirstSection = ({
         showSuccessModal("Success", "Transaction has been added successfully");
     };
 
-    const { setData,data, post } = useForm({
+    const { setData, data, post } = useForm({
         wallet_name: selectedWallet?.wallet_name,
         category_name: "",
         transaction_amount: "",
@@ -88,6 +87,7 @@ const FirstSection = ({
                 </div>
                 <div className="mt-4 w-full md:w-1/2">
                     <CustomSelectInput
+                        placeholder={"Select Wallet"}
                         defaultValue={
                             selectedWallet
                                 ? {
@@ -220,11 +220,11 @@ const FirstSection = ({
                                     placeholder="Select Date"
                                     selected={values?.transaction_date}
                                     onChange={(e) => {
-                                        setFieldValue(
+                                        setFieldValue("transaction_date", e);
+                                        setData(
                                             "transaction_date",
-                                            e
+                                            moment(e).format("YYYY-MM-DD")
                                         );
-                                        setData("transaction_date", moment(e).format('YYYY-MM-DD'));
                                     }}
                                 />
                                 {console.log(data, "sduifhsduifshodif")}

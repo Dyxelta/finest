@@ -88,16 +88,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaction/edit-transaction/{transaction:id}', function (Transaction $transaction) {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $categories = app(CategoryController::class)->showAllCategories();
-        $transactionData = $transaction;
+        $transactionData = ['transaction' => $transaction];
 
         return Inertia::render('Transaction/EditTransactionPage', array_merge($walletData, $categories, $transactionData));
-    })->name('editTransasction');
+    })->name('editTransactionPage');
 
     Route::post('/create-transaction', [TransactionController::class, 'addTransaction'])->name('createTransaction');
 
     Route::put('/edit-transaction', [TransactionController::class, 'editTransaction'])->name('editTransaction');
 
-    Route::delete('/delete-transaction', [TransactionController::class, 'deleteTransaction'])->name('deleteTransaction');
+    Route::delete('/delete-transaction/{transaction:id}', [TransactionController::class, 'deleteTransaction'])->name('deleteTransaction');
 
 
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

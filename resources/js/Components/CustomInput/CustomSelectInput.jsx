@@ -41,10 +41,9 @@ const customStyles = {
     }),
 };
 
-const CustomSelectInput = ({ defaultValue, options, onChange, props }) => {
+const CustomSelectInput = ({ defaultValue, options, onChange, props, placeholder }) => {
     return (
         <>
-            {console.log(defaultValue)}
             <Select
                 {...props}
                 defaultValue={defaultValue ?? ""}
@@ -59,7 +58,7 @@ const CustomSelectInput = ({ defaultValue, options, onChange, props }) => {
                     },
                 })}
                 onChange={onChange}
-                placeholder="Choose Month"
+                placeholder={placeholder}
                 isSearchable={false}
                 styles={customStyles}
             />
