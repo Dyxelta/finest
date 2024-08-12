@@ -1,5 +1,4 @@
-import FirstSection from "@/Components/Transaction/AddTransaction/FirstSection";
-import SecondSection from "@/Components/Transaction/AddTransaction/SecondSection";
+import MainSection from "@/Components/Transaction/AddTransaction/MainSection";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
@@ -17,20 +16,20 @@ export default function AddTransactionPage({
         value: wallet?.id,
         label: wallet?.wallet_name,
     }));
-    incomeCategories
+
     const categories = [
         {
             label: "Expense",
             options: expenseCategories.map((expense) => ({
-                value:expense?.category_name,
-                label:expense?.category_name
+                value: expense?.category_name,
+                label: expense?.category_name,
             })),
         },
         {
             label: "Income",
             options: incomeCategories.map((income) => ({
-                value:income?.category_name,
-                label:income?.category_name
+                value: income?.category_name,
+                label: income?.category_name,
             })),
         },
     ];
@@ -47,16 +46,11 @@ export default function AddTransactionPage({
             <Head title="Add Transaction" />
 
             <div className="flex flex-col-reverse md:flex-row w-full py-1 gap-4 ">
-                <FirstSection
-                    classname="w-2/3"
+                <MainSection
                     selectedWallet={selectedWallet}
                     setSelectedWallet={setSelectedWallet}
                     walletOptions={walletOptions}
-                    categories= {categories}
-                />
-                <SecondSection
-                    classname="w-1/3"
-                    selectedWallet={selectedWallet}
+                    categories={categories}
                 />
             </div>
         </AuthenticatedLayout>

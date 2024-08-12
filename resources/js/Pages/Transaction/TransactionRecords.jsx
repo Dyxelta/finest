@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 import PaginationTransaction from "@/Components/Transaction/PaginationTransaction";
 import { formatDate, formatToRupiah } from "@/Helpers/helperFormat";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
@@ -14,7 +14,6 @@ import { TbMoodEmpty } from "react-icons/tb";
 import { Button, Table } from "reactstrap";
 
 import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
-import PrimaryButton from "@/Components/PrimaryButton";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 
 const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
@@ -67,19 +66,29 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
                 </button>
                 {isOpen && (
                     <div
-                        className={`absolute z-50 w-[100px] right-[45px] transition-opacity duration-300 delay-300 ${
+                        className={`absolute z-50 w-[100px] right-[25px] transition-opacity duration-300 delay-300 ${
                             isOpen
                                 ? "opacity-100"
                                 : "opacity-0 pointer-events-none"
                         }`}
                     >
-                        <div className="py-2 bg-white border rounded-md flex flex-col gap-2 shadow-lg">
-                            <Button className="px-2 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all">
-                                <BiSolidPencil size={16} /> Edit
-                            </Button>
+                        <div className=" bg-white border rounded-md flex flex-col  shadow-lg">
+                            <Link
+                                href={route(
+                                    "editTransactionPage",
+                                    transaction?.id
+                                )}
+                            >
+                                <Button
+                                    type="button"
+                                    className="py-2 px-2 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all"
+                                >
+                                    <BiSolidPencil size={16} /> Edit
+                                </Button>
+                            </Link>
                             <hr />
                             <Button
-                                className="px-2 w-full flex items-center gap-2 text-expense hover:bg-gray-100 hover:opacity-70 duration-300 transition-all"
+                                className="py-2 px-2 w-full flex items-center gap-2 text-expense hover:bg-gray-100 hover:opacity-70 duration-300 transition-all"
                                 onClick={() => {
                                     setData("id", transaction?.id);
                                     deleteTransaction(transaction?.id);
@@ -252,6 +261,7 @@ export default function TransactionRecordsPage({
                                 <div className="pb-1 flex flex-col md:flex-row gap-2 justify-between ">
                                     <div className="w-52">
                                         <CustomSelectInput
+                                            placeholder={"Select Month"}
                                             defaultValue={
                                                 values?.defaultMonthValue
                                                     ? {
@@ -279,6 +289,7 @@ export default function TransactionRecordsPage({
 
                                     <div className="w-52 mt-4 md:mt-0">
                                         <CustomSelectInput
+                                            placeholder={"Select Wallet"}
                                             defaultValue={
                                                 values?.defaultWallet
                                                     ? {

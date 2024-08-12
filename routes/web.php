@@ -91,7 +91,7 @@ Route::middleware('auth')->group(function () {
         $transactionData = ['transaction' => $transaction];
 
         return Inertia::render('Transaction/EditTransactionPage', array_merge($walletData, $categories, $transactionData));
-    })->name('editTransasction');
+    })->name('editTransactionPage');
 
     Route::post('/create-transaction', [TransactionController::class, 'addTransaction'])->name('createTransaction');
 
