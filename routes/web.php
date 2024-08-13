@@ -42,6 +42,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
 
     //Authentication
+    Route::put('/edit-profile', [UserController::class, 'editUserData'])->name('editProfile');
+    Route::put('/edit-password', [UserController::class, 'editPassword'])->name('editPassword');
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 
