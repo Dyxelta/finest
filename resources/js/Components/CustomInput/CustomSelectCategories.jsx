@@ -1,5 +1,5 @@
-import React from 'react';
-import Select, { components } from 'react-select';
+import React from "react";
+import Select, { components } from "react-select";
 
 const customStyles = {
     control: (provided, _) => ({
@@ -43,29 +43,34 @@ const customStyles = {
 };
 
 const GroupHeading = (props) => (
-  <div style={{ fontWeight: 'bold', margin: '2px 0px 2px 10px' }}>
-    {console.log(props.children,'iosdjsdjifjsdifjospdjfsdijfsdf')}
-    {props.children}
-  </div>
+    <div style={{ fontWeight: "bold", margin: "2px 0px 2px 10px" }}>
+        {console.log(props.children, "iosdjsdjifjsdifjospdjfsdijfsdf")}
+        {props.children}
+    </div>
 );
 
 const CustomOption = (props) => (
-  <components.Option {...props} >
-    {props.data.label}
-  </components.Option>
+    <components.Option {...props}>{props.data.label}</components.Option>
 );
 
-const MySelect = ({onChange,options, className, props}) => (
-  <Select
-  className={`mt-2 ${className}`}
-  {...props}
-  onChange={onChange}
-    options={options}
-    components={{ GroupHeading, Option: CustomOption }}
-    styles={customStyles}
-    isSearchable={false}
-    placeholder="Select Category"
-  />
+const MySelect = ({
+    onChange,
+    options,
+    className,
+    props,
+    defaultValue = "",
+}) => (
+    <Select
+        defaultValue={defaultValue}
+        className={`mt-2 ${className}`}
+        {...props}
+        onChange={onChange}
+        options={options}
+        components={{ GroupHeading, Option: CustomOption }}
+        styles={customStyles}
+        isSearchable={false}
+        placeholder="Select Category"
+    />
 );
 
 export default MySelect;
