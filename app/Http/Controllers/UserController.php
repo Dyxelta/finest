@@ -15,7 +15,7 @@ class UserController extends Controller
 
         $request->validate([
             'username' => 'required|alpha_num|min:5|max:25',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users|email:dns',
             'password' => [
                 'required',
                 'string',
@@ -40,8 +40,8 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
+            'email' => 'required|email|unique:users|email:dns',
+            'password' => 'required',
         ]);
 
         if (Auth::attempt($request->only('email', 'password'))) {
@@ -61,7 +61,7 @@ class UserController extends Controller
 
         $request->validate([
             'username' => 'required|alpha_num|min:5|max:25',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users|email:dns',
         ]);
 
         $new_username = $request->username;
