@@ -21,7 +21,7 @@ const SignupSchema = Yup.object().shape({
     username: Yup.string()
         .min(5, "Username contains 5-25 letters")
         .max(25, "Username contains 5-25 letters")
-        .matches(/^[a-zA-Z0-9]*$/, "Username must be alphanumeric")
+        .matches(/^[a-zA-Z0-9 ]*$/, "Username must be alphanumeric")
         .required("Username is required"),
 
     password: Yup.string()

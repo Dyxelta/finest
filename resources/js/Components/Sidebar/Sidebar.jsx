@@ -96,7 +96,10 @@ const Sidebar = ({ openNav, setOpenNav }) => {
             <div className="h-screen w-full bg-light flex flex-col justify-between ">
                 <div>
                     <div className="relative">
-                        <div className="flex items-center gap-2 p-4 border-b-2 border-off-white relative">
+                        <div
+                            className="flex items-center gap-2 p-4 border-b-2 border-off-white relative"
+                            onClick={() => setOpenProfile(!openProfile)}
+                        >
                             <div className="p-[10px] bg-darker-primary w-fit rounded-md">
                                 <CiUser size={24} color="#FDFDFD" />
                             </div>
@@ -119,7 +122,6 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                 className={`mr-1 text-[18px] transition-all duration-300 opacity-0 ${
                                     openProfile ? "rotate-0" : "rotate-180"
                                 } ${openNav && "delay-200 opacity-100"}`}
-                                onClick={() => setOpenProfile(!openProfile)}
                             >
                                 {openNav && <IoIosArrowDown />}
                             </div>
@@ -162,7 +164,12 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                     </Button>
 
                                     <hr />
-                                    <Button className="px-5  py-3 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"         onClick={() => setOpenChangePassword(true)}>
+                                    <Button
+                                        className="px-5  py-3 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"
+                                        onClick={() =>
+                                            setOpenChangePassword(true)
+                                        }
+                                    >
                                         <CiLock size={18} />
                                         Change Password
                                         <ChangePasswordPopup

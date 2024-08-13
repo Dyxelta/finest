@@ -71,7 +71,9 @@ class UserController extends Controller
         $user = User::findOrFail($user->id);
 
         $user->username = $new_username;
-        $user->email = $new_email;
+        if($user->email != $new_email) {
+            $user->email = $new_email;
+        }
         $user->updated_at = now();
 
         $user->save();
