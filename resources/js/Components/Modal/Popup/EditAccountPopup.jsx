@@ -17,7 +17,7 @@ const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     username: Yup.string()
         .min(5, "Username contains 5-25 letters")
-        .max(25, "Username contains 5-25 letters")
+        .max(20, "Username contains 5-25 letters")
         .matches(/^[a-zA-Z0-9 ]*$/, "Username must be alphanumeric")
         .required("Username is required"),
 });
@@ -44,7 +44,7 @@ export default function EditAccountPopup({
     const closeModal = () => {
         setLoading(false);
         onClose();
-        showSuccessModal("Success", "Wallet has been edited successfully");
+        showSuccessModal("Success", "Account has been edited successfully");
     };
 
     const close = () => {
@@ -72,6 +72,9 @@ export default function EditAccountPopup({
         );
     };
 
+    const exit = () =>{
+
+    }
     const maxWidthClass = {
         sm: "sm:max-w-sm",
         md: "sm:max-w-md",
@@ -92,7 +95,7 @@ export default function EditAccountPopup({
                 as="div"
                 id="modal"
                 className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
-                onClose={() => onClose()}
+                onClose={() => exit()}
             >
                 <Transition.Child
                     as={Fragment}

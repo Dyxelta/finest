@@ -15,7 +15,7 @@ class UserController extends Controller
     {
 
         $request->validate([
-            'username' => 'required|alpha_num|min:5|max:25',
+            'username' => 'required|regex:/^[a-zA-Z0-9 ]*$/|min:5|max:25',
             'email' => 'required|email|unique:users|email:dns',
             'password' => [
                 'required',
@@ -41,7 +41,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|unique:users|email:dns',
+            'email' => 'required|email:dns',
             'password' => 'required',
         ]);
 
@@ -61,8 +61,8 @@ class UserController extends Controller
         $user = auth()->user();
 
         $request->validate([
-            'username' => 'required|alpha_num|min:5|max:25',
-            'email' => 'required|email|unique:users|email:dns',
+            'username' => 'required|regex:/^[a-zA-Z0-9 ]*$/|min:5|max:25',
+            'email' => 'required|email|unique:users,email,'.$user->id.'|email:dns',
         ]);
 
         $new_username = $request->username;
@@ -71,9 +71,9 @@ class UserController extends Controller
         $user = User::findOrFail($user->id);
 
         $user->username = $new_username;
-        if($user->email != $new_email) {
-            $user->email = $new_email;
-        }
+        
+
+        $user->email = $new_email;
         $user->updated_at = now();
 
         $user->save();

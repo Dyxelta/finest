@@ -12,11 +12,25 @@ import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-    wallet_name: Yup.string().required("Wallet name is required"),
-    wallet_balance: Yup.number()
-        .typeError("Balance must be number")
-        .required("Wallet balance is required"),
-    description: Yup.string(),
+    new_password: Yup.string()
+        .matches(
+            /[A-Z]+/,
+            "Password must contain at least one uppercase letter"
+        )
+        .matches(
+            /[a-z]+/,
+            "Password must contain at least one lowercase letter"
+        )
+        .matches(/[0-9]+/, "Password must contain at least one digit")
+        .matches(
+            /[!@#$%^&*()_,.?":{}|<>]+/,
+            "Password must contain at least one special character"
+        )
+        .min(8, "Password must be at least 8 characters")
+        .required("Password is required"),
+    confirm_password: Yup.string()
+        .oneOf([Yup.ref("new_password"), null], "Passwords must match")
+        .required("Confirm password is required"),
 });
 
 export default function ChangePasswordPopup({
@@ -41,23 +55,35 @@ export default function ChangePasswordPopup({
     const closeModal = () => {
         setLoading(false);
         onClose();
-        showSuccessModal("Success", "Wallet has been created successfully");
+        showSuccessModal("Success", "Password has been changed successfully");
     };
 
     const close = () => {
-        setLoading(true);
-        put(route("editPassword"), {
-            onError: (errors) => {
-                if (errors.current_password) {
-                    openModal(errors.current_password);
-                } else if (errors.new_password) {
-                    openModal(errors.new_password);
-                } else if (errors.confirm_password) {
-                    openModal(errors.confirm_password);
-                }
-            },
-            onSuccess: () => closeModal(),
-        });
+
+        const handleSubmit = () => {
+            setLoading(true);
+            put(route("editPassword"), {
+                onError: (errors) => {
+                    if (errors.current_password) {
+                        openModal(errors.current_password);
+                    } else if (errors.new_password) {
+                        openModal(errors.new_password);
+                    } else if (errors.confirm_password) {
+                        openModal(errors.confirm_password);
+                    }
+                },
+                onSuccess: () => closeModal(),
+            });
+        };
+
+        showSuccessModal(
+            "Confirm",
+            "Are you sure you want to change this account's password?",
+            () => handleSubmit(),
+            undefined,
+            true,
+            true
+        );
     };
     const empty = () => {
         onClose();
@@ -113,7 +139,8 @@ export default function ChangePasswordPopup({
                         >
                             <Button
                                 className="bg-white-primary p-3 rounded-md text-primary header-4"
-                                onClick={onClose}>
+                                onClick={onClose}
+                            >
                                 <IoIosArrowBack />
                             </Button>
                             <div className="flex flex-col">
@@ -196,18 +223,18 @@ export default function ChangePasswordPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomField
-                                                id="current_password"
-                                                name="current_password"
+                                                id="confirm_password"
+                                                name="confirm_password"
                                                 placeholder="Confirm your new password"
                                                 type="password"
                                                 className="w-full mt-1 resize-none"
                                                 onChange={(e) => {
                                                     setFieldValue(
-                                                        "current_password",
+                                                        "confirm_password",
                                                         e.target.value
                                                     );
                                                     setData(
-                                                        "current_password",
+                                                        "confirm_password",
                                                         e.target.value
                                                     );
                                                 }}

@@ -96,34 +96,41 @@ const Sidebar = ({ openNav, setOpenNav }) => {
             <div className="h-screen w-full bg-light flex flex-col justify-between ">
                 <div>
                     <div className="relative">
-                        <div
-                            className="flex items-center gap-2 p-4 border-b-2 border-off-white relative"
-                            onClick={() => setOpenProfile(!openProfile)}
-                        >
-                            <div className="p-[10px] bg-darker-primary w-fit rounded-md">
-                                <CiUser size={24} color="#FDFDFD" />
-                            </div>
+                        <div className="flex items-center gap-2 p-4 border-b-2 border-off-white relative justify-between w-full">
                             <div
-                                className={`transition-all ease-in-out overflow-hidden w-full ${
-                                    openNav
-                                        ? "w-full opacity-100 delay-300  duration-500"
-                                        : "w-[0] opacity-0 duration-100"
-                                }`}
-                                style={{
-                                    minWidth: openNav ? "max-content" : "auto",
-                                }}
+                                className="flex items-center gap-2  border-off-white relative w-full"
+                                onClick={() => setOpenProfile(openNav ?  !openProfile : false)}
                             >
-                                <div className="button">{user?.username}</div>
-                                <div className="sub-body-14 text-grey">
-                                    {user?.email}
+                                <div className="p-[10px] bg-darker-primary w-fit rounded-md">
+                                    <CiUser size={24} color="#FDFDFD" />
                                 </div>
-                            </div>
-                            <div
-                                className={`mr-1 text-[18px] transition-all duration-300 opacity-0 ${
-                                    openProfile ? "rotate-0" : "rotate-180"
-                                } ${openNav && "delay-200 opacity-100"}`}
-                            >
-                                {openNav && <IoIosArrowDown />}
+                                <div
+                                    className={`transition-all ease-in-out overflow-hidden ${
+                                        openNav
+                                            ? "opacity-100 delay-300 duration-500"
+                                            : "opacity-0 duration-100"
+                                    }`}
+                                    style={{
+                                        width: openNav ? "auto" : "0",
+                                        minWidth: openNav
+                                            ? "max-content"
+                                            : "auto",
+                                    }}
+                                >
+                                    <div className="truncate sub-body-14-bold max-w-full">
+                                        {user?.username}
+                                    </div>
+                                    <div className="sub-body-14 text-grey max-w-full">
+                                        {user?.email}
+                                    </div>
+                                </div>
+                                <div
+                                    className={`mr-2 text-[18px] transition-all duration-300 opacity-0 ${
+                                        openProfile ? "rotate-0" : "rotate-180"
+                                    } ${openNav && "delay-200 opacity-100"}`}
+                                >
+                                    {openNav && <IoIosArrowDown />}
+                                </div>
                             </div>
 
                             <Button
@@ -144,6 +151,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                 )}
                             </Button>
                         </div>
+
                         <div className="absolute z-50 w-full mt-1 text-primary">
                             <Collapse open={openProfile}>
                                 <div className=" mx-auto w-[90%] border shadow-xl mb-8 bg-light rounded-xl">
