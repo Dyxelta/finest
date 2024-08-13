@@ -1,7 +1,9 @@
+import CustomDatePicker from "@/Components/CustomInput/CustomDatePicker";
 import CustomField from "@/Components/CustomInput/CustomField";
 import CustomLabel from "@/Components/CustomLabel";
 import Loader from "@/Components/Loader";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { formatDate } from "@/Helpers/helperFormat";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
@@ -10,14 +12,13 @@ import { Fragment, useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
-import { User } from "react-feather";
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     username: Yup.string()
         .min(5, "Username contains 5-25 letters")
         .max(25, "Username contains 5-25 letters")
-        .matches(/^[a-zA-Z0-9]*$/, "Username must be alphanumeric")
+        .matches(/^[a-zA-Z0-9 ]*$/, "Username must be alphanumeric")
         .required("Username is required"),
 });
 
@@ -29,47 +30,46 @@ export default function EditAccountPopup({
     user,
     onClose = () => {},
 }) {
-    
     const [loading, setLoading] = useState(false);
     const { setData, put,data } = useForm({
         username: user?.username,
         email: user?.email,
     });
 
-    useEffect(() => {
-        setData({
-            username: user?.username,
-            email: user?.email,
-        });
-    }, [user]);
-
-    const [error, setError] = useState();
-
-    const openModal = () => {
+    const openModal = (error) => {
         showErrorModal("Error", error);
+        setLoading(false);
     };
 
     const closeModal = () => {
-        setLoading(false)
+        setLoading(false);
         onClose();
         showSuccessModal("Success", "Wallet has been edited successfully");
     };
 
     const close = () => {
-        setLoading(true)
-        put(route("editWallet"), {
-            
-            onError: (errors) => {
-                if (errors.username) {
-                    openModal();
-                    setError(errors.username);
-                } else if (errors.email) {
-                    openModal();
-                    setError(errors.email);
-                }
-            },
-            onSuccess: () => closeModal(),
-        });
+        const handleSubmit = () => {
+            setLoading(true);
+            put(route("editProfile"), {
+                onError: (errors) => {
+                    if (errors.username) {
+                        openModal(errors.username);
+                    } else if (errors.email) {
+                        openModal(errors.email);
+                    }
+                },
+                onSuccess: () => closeModal(),
+            });
+        };
+
+        showSuccessModal(
+            "Confirm",
+            "Are you sure you want to edit this profile?",
+            () => handleSubmit(),
+            undefined,
+            true,
+            true
+        );
     };
 
     const maxWidthClass = {
@@ -121,19 +121,24 @@ export default function EditAccountPopup({
                         <div
                             className={`text-light px-2 py-3 flex items-center gap-2 border-b border-grey`}
                         >
-                            <div className="bg-white-primary p-3 rounded-md text-primary">
-                                <IoIosArrowBack size={32} />
-                            </div>
+                            <Button
+                                className="bg-white-primary p-3 rounded-md text-primary header-4"
+                                onClick={onClose}
+                            >
+                                <IoIosArrowBack />
+                            </Button>
                             <div className="flex flex-col">
                                 <h1 className="text-primary header-4">
                                     My Account
                                 </h1>
                             </div>
                         </div>
+
                         <Formik
                             initialValues={{
                                 username: user?.username || "",
                                 email: user?.email || "",
+                                createdDate: formatDate(user?.created_at),
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
@@ -151,8 +156,7 @@ export default function EditAccountPopup({
                                     className="font-roboto flex flex-col justify-center  w-full h-full"
                                 >
                                     <div className="flex flex-col justify-between bg-light px-2 sm:px-4 pt-3 md:pt-3 pb-2 md:pb-3 w-full rounded-md ">
-                                        
-                                    <FormGroup className="flex-1">
+                                        <FormGroup className="flex-1">
                                             <CustomLabel
                                                 labelFor="Username"
                                                 className="button text-primary"
@@ -201,7 +205,19 @@ export default function EditAccountPopup({
                                                 }}
                                             />
                                         </FormGroup>
-
+                                        <FormGroup className="flex-1">
+                                            <CustomLabel
+                                                labelFor="Created Date"
+                                                className="button text-primary"
+                                            />
+                                            <CustomDatePicker
+                                                className="w-fit"
+                                                calendarWidth="md:w-64 lg:w-96"
+                                                placeholder="Select Date"
+                                                selected={values?.createdDate}
+                                                disabled={true}
+                                            />
+                                        </FormGroup>
                                         <div className="p-4 w-full">
                                             <div className="w-full flex justify-end items-center">
                                                 {showCancel && (

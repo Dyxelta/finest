@@ -81,14 +81,14 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
                             >
                                 <Button
                                     type="button"
-                                    className="py-2 px-2 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all"
+                                    className="py-2 px-2 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"
                                 >
                                     <BiSolidPencil size={16} /> Edit
                                 </Button>
                             </Link>
                             <hr />
                             <Button
-                                className="py-2 px-2 w-full flex items-center gap-2 text-expense hover:bg-gray-100 hover:opacity-70 duration-300 transition-all"
+                                className="py-2 px-2 w-full flex items-center gap-2 text-expense hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"
                                 onClick={() => {
                                     setData("id", transaction?.id);
                                     deleteTransaction(transaction?.id);
@@ -112,13 +112,13 @@ export default function TransactionRecordsPage({
 }) {
     const [pagination, setPagination] = useState(1);
     const [category, setCategory] = useState("Income");
-    const [selectedWallet, setSelectedWallet] = useState("All1");
+    const [selectedWallet, setSelectedWallet] = useState("All Wallet");
 
     let getCurrentStartSlice = 1 * ((pagination - 1) * 10);
     let getCurrentEndSlice = pagination * 10;
 
     const allWallet = {
-        id: "All1",
+        id: "All Wallet",
         wallet_name: "All Wallet",
     };
     const initialWallets = [allWallet, ...wallets];
@@ -165,7 +165,7 @@ export default function TransactionRecordsPage({
     };
 
     const getFilteredTransactions = transactions.filter((transaction) =>
-        selectedWallet === "All1"
+        selectedWallet === "All Wallet"
             ? transaction &&
               (category === "Income"
                   ? transaction.category.category_is_income === 1
@@ -214,7 +214,7 @@ export default function TransactionRecordsPage({
                 <Formik
                     initialValues={{
                         defaultMonthValue: monthValue || "",
-                        defaultWallet: "All1",
+                        defaultWallet: "All Wallet",
                     }}
                     onSubmit={close}
                     enableReinitialize={true}

@@ -40,7 +40,7 @@ class TransactionController extends Controller
 
         $this->changeWalletBalance($wallet, $transactionAmount);
 
-        return redirect()->back()->with('form_reset', true);
+        return redirect()->intended(route('transactionPage'));
     }
 
     public function deleteTransaction(Transaction $transaction) {
@@ -85,7 +85,7 @@ class TransactionController extends Controller
 
         $transaction->save();
 
-        return redirect()->back();
+        return redirect()->intended(route('transactionPage'));
     }
 
     private function changeWalletBalance(Wallet $wallet, $amount) {

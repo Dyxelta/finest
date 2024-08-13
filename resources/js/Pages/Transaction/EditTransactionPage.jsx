@@ -1,4 +1,5 @@
-import MainSection from "@/Components/Transaction/AddTransaction/MainSection";
+
+import EditSection from "@/Components/Transaction/EditTransaction/EditSection";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
@@ -10,13 +11,15 @@ export default function AddTransactionPage({
     incomeCategories,
     transaction,
 }) {
-    const [selectedWallet, setSelectedWallet] = useState(wallets[0]);
+    const [selectedWallet, setSelectedWallet] = useState(transaction?.wallet);
 
     const walletOptions = wallets.map((wallet) => ({
         ...wallet,
         value: wallet?.id,
         label: wallet?.wallet_name,
     }));
+
+
 
     const categories = [
         {
@@ -47,7 +50,7 @@ export default function AddTransactionPage({
             <Head title="Edit Transaction" />
 
             <div className="flex flex-col-reverse md:flex-row w-full py-1 gap-4 ">
-                <MainSection
+                <EditSection
                     transaction={transaction}
                     selectedWallet={selectedWallet}
                     setSelectedWallet={setSelectedWallet}

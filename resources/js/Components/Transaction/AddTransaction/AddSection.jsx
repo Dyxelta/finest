@@ -27,8 +27,8 @@ const validationSchema = Yup.object().shape({
     transaction_date: Yup.date().required("Transaction date is required"),
 });
 
-const MainSection = ({
-    transaction,
+const AddSection = ({
+
     selectedWallet,
     setSelectedWallet,
     walletOptions,
@@ -58,9 +58,9 @@ const MainSection = ({
     const { setData, data, post } = useForm({
         wallet_name: selectedWallet?.wallet_name,
         category_name: "",
-        transaction_amount: transaction?.transaction_amount,
-        transaction_date:transaction?.transaction_date,
-        transaction_note:transaction?.transaction_note,
+        transaction_amount: "",
+        transaction_date: "",
+        transaction_note: "",
     });
 
     const submitTransaction = () => {
@@ -215,10 +215,11 @@ const MainSection = ({
                 </div>
                 <Formik
                     initialValues={{
+                        wallet_name: selectedWallet?.wallet_name,
                         category_name: "",
-                        transaction_amount: Math.abs(transaction?.transaction_amount),
-                        transaction_date:transaction?.transaction_date,
-                        transaction_note:transaction?.transaction_note,
+                        transaction_amount: "",
+                        transaction_date: "",
+                        transaction_note: "",
                     }}
                     enableReinitialize={true}
                     validationSchema={validationSchema}
@@ -359,4 +360,4 @@ const MainSection = ({
     );
 };
 
-export default MainSection;
+export default AddSection;

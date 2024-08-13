@@ -28,7 +28,7 @@ export default function ChangePasswordPopup({
     onClose = () => {},
 }) {
     const [loading, setLoading] = useState(false);
-    const { setData, post } = useForm({
+    const { setData, put } = useForm({
         current_password: "",
         new_password: "",
         confirm_password: "",
@@ -46,14 +46,14 @@ export default function ChangePasswordPopup({
 
     const close = () => {
         setLoading(true);
-        post(route("createWallet"), {
+        put(route("editPassword"), {
             onError: (errors) => {
-                if (errors.wallet_balance) {
-                    openModal(errors.wallet_balance);
-                } else if (errors.wallet_balance) {
-                    openModal(errors.wallet_balance);
-                } else if (errors.description) {
-                    openModal(errors.description);
+                if (errors.current_password) {
+                    openModal(errors.current_password);
+                } else if (errors.new_password) {
+                    openModal(errors.new_password);
+                } else if (errors.confirm_password) {
+                    openModal(errors.confirm_password);
                 }
             },
             onSuccess: () => closeModal(),
@@ -111,9 +111,11 @@ export default function ChangePasswordPopup({
                         <div
                             className={`text-light px-2 py-3 flex items-center gap-2 border-b border-grey`}
                         >
-                            <div className="rounded-md text-primary">
-                                <IoIosArrowBack size={32} />
-                            </div>
+                            <Button
+                                className="bg-white-primary p-3 rounded-md text-primary header-4"
+                                onClick={onClose}>
+                                <IoIosArrowBack />
+                            </Button>
                             <div className="flex flex-col">
                                 <h1 className="text-primary header-4">
                                     Change Password
@@ -122,9 +124,9 @@ export default function ChangePasswordPopup({
                         </div>
                         <Formik
                             initialValues={{
-                                wallet_name: "",
-                                wallet_balance: "",
-                                description: "",
+                                current_password: "",
+                                new_password: "",
+                                confirm_password: "",
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}

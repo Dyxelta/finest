@@ -41,7 +41,7 @@ const PaginationTransaction = ({ pageLength, setPagination, pagination }) => {
             {pages.map((page, index) => (
                 <Button
                     key={index}
-                    className={`   rounded-full sub-body-14 h-8 w-8 md:w-10 md:h-10 flex justify-center items-center transition-all duration-300 text-primary ${
+                    className={`   rounded-2xl sub-body-14 h-8 w-8 md:w-10 md:h-10 flex justify-center items-center transition-all duration-300 text-primary ${
                         pagination === page
                             ? "text-white bg-primary"
                             : "bg-whitet text-primary "

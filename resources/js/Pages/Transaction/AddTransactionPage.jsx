@@ -1,4 +1,5 @@
-import MainSection from "@/Components/Transaction/AddTransaction/MainSection";
+import AddSection from "@/Components/Transaction/AddTransaction/AddSection";
+import MainSection from "@/Components/Transaction/AddTransaction/AddSection";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
@@ -46,7 +47,7 @@ export default function AddTransactionPage({
             <Head title="Add Transaction" />
 
             <div className="flex flex-col-reverse md:flex-row w-full py-1 gap-4 ">
-                <MainSection
+                <AddSection
                     selectedWallet={selectedWallet}
                     setSelectedWallet={setSelectedWallet}
                     walletOptions={walletOptions}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BiWallet } from "react-icons/bi";
+import { BiCalendar, BiWallet } from "react-icons/bi";
 import { TbReceipt } from "react-icons/tb";
 
 import CustomField from "@/Components/CustomInput/CustomField";
@@ -17,6 +17,8 @@ import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Link, useForm } from "@inertiajs/react";
 import moment from "moment";
 import * as Yup from "yup";
+import { BsExclamation } from "react-icons/bs";
+import { formatDate, formatToRupiah } from "@/Helpers/helperFormat";
 
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
@@ -25,37 +27,45 @@ const validationSchema = Yup.object().shape({
     transaction_date: Yup.date().required("Transaction date is required"),
 });
 
-const FirstSection = ({
-    classname,
+const EditSection = ({
+    transaction,
     selectedWallet,
     setSelectedWallet,
     walletOptions,
     categories,
 }) => {
     const [loading, setLoading] = useState(false);
-    const [startDate, setStartDate] = useState(new Date());
 
     const openModal = (error) => {
         showErrorModal("Error", error);
         setLoading(false);
     };
 
-    const closeModal = () => {
-        setLoading(false);
-        showSuccessModal("Success", "Transaction has been added successfully");
+    const handleRefresh = () => {
+        window.location.reload();
     };
 
-    const { setData, data, post } = useForm({
+    const closeModal = () => {
+        setLoading(false);
+        showSuccessModal(
+            "Success",
+            "Transaction has been Edited successfully",
+            () => handleRefresh()
+        );
+    };
+
+    const { setData, data, put } = useForm({
+        id:transaction?.id,
         wallet_name: selectedWallet?.wallet_name,
-        category_name: "",
-        transaction_amount: "",
-        transaction_date: "",
-        transaction_note: "",
+        category_name: transaction?.category?.category_name,
+        transaction_amount: Math.abs(transaction?.transaction_amount),
+        transaction_date: transaction?.transaction_date,
+        transaction_note: transaction?.transaction_note,
     });
 
     const submitTransaction = () => {
         setLoading(true);
-        post(route("createTransaction"), {
+        put(route("editTransaction"), {
             onError: (errors) => {
                 if (errors.wallet_name) {
                     openModal(errors.wallet_name);
@@ -72,8 +82,10 @@ const FirstSection = ({
     };
 
     return (
-        <div className={`${classname} `}>
-            <div className="bg-light px-4 md:px-6 w-full rounded-xl py-4  text-primary">
+        <div
+            className={`w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:grid-rows-4 gap-3`}
+        >
+            <div className="bg-light px-4 md:px-6 w-full rounded-xl py-4  text-primary col-span-1 lg:col-span-3 row-span-1">
                 <div className="flex items-center gap-4">
                     <div className="rounded-md text-[32px] p-2 bg-lighter-primary ">
                         <BiWallet />
@@ -85,7 +97,7 @@ const FirstSection = ({
                         </div>
                     </div>
                 </div>
-                <div className="mt-4 w-full md:w-1/2">
+                <div className="mt-4 w-full lg:w-1/2">
                     <CustomSelectInput
                         placeholder={"Select Wallet"}
                         defaultValue={
@@ -107,45 +119,142 @@ const FirstSection = ({
                 </div>
             </div>
 
-            <div className="bg-light px-4 md:px-6 w-full rounded-xl py-4 text-primary mt-2">
+            <div
+                className={` bg-light py-4  rounded-xl px-4 md:px-6 text-primary h-fit col-span-1 lg:col-span-2 row-span-2`}
+            >
+                <div className="flex items-center gap-4">
+                    <div
+                        className={`flex items-center justify-center text-[40px] bg-lighter-primary rounded-md text-primary`}
+                    >
+                        <BsExclamation />
+                    </div>
+                    <div className="text-primary header-5 md:header-4 ">
+                        Wallet Information
+                    </div>
+                </div>
+                <div>
+                    <Formik
+                        initialValues={{
+                            wallet_name: transaction?.wallet?.wallet_name,
+                            created_date: formatDate(
+                                transaction?.wallet?.created_at
+                            ),
+                        }}
+                        enableReinitialize
+                    >
+                        {() => (
+                            <>
+                                <FormGroup className="mt-4">
+                                    <CustomLabel
+                                        labelFor="Wallet Name"
+                                        className="button text-primary"
+                                    />
+
+                                    <CustomField
+                                        id="wallet_name"
+                                        name="wallet_name"
+                                        type="email"
+                                        className="w-full mt-1"
+                                        icon={
+                                            <BiWallet size={18} color="grey" />
+                                        }
+                                        disabled
+                                    />
+                                </FormGroup>{" "}
+                                <FormGroup className="mt-2">
+                                    <CustomLabel
+                                        labelFor="Created Date"
+                                        className="button text-primary"
+                                    />
+
+                                    <CustomField
+                                        id="created_date"
+                                        name="created_date"
+                                        type="email"
+                                        className="w-full mt-1"
+                                        icon={
+                                            <BiCalendar
+                                                size={18}
+                                                color="grey"
+                                            />
+                                        }
+                                        disabled
+                                    />
+                                </FormGroup>
+                            </>
+                        )}
+                    </Formik>
+                    <div className="border-t-2 mt-8 py-2">
+                        <div className="flex items-center justify-between">
+                            <div className="header-5">Balance:</div>
+                            <div
+                                className={`header-5-light ${
+                                    selectedWallet?.wallet_balance <= 0 &&
+                                    "text-expense"
+                                }`}
+                            >
+                                {formatToRupiah(selectedWallet?.wallet_balance)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+
+            <div className="bg-light px-4 md:px-6 w-full rounded-xl py-4 text-primary mt-2 col-span-1 lg:col-span-3 row-span-3">
                 <div className="flex items-center gap-4">
                     <div className="rounded-md text-[32px] p-2 bg-lighter-primary ">
                         <TbReceipt />
                     </div>
                     <div className="">
-                        <div className="header-4">Insert Transaction</div>
+                        <div className="header-4">Edit Transaction</div>
                         <div className="text-grey">
-                            Add your expense or income{" "}
+                            Edit your expense or income{" "}
                         </div>
                     </div>
                 </div>
                 <Formik
                     initialValues={{
-                        wallet_name: selectedWallet?.wallet_name,
-                        category_name: "",
-                        transaction_amount: "",
-                        transaction_date: "",
-                        transaction_note: "",
+                        wallet_name:selectedWallet?.wallet_name ?? "",
+                        category_name: transaction?.category?.category_name ?? "",
+                        transaction_amount: Math.abs(
+                            transaction?.transaction_amount
+                        ) ?? "",
+                        transaction_date: transaction?.transaction_date ?? "",
+                        transaction_note: transaction?.transaction_note ?? "",
                     }}
                     enableReinitialize={true}
                     validationSchema={validationSchema}
                     onSubmit={submitTransaction}
                 >
                     {({
-                        errors,
-                        touched,
+                   
                         setFieldValue,
                         values,
                         handleSubmit,
+                        errors
                     }) => (
+
                         <Form onSubmit={handleSubmit}>
-                            <FormGroup className="w-full sm:flex gap-2 mt-4">
+                            <FormGroup className="w-full flex flex-col lg:flex-row gap-2 mt-4">
                                 <FormGroup className="flex-1">
                                     <CustomLabel
                                         labelFor="Transaction Category"
                                         className="button text-primary"
                                     />
+                            
                                     <CustomSelectCategories
+                                        defaultValue={
+                                            values?.category_name
+                                                ? {
+                                                      value: values?.category_name,
+                                                      label: values?.category_name,
+                                                  }
+                                                : {
+                                                      value: "",
+                                                      label: "",
+                                                  }
+                                        }
                                         options={categories}
                                         onChange={(e) => {
                                             setFieldValue(
@@ -216,7 +325,7 @@ const FirstSection = ({
                                 />
                                 <CustomDatePicker
                                     className="w-fit"
-                                    calendarWidth="w-80 md:w-96"
+                                    calendarWidth="md:w-64 lg:w-96"
                                     placeholder="Select Date"
                                     selected={values?.transaction_date}
                                     onChange={(e) => {
@@ -227,11 +336,12 @@ const FirstSection = ({
                                         );
                                     }}
                                 />
-                                {console.log(data, "sduifhsduifshodif")}
                             </FormGroup>
-                            <div className="p-4 w-full">
-                                <div className="w-full flex justify-end items-center">
+                            {console.log(errors,"dfjigdfijgjdfigo")}
+                            <div className="lg:p-4 w-full">
+                                <div className="w-full flex justify-end items-center lg:mt-6 mt-4">
                                     <Button
+                                        type="button"
                                         className={`self-end mt-2  border-expense border px-6 py-[7px] rounded-md body mr-4 text-expense transition-colors duration-500 hover:bg-expense hover:text-light`}
                                     >
                                         <Link href={route("transactionPage")}>
@@ -266,4 +376,4 @@ const FirstSection = ({
     );
 };
 
-export default FirstSection;
+export default EditSection;

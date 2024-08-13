@@ -1,27 +1,34 @@
+import { Link, usePage } from "@inertiajs/react";
+import { Card, CardBody, Collapse, Typography } from "@material-tailwind/react";
 import "boxicons";
-import { MdDashboard } from "react-icons/md";
-import { CiSquarePlus, CiUser } from "react-icons/ci";
-import { RxLoop } from "react-icons/rx";
-import { BsGraphUp } from "react-icons/bs";
-import { GrHistory } from "react-icons/gr";
-import { LuClipboardList } from "react-icons/lu";
-import { FaWallet, FaMoneyBillWave } from "react-icons/fa";
 import { useState } from "react";
-import { IoIosLogOut } from "react-icons/io";
+import { Lock } from "react-feather";
+import { BiLock, BiSolidPencil } from "react-icons/bi";
+import { BsGraphUp } from "react-icons/bs";
+import { CiLock, CiSquarePlus, CiUser } from "react-icons/ci";
+import { FaMoneyBillWave, FaWallet } from "react-icons/fa";
+import { GrHistory } from "react-icons/gr";
+import { IoIosArrowDown, IoIosLogOut } from "react-icons/io";
+import { LuClipboardList } from "react-icons/lu";
+import { MdDashboard } from "react-icons/md";
+import { RxLoop } from "react-icons/rx";
 import {
-    TbCircleArrowUpRightFilled,
     TbCircleArrowUpLeftFilled,
+    TbCircleArrowUpRightFilled,
 } from "react-icons/tb";
 import { Button } from "reactstrap";
-
-import { Link } from "@inertiajs/react";
+import EditAccountPopup from "../Modal/Popup/EditAccountPopup";
+import ChangePasswordPopup from "../Modal/Popup/ChangePasswordPopup";
 
 const Sidebar = ({ openNav, setOpenNav }) => {
     const changeWidth = [
         "max-w-[270px]",
         "left-[-82px] md:left-0 max-w-[80px]",
     ];
-    const [activeMenu, setActiveMenu] = useState();
+    const { user } = usePage().props.auth;
+    const [openProfile, setOpenProfile] = useState(false);
+    const [openEditProfile, setOpenEditProfile] = useState(false);
+    const [openChangePassword, setOpenChangePassword] = useState(false);
     const menuArray = [
         {
             Title: "Menus",
@@ -79,6 +86,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
             ],
         },
     ];
+
     return (
         <nav
             className={`fixed transition-all duration-500 ease-in-out h-screen z-50 ${
@@ -87,39 +95,96 @@ const Sidebar = ({ openNav, setOpenNav }) => {
         >
             <div className="h-screen w-full bg-light flex flex-col justify-between ">
                 <div>
-                    <div className="flex items-center gap-2 p-4 border-b-2 border-off-white relative">
-                        <div className="p-[10px] bg-darker-primary w-fit rounded-md">
-                            <CiUser size={24} color="#FDFDFD" />
-                        </div>
+                    <div className="relative">
                         <div
-                            className={`transition-all ease-in-out overflow-hidden w-full ${
-                                openNav
-                                    ? "w-full opacity-100 delay-300  duration-500"
-                                    : "w-[0] opacity-0 duration-100"
-                            }`}
-                            style={{
-                                minWidth: openNav ? "max-content" : "auto",
-                            }}
+                            className="flex items-center gap-2 p-4 border-b-2 border-off-white relative"
+                            onClick={() => setOpenProfile(!openProfile)}
                         >
-                            <div className="button">PisangBeruntung655</div>
-                            <div className="sub-body-14 text-grey">
-                                williamtan@gmail.com
+                            <div className="p-[10px] bg-darker-primary w-fit rounded-md">
+                                <CiUser size={24} color="#FDFDFD" />
                             </div>
+                            <div
+                                className={`transition-all ease-in-out overflow-hidden w-full ${
+                                    openNav
+                                        ? "w-full opacity-100 delay-300  duration-500"
+                                        : "w-[0] opacity-0 duration-100"
+                                }`}
+                                style={{
+                                    minWidth: openNav ? "max-content" : "auto",
+                                }}
+                            >
+                                <div className="button">{user?.username}</div>
+                                <div className="sub-body-14 text-grey">
+                                    {user?.email}
+                                </div>
+                            </div>
+                            <div
+                                className={`mr-1 text-[18px] transition-all duration-300 opacity-0 ${
+                                    openProfile ? "rotate-0" : "rotate-180"
+                                } ${openNav && "delay-200 opacity-100"}`}
+                            >
+                                {openNav && <IoIosArrowDown />}
+                            </div>
+
+                            <Button
+                                onClick={() => {
+                                    setOpenNav(!openNav);
+                                    setOpenProfile(false);
+                                }}
+                                className={`text-darker-primary absolute top-[50%] ${
+                                    openNav
+                                        ? "right-[-20px]"
+                                        : "right-[-50px] md:right-[-20px]"
+                                } translate-y-[-50%] p-1 bg-white rounded-full border-e-2 `}
+                            >
+                                {openNav ? (
+                                    <TbCircleArrowUpRightFilled size={30} />
+                                ) : (
+                                    <TbCircleArrowUpLeftFilled size={30} />
+                                )}
+                            </Button>
                         </div>
-                        <Button
-                            onClick={() => setOpenNav(!openNav)}
-                            className={`text-darker-primary absolute top-[50%] ${
-                                openNav
-                                    ? "right-[-20px]"
-                                    : "right-[-50px] md:right-[-20px]"
-                            } translate-y-[-50%] p-1 bg-white rounded-full border-e-2 `}
-                        >
-                            {openNav ? (
-                                <TbCircleArrowUpRightFilled size={30} />
-                            ) : (
-                                <TbCircleArrowUpLeftFilled size={30} />
-                            )}
-                        </Button>
+                        <div className="absolute z-50 w-full mt-1 text-primary">
+                            <Collapse open={openProfile}>
+                                <div className=" mx-auto w-[90%] border shadow-xl mb-8 bg-light rounded-xl">
+                                    <Button
+                                        className="px-5 py-3 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"
+                                        onClick={() => setOpenEditProfile(true)}
+                                    >
+                                        <BiSolidPencil size={16} /> Edit Profile
+                                        <EditAccountPopup
+                                            show={openEditProfile}
+                                            maxWidth="md"
+                                            onClose={() =>
+                                                setOpenEditProfile(false)
+                                            }
+                                            user={user}
+                                            showCancel={false}
+                                        />
+                                    </Button>
+
+                                    <hr />
+                                    <Button
+                                        className="px-5  py-3 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"
+                                        onClick={() =>
+                                            setOpenChangePassword(true)
+                                        }
+                                    >
+                                        <CiLock size={18} />
+                                        Change Password
+                                        <ChangePasswordPopup
+                                            show={openChangePassword}
+                                            maxWidth="md"
+                                            onClose={() =>
+                                                setOpenChangePassword(false)
+                                            }
+                                            user={user}
+                                            showCancel={false}
+                                        />
+                                    </Button>
+                                </div>
+                            </Collapse>
+                        </div>
                     </div>
                     <div className="px-4">
                         {menuArray.map((menu, index) => (
@@ -152,7 +217,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                             }  rounded-md  hover:bg-off-white `}
                                         >
                                             <h2
-                                                className={ 
+                                                className={
                                                     openNav
                                                         ? "hidden"
                                                         : " w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre text-gray-900 rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1"
@@ -180,7 +245,9 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                                             : "max-content",
                                                     }}
                                                 >
-                                                    {openNav? subMenu.Title : ''}
+                                                    {openNav
+                                                        ? subMenu.Title
+                                                        : ""}
                                                 </div>
                                             </div>
                                         </div>
