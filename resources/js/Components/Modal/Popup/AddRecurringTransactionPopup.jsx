@@ -117,7 +117,7 @@ export default function AddRecurringTransactionPopup({
                             className={`text-light px-2 py-3 flex items-center gap-2 border-b border-grey`}
                         >
                             <div className="bg-lighter-primary p-3 rounded-md text-primary">
-                                <TbReceipt size={24} />
+                                <TbReceipt size={32} />
                             </div>
                             <div className="flex flex-col">
                                 <h1 className="text-primary header-4">
@@ -298,7 +298,7 @@ export default function AddRecurringTransactionPopup({
                                                         <span>Loading...</span>
                                                     </div>
                                                 ) : (
-                                                    "Confirm"
+                                                    "Submit"
                                                 )}
                                             </PrimaryButton>
                                         </div>

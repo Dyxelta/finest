@@ -245,7 +245,7 @@ export default function AddWalletPopup({
                                                         </span>
                                                     </div>
                                                     ) : (
-                                                        "Confirm"
+                                                        "Submit"
                                                     )}
                                                 </PrimaryButton>
                                             </div>

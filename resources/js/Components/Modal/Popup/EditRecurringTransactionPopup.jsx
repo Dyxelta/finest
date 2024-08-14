@@ -1,7 +1,11 @@
+import CustomDatePicker from "@/Components/CustomInput/CustomDatePicker";
+import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import CustomField from "@/Components/CustomInput/CustomField";
+import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 import CustomLabel from "@/Components/CustomLabel";
 import Loader from "@/Components/Loader";
 import PrimaryButton from "@/Components/PrimaryButton";
+import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
@@ -10,6 +14,8 @@ import { Fragment, useEffect, useState } from "react";
 import { FaWallet } from "react-icons/fa";
 import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
+import { TbReceipt } from "react-icons/tb";
+import { LuWallet2 } from "react-icons/lu";
 
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
@@ -19,7 +25,7 @@ const validationSchema = Yup.object().shape({
     description: Yup.string(),
 });
 
-export default function EditWalletPopup({
+export default function EditRecurringTransactionPopup({
     headerColor,
     show = false,
     maxWidth = "2xl",
@@ -36,15 +42,6 @@ export default function EditWalletPopup({
         wallet_description: wallet?.wallet_description,
     });
 
-    useEffect(() => {
-        setData({
-            id: wallet?.id,
-            wallet_name: wallet?.wallet_name,
-            wallet_balance: wallet?.wallet_balance,
-            wallet_description: wallet?.wallet_description,
-        });
-    }, [wallet]);
-
     const [error, setError] = useState();
 
     const openModal = () => {
@@ -54,7 +51,7 @@ export default function EditWalletPopup({
     const closeModal = () => {
         setLoading(false)
         onClose();
-        showSuccessModal("Success", "Wallet has been edited successfully");
+        showSuccessModal("Success", "Recurring transaction has been edited successfully");
     };
 
     const close = () => {
@@ -127,23 +124,23 @@ export default function EditWalletPopup({
                             className={`text-light px-2 py-3 flex items-center gap-2 border-b border-grey`}
                         >
                             <div className="bg-lighter-primary p-3 rounded-md text-primary">
-                                <FaWallet size={24} />
+                                <TbReceipt size={32} />
                             </div>
                             <div className="flex flex-col">
                                 <h1 className="text-primary header-4">
-                                    Add Wallet
+                                    Edit Recurring Transaction
                                 </h1>
                                 <h5 className="text-grey sub-body-14">
-                                    Add New Wallet
+                                    Edit your existing recurring transaction
                                 </h5>
                             </div>
                         </div>
                         <Formik
                             initialValues={{
-                                wallet_name: wallet?.wallet_name || "",
-                                wallet_balance: wallet?.wallet_balance || "",
-                                wallet_description:
-                                    wallet?.wallet_description || "",
+                                category_name: "",
+                                transaction_amount: "",
+                                transaction_date: "",
+                                transaction_note: ""
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
@@ -161,42 +158,42 @@ export default function EditWalletPopup({
                                     className="font-roboto flex flex-col justify-center  w-full h-full"
                                 >
                                     {console.log(wallet, "sodiuhgiosdhfhsdihf")}
-                                    <div className="flex flex-col justify-between bg-light px-2 sm:px-4 pt-3 md:pt-3 pb-2 md:pb-3 w-full rounded-md ">
+                                    <div className="mt-5">
                                         <FormGroup className="w-full sm:flex  gap-2">
-                                            <FormGroup className="flex-1">
+                                        <FormGroup className="flex-1">
+                                            <div className="sm:flex gap-2 text-primary">
+                                                <LuWallet2 size={24}  />
                                                 <CustomLabel
-                                                    labelFor="Wallet Name"
+                                                    labelFor="Select Wallet"
                                                     className="button text-primary"
                                                 />
-                                                <CustomField
-                                                    id="wallet_name"
-                                                    name="wallet_name"
-                                                    placeholder="Name of the wallet"
-                                                    type="text"
-                                                    className="w-full mt-1"
-                                                    values={values?.wallet_name}
-                                                    onChange={(e) => {
-                                                        setFieldValue(
-                                                            "wallet_name",
-                                                            e.target.value
-                                                        );
-                                                        setData(
-                                                            "wallet_name",
-                                                            e.target.value
-                                                        );
-                                                    }}
-                                                />
-                                            </FormGroup>
+                                            </div>
+                                            <CustomSelectCategories
+                                            //harus diganti nanti
+                                                options={[{label:"test", value:"test"}]}
+                                                onChange={(e) => {
+                                                    setFieldValue(
+                                                        "category_name",
+                                                        e.value
+                                                    );
+                                                    setData(
+                                                        "category_name",
+                                                        e.value
+                                                    );
+                                                }}
+                                            />
+                                            <ErrorMessageInput name="category_name" />
+                                        </FormGroup>
 
                                             <FormGroup className="flex-1">
                                                 <CustomLabel
-                                                    labelFor="Initial Wallet Balance"
+                                                    labelFor="Amount"
                                                     className="button text-primary"
                                                 />
                                                 <CustomField
                                                     id="wallet_balance"
                                                     name="wallet_balance"
-                                                    placeholder="Input your starting balance"
+                                                    placeholder="Input the amount"
                                                     type="number"
                                                     className="w-full mt-1"
                                                     onChange={(e) => {
@@ -212,31 +209,104 @@ export default function EditWalletPopup({
                                                 />
                                             </FormGroup>
                                         </FormGroup>
+                                        
+                                        <FormGroup className="w-full sm:flex  gap-2">
+                                        <FormGroup>
+                                        <CustomLabel
+                                            labelFor="Date"
+                                            className="button text-primary"
+                                        />
+                                        <CustomDatePicker
+                                            className="w-fit"
+                                            calendarWidth="w-66 md:w-80"
+                                            placeholder="Select Date"
+                                            selected={values?.transaction_date}
+                                            onChange={(e) => {
+                                                setFieldValue(
+                                                    "transaction_date",
+                                                    e
+                                                );
+                                                setData(
+                                                    "transaction_date",
+                                                    moment(e).format(
+                                                        "YYYY-MM-DD"
+                                                    )
+                                                );
+                                            }}
+                                        />
+                                        </FormGroup>
 
-                                        <FormGroup className="  w-full">
+                                        <FormGroup className="flex-1">
                                             <CustomLabel
-                                                labelFor="Description"
+                                                labelFor="Transaction Category"
                                                 className="button text-primary"
                                             />
-                                            <CustomField
-                                                id="wallet_description"
-                                                name="wallet_description"
-                                                placeholder="Describe your wallet "
-                                                component="textarea"
-                                                className="w-full mt-1 resize-none"
-                                                rows="4"
-                                                cols="50"
+                                            <CustomSelectCategories
+                                            //harus diganti nanti
+                                                options={[{label:"test", value:"test"}]}
                                                 onChange={(e) => {
                                                     setFieldValue(
-                                                        "wallet_description",
-                                                        e.target.value
+                                                        "category_name",
+                                                        e.value
                                                     );
                                                     setData(
-                                                        "wallet_description",
-                                                        e.target.value
+                                                        "category_name",
+                                                        e.value
                                                     );
                                                 }}
                                             />
+                                            <ErrorMessageInput name="category_name" />
+                                        </FormGroup>
+                                        </FormGroup>
+
+                                        <FormGroup className="w-full sm:flex  gap-2">
+                                        <FormGroup className="flex-1">
+                                            <CustomLabel
+                                                labelFor="Period"
+                                                className="button text-primary"
+                                            />
+                                            <CustomSelectCategories
+                                            //harus diganti nanti
+                                                options={[{label:"test", value:"test"}]}
+                                                onChange={(e) => {
+                                                    setFieldValue(
+                                                        "category_name",
+                                                        e.value
+                                                    );
+                                                    setData(
+                                                        "category_name",
+                                                        e.value
+                                                    );
+                                                }}
+                                            />
+                                            <ErrorMessageInput name="category_name" />
+                                        </FormGroup>
+
+                                            <FormGroup className="w-1/2">
+                                                <CustomLabel
+                                                    labelFor="Note"
+                                                    className="button text-primary"
+                                                />
+                                                <CustomField
+                                                    id="wallet_description"
+                                                    name="wallet_description"
+                                                    placeholder="Describe your transaction"
+                                                    component="textarea"
+                                                    className="w-full mt-1 resize-none"
+                                                    rows="3"
+                                                    cols="50"
+                                                    onChange={(e) => {
+                                                        setFieldValue(
+                                                            "wallet_description",
+                                                            e.target.value
+                                                        );
+                                                        setData(
+                                                            "wallet_description",
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                />
+                                            </FormGroup>
                                         </FormGroup>
 
                                         <div className="p-4 w-full">
