@@ -124,7 +124,7 @@ class TransactionController extends Controller
 
         $transactions = Transaction::where('user_id', $userId)
             ->where('category_id', $categoryId)
-            ->orderBy('transaction_date', 'desc')->orderBy('transaction_date', 'desc')
+            ->orderBy('transaction_date', 'desc')
             ->get();
 
         return ['transactions' => $transactions];
