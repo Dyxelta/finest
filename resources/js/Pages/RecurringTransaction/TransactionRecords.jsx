@@ -104,7 +104,6 @@ export default function TransactionRecordsPage({
     auth,
     transactions,
     wallets,
-    currMonth,
 }) {
     return (
         <AuthenticatedLayout
