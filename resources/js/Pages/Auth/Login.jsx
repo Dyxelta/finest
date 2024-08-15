@@ -160,6 +160,21 @@ export default function Login() {
                                                             color="grey"
                                                         />
                                                     }
+                                                    onKeyPress={(event) => {
+                                                        if (
+                                                            event.key ===
+                                                            "Enter"
+                                                        ) {
+                                                            setData(
+                                                                "password",
+                                                                e.target.value
+                                                            );
+                                                            setFieldValue(
+                                                                "password",
+                                                                e.target.value
+                                                            );
+                                                        }
+                                                    }}
                                                     onChange={(e) => {
                                                         setData(
                                                             "password",

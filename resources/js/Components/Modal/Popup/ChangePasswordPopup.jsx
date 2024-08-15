@@ -49,6 +49,7 @@ export default function ChangePasswordPopup({
     });
 
     const openModal = (error) => {
+        setLoading(false)
         showErrorModal("Error", error);
     };
 

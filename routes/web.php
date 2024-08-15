@@ -108,7 +108,13 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-transaction/{transaction:id}', [TransactionController::class, 'deleteTransaction'])->name('deleteTransaction');
 
+    Route::get('/recurringTransaction', function(Request $request) {
+        $walletData = app(WalletController::class)->showAllWalletByUserID();
+        $transactionData = app(TransactionController::class)->showTransactionByMonth($request);
 
+        return Inertia::render('RecurringTransaction/TransactionRecords', array_merge($transactionData, $walletData));
+    })->name('recurringTransactionPage');
+    
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
