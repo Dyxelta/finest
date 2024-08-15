@@ -94,8 +94,8 @@ const Sidebar = ({ openNav, setOpenNav }) => {
             } w-full bg-light font-roboto `}
         >
             <div className="h-screen w-full bg-light flex flex-col justify-between ">
-                <div>
-                    <div className="relative">
+                <div className="w-full">
+                    <div className="relative w-full">
                         <div className="flex items-center gap-2 p-4 border-b-2 border-off-white relative justify-between w-full">
                             <div
                                 className="flex items-center gap-2  border-off-white relative w-full"
@@ -105,7 +105,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                     <CiUser size={24} color="#FDFDFD" />
                                 </div>
                                 <div
-                                    className={`transition-all ease-in-out overflow-hidden ${
+                                    className={`transition-all ease-in-out overflow-hidden w-full ${
                                         openNav
                                             ? "opacity-100 delay-300 duration-500"
                                             : "opacity-0 duration-100"
@@ -117,7 +117,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                             : "auto",
                                     }}
                                 >
-                                    <div className="truncate sub-body-14-bold max-w-full">
+                                    <div className="truncate sub-body-14-bold max-w-full w-[150px]">
                                         {user?.username}
                                     </div>
                                     <div className="sub-body-14 text-grey max-w-full">
@@ -125,7 +125,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                     </div>
                                 </div>
                                 <div
-                                    className={`mr-2 text-[18px] transition-all duration-300 opacity-0 ${
+                                    className={`mr-2 text-[18px] transition-all duration-300 opacity-0 ml-auto ${
                                         openProfile ? "rotate-0" : "rotate-180"
                                     } ${openNav && "delay-200 opacity-100"}`}
                                 >
