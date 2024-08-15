@@ -7,11 +7,11 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import { Form, Formik } from "formik";
 import { Fragment, useState } from "react";
-import { FaWallet } from "react-icons/fa";
 import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
+import { FaMoneyBillWave } from "react-icons/fa";
 
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
@@ -114,7 +114,7 @@ export default function AddBudgetPopup({
                             className={`text-light px-2 py-3 flex items-center gap-2 border-b border-grey`}
                         >
                             <div className="bg-lighter-primary p-3 rounded-md text-primary">
-                                <FaWallet size={24} />
+                                <FaMoneyBillWave size={32} />
                             </div>
                             <div className="flex flex-col">
                                 <h1 className="text-primary header-4">
@@ -154,7 +154,7 @@ export default function AddBudgetPopup({
                                                 <CustomField
                                                     id="wallet_name"
                                                     name="wallet_name"
-                                                    placeholder="Name of the wallet"
+                                                    placeholder="Name of the budget"
                                                     type="text"
                                                     className="w-full mt-1"
                                                     onChange={(e) => {
@@ -178,7 +178,7 @@ export default function AddBudgetPopup({
                                                 <CustomField
                                                     id="wallet_balance"
                                                     name="wallet_balance"
-                                                    placeholder="Input your starting balance"
+                                                    placeholder="Input your budget limit"
                                                     type="number"
                                                     className="w-full mt-1"
                                                     onChange={(e) => {
@@ -231,7 +231,7 @@ export default function AddBudgetPopup({
                                                 <CustomField
                                                     id="wallet_description"
                                                     name="wallet_description"
-                                                    placeholder="Describe your wallet "
+                                                    placeholder="Describe your budget "
                                                     component="textarea"
                                                     className="w-full mt-1 resize-none"
                                                     rows="4"
@@ -276,7 +276,7 @@ export default function AddBudgetPopup({
                                                             </span>
                                                         </div>
                                                     ) : (
-                                                        "Confirm"
+                                                        "Submit"
                                                     )}
                                                 </PrimaryButton>
                                             </div>

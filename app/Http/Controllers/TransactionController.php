@@ -7,7 +7,6 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
@@ -125,7 +124,7 @@ class TransactionController extends Controller
 
         $transactions = Transaction::where('user_id', $userId)
             ->where('category_id', $categoryId)
-            ->orderBy('transaction_date', 'desc')->orderBy('transaction_date', 'desc')
+            ->orderBy('transaction_date', 'desc')
             ->get();
 
         return ['transactions' => $transactions];

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Budget;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class BudgetController extends Controller
 {
@@ -18,7 +17,7 @@ class BudgetController extends Controller
         ]);
 
         $user = auth()->user();
-        
+
         Budget::create([
             'user_id' => $user->id,
             'category_id' => Category::firstWhere('category_name', $request->category_name)->id,
