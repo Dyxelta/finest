@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -62,7 +61,7 @@ class UserController extends Controller
 
         $request->validate([
             'username' => 'required|regex:/^[a-zA-Z0-9 ]*$/|min:5|max:25',
-            'email' => 'required|email|unique:users,email,'.$user->id.'|email:dns',
+            'email' => 'required|email|unique:users,email,' . $user->id . '|email:dns',
         ]);
 
         $new_username = $request->username;
@@ -71,7 +70,7 @@ class UserController extends Controller
         $user = User::findOrFail($user->id);
 
         $user->username = $new_username;
-        
+
 
         $user->email = $new_email;
         $user->updated_at = now();
@@ -84,7 +83,7 @@ class UserController extends Controller
         $user = auth()->user();
 
         $request->validate([
-            'current_password' => ['required', function ($value, $fail) use ($user) {
+            'current_password' => ['required', function ($attribute, $value, $fail) use ($user) {
                 if (!Hash::check($value, $user->password)) {
                     $fail('The current password is incorrect.');
                 }
@@ -98,19 +97,20 @@ class UserController extends Controller
                 'regex:/[0-9]/',
                 'regex:/[!@#$%^&*(),.?":{}|<>]/',
             ],
-            'confirm_password' => 'required_with:password|same:password',
+            'confirm_password' => 'required_with:new_password|same:new_password',
         ]);
 
-        $new_password = $request->password;
+        $new_password = $request->new_password;
+
 
         $user_data = User::findOrFail($user->id);
 
-        $user->password = $new_password;
-        $user->updated_at = now();
+        $user_data->password = Hash::make($new_password);
+        $user_data->updated_at = now();
 
         $user_data->save();
 
-        return response()->json(['message' => 'Password updated successfully.']);
+        return redirect()->back();
     }
 
     public function redirectWhenAppOpened()
