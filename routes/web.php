@@ -3,6 +3,7 @@
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RecurringTransactionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
@@ -107,6 +108,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/edit-transaction', [TransactionController::class, 'editTransaction'])->name('editTransaction');
 
     Route::delete('/delete-transaction/{transaction:id}', [TransactionController::class, 'deleteTransaction'])->name('deleteTransaction');
+
+    //Recurring transaction
+
+    Route::post('/create-recurring-transaction', [RecurringTransactionController::class, 'addRecurringTransaction'])->name('addRecurringTransaction');
 
 
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

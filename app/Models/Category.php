@@ -11,7 +11,8 @@ class Category extends Model
 
     protected $fillable = [
         'category_name',
-        'category_is_income'
+        'category_is_income',
+        'icon'
     ];
 
     public function Budget() {
