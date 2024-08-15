@@ -7,7 +7,6 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
