@@ -124,4 +124,13 @@ class RecurringTransactionController extends Controller
         $wallet->wallet_balance += $amount;
         $wallet->save();
     }
+
+    private function showRecurringTransactionByWallet(Request $request){
+        $userId = auth()->user()->id;
+        $walletId = $request->id;
+
+        $recurring_transaction = RecurringTransaction::where('user_id', $userId)->where('wallet_id', $walletId)->orderBy('id', 'asc')->with(['wallet', 'category'])->get();
+
+        return ['recurring_transaction' => $recurring_transaction];
+    }
 }

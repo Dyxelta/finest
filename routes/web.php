@@ -111,10 +111,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/recurringTransaction', function(Request $request) {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
-        $transactionData = app(TransactionController::class)->showTransactionByMonth($request);
+        $recurringTransactionData = app(RecurringTransactionController::class)->showRecurringTransactionByWallet($request);
         $categoryData = app(CategoryController::class)->showAllCategories();
 
-        return Inertia::render('RecurringTransaction/TransactionRecords', array_merge($transactionData, $walletData, $categoryData));
+        return Inertia::render('RecurringTransaction/TransactionRecords', array_merge($recurringTransactionData, $walletData, $categoryData));
     })->name('recurringTransactionPage');
     
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
