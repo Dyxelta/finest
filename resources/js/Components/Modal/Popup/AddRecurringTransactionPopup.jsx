@@ -34,14 +34,9 @@ export default function AddRecurringTransactionPopup({
 }) {
     const [loading, setLoading] = useState(false);
     const { setData, post } = useForm({
+        wallet_name: "",
         wallet_balance: "",
         wallet_description: "",
-
-        wallet_name: "",
-        category_name: "",
-        recurring_transaction_amount: "",
-        recurring_transaction_note: "",
-        recurring_transaction_date: ""
     });
 
     const openModal = (error) => {
@@ -56,15 +51,15 @@ export default function AddRecurringTransactionPopup({
 
     const close = () => {
         setLoading(true);
-        post(route("addRecurringTransaction"), {
+        post(route("createWallet"), {
             onError: (errors) => {
-                // if (errors.wallet_balance) {
-                //     openModal(errors.wallet_balance);
-                // } else if (errors.wallet_balance) {
-                //     openModal(errors.wallet_balance);
-                // } else if (errors.description) {
-                //     openModal(errors.description);
-                // }
+                if (errors.wallet_balance) {
+                    openModal(errors.wallet_balance);
+                } else if (errors.wallet_balance) {
+                    openModal(errors.wallet_balance);
+                } else if (errors.description) {
+                    openModal(errors.description);
+                }
             },
             onSuccess: () => closeModal(),
         });

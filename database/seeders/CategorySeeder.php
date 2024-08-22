@@ -73,7 +73,7 @@ class CategorySeeder extends Seeder
         DB::table('categories')->insert([
             'category_name' => 'Fitness',
             'category_is_income' => 0,
-            'icon' => 'dumbell',
+            'icon' => 'dumbbell',
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -97,7 +97,7 @@ class CategorySeeder extends Seeder
         DB::table('categories')->insert([
             'category_name' => 'Shopping',
             'category_is_income' => 0,
-            'icon' => 'shopping-bags',
+            'icon' => 'shopping-bag',
             'created_at' => now(),
             'updated_at' => now()
         ]);
