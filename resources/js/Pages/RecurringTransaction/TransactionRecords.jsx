@@ -10,7 +10,12 @@ import { Button, Table } from "reactstrap";
 
 import HeaderInfo from "@/Components/RecurringTransaction/HeaderInfo";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
-import { Formik } from "formik";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { CgNotes } from "react-icons/cg";
+import PrimaryButton from "@/Components/PrimaryButton";
+import { FiPlus } from "react-icons/fi";
+import "boxicons";
 
 const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
     const { delete: destroy, data, setData } = useForm({ id: "" });
@@ -104,7 +109,36 @@ export default function TransactionRecordsPage({
     auth,
     transactions,
     wallets,
+    expenseCategories,
+    incomeCategories,
 }) {
+    const [category, setCategory] = useState(0);
+
+    const carousel = useRef(null);
+
+    useEffect(() => {
+        const handleScroll = (e) => {
+            if (carousel.current) {
+                e.preventDefault();
+
+                carousel.current.scrollLeft += e.deltaY;
+            }
+        };
+
+
+        if (carousel.current) {
+            carousel.current.addEventListener("wheel", handleScroll);
+        }
+
+        return () => {
+            if (carousel.current) {
+                carousel.current.removeEventListener("wheel", handleScroll);
+            }
+        };
+    }, []);
+
+    const mergedCategories = [...expenseCategories, ...incomeCategories];
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -117,42 +151,107 @@ export default function TransactionRecordsPage({
             <Head title="Transaction Records" />
             <div className="w-full">
                 <HeaderInfo transactions={transactions} wallets={wallets} />
-                <Formik onSubmit={close} enableReinitialize={true}>
-                    {({ setFieldValue, values }) => (
-                        <>
-                            <div className="bg-white pt-3 mt-1 rounded-xl px-4 lg:px-10 flex flex-col-reverse md:flex-row md:justify-between"></div>
-                            <div className="w-full relative">
-                                <div className="overflow-x-auto ">
-                                    <Table className="min-w-full rounded-xl "> 
-                                        <thead>
-                                            <tr className="bg-white pt-2 mt-1 rounded-xl w-full flex justify-between items-center text-primary">
-                                                <th className="py-2 px-4 text-center w-[100px]  ">
-                                                    No
-                                                </th>
-                                                <th className="py-2 px-4 text-center w-[300px]  ">
-                                                    Transaction Category
-                                                </th>
-                                                <th className="py-2 px-4 text-center w-[300px] ">
-                                                    Note
-                                                </th>
-                                                <th className="py-2 px-4 text-center w-[200px]">
-                                                    Amount
-                                                </th>
-                                                <th className="py-2 px-4 text-center w-[150px]">
-                                                    Date
-                                                </th>
-                                                <th className="py-2 px-4 text-center w-[150px] ">
-                                                    Actions
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </Table>
+
+                <>
+                    <div className=" pt-3 mt-1  w-full  flex flex-col-reverse md:flex-row md:justify-between overflow-hidden">
+                        <motion.div
+                            ref={carousel}
+                            className="w-full flex items-center gap-4 overflow-x-auto whitespace-nowrap custom-scrollbar "
+                        >
+                            {mergedCategories.map((cat, index) => (
+                                <div
+                                    key={index}
+                                    className={`px-3 py-2 ${
+                                        category === index
+                                            ? "bg-white"
+                                            : "bg-gray-300"
+                                    } flex items-center min-w-[220px] rounded-t-xl gap-2`}
+                                    onClick={() => setCategory(index)}
+                                >
+                                    <div
+                                        className={`p-2 ${
+                                            category === index
+                                                ? " bg-primary text-light"
+                                                : "bg-lighter-primary text-primary "
+                                        } flex justify-center items-center w-[40px] h-[40px] rounded-md`}
+                                    >
+                                        <box-icon
+                                            name={cat.icon}
+                                            type="solid"
+                                            color={
+                                                category === index
+                                                    ? "white"
+                                                    : "#2D5074"
+                                            }
+                                        ></box-icon>
+                                    </div>
+                                    <div>
+                                        <div className="text-primary">
+                                            {cat.category_name}
+                                        </div>
+                                        <div className="text-grey sub-body-14">
+                                            {cat.category_is_income
+                                                ? "Income"
+                                                : "Expense"}
+                                        </div>
+                                    </div>
                                 </div>
+                            ))}
+                        </motion.div>
+                    </div>
+                    <div className="w-full bg-white px-4 md:px-6 py-3 flex justify-between rounded-b-xl">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-primary p-3 header-5 text-light rounded-md w-fit">
+                                <CgNotes />
                             </div>
-                        </>
-                    )}
-                </Formik>
+                            <div className="text-primary header-5">
+                                Transaction Details
+                            </div>
+                        </div>
+                        <div>
+                            <PrimaryButton
+                                className=" w-full gap-2 rounded-lg py-3 px-1 sm:px-4 md:px-8 button flex items-center"
+                                type="submit"
+                            >
+                                <div className="text-[14px] md:text-[20px]">
+                                    <FiPlus />
+                                </div>
+                                <div className="hidden md:block button">
+                                    Add Recurring Transaction
+                                </div>
+                            </PrimaryButton>
+                        </div>
+                    </div>
+                    <div className="w-full relative">
+                        <div className="overflow-x-auto ">
+                            <Table className="min-w-full rounded-xl ">
+                                <thead>
+                                    <tr className="bg-white pt-2 mt-1 rounded-xl w-full flex justify-between items-center text-primary">
+                                        <th className="py-2 px-4 text-center w-[100px]  ">
+                                            No
+                                        </th>
+                                        <th className="py-2 px-4 text-center w-[300px]  ">
+                                            Transaction Category
+                                        </th>
+                                        <th className="py-2 px-4 text-center w-[300px] ">
+                                            Note
+                                        </th>
+                                        <th className="py-2 px-4 text-center w-[200px]">
+                                            Amount
+                                        </th>
+                                        <th className="py-2 px-4 text-center w-[150px]">
+                                            Date
+                                        </th>
+                                        <th className="py-2 px-4 text-center w-[150px] ">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </Table>
+                        </div>
+                    </div>
+                </>
             </div>
         </AuthenticatedLayout>
     );

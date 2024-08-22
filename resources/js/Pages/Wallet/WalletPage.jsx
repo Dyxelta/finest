@@ -18,6 +18,7 @@ import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import logo from "../../../../public/image/app/Logo.png";
 import Left from "../../../../public/image/wallet/Left.png";
 import Right from "../../../../public/image/wallet/Right.png";
+import { motion } from "framer-motion";
 
 export default function Dashboard({ auth, wallets }) {
     const [selectedWallet, setSelectedWallet] = useState(wallets[0] ?? null);
@@ -140,7 +141,7 @@ export default function Dashboard({ auth, wallets }) {
                         className="inline-flex w-full h-full scrollbar-hide whitespace-nowrap scroll-smooth overflow-y-hidden"
                     >
                         {wallets?.map((wallet, index) => (
-                            <div
+                             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.8 }} 
                                 key={index}
                                 className={`min-w-[200px] md:min-w-[200px] h-full flex items-end rounded-3xl mx-2 transition-all duration-300 ${
                                     selectedIndex === index
@@ -215,7 +216,7 @@ export default function Dashboard({ auth, wallets }) {
                                         </Button>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
 
