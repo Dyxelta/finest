@@ -11,7 +11,7 @@ class WalletController extends Controller
         $request->validate([
             'wallet_name' => 'required|string',
             'wallet_balance' => 'required|numeric|min:1',
-            'wallet_description' => 'string|max:255'
+            'wallet_description' => 'nullable|string|max:255'
         ]);
 
         $user = auth()->user();
@@ -20,7 +20,7 @@ class WalletController extends Controller
             'user_id' => $user->id,
             'wallet_name' => $request->wallet_name,
             'wallet_balance' => $request->wallet_balance,
-            'wallet_description' => $request->wallet_description,
+            'wallet_description' => $request->wallet_description ?? '',
         ]);
 
         // return redirect('/wallets');
@@ -36,13 +36,13 @@ class WalletController extends Controller
         $request->validate([
             'wallet_name' => 'required|string',
             'wallet_balance' => 'required|numeric|min:1',
-            'wallet_description' => 'string|max:255'
+            'wallet_description' => 'nullable|string|max:255'
         ]);
 
         $walletId = $request->id;
         $walletName = $request->wallet_name;
         $walletBalance = $request->wallet_balance;
-        $walletDescription = $request->wallet_description;
+        $walletDescription = $request->wallet_description ?? '';
 
         $wallet = Wallet::findOrFail($walletId);
 

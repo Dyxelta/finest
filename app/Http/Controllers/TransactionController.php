@@ -16,7 +16,7 @@ class TransactionController extends Controller
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
             'transaction_amount' => 'required|numeric|min:1',
-            'transaction_note' => 'string|max:255',
+            'transaction_note' => 'nullable|string|max:255',
             'transaction_date' => 'required|date'
         ]);
 
@@ -33,7 +33,7 @@ class TransactionController extends Controller
             'wallet_id' => $wallet->id,
             'category_id' => $category->id,
             'transaction_amount' => $transactionAmount,
-            'transaction_note' => $request->transaction_note,
+            'transaction_note' => $request->transaction_note ?? '',
             'transaction_date' => $request->transaction_date,
         ]);
 
@@ -54,7 +54,7 @@ class TransactionController extends Controller
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
             'transaction_amount' => 'required|numeric|min:1',
-            'transaction_note' => 'string|max:255',
+            'transaction_note' => 'nullable|string|max:255',
             'transaction_date' => 'required'
         ]);
 
@@ -70,7 +70,7 @@ class TransactionController extends Controller
 
         $transactionAmount = $category->transaction_is_income ? $request->transaction_amount : -$request->transaction_amount;
 
-        $transactionNote = $request->transaction_note;
+        $transactionNote = $request->transaction_note ?? '';
         $transactionDate = $request->transaction_date;
 
         $transaction->wallet_id = $wallet->id;

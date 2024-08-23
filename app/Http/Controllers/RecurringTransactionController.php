@@ -18,7 +18,7 @@ class RecurringTransactionController extends Controller
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
             'recurring_transaction_amount' => 'required|numeric|min:1',
-            'recurring_transaction_note' => 'string|max:255|nullable',
+            'recurring_transaction_note' => 'nullable|string|max:255',
             'recurring_transaction_date' => 'required'
         ]);
 
@@ -35,7 +35,7 @@ class RecurringTransactionController extends Controller
             'wallet_id' => $wallet->id,
             'category_id' => $category->id,
             'recurring_transaction_amount' => $recurringTransactionAmount,
-            'recurring_transaction_note' => $request->recurring_transaction_note,
+            'recurring_transaction_note' => $request->recurring_transaction_note ?? '',
             'recurring_transaction_date' => $request->recurring_transaction_date,
         ]);
 
@@ -58,7 +58,7 @@ class RecurringTransactionController extends Controller
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
             'recurring_transaction_amount' => 'required|numeric|min:1',
-            'recurring_transaction_note' => 'string|max:255',
+            'recurring_transaction_note' => 'nullable|string|max:255',
             'recurring_transaction_date' => 'required'
         ]);
 
@@ -73,8 +73,8 @@ class RecurringTransactionController extends Controller
 
         $recurringTransactionAmount = $category->transaction_is_income ? $request->recurring_transaction_amount : -$request->recurring_transaction_amount;
 
-        $recurringTransactionNote = $request->transaction_note;
-        $recurringTransactionDate = $request->transaction_date;
+        $recurringTransactionNote = $request->recurring_transaction_note ?? '';
+        $recurringTransactionDate = $request->recurring_transaction_date;
 
         $recurringTransaction->wallet_id = $wallet->id;
         $recurringTransaction->category_id = $category->id;
@@ -111,7 +111,7 @@ class RecurringTransactionController extends Controller
             'wallet_id' => $recurringTransaction->wallet_id,
             'category_id' => $recurringTransaction->category_id,
             'transaction_amount' => $transactionAmount,
-            'transaction_note' => $recurringTransaction->recurring_transaction_note,
+            'transaction_note' => $recurringTransaction->recurring_transaction_note ?? '',
             'transaction_date' => $date,
         ]);
 
