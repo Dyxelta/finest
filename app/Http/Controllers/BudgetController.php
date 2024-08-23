@@ -17,10 +17,11 @@ class BudgetController extends Controller
         ]);
 
         $user = auth()->user();
+        $category = Category::where('category_name', $request->category_name)->firstOrFail();
 
         Budget::create([
             'user_id' => $user->id,
-            'category_id' => Category::firstWhere('category_name', $request->category_name)->id,
+            'category_id' => $category->id,
             'budget_name' => $request->budget_name,
             'budget_amount' => $request->budget_amount,
             'budget_description' => $request->budget_description

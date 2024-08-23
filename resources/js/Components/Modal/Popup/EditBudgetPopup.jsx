@@ -14,8 +14,8 @@ import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import { FaMoneyBillWave } from "react-icons/fa";
 
 const validationSchema = Yup.object().shape({
-    wallet_name: Yup.string().required("Wallet name is required"),
-    wallet_balance: Yup.number()
+    budget_name: Yup.string().required("Budget name is required"),
+    budget_amount: Yup.number()
         .typeError("Balance must be number")
         .required("Wallet balance is required"),
     description: Yup.string(),
@@ -30,10 +30,10 @@ export default function EditBudgetPopup({
     onClose = () => {},
 }) {
     const [loading, setLoading] = useState(false);
-    const { setData, post } = useForm({
-        wallet_name: "",
-        wallet_balance: "",
-        wallet_description: "",
+    const { setData, put } = useForm({
+        budget_name: "",
+        budget_amount: "",
+        budget_description: "",
     });
 
     const openModal = (error) => {
@@ -48,12 +48,12 @@ export default function EditBudgetPopup({
 
     const close = () => {
         setLoading(true);
-        post(route("createWallet"), {
+        put(route("editBudget"), {
             onError: (errors) => {
-                if (errors.wallet_balance) {
-                    openModal(errors.wallet_balance);
-                } else if (errors.wallet_balance) {
-                    openModal(errors.wallet_balance);
+                if (errors.budget_amount) {
+                    openModal(errors.budget_amount);
+                } else if (errors.budget_amount) {
+                    openModal(errors.budget_amount);
                 } else if (errors.description) {
                     openModal(errors.description);
                 }
@@ -127,8 +127,8 @@ export default function EditBudgetPopup({
                         </div>
                         <Formik
                             initialValues={{
-                                wallet_name: "",
-                                wallet_balance: "",
+                                budget_name: "",
+                                budget_amount: "",
                                 description: "",
                             }}
                             validationSchema={validationSchema}
@@ -152,18 +152,18 @@ export default function EditBudgetPopup({
                                                     className="button text-primary"
                                                 />
                                                 <CustomField
-                                                    id="wallet_name"
-                                                    name="wallet_name"
+                                                    id="budget_name"
+                                                    name="budget_name"
                                                     placeholder="Name of the budget"
                                                     type="text"
                                                     className="w-full mt-1"
                                                     onChange={(e) => {
                                                         setFieldValue(
-                                                            "wallet_name",
+                                                            "budget_name",
                                                             e.target.value
                                                         );
                                                         setData(
-                                                            "wallet_name",
+                                                            "budget_name",
                                                             e.target.value
                                                         );
                                                     }}
@@ -176,18 +176,18 @@ export default function EditBudgetPopup({
                                                     className="button text-primary"
                                                 />
                                                 <CustomField
-                                                    id="wallet_balance"
-                                                    name="wallet_balance"
+                                                    id="budget_amount"
+                                                    name="budget_amount"
                                                     placeholder="Input your budget limit"
                                                     type="number"
                                                     className="w-full mt-1"
                                                     onChange={(e) => {
                                                         setFieldValue(
-                                                            "wallet_balance",
+                                                            "budget_amount",
                                                             e.target.value
                                                         );
                                                         setData(
-                                                            "wallet_balance",
+                                                            "budget_amount",
                                                             e.target.value
                                                         );
                                                     }}
@@ -205,8 +205,12 @@ export default function EditBudgetPopup({
                                                     //harus diganti nanti
                                                     options={[
                                                         {
-                                                            label: "test",
-                                                            value: "test",
+                                                            label: "Transportation",
+                                                            value: "Transportation",
+                                                        },
+                                                        {
+                                                            label: "Shopping",
+                                                            value: "Shopping",
                                                         },
                                                     ]}
                                                     onChange={(e) => {
@@ -229,8 +233,8 @@ export default function EditBudgetPopup({
                                                     className="button text-primary"
                                                 />
                                                 <CustomField
-                                                    id="wallet_description"
-                                                    name="wallet_description"
+                                                    id="budget_description"
+                                                    name="budget_description"
                                                     placeholder="Describe your budget "
                                                     component="textarea"
                                                     className="w-full mt-1 resize-none"
@@ -238,11 +242,11 @@ export default function EditBudgetPopup({
                                                     cols="50"
                                                     onChange={(e) => {
                                                         setFieldValue(
-                                                            "wallet_description",
+                                                            "budget_description",
                                                             e.target.value
                                                         );
                                                         setData(
-                                                            "wallet_description",
+                                                            "budget_description",
                                                             e.target.value
                                                         );
                                                     }}
