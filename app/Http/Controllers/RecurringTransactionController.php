@@ -125,7 +125,7 @@ class RecurringTransactionController extends Controller
         $wallet->save();
     }
 
-    private function showRecurringTransactionByWallet(Request $request){
+    public function showRecurringTransactionByWallet(Request $request){
         $userId = auth()->user()->id;
         $walletId = $request->id;
 
