@@ -116,6 +116,17 @@ Route::middleware('auth')->group(function () {
 
         return Inertia::render('RecurringTransaction/TransactionRecords', array_merge($recurringTransactionData, $walletData, $categoryData));
     })->name('recurringTransactionPage');
+
+    Route::post('/create-recurring-transaction', [RecurringTransactionController::class, 'addRecurringTransaction'])->name('createRecurringTransaction');
+
+    Route::put('/edit-recurring-transaction', [RecurringTransactionController::class, 'editRecurringTransaction'])->name('editRecurringTransaction');
+
+    Route::delete('/delete-recurring-transaction/{recurringtransaction:id}', [RecurringTransactionController::class, 'deleteRecurringTransaction'])->name('deleteRecurringTransaction');
+
+    //budget
+    Route::post('/create-budget', [BudgetController::class, 'addBudget'])->name('addBudget');
+
+    Route::put('/edit-budget', [BudgetController::class, 'editBudget'])->name('editBudget');
     
 });
 
