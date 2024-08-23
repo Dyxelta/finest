@@ -2,21 +2,20 @@ import React, { useState } from "react";
 import CustomSelectInput from "../CustomInput/CustomSelectInput";
 import { Formik } from "formik";
 import CustomField from "../CustomInput/CustomField";
+import { formatToRupiah } from "@/Helpers/helperFormat";
 
-const HeaderInfo = ({ transactions, wallets, amount }) => {
-    const [selectedWallet, setSelectedWallet] = useState(wallets[0]);
-    
-    const walletOptions = wallets.map((wallet) => ({
-        value: wallet?.id,
-        label: wallet?.wallet_name,
-    }));
+const HeaderInfo = ({  walletOptions, selectedWallet,setSelectedWallet, amount}) => {
+
+
+  
 
     return (
         <div className="w-full bg-light rounded-xl py-2 text-primary">
             <Formik
                 initialValues={{
-                    amount: amount ?? "",
+                    amount: amount ? formatToRupiah(amount) : "",
                 }}
+                enableReinitialize
             >
                 {() => (
                     <div className="px-4 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4  py-3">
@@ -29,10 +28,10 @@ const HeaderInfo = ({ transactions, wallets, amount }) => {
                                 <CustomSelectInput
                                     placeholder={"Select Wallet"}
                                     defaultValue={
-                                        selectedWallet.wallet_name
+                                        selectedWallet
                                             ? {
-                                                  value: selectedWallet?.wallet_name,
-                                                  label: selectedWallet?.wallet_name,
+                                                  value: selectedWallet,
+                                                  label: selectedWallet,
                                               }
                                             : {
                                                   value: "",
@@ -42,7 +41,6 @@ const HeaderInfo = ({ transactions, wallets, amount }) => {
                                     options={walletOptions}
                                     onChange={(e) => {
                                         setSelectedWallet(e.value);
-                                        setPagination(1);
                                     }}
                                 />
                             </div>
@@ -53,7 +51,7 @@ const HeaderInfo = ({ transactions, wallets, amount }) => {
                             </div>
                             <div className="w-full mt-3">
                                 <CustomField
-                                    placeholder="Must be 8-20 Characters"
+                                    placeholder=""
                                     type="text"
                                     className="w-full mt-1"
                                     name="amount"

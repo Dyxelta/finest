@@ -29,14 +29,17 @@ export default function AddRecurringTransactionPopup({
     show = false,
     maxWidth = "2xl",
     showCancel = true,
-
+    categoryOptions,
+    walletOptions,
     onClose = () => {},
 }) {
     const [loading, setLoading] = useState(false);
     const { setData, post } = useForm({
         wallet_name: "",
-        wallet_balance: "",
-        wallet_description: "",
+        category_name: "",
+        recurring_transaction_amount: "",
+        recurring_transaction_date: "",
+        recurring_transaction_note: "",
     });
 
     const openModal = (error) => {
@@ -65,8 +68,9 @@ export default function AddRecurringTransactionPopup({
         });
     };
     const empty = () => {
-        onClose();
+     
     };
+
     const maxWidthClass = {
         sm: "sm:max-w-sm",
         md: "sm:max-w-md",
@@ -132,9 +136,9 @@ export default function AddRecurringTransactionPopup({
                             initialValues={{
                                 wallet_name: "",
                                 category_name: "",
-                                transaction_amount: "",
-                                transaction_date: "",
-                                transaction_note: "",
+                                recurring_transaction_amount: "",
+                                recurring_transaction_date: "",
+                                recurring_transaction_note: "",
                             }}
                             enableReinitialize={true}
                             validationSchema={validationSchema}
@@ -155,20 +159,20 @@ export default function AddRecurringTransactionPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomSelectCategories
-                                            //harus diganti nanti
-                                                options={[{label:"test", value:"test"}]}
+                       
+                                                options={walletOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(
-                                                        "category_name",
+                                                        "wallet_name",
                                                         e.value
                                                     );
                                                     setData(
-                                                        "category_name",
+                                                        "wallet_name",
                                                         e.value
                                                     );
                                                 }}
                                             />
-                                            <ErrorMessageInput name="category_name" />
+                                            <ErrorMessageInput name="wallet_name" />
                                         </FormGroup>
 
                                         <FormGroup className="flex-1">
@@ -184,11 +188,11 @@ export default function AddRecurringTransactionPopup({
                                                 className="w-full mt-1"
                                                 onChange={(e) => {
                                                     setFieldValue(
-                                                        "transaction_amount",
+                                                        "recurring_transaction_amount",
                                                         e.target.value
                                                     );
                                                     setData(
-                                                        "transaction_amount",
+                                                        "recurring_transaction_amount",
                                                         e.target.value
                                                     );
                                                 }}
@@ -209,11 +213,11 @@ export default function AddRecurringTransactionPopup({
                                             selected={values?.transaction_date}
                                             onChange={(e) => {
                                                 setFieldValue(
-                                                    "transaction_date",
+                                                    "recurring_transaction_date",
                                                     e
                                                 );
                                                 setData(
-                                                    "transaction_date",
+                                                    "recurring_transaction_date",
                                                     moment(e).format(
                                                         "YYYY-MM-DD"
                                                     )
@@ -228,8 +232,8 @@ export default function AddRecurringTransactionPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomSelectCategories
-                                            //harus diganti nanti
-                                                options={[{label:"test", value:"test"}]}
+                        
+                                                options={categoryOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(
                                                         "category_name",
@@ -260,11 +264,11 @@ export default function AddRecurringTransactionPopup({
                                             cols="50"
                                             onChange={(e) => {
                                                 setFieldValue(
-                                                    "transaction_note",
+                                                    "recurring_transaction_note",
                                                     e.target.value
                                                 );
                                                 setData(
-                                                    "transaction_note",
+                                                    "recurring_transaction_note",
                                                     e.target.value
                                                 );
                                             }}

@@ -25,7 +25,10 @@ const customStyles = {
             backgroundColor: "#CAD8E7",
         },
     }),
-
+    menu: (provided, _) => ({
+        ...provided,
+        zIndex: 9999,
+    }),
     menuList: (provided, _) => ({
         ...provided,
         "::-webkit-scrollbar": {
@@ -40,11 +43,15 @@ const customStyles = {
             borderRadius: "10px",
         },
     }),
+    menuPortal: (provided) => ({
+        ...provided,
+        zIndex: 9999, // Make sure the menuPortal has a high z-index as well
+    }),
 };
 
 const GroupHeading = (props) => (
     <div style={{ fontWeight: "bold", margin: "2px 0px 2px 10px" }}>
-        {console.log(props.children, "iosdjsdjifjsdifjospdjfsdijfsdf")}
+
         {props.children}
     </div>
 );
@@ -70,6 +77,7 @@ const MySelect = ({
         styles={customStyles}
         isSearchable={false}
         placeholder="Select Category"
+        menuPortalTarget={document.body} 
     />
 );
 

@@ -30,7 +30,7 @@ export default function EditRecurringTransactionPopup({
     show = false,
     maxWidth = "2xl",
     showCancel = true,
-    wallet,
+    selectedTransaction,
     onClose = () => {},
 }) {
     

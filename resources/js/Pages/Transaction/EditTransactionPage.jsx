@@ -1,4 +1,3 @@
-
 import EditSection from "@/Components/Transaction/EditTransaction/EditSection";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
@@ -18,8 +17,6 @@ export default function AddTransactionPage({
         value: wallet?.id,
         label: wallet?.wallet_name,
     }));
-
-
 
     const categories = [
         {

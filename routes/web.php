@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProfileController;
+
 use App\Http\Controllers\RecurringTransactionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -111,15 +111,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/recurringTransaction', function(Request $request) {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
-        $recurringTransactionData = app(RecurringTransactionController::class)->showRecurringTransactionByWallet($request);
+        $recurringTransactionData = app(RecurringTransactionController::class)->showRecurringTransactionByWallets($request);
         $categoryData = app(CategoryController::class)->showAllCategories();
 
         return Inertia::render('RecurringTransaction/TransactionRecords', array_merge($recurringTransactionData, $walletData, $categoryData));
     })->name('recurringTransactionPage');
     
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
