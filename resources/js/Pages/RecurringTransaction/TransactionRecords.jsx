@@ -34,11 +34,12 @@ const ViewTable = ({
 
     const deleteTransaction = (id) => {
         const onClose = () => {
-            destroy(route("deleteTransaction", id), {
+            console.log(data?.id,"8239472342893472389")
+            destroy(route("deleteRecurringTransaction", id), {
                 onSuccess: () => {
                     showSuccessModal(
                         "Success",
-                        "Transaction has been deleted successfully"
+                        "Recurring Transaction has been deleted successfully"
                     );
                 },
                 onError: () => {
@@ -87,8 +88,8 @@ const ViewTable = ({
                     >
                         <div className=" bg-white border rounded-md flex flex-col  shadow-lg">
                             <Button
-                                onClick={() => {
-                                    setSelectedTransaction(transaction);
+                                onClick={async() => {
+                                    await setSelectedTransaction(transaction);
                                     setOpenEditRecurringTransaction(true);
                                 }}
                                 type="button"
@@ -100,11 +101,12 @@ const ViewTable = ({
                             <hr />
                             <Button
                                 className="py-2 px-2 w-full flex items-center gap-2 text-expense hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"
-                                onClick={() => {
-                                    setData("id", transaction?.id);
+                                onClick={async() => {
+                                    await setData("id", transaction?.id);
                                     deleteTransaction(transaction?.id);
                                 }}
                             >
+                 
                                 <FaRegTrashCan size={16} /> Delete
                             </Button>
                         </div>
@@ -373,7 +375,7 @@ export default function TransactionRecordsPage({
                                 }
                                 categoryOptions={categoryOptions}
                                 walletOptions={walletOptions}
-                                selectedTransaction={selectedTransaction}
+                                selectedTransaction={selectedTransaction ?? []}
                             />
                         </Table>
                     </div>

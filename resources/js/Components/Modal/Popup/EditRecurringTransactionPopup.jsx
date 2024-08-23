@@ -10,7 +10,8 @@ import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import { Form, Formik } from "formik";
-import { Fragment, useState } from "react";
+import moment from "moment";
+import { Fragment, useEffect, useState } from "react";
 import { TbReceipt } from "react-icons/tb";
 import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
@@ -39,20 +40,34 @@ export default function EditRecurringTransactionPopup({
 }) {
     const [loading, setLoading] = useState(false);
     const { setData, put, data } = useForm({
+        id: selectedTransaction?.id,
         wallet_name: selectedTransaction?.wallet?.wallet_name,
-        category_name:
-            selectedTransaction?.category?.category_name,
+        category_name: selectedTransaction?.category?.category_name,
         recurring_transaction_amount:
-            selectedTransaction?.recurring_transaction_amount,
+            Math.abs(selectedTransaction?.recurring_transaction_amount) ?? "",
         recurring_transaction_date:
             selectedTransaction?.recurring_transaction_date,
         recurring_transaction_note:
             selectedTransaction?.recurring_transaction_note,
     });
 
-    const [error, setError] = useState();
+    useEffect(() => {
+        setData({
+            id: selectedTransaction?.id,
+            wallet_name: selectedTransaction?.wallet?.wallet_name,
+            category_name: selectedTransaction?.category?.category_name,
+            recurring_transaction_amount:
+                Math.abs(selectedTransaction?.recurring_transaction_amount) ??
+                "",
+            recurring_transaction_date:
+                selectedTransaction?.recurring_transaction_date,
+            recurring_transaction_note:
+                selectedTransaction?.recurring_transaction_note,
+        });
+    }, [selectedTransaction]);
 
-    const openModal = () => {
+    const openModal = (error) => {
+        setLoading(false);
         showErrorModal("Error", error);
     };
 
@@ -67,17 +82,18 @@ export default function EditRecurringTransactionPopup({
 
     const close = () => {
         setLoading(true);
-        put(route("editWallet"), {
+        put(route("editRecurringTransaction"), {
             onError: (errors) => {
-                if (errors.wallet_balance) {
-                    openModal();
-                    setError(errors.wallet_balance);
-                } else if (errors.wallet_balance) {
-                    openModal();
-                    setError(errors.wallet_balance);
-                } else if (errors.description) {
-                    openModal();
-                    setError(errors.description);
+                if (errors.wallet_name) {
+                    openModal(errors.wallet_name);
+                } else if (errors.category_name) {
+                    openModal(errors.category_name);
+                } else if (errors.recurring_transaction_amount) {
+                    openModal(errors.recurring_transaction_amount);
+                } else if (errors.recurring_transaction_date) {
+                    openModal(errors.recurring_transaction_date);
+                } else if (errors.recurring_transaction_note) {
+                    openModal(errors.recurring_transaction_note);
                 }
             },
             onSuccess: () => closeModal(),
@@ -106,6 +122,11 @@ export default function EditRecurringTransactionPopup({
                 className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
                 onClose={() => empty()}
             >
+                {console.log(data, "ujiosdfhguisdfguhfgsduhuhiosdfguihdfgs")}
+                {console.log(
+                    selectedTransaction,
+                    "ujiosdfhguisdfguhfgsduhuhiosdfguihdfgs1"
+                )}
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -148,11 +169,16 @@ export default function EditRecurringTransactionPopup({
 
                         <Formik
                             initialValues={{
-                                wallet_name: selectedTransaction?.wallet?.wallet_name,
+                                wallet_name:
+                                    selectedTransaction?.wallet?.wallet_name,
                                 category_name:
-                                    selectedTransaction?.category?.category_name,
+                                    selectedTransaction?.category
+                                        ?.category_name,
                                 recurring_transaction_amount:
-                                    selectedTransaction?.recurring_transaction_amount,
+                                    Math.abs(
+                                        selectedTransaction?.recurring_transaction_amount
+                                    ) ?? "",
+
                                 recurring_transaction_date:
                                     selectedTransaction?.recurring_transaction_date,
                                 recurring_transaction_note:
@@ -176,7 +202,7 @@ export default function EditRecurringTransactionPopup({
                                                 labelFor="Select Wallet"
                                                 className="button text-primary"
                                             />
-                                            {console.log(selectedTransaction,"uhiosdfguhsdfghufgduihdfguihuhisdfg")}
+
                                             <CustomSelectInput
                                                 placeholder={"Select Wallet"}
                                                 defaultValue={
@@ -260,7 +286,12 @@ export default function EditRecurringTransactionPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomSelectCategories
-                                            defaultValue=""
+                                                defaultValue={
+                                                    values?.category_name && {
+                                                        values: values?.category_name,
+                                                        label: values?.category_name,
+                                                    }
+                                                }
                                                 options={categoryOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(

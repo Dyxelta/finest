@@ -27,7 +27,7 @@ export default function EditWalletPopup({
     wallet,
     onClose = () => {},
 }) {
-    
+
     const [loading, setLoading] = useState(false);
     const { setData, put,data } = useForm({
         id: wallet?.id,

@@ -78,9 +78,9 @@ class RecurringTransactionController extends Controller
 
         $recurringTransaction->wallet_id = $wallet->id;
         $recurringTransaction->category_id = $category->id;
-        $recurringTransaction->transaction_amount = $recurringTransactionAmount;
-        $recurringTransaction->transaction_note = $recurringTransactionNote;
-        $recurringTransaction->transaction_date = $recurringTransactionDate;
+        $recurringTransaction->recurring_transaction_amount = $recurringTransactionAmount;
+        $recurringTransaction->recurring_transaction_note = $recurringTransactionNote;
+        $recurringTransaction->recurring_transaction_date = $recurringTransactionDate;
 
         $recurringTransaction->save();
 
