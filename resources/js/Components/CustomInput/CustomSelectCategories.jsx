@@ -78,6 +78,15 @@ const MySelect = ({
         isSearchable={false}
         placeholder="Select Category"
         menuPortalTarget={document.body} 
+        theme={(theme) => ({
+            ...theme,
+            borderRadius: 0,
+            colors: {
+                ...theme.colors,
+                primary25: "#CAD8E7",
+                primary: "#2D5074",
+            },
+        })}
     />
 );
 

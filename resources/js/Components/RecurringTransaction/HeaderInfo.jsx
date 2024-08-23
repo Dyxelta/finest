@@ -4,11 +4,12 @@ import { Formik } from "formik";
 import CustomField from "../CustomInput/CustomField";
 import { formatToRupiah } from "@/Helpers/helperFormat";
 
-const HeaderInfo = ({  walletOptions, selectedWallet,setSelectedWallet, amount}) => {
-
-
-  
-
+const HeaderInfo = ({
+    walletOptions,
+    selectedWallet,
+    setSelectedWallet,
+    amount,
+}) => {
     return (
         <div className="w-full bg-light rounded-xl py-2 text-primary">
             <Formik

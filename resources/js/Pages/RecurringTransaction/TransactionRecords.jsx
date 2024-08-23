@@ -28,6 +28,7 @@ const ViewTable = ({
     index,
     pagination,
     setSelectedTransaction,
+    setOpenEditRecurringTransaction,
 }) => {
     const { delete: destroy, data, setData } = useForm({ id: "" });
 
@@ -86,9 +87,10 @@ const ViewTable = ({
                     >
                         <div className=" bg-white border rounded-md flex flex-col  shadow-lg">
                             <Button
-                                onClick={() =>
-                                    setSelectedTransaction(transaction)
-                                }
+                                onClick={() => {
+                                    setSelectedTransaction(transaction);
+                                    setOpenEditRecurringTransaction(true);
+                                }}
                                 type="button"
                                 className="py-2 px-2 w-full flex items-center gap-2 hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"
                             >
@@ -138,6 +140,22 @@ export default function TransactionRecordsPage({
     const mergedCategories = [...expenseCategories, ...incomeCategories];
     const [category, setCategory] = useState(mergedCategories[0].category_name);
 
+    const categoryOptions = [
+        {
+            label: "Expense",
+            options: expenseCategories.map((expense) => ({
+                value: expense?.category_name,
+                label: expense?.category_name,
+            })),
+        },
+        {
+            label: "Income",
+            options: incomeCategories.map((income) => ({
+                value: income?.category_name,
+                label: income?.category_name,
+            })),
+        },
+    ];
     useEffect(() => {
         const handleScroll = (e) => {
             if (carousel.current) {
@@ -160,6 +178,7 @@ export default function TransactionRecordsPage({
 
     const [openRecurringTransactionId, setOpenRecurringTransactionId] =
         useState(null);
+
     const [selectedTransaction, setSelectedTransaction] = useState();
     const handleOpen = (RecurringtransactionId) => {
         setOpenRecurringTransactionId(
@@ -183,10 +202,7 @@ export default function TransactionRecordsPage({
         label: wallet?.wallet_name,
     }));
 
-    const categoryOptions = mergedCategories.map((category) => ({
-        value: category?.category_name,
-        label: category?.category_name,
-    }));
+ 
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -203,7 +219,6 @@ export default function TransactionRecordsPage({
                     selectedWallet={selectedWallet}
                     setSelectedWallet={setSelectedWallet}
                     amount={totalAmount}
-         
                 />
 
                 <div className=" pt-3 mt-1  w-full  flex flex-col-reverse md:flex-row md:justify-between overflow-hidden">
@@ -305,7 +320,7 @@ export default function TransactionRecordsPage({
                             {console.log(openRecurringTransactionId)}
                             <tbody>
                                 {recurring_transaction &&
-                                recurring_transaction.length !== 0 ? (
+                                getFilteredTransactions.length !== 0 ? (
                                     getFilteredTransactions
                                         .slice(
                                             getCurrentStartSlice,
@@ -325,19 +340,12 @@ export default function TransactionRecordsPage({
                                                 setSelectedTransaction={
                                                     setSelectedTransaction
                                                 }
+                                                setOpenEditRecurringTransaction={
+                                                    setOpenEditRecurringTransaction
+                                                }
                                             />
                                         ))
                                 ) : (
-                                    <div className="flex flex-col w-full h-[300px] md:h-[400px] justify-center items-center text-primary bg-blue-gray-50 border mt-2 rounded-xl gap-4">
-                                        <div className="text-[64px] md:text-[84px] lg:text-[110px]">
-                                            <TbMoodEmpty />
-                                        </div>
-                                        <div className="header-5 md:header-3">
-                                            No Transactions Yet...
-                                        </div>
-                                    </div>
-                                )}
-                                {getFilteredTransactions.length === 0 && (
                                     <div className="flex flex-col w-full h-[300px] md:h-[400px] justify-center items-center text-primary bg-blue-gray-50 border mt-2 rounded-xl gap-4">
                                         <div className="text-[64px] md:text-[84px] lg:text-[110px]">
                                             <TbMoodEmpty />
@@ -348,16 +356,6 @@ export default function TransactionRecordsPage({
                                     </div>
                                 )}
                             </tbody>
-                            <div className="w-full flex justify-end">
-                                <PaginationTransaction
-                                    pageLength={Math.ceil(
-                                        getFilteredTransactions.length / 10
-                                    )}
-                                    setPagination={setPagination}
-                                    pagination={pagination}
-                                    mergedCategories={mergedCategories}
-                                />
-                            </div>
                             <AddRecurringTransactionPopup
                                 show={openAddRecurringTransaction}
                                 headerColor={"blue"}
@@ -367,8 +365,27 @@ export default function TransactionRecordsPage({
                                 categoryOptions={categoryOptions}
                                 walletOptions={walletOptions}
                             />
-                       
+                            <EditRecurringTransactionPopup
+                                show={openEditRecurringTransaction}
+                                headerColor={"blue"}
+                                onClose={() =>
+                                    setOpenEditRecurringTransaction(false)
+                                }
+                                categoryOptions={categoryOptions}
+                                walletOptions={walletOptions}
+                                selectedTransaction={selectedTransaction}
+                            />
                         </Table>
+                    </div>
+                    <div className="w-full flex justify-end">
+                        <PaginationTransaction
+                            pageLength={Math.ceil(
+                                getFilteredTransactions.length / 10
+                            )}
+                            setPagination={setPagination}
+                            pagination={pagination}
+                            mergedCategories={mergedCategories}
+                        />
                     </div>
                 </div>
             </div>

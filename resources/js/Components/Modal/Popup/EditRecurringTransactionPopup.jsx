@@ -1,28 +1,30 @@
 import CustomDatePicker from "@/Components/CustomInput/CustomDatePicker";
-import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import CustomField from "@/Components/CustomInput/CustomField";
+import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 import CustomLabel from "@/Components/CustomLabel";
+import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import Loader from "@/Components/Loader";
 import PrimaryButton from "@/Components/PrimaryButton";
-import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import { Form, Formik } from "formik";
-import { Fragment, useEffect, useState } from "react";
-import { FaWallet } from "react-icons/fa";
+import { Fragment, useState } from "react";
+import { TbReceipt } from "react-icons/tb";
 import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
-import { TbReceipt } from "react-icons/tb";
-import { LuWallet2 } from "react-icons/lu";
 
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
-    wallet_balance: Yup.number()
-        .typeError("Balance must be number")
-        .required("Wallet balance is required"),
-    description: Yup.string(),
+    category_name: Yup.string().required("Category name is required"),
+    recurring_transaction_amount: Yup.number().required(
+        "Transaction amount is required"
+    ),
+    recurring_transaction_date: Yup.date().required(
+        "Transaction date is required"
+    ),
+    recurring_transaction_note: Yup.string(),
 });
 
 export default function EditRecurringTransactionPopup({
@@ -30,16 +32,22 @@ export default function EditRecurringTransactionPopup({
     show = false,
     maxWidth = "2xl",
     showCancel = true,
-    selectedTransaction,
     onClose = () => {},
+    categoryOptions,
+    walletOptions,
+    selectedTransaction,
 }) {
-    
     const [loading, setLoading] = useState(false);
-    const { setData, put,data } = useForm({
-        id: wallet?.id,
-        wallet_name: wallet?.wallet_name,
-        wallet_balance: wallet?.wallet_balance,
-        wallet_description: wallet?.wallet_description,
+    const { setData, put, data } = useForm({
+        wallet_name: selectedTransaction?.wallet?.wallet_name,
+        category_name:
+            selectedTransaction?.category?.category_name,
+        recurring_transaction_amount:
+            selectedTransaction?.recurring_transaction_amount,
+        recurring_transaction_date:
+            selectedTransaction?.recurring_transaction_date,
+        recurring_transaction_note:
+            selectedTransaction?.recurring_transaction_note,
     });
 
     const [error, setError] = useState();
@@ -49,15 +57,17 @@ export default function EditRecurringTransactionPopup({
     };
 
     const closeModal = () => {
-        setLoading(false)
+        setLoading(false);
         onClose();
-        showSuccessModal("Success", "Recurring transaction has been edited successfully");
+        showSuccessModal(
+            "Success",
+            "Recurring transaction has been edited successfully"
+        );
     };
 
     const close = () => {
-        setLoading(true)
+        setLoading(true);
         put(route("editWallet"), {
-            
             onError: (errors) => {
                 if (errors.wallet_balance) {
                     openModal();
@@ -94,7 +104,7 @@ export default function EditRecurringTransactionPopup({
                 as="div"
                 id="modal"
                 className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
-                onClose={() => onClose()}
+                onClose={() => empty()}
             >
                 <Transition.Child
                     as={Fragment}
@@ -128,23 +138,29 @@ export default function EditRecurringTransactionPopup({
                             </div>
                             <div className="flex flex-col">
                                 <h1 className="text-primary header-4">
-                                    Edit Recurring Transaction
+                                    Insert Recurring Transaction
                                 </h1>
                                 <h5 className="text-grey sub-body-14">
-                                    Edit your existing recurring transaction
+                                    Add your recurring transaction
                                 </h5>
                             </div>
                         </div>
+
                         <Formik
                             initialValues={{
-                                category_name: "",
-                                transaction_amount: "",
-                                transaction_date: "",
-                                transaction_note: ""
+                                wallet_name: selectedTransaction?.wallet?.wallet_name,
+                                category_name:
+                                    selectedTransaction?.category?.category_name,
+                                recurring_transaction_amount:
+                                    selectedTransaction?.recurring_transaction_amount,
+                                recurring_transaction_date:
+                                    selectedTransaction?.recurring_transaction_date,
+                                recurring_transaction_note:
+                                    selectedTransaction?.recurring_transaction_note,
                             }}
-                            validationSchema={validationSchema}
-                            onSubmit={close}
                             enableReinitialize={true}
+                            validationSchema={validationSchema}
+                            onSubmit={() => close()}
                         >
                             {({
                                 errors,
@@ -153,87 +169,89 @@ export default function EditRecurringTransactionPopup({
                                 values,
                                 handleSubmit,
                             }) => (
-                                <Form
-                                    onSubmit={handleSubmit}
-                                    className="font-roboto flex flex-col justify-center  w-full h-full"
-                                >
-                                    {console.log(wallet, "sodiuhgiosdhfhsdihf")}
-                                    <div className="mt-5">
-                                        <FormGroup className="w-full sm:flex  gap-2">
+                                <Form onSubmit={handleSubmit}>
+                                    <FormGroup className="w-full sm:flex gap-2 mt-4">
                                         <FormGroup className="flex-1">
-                                            <div className="sm:flex gap-2 text-primary">
-                                                <LuWallet2 size={24}  />
-                                                <CustomLabel
-                                                    labelFor="Select Wallet"
-                                                    className="button text-primary"
-                                                />
-                                            </div>
-                                            <CustomSelectCategories
-                                            //harus diganti nanti
-                                                options={[{label:"test", value:"test"}]}
+                                            <CustomLabel
+                                                labelFor="Select Wallet"
+                                                className="button text-primary"
+                                            />
+                                            {console.log(selectedTransaction,"uhiosdfguhsdfghufgduihdfguihuhisdfg")}
+                                            <CustomSelectInput
+                                                placeholder={"Select Wallet"}
+                                                defaultValue={
+                                                    values?.wallet_name && {
+                                                        value: values?.wallet_name,
+                                                        label: values?.wallet_name,
+                                                    }
+                                                }
+                                                options={walletOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(
-                                                        "category_name",
+                                                        "wallet_name",
                                                         e.value
                                                     );
                                                     setData(
-                                                        "category_name",
+                                                        "wallet_name",
                                                         e.value
                                                     );
                                                 }}
                                             />
-                                            <ErrorMessageInput name="category_name" />
+                                            <ErrorMessageInput name="wallet_name" />
                                         </FormGroup>
 
-                                            <FormGroup className="flex-1">
-                                                <CustomLabel
-                                                    labelFor="Amount"
-                                                    className="button text-primary"
-                                                />
-                                                <CustomField
-                                                    id="wallet_balance"
-                                                    name="wallet_balance"
-                                                    placeholder="Input the amount"
-                                                    type="number"
-                                                    className="w-full mt-1"
-                                                    onChange={(e) => {
-                                                        setFieldValue(
-                                                            "wallet_balance",
-                                                            e.target.value
-                                                        );
-                                                        setData(
-                                                            "wallet_balance",
-                                                            e.target.value
-                                                        );
-                                                    }}
-                                                />
-                                            </FormGroup>
+                                        <FormGroup className="flex-1">
+                                            <CustomLabel
+                                                labelFor="Amount"
+                                                className="button text-primary"
+                                            />
+                                            <CustomField
+                                                id="transaction_amount"
+                                                name="recurring_transaction_amount"
+                                                placeholder="Input the amount"
+                                                type="number"
+                                                className="w-full mt-1"
+                                                onChange={(e) => {
+                                                    setFieldValue(
+                                                        "recurring_transaction_amount",
+                                                        e.target.value
+                                                    );
+                                                    setData(
+                                                        "recurring_transaction_amount",
+                                                        e.target.value
+                                                    );
+                                                }}
+                                            />
                                         </FormGroup>
-                                        
-                                        <FormGroup className="w-full sm:flex  gap-2">
+                                    </FormGroup>
+
+                                    <FormGroup className="w-full sm:flex gap-2 mt-4">
                                         <FormGroup>
-                                        <CustomLabel
-                                            labelFor="Date"
-                                            className="button text-primary"
-                                        />
-                                        <CustomDatePicker
-                                            className="w-fit"
-                                            calendarWidth="w-66 md:w-80"
-                                            placeholder="Select Date"
-                                            selected={values?.transaction_date}
-                                            onChange={(e) => {
-                                                setFieldValue(
-                                                    "transaction_date",
-                                                    e
-                                                );
-                                                setData(
-                                                    "transaction_date",
-                                                    moment(e).format(
-                                                        "YYYY-MM-DD"
-                                                    )
-                                                );
-                                            }}
-                                        />
+                                            <CustomLabel
+                                                labelFor="Date"
+                                                className="button text-primary"
+                                            />
+                                            <CustomDatePicker
+                                                className="w-fit"
+                                                calendarWidth="w-66 md:w-80"
+                                                placeholder="Select Date"
+                                                selected={
+                                                    values?.recurring_transaction_date
+                                                }
+                                                onChange={(e) => {
+                                                    setFieldValue(
+                                                        "recurring_transaction_date",
+                                                        e
+                                                    );
+                                                    setData(
+                                                        "recurring_transaction_date",
+                                                        moment(e).format(
+                                                            "YYYY-MM-DD"
+                                                        )
+                                                    );
+                                                }}
+                                            />
+                                            <ErrorMessageInput name="recurring_transaction_date" />
                                         </FormGroup>
 
                                         <FormGroup className="flex-1">
@@ -242,8 +260,8 @@ export default function EditRecurringTransactionPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomSelectCategories
-                                            //harus diganti nanti
-                                                options={[{label:"test", value:"test"}]}
+                                            defaultValue=""
+                                                options={categoryOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(
                                                         "category_name",
@@ -257,88 +275,62 @@ export default function EditRecurringTransactionPopup({
                                             />
                                             <ErrorMessageInput name="category_name" />
                                         </FormGroup>
-                                        </FormGroup>
+                                    </FormGroup>
 
-                                        <FormGroup className="w-full sm:flex  gap-2">
-                                        <FormGroup className="flex-1">
-                                            <CustomLabel
-                                                labelFor="Period"
-                                                className="button text-primary"
-                                            />
-                                            <CustomSelectCategories
-                                            //harus diganti nanti
-                                                options={[{label:"test", value:"test"}]}
-                                                onChange={(e) => {
-                                                    setFieldValue(
-                                                        "category_name",
-                                                        e.value
-                                                    );
-                                                    setData(
-                                                        "category_name",
-                                                        e.value
-                                                    );
-                                                }}
-                                            />
-                                            <ErrorMessageInput name="category_name" />
-                                        </FormGroup>
-
-                                            <FormGroup className="w-1/2">
-                                                <CustomLabel
-                                                    labelFor="Note"
-                                                    className="button text-primary"
-                                                />
-                                                <CustomField
-                                                    id="wallet_description"
-                                                    name="wallet_description"
-                                                    placeholder="Describe your transaction"
-                                                    component="textarea"
-                                                    className="w-full mt-1 resize-none"
-                                                    rows="3"
-                                                    cols="50"
-                                                    onChange={(e) => {
-                                                        setFieldValue(
-                                                            "wallet_description",
-                                                            e.target.value
-                                                        );
-                                                        setData(
-                                                            "wallet_description",
-                                                            e.target.value
-                                                        );
-                                                    }}
-                                                />
-                                            </FormGroup>
-                                        </FormGroup>
-
-                                        <div className="p-4 w-full">
-                                            <div className="w-full flex justify-end items-center">
-                                                {showCancel && (
-                                                    <Button
-                                                        onClick={onClose}
-                                                        className={`self-end mt-2  border-expense border px-6 py-[7px] rounded-md body mr-4 text-expense transition-colors duration-500 hover:bg-expense hover:text-light`}
-                                                    >
-                                                        Cancel
-                                                    </Button>
-                                                )}
-                                                <PrimaryButton
-                                                    type="submit"
-                                                    className={`self-end mt-2  ${titleColor} !px-10 py-2 rounded-md body mr-2 transition-colors hover:bg-darker-primary duration-300 ease-in-out`}
-                                                    disabled={loading}
-                                                    loading={loading}
+                                    <FormGroup>
+                                        <CustomLabel
+                                            labelFor="Note"
+                                            className="button text-primary"
+                                        />
+                                        <CustomField
+                                            id="recurring_transaction_note"
+                                            name="recurring_transaction_note"
+                                            placeholder="Write a note for your transaction"
+                                            component="textarea"
+                                            className="w-full mt-1 resize-none"
+                                            rows="4"
+                                            cols="50"
+                                            onChange={(e) => {
+                                                setFieldValue(
+                                                    "recurring_transaction_note",
+                                                    e.target.value
+                                                );
+                                                setData(
+                                                    "recurring_transaction_note",
+                                                    e.target.value
+                                                );
+                                            }}
+                                        />
+                                        <ErrorMessageInput name="recurring_transaction_note" />
+                                    </FormGroup>
+                                    <div className="p-4 w-full">
+                                        <div className="w-full flex justify-end items-center">
+                                            {showCancel && (
+                                                <Button
+                                                    className={`self-end mt-2  border-expense border px-6 py-[7px] rounded-md body mr-4 text-expense transition-colors duration-500 hover:bg-expense hover:text-light`}
+                                                    onClick={() => onClose()}
                                                 >
-                                                    {loading ? (
-                                                        <div className="flex items-center">
-                                                            <Loader
-                                                                className={`w-[30px] h-6 mr-1`}
-                                                            />
-                                                            <span>
-                                                                Loading...
-                                                            </span>
-                                                        </div>
-                                                    ) : (
-                                                        "Submit"
-                                                    )}
-                                                </PrimaryButton>
-                                            </div>
+                                                    Cancel
+                                                </Button>
+                                            )}
+
+                                            <PrimaryButton
+                                                type="submit"
+                                                className={`self-end mt-2 bg-primary !px-10 py-2 rounded-md body mr-2 transition-colors hover:bg-darker-primary duration-300 ease-in-out flex items-center`}
+                                                disabled={loading}
+                                                loading={loading}
+                                            >
+                                                {loading ? (
+                                                    <div className="flex items-center">
+                                                        <Loader
+                                                            className={`w-[30px] h-6 mr-1`}
+                                                        />
+                                                        <span>Loading...</span>
+                                                    </div>
+                                                ) : (
+                                                    "Submit"
+                                                )}
+                                            </PrimaryButton>
                                         </div>
                                     </div>
                                 </Form>

@@ -337,7 +337,7 @@ export default function TransactionRecordsPage({
                                         </thead>
                                         <tbody>
                                             {transactions &&
-                                            transactions.length !== 0 ? (
+                                            getFilteredTransactions.length !== 0 ? (
                                                 getFilteredTransactions
                                                     .slice(
                                                         getCurrentStartSlice,
@@ -375,17 +375,6 @@ export default function TransactionRecordsPage({
                                                         <TbMoodEmpty />
                                                     </div>
                                                     <div className="header-5 md:header-3">
-                                                        No Transactions Yet...
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {getFilteredTransactions.length ===
-                                                0 && (
-                                                <div className="flex flex-col w-full h-[300px] md:h-[400px] justify-center items-center text-primary bg-blue-gray-50 border mt-2 rounded-xl gap-4">
-                                                    <div className="text-[64px] md:text-[84px] lg:text-[110px]">
-                                                        <TbMoodEmpty />
-                                                    </div>
-                                                    <div className="header-5 md:header-3">
                                                         No {category}{" "}
                                                         Transactions Yet...
                                                     </div>
@@ -394,15 +383,15 @@ export default function TransactionRecordsPage({
                                         </tbody>
                                     </Table>
                                 </div>
-                                <div className="w-full flex justify-end">
-                                    <PaginationTransaction
-                                        pageLength={Math.ceil(
-                                            getFilteredTransactions.length / 10
-                                        )}
-                                        setPagination={setPagination}
-                                        pagination={pagination}
-                                    />
-                                </div>
+                            </div>
+                            <div className="w-full flex justify-end">
+                                <PaginationTransaction
+                                    pageLength={Math.ceil(
+                                        getFilteredTransactions.length / 10
+                                    )}
+                                    setPagination={setPagination}
+                                    pagination={pagination}
+                                />
                             </div>
                         </>
                     )}

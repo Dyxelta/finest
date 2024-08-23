@@ -1,20 +1,20 @@
+import CustomDatePicker from "@/Components/CustomInput/CustomDatePicker";
 import CustomField from "@/Components/CustomInput/CustomField";
+import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
+import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 import CustomLabel from "@/Components/CustomLabel";
+import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import Loader from "@/Components/Loader";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import { Form, Formik } from "formik";
+import moment from "moment";
 import { Fragment, useState } from "react";
 import { TbReceipt } from "react-icons/tb";
 import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
-import CustomDatePicker from "@/Components/CustomInput/CustomDatePicker";
-import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
-import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
-import { Link } from "@inertiajs/react";
-import moment from "moment";
 
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
@@ -55,7 +55,7 @@ export default function AddRecurringTransactionPopup({
 
         setLoading(false);
         onClose();
-        showSuccessModal("Success", "Wallet has been created successfully");
+        showSuccessModal("Success", "Recurring Transaction has been created successfully");
     };
 
     const close = () => {
@@ -155,14 +155,15 @@ export default function AddRecurringTransactionPopup({
                                 handleSubmit,
                             }) => (
                                 <Form onSubmit={handleSubmit}>
-                                    {console.log(typeof data?.recurring_transaction_note, "23423423342423")}
+                                
                                     <FormGroup className="w-full sm:flex gap-2 mt-4">
                                         <FormGroup className="flex-1">
                                             <CustomLabel
                                                 labelFor="Select Wallet"
                                                 className="button text-primary"
                                             />
-                                            <CustomSelectCategories
+                                            <CustomSelectInput
+                                            placeholder={"Select Wallet"}
                                                 options={walletOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(
@@ -200,7 +201,7 @@ export default function AddRecurringTransactionPopup({
                                                     );
                                                 }}
                                             />
-                                             <ErrorMessageInput name="recurring_transaction_amount" />
+                                           
                                         </FormGroup>
                                     </FormGroup>
 
@@ -286,14 +287,11 @@ export default function AddRecurringTransactionPopup({
                                             {showCancel && (
                                                 <Button
                                                     className={`self-end mt-2  border-expense border px-6 py-[7px] rounded-md body mr-4 text-expense transition-colors duration-500 hover:bg-expense hover:text-light`}
+                                                    onClick={() => onClose()}
                                                 >
-                                                    <Link
-                                                        href={route(
-                                                            "transactionPage"
-                                                        )}
-                                                    >
+                                                   
                                                         Cancel
-                                                    </Link>
+                                              
                                                 </Button>
                                             )}
 

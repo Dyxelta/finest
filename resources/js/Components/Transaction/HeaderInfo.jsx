@@ -13,7 +13,7 @@ const HeaderInfo = ({ transactions }) => {
             ? transactions
                   .filter(
                       (transaction) =>
-                          transaction.category.category_is_income === 0
+                          transaction.category.category_is_income === 1
                   )
                   .reduce((total, transaction) => {
                       return total + transaction.transaction_amount;
@@ -26,7 +26,7 @@ const HeaderInfo = ({ transactions }) => {
             ? transactions
                   .filter(
                       (transaction) =>
-                          transaction.category.category_is_income === 1
+                          transaction.category.category_is_income === 0
                   )
                   .reduce((total, transaction) => {
                       return total + transaction.transaction_amount;
