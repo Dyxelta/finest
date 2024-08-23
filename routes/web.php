@@ -111,7 +111,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/recurringTransaction', function(Request $request) {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
-        $recurringTransactionData = app(RecurringTransactionController::class)->showRecurringTransactionByWallets($request);
+        $recurringTransactionData = app(RecurringTransactionController::class)->showRecurringTransactionByWallet($request);
         $categoryData = app(CategoryController::class)->showAllCategories();
 
         return Inertia::render('RecurringTransaction/TransactionRecords', array_merge($recurringTransactionData, $walletData, $categoryData));

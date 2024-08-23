@@ -184,7 +184,7 @@ export default function TransactionRecordsPage({
     }));
 
     const categoryOptions = mergedCategories.map((category) => ({
-        value: category?.id,
+        value: category?.category_name,
         label: category?.category_name,
     }));
     return (
@@ -367,14 +367,7 @@ export default function TransactionRecordsPage({
                                 categoryOptions={categoryOptions}
                                 walletOptions={walletOptions}
                             />
-                            {/* <EditRecurringTransactionPopup
-                                show={openEditRecurringTransaction}
-                                headerColor={"blue"}
-                                selectedTransaction={selectedTransaction}
-                                onClose={() =>
-                                    setOpenEditRecurringTransaction(false)
-                                }
-                            /> */}
+                       
                         </Table>
                     </div>
                 </div>

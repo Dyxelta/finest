@@ -24,6 +24,7 @@ const CustomDatePicker = ({
                 placeholderText="Select Date"
                 dateFormat="dd MMM yyyy"
                 disabled={disabled}
+                onKeyDown={(e) => e.preventDefault()} 
             />
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                 <Calendar className="h-5 w-5 text-gray-400" />

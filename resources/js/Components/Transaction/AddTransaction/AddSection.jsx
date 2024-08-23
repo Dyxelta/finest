@@ -47,6 +47,7 @@ const AddSection = ({
     };
 
     const closeModal = () => {
+        console.log("SUCCESSSSSSSSSSSSSSSSSS")
         setLoading(false);
         showSuccessModal(
             "Success",

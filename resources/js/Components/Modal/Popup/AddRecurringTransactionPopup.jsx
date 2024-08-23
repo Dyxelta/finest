@@ -18,10 +18,14 @@ import moment from "moment";
 
 const validationSchema = Yup.object().shape({
     wallet_name: Yup.string().required("Wallet name is required"),
-    wallet_balance: Yup.number()
-        .typeError("Balance must be number")
-        .required("Wallet balance is required"),
-    description: Yup.string(),
+    category_name: Yup.string().required("Category name is required"),
+    recurring_transaction_amount: Yup.number().required(
+        "Transaction amount is required"
+    ),
+    recurring_transaction_date: Yup.date().required(
+        "Transaction date is required"
+    ),
+    recurring_transaction_note: Yup.string()
 });
 
 export default function AddRecurringTransactionPopup({
@@ -34,7 +38,7 @@ export default function AddRecurringTransactionPopup({
     onClose = () => {},
 }) {
     const [loading, setLoading] = useState(false);
-    const { setData, post } = useForm({
+    const { setData, post, data } = useForm({
         wallet_name: "",
         category_name: "",
         recurring_transaction_amount: "",
@@ -43,10 +47,12 @@ export default function AddRecurringTransactionPopup({
     });
 
     const openModal = (error) => {
+        setLoading(false);
         showErrorModal("Error", error);
     };
 
     const closeModal = () => {
+
         setLoading(false);
         onClose();
         showSuccessModal("Success", "Wallet has been created successfully");
@@ -54,22 +60,24 @@ export default function AddRecurringTransactionPopup({
 
     const close = () => {
         setLoading(true);
-        post(route("createWallet"), {
+        post(route("createRecurringTransaction"), {
             onError: (errors) => {
-                if (errors.wallet_balance) {
-                    openModal(errors.wallet_balance);
-                } else if (errors.wallet_balance) {
-                    openModal(errors.wallet_balance);
-                } else if (errors.description) {
-                    openModal(errors.description);
+                if (errors.wallet_name) {
+                    openModal(errors.wallet_name);
+                } else if (errors.category_name) {
+                    openModal(errors.category_name);
+                } else if (errors.recurring_transaction_amount) {
+                    openModal(errors.recurring_transaction_amount);
+                } else if (errors.recurring_transaction_date) {
+                    openModal(errors.recurring_transaction_date);
+                } else if (errors.recurring_transaction_note) {
+                    openModal(errors.recurring_transaction_note);
                 }
             },
             onSuccess: () => closeModal(),
         });
     };
-    const empty = () => {
-     
-    };
+    const empty = () => {};
 
     const maxWidthClass = {
         sm: "sm:max-w-sm",
@@ -78,12 +86,6 @@ export default function AddRecurringTransactionPopup({
         xl: "sm:max-w-xl",
         "2xl": "sm:max-w-2xl",
     }[maxWidth];
-
-    const titleColor = {
-        red: "bg-expense text-light",
-        blue: "bg-primary text-light",
-        green: "bg-income text-light",
-    }[headerColor];
 
     return (
         <Transition show={show} as={Fragment} leave="duration-200 ease-in-out">
@@ -132,6 +134,7 @@ export default function AddRecurringTransactionPopup({
                                 </h5>
                             </div>
                         </div>
+                 
                         <Formik
                             initialValues={{
                                 wallet_name: "",
@@ -142,7 +145,7 @@ export default function AddRecurringTransactionPopup({
                             }}
                             enableReinitialize={true}
                             validationSchema={validationSchema}
-                            // onSubmit={submitTransaction}
+                            onSubmit={() => close()}
                         >
                             {({
                                 errors,
@@ -152,6 +155,7 @@ export default function AddRecurringTransactionPopup({
                                 handleSubmit,
                             }) => (
                                 <Form onSubmit={handleSubmit}>
+                                    {console.log(typeof data?.recurring_transaction_note, "23423423342423")}
                                     <FormGroup className="w-full sm:flex gap-2 mt-4">
                                         <FormGroup className="flex-1">
                                             <CustomLabel
@@ -159,7 +163,6 @@ export default function AddRecurringTransactionPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomSelectCategories
-                       
                                                 options={walletOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(
@@ -182,7 +185,7 @@ export default function AddRecurringTransactionPopup({
                                             />
                                             <CustomField
                                                 id="transaction_amount"
-                                                name="transaction_amount"
+                                                name="recurring_transaction_amount"
                                                 placeholder="Input the amount"
                                                 type="number"
                                                 className="w-full mt-1"
@@ -197,34 +200,38 @@ export default function AddRecurringTransactionPopup({
                                                     );
                                                 }}
                                             />
+                                             <ErrorMessageInput name="recurring_transaction_amount" />
                                         </FormGroup>
                                     </FormGroup>
 
                                     <FormGroup className="w-full sm:flex gap-2 mt-4">
-                                    <FormGroup>
-                                        <CustomLabel
-                                            labelFor="Date"
-                                            className="button text-primary"
-                                        />
-                                        <CustomDatePicker
-                                            className="w-fit"
-                                            calendarWidth="w-66 md:w-80"
-                                            placeholder="Select Date"
-                                            selected={values?.transaction_date}
-                                            onChange={(e) => {
-                                                setFieldValue(
-                                                    "recurring_transaction_date",
-                                                    e
-                                                );
-                                                setData(
-                                                    "recurring_transaction_date",
-                                                    moment(e).format(
-                                                        "YYYY-MM-DD"
-                                                    )
-                                                );
-                                            }}
-                                        />
-                                    </FormGroup>
+                                        <FormGroup>
+                                            <CustomLabel
+                                                labelFor="Date"
+                                                className="button text-primary"
+                                            />
+                                            <CustomDatePicker
+                                                className="w-fit"
+                                                calendarWidth="w-66 md:w-80"
+                                                placeholder="Select Date"
+                                                selected={
+                                                    values?.recurring_transaction_date
+                                                }
+                                                onChange={(e) => {
+                                                    setFieldValue(
+                                                        "recurring_transaction_date",
+                                                        e
+                                                    );
+                                                    setData(
+                                                        "recurring_transaction_date",
+                                                        moment(e).format(
+                                                            "YYYY-MM-DD"
+                                                        )
+                                                    );
+                                                }}
+                                            />
+                                              <ErrorMessageInput name="recurring_transaction_date" />
+                                        </FormGroup>
 
                                         <FormGroup className="flex-1">
                                             <CustomLabel
@@ -232,7 +239,6 @@ export default function AddRecurringTransactionPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomSelectCategories
-                        
                                                 options={categoryOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(
@@ -255,8 +261,8 @@ export default function AddRecurringTransactionPopup({
                                             className="button text-primary"
                                         />
                                         <CustomField
-                                            id="transaction_note"
-                                            name="transaction_note"
+                                            id="recurring_transaction_note"
+                                            name="recurring_transaction_note"
                                             placeholder="Write a note for your transaction"
                                             component="textarea"
                                             className="w-full mt-1 resize-none"
@@ -273,20 +279,23 @@ export default function AddRecurringTransactionPopup({
                                                 );
                                             }}
                                         />
+                                           <ErrorMessageInput name="recurring_transaction_note" />
                                     </FormGroup>
                                     <div className="p-4 w-full">
                                         <div className="w-full flex justify-end items-center">
-                                            <Button
-                                                className={`self-end mt-2  border-expense border px-6 py-[7px] rounded-md body mr-4 text-expense transition-colors duration-500 hover:bg-expense hover:text-light`}
-                                            >
-                                                <Link
-                                                    href={route(
-                                                        "transactionPage"
-                                                    )}
+                                            {showCancel && (
+                                                <Button
+                                                    className={`self-end mt-2  border-expense border px-6 py-[7px] rounded-md body mr-4 text-expense transition-colors duration-500 hover:bg-expense hover:text-light`}
                                                 >
-                                                    Cancel
-                                                </Link>
-                                            </Button>
+                                                    <Link
+                                                        href={route(
+                                                            "transactionPage"
+                                                        )}
+                                                    >
+                                                        Cancel
+                                                    </Link>
+                                                </Button>
+                                            )}
 
                                             <PrimaryButton
                                                 type="submit"

@@ -48,6 +48,7 @@ export default function EditWalletPopup({
     const [error, setError] = useState();
 
     const openModal = () => {
+        setLoading(false);
         showErrorModal("Error", error);
     };
 
@@ -68,9 +69,9 @@ export default function EditWalletPopup({
                 } else if (errors.wallet_balance) {
                     openModal();
                     setError(errors.wallet_balance);
-                } else if (errors.description) {
+                } else if (errors.wallet_description) {
                     openModal();
-                    setError(errors.description);
+                    setError(errors.wallet_description);
                 }
             },
             onSuccess: () => closeModal(),
