@@ -122,7 +122,7 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/edit-recurring-transaction', [RecurringTransactionController::class, 'editRecurringTransaction'])->name('editRecurringTransaction');
 
-    Route::delete('/delete-recurring-transaction/{recurringtransaction:id}', [RecurringTransactionController::class, 'deleteRecurringTransaction'])->name('deleteRecurringTransaction');
+    Route::delete('/delete-recurring-transaction/{recurringTransaction:id}', [RecurringTransactionController::class, 'deleteRecurringTransaction'])->name('deleteRecurringTransaction');
 
     Route::get('/budget', function() {
 
