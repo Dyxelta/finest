@@ -72,7 +72,7 @@ class BudgetController extends Controller
 
     public function showAllUserBudget() {
         $user = auth()->user();
-        $budgets = Budget::where('user_id', $user->id)->get();
+        $budgets = Budget::where('user_id', $user->id)->with('category')->get();
 
         return ['budgets' => $budgets];
     }
