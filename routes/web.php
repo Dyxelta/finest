@@ -123,7 +123,12 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-recurring-transaction/{recurringTransaction:id}', [RecurringTransactionController::class, 'deleteRecurringTransaction'])->name('deleteRecurringTransaction');
 
-    //budget
+    Route::get('/budget', function(Request $request) {
+
+        return Inertia::render('Budget/budget');
+    })->name('budgetPage');
+
+    
     Route::post('/create-budget', [BudgetController::class, 'addBudget'])->name('addBudget');
 
     Route::put('/edit-budget', [BudgetController::class, 'editBudget'])->name('editBudget');

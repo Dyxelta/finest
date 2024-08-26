@@ -117,7 +117,7 @@ const ViewTable = ({
     );
 };
 
-export default function TransactionRecordsPage({
+export default function BudgetPage({
     auth,
     recurring_transaction,
     wallets,
