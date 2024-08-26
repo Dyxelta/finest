@@ -130,7 +130,7 @@ Route::middleware('auth')->group(function () {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $categoryData = app(CategoryController::class)->showAllCategories();
 
-        return Inertia::render('Budget/budget', array_merge($budgetData, $walletData, $categoryData));
+        return Inertia::render('Budget/Budget', array_merge($budgetData, $walletData, $categoryData));
     })->name('budgetPage');
 
     Route::post('/create-budget', [BudgetController::class, 'addBudget'])->name('addBudget');

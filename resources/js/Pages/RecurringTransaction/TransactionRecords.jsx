@@ -30,11 +30,11 @@ const ViewTable = ({
     setSelectedTransaction,
     setOpenEditRecurringTransaction,
 }) => {
-    const { delete: destroy, data, setData } = useForm({ id: "" });
+    const { delete: destroy } = useForm();
 
     const deleteTransaction = (id) => {
         const onClose = () => {
- 
+  
             destroy(route("deleteRecurringTransaction", id), {
                 onSuccess: () => {
                     showSuccessModal(
@@ -101,8 +101,9 @@ const ViewTable = ({
                             <hr />
                             <Button
                                 className="py-2 px-2 w-full flex items-center gap-2 text-expense hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"
-                                onClick={async() => {
-                                    await setData("id", transaction?.id);
+                                onClick={() => {
+                              
+                        
                                     deleteTransaction(transaction?.id);
                                 }}
                             >
@@ -124,10 +125,9 @@ export default function TransactionRecordsPage({
     expenseCategories,
     incomeCategories,
 }) {
-    const carousel = useRef(null);
-
+    
     const [openAddRecurringTransaction, setOpenAddRecurringTransaction] =
-        useState(false);
+    useState(false);
     const [openEditRecurringTransaction, setOpenEditRecurringTransaction] =
         useState(false);
 
@@ -158,6 +158,9 @@ export default function TransactionRecordsPage({
             })),
         },
     ];
+
+    const carousel = useRef(null);
+
     useEffect(() => {
         const handleScroll = (e) => {
             if (carousel.current) {
@@ -275,7 +278,7 @@ export default function TransactionRecordsPage({
                         <div className="bg-primary p-3 header-5 text-light rounded-md w-fit">
                             <CgNotes />
                         </div>
-                        <div className="text-primary header-5">
+                        <div className="text-primary button md:header-5">
                             Transaction Details
                         </div>
                     </div>
@@ -296,7 +299,7 @@ export default function TransactionRecordsPage({
                 </div>
                 <div className="w-full relative">
                     <div className="overflow-x-auto ">
-                        <Table className="min-w-full rounded-xl ">
+                        <Table className="min-w-full rounded-xl mb-20">
                             <thead>
                                 <tr className="bg-white pt-2 mt-1 rounded-xl w-full flex justify-between items-center text-primary">
                                     <th className="py-2 px-4 text-center w-[100px]  ">

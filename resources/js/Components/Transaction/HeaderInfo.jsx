@@ -5,32 +5,38 @@ import PrimaryButton from "../PrimaryButton";
 import { BsBoxArrowInLeft, BsBoxArrowRight } from "react-icons/bs";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "@inertiajs/react";
+import { formatToRupiah } from "@/Helpers/helperFormat";
 
-const HeaderInfo = ({ transactions }) => {
-    console.log(transactions);
+const HeaderInfo = ({ transactions, selectedWallet }) => {
+    console.log(transactions)
+    const getHeaderInfoTransaction = selectedWallet === "All Wallet" ? transactions : transactions.filter((transaction) => transaction?.wallet?.id === selectedWallet )
     const calculateTotalIncome = (transactions) => {
-        return transactions.length !== 0
-            ? transactions
-                  .filter(
-                      (transaction) =>
-                          transaction.category.category_is_income === 1
-                  )
-                  .reduce((total, transaction) => {
-                      return total + transaction.transaction_amount;
-                  }, 0)
+        return getHeaderInfoTransaction.length !== 0
+            ? formatToRupiah(
+                  transactions
+                      .filter(
+                          (transaction) =>
+                              transaction.category.category_is_income === 1
+                      )
+                      .reduce((total, transaction) => {
+                          return total + transaction.transaction_amount;
+                      }, 0)
+              )
             : "No Transaction Yet";
     };
 
     const calculateTotalExpense = (transactions) => {
-        return transactions.length !== 0
-            ? transactions
-                  .filter(
-                      (transaction) =>
-                          transaction.category.category_is_income === 0
-                  )
-                  .reduce((total, transaction) => {
-                      return total + transaction.transaction_amount;
-                  }, 0)
+        return getHeaderInfoTransaction.length !== 0
+            ? formatToRupiah(
+                  transactions
+                      .filter(
+                          (transaction) =>
+                              transaction.category.category_is_income === 0
+                      )
+                      .reduce((total, transaction) => {
+                          return total + transaction.transaction_amount;
+                      }, 0)
+              )
             : "No Transaction Yet";
     };
 

@@ -1,11 +1,11 @@
 export function formatToRupiah(value) {
     if(!value){
-        return ''
+        return 0
     }
     return new Intl.NumberFormat('id-ID', {
         style: 'currency',
         currency: 'IDR'
-    }).format(value);
+    }).format(value) ;
 }
 
 export function formatDate(dateString) {

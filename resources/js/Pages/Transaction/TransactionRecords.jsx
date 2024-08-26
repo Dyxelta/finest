@@ -17,7 +17,7 @@ import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 
 const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
-    const { delete: destroy, data, setData } = useForm({ id: "" });
+    const { delete: destroy } = useForm();
 
     const deleteTransaction = (id) => {
         const onClose = () => {
@@ -90,7 +90,6 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
                             <Button
                                 className="py-2 px-2 w-full flex items-center gap-2 text-expense hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"
                                 onClick={() => {
-                                    setData("id", transaction?.id);
                                     deleteTransaction(transaction?.id);
                                 }}
                             >
@@ -210,7 +209,7 @@ export default function TransactionRecordsPage({
         >
             <Head title="Transaction Records" />
             <div className="w-full">
-                <HeaderInfo transactions={transactions} />
+                <HeaderInfo transactions={transactions} selectedWallet={selectedWallet}/>
                 <Formik
                     initialValues={{
                         defaultMonthValue: monthValue || "",
@@ -312,7 +311,7 @@ export default function TransactionRecordsPage({
                             </div>
                             <div className="w-full relative">
                                 <div className="overflow-x-auto ">
-                                    <Table className="min-w-full rounded-xl ">
+                                    <Table className="min-w-full rounded-xl mb-20">
                                         <thead>
                                             <tr className="bg-white pt-2 mt-1 rounded-xl w-full flex justify-between items-center text-primary">
                                                 <th className="py-2 px-4 text-center w-[100px]  ">
@@ -337,7 +336,8 @@ export default function TransactionRecordsPage({
                                         </thead>
                                         <tbody>
                                             {transactions &&
-                                            getFilteredTransactions.length !== 0 ? (
+                                            getFilteredTransactions.length !==
+                                                0 ? (
                                                 getFilteredTransactions
                                                     .slice(
                                                         getCurrentStartSlice,
