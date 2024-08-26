@@ -8,6 +8,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
 use App\Models\Transaction;
+use Database\Factories\WalletFactory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -123,16 +124,21 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-recurring-transaction/{recurringtransaction:id}', [RecurringTransactionController::class, 'deleteRecurringTransaction'])->name('deleteRecurringTransaction');
 
-    Route::get('/budget', function(Request $request) {
+    Route::get('/budget', function() {
 
-        return Inertia::render('Budget/budget');
+        $budgetData = app(BudgetController::class)->showAllUserBudget();
+        $walletData = app(WalletController::class)->showAllWalletByUserID();
+        $categoryData = app(CategoryController::class)->showAllCategories();
+
+        return Inertia::render('Budget/budget', array_merge($budgetData, $walletData, $categoryData));
     })->name('budgetPage');
 
-    
     Route::post('/create-budget', [BudgetController::class, 'addBudget'])->name('addBudget');
 
     Route::put('/edit-budget', [BudgetController::class, 'editBudget'])->name('editBudget');
-    
+
+    Route::delete('/delete-budget/{budget:id}', [BudgetController::class, 'deleteBudget'])->name('deleteBudget');
+
 });
 
 require __DIR__ . '/auth.php';
