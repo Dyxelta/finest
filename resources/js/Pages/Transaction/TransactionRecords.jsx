@@ -60,7 +60,7 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
             <td className="py-2 px-4 text-center w-[150px]">
                 {formatDate(transaction?.transaction_date)}
             </td>
-            <td className="py-2 px-4 text-center w-[150px]">
+            <td className="py-2 px-4 text-center w-[150px] relative">
                 <button onClick={() => onOpen(transaction.id)}>
                     <HiMiniEllipsisVertical size={20} />
                 </button>
