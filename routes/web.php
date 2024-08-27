@@ -75,7 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/delete-wallet/{wallet:id}', [WalletController::class, 'deleteWallet'])->name('deleteWallet');
 
     //transaction
-    Route::get('/transaction', function(Request $request) {
+    Route::get('/transaction', function (Request $request) {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $transactionData = app(TransactionController::class)->showTransactionByMonth($request);
 
@@ -110,7 +110,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-transaction/{transaction:id}', [TransactionController::class, 'deleteTransaction'])->name('deleteTransaction');
 
-    Route::get('/recurringTransaction', function(Request $request) {
+    Route::get('/recurringTransaction', function (Request $request) {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $recurringTransactionData = app(RecurringTransactionController::class)->showRecurringTransactionByWallet($request);
         $categoryData = app(CategoryController::class)->showAllCategories();
@@ -124,12 +124,13 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-recurring-transaction/{recurringTransaction:id}', [RecurringTransactionController::class, 'deleteRecurringTransaction'])->name('deleteRecurringTransaction');
 
-    Route::get('/budget', function() {
+    Route::get('/budget', function () {
 
         $budgetData = app(BudgetController::class)->showAllUserBudget();
         $walletData = app(WalletController::class)->showAllWalletByUserID();
-
-        return Inertia::render('Budget/Budget', array_merge($budgetData, $walletData));
+        $categoryData = app(CategoryController::class)->showAllCategories();
+        
+        return Inertia::render('Budget/Budget', array_merge($budgetData, $walletData, $categoryData));
     })->name('budgetPage');
 
     Route::post('/create-budget', [BudgetController::class, 'addBudget'])->name('addBudget');
@@ -137,7 +138,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/edit-budget', [BudgetController::class, 'editBudget'])->name('editBudget');
 
     Route::delete('/delete-budget/{budget:id}', [BudgetController::class, 'deleteBudget'])->name('deleteBudget');
-
 });
 
 require __DIR__ . '/auth.php';

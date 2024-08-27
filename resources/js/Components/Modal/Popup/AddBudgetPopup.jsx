@@ -26,7 +26,7 @@ export default function AddBudgetPopup({
     show = false,
     maxWidth = "2xl",
     showCancel = true,
-
+    categoryOptions,
     onClose = () => {},
 }) {
     const [loading, setLoading] = useState(false);
@@ -62,9 +62,7 @@ export default function AddBudgetPopup({
             onSuccess: () => closeModal(),
         });
     };
-    const empty = () => {
-        onClose();
-    };
+
     const maxWidthClass = {
         sm: "sm:max-w-sm",
         md: "sm:max-w-md",
@@ -85,7 +83,7 @@ export default function AddBudgetPopup({
                 as="div"
                 id="modal"
                 className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
-                onClose={() => empty()}
+                onClose={() => onClose()}
             >
                 <Transition.Child
                     as={Fragment}
@@ -203,17 +201,7 @@ export default function AddBudgetPopup({
                                                     className="button text-primary"
                                                 />
                                                 <CustomSelectCategories
-                                                    //harus diganti nanti
-                                                    options={[
-                                                        {
-                                                            label: "Transportation",
-                                                            value: "Transportation",
-                                                        },
-                                                        {
-                                                            label: "Food & Beverage",
-                                                            value: "Food & Beverage",
-                                                        },
-                                                    ]}
+                                                    options={categoryOptions}
                                                     onChange={(e) => {
                                                         setFieldValue(
                                                             "category_name",
