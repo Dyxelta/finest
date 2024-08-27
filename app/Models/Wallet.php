@@ -27,4 +27,8 @@ class Wallet extends Model
     public function RecurringTransactions() {
         return $this->hasMany(RecurringTransaction::class);
     }
+
+    public function Budget() {
+        return $this->hasMany(Budget::class);
+    }
 }

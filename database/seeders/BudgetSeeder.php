@@ -16,6 +16,7 @@ class BudgetSeeder extends Seeder
         DB::table('budgets')->insert([
             'user_id' => 1,
             'category_id' => 1,
+            'wallet_id' => 1,
             'budget_name' => 'Entertainment',
             'budget_amount' => 500000,
             'budget_description' => 'Budget description',
