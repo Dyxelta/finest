@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use Database\Factories\WalletFactory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -124,9 +125,12 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-recurring-transaction/{recurringTransaction:id}', [RecurringTransactionController::class, 'deleteRecurringTransaction'])->name('deleteRecurringTransaction');
 
-    Route::get('/budget', function () {
+    Route::get('/budget', function(Request $request) {
 
-        $budgetData = app(BudgetController::class)->showAllUserBudget();
+        $encryptedWalletId = Crypt::encrypt($request->wallet_id);
+        $request->merge(['wallet_id' => $encryptedWalletId]);
+
+        $budgetData = app(BudgetController::class)->showAllUserBudget($request);
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $categoryData = app(CategoryController::class)->showAllCategories();
         
