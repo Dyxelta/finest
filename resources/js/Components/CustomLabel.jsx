@@ -1,9 +1,9 @@
 import { Label } from "reactstrap";
 
-const CustomLabel = ({labelFor, className}) => {
+const CustomLabel = ({ labelFor, className, isRequired = true }) => {
     return (
         <Label for={labelFor} className={`w-100 ${className}`}>
-            {labelFor}
+            {labelFor} {isRequired && <span className="text-expense">*</span>}
         </Label>
     );
 };

@@ -61,6 +61,7 @@ export default function BudgetPage({
 
     const carousel = useRef(null);
 
+    {console.log(budgets,"uihegrferudfhuioghsfduiohsgdf")}
     useEffect(() => {
         const handleScroll = (e) => {
             if (carousel.current) {
@@ -204,8 +205,7 @@ export default function BudgetPage({
                     </div>
                 </div>
                 <div
-                    className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary
-                h-[270px]"
+                    className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary h-[270px]"
                 >
                     <div className="flex  border-light-grey h-full w-full">
                         <div className="flex border-r-2 h-full px-1 md:px-2">

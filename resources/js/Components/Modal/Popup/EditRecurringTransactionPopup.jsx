@@ -312,6 +312,7 @@ export default function EditRecurringTransactionPopup({
                                         <CustomLabel
                                             labelFor="Note"
                                             className="button text-primary"
+                                            isRequired={false}
                                         />
                                         <CustomField
                                             id="recurring_transaction_note"

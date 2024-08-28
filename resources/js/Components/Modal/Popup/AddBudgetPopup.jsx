@@ -5,20 +5,23 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
-import { Form, Formik } from "formik";
+import { ErrorMessage, Form, Formik } from "formik";
 import { Fragment, useState } from "react";
 import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import { FaMoneyBillWave } from "react-icons/fa";
+import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 
 const validationSchema = Yup.object().shape({
     budget_name: Yup.string().required("Budget name is required"),
+    wallet_name: Yup.string().required("Wallet name is required"),
+    category_name: Yup.string().required("Category name is required"),
     budget_amount: Yup.number()
         .typeError("Limit must be number")
         .required("Budget limit is required"),
-    description: Yup.string(),
+    budget_description: Yup.string().required("Description is required"),
 });
 
 export default function AddBudgetPopup({
@@ -27,13 +30,16 @@ export default function AddBudgetPopup({
     maxWidth = "2xl",
     showCancel = true,
     categoryOptions,
+    walletOptions,
     onClose = () => {},
 }) {
     const [loading, setLoading] = useState(false);
-    const { setData, post } = useForm({
+    const { setData, post, data } = useForm({
         budget_name: "",
         budget_amount: "",
         budget_description: "",
+        wallet_name: "",
+        category_name: "",
     });
 
     const openModal = (error) => {
@@ -55,14 +61,19 @@ export default function AddBudgetPopup({
                     openModal(errors.budget_name);
                 } else if (errors.budget_amount) {
                     openModal(errors.budget_amount);
-                } else if (errors.description) {
-                    openModal(errors.description);
+                } else if (errors.budget_description) {
+                    openModal(errors.budget_description);
+                } else if (errors.wallet_name) {
+                    openModal(errors.wallet_name);
+                } else if (errors.category_name) {
+                    openModal(errors.category_name);
                 }
             },
             onSuccess: () => closeModal(),
         });
     };
 
+    const empty = () => {};
     const maxWidthClass = {
         sm: "sm:max-w-sm",
         md: "sm:max-w-md",
@@ -83,7 +94,7 @@ export default function AddBudgetPopup({
                 as="div"
                 id="modal"
                 className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
-                onClose={() => onClose()}
+                onClose={empty}
             >
                 <Transition.Child
                     as={Fragment}
@@ -96,7 +107,7 @@ export default function AddBudgetPopup({
                 >
                     <div className="absolute inset-0 bg-gray-500/75" />
                 </Transition.Child>
-
+{console.log(data,"uiodhfuihdfguiohgdfushiuihdgsf")}
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -128,7 +139,9 @@ export default function AddBudgetPopup({
                             initialValues={{
                                 budget_name: "",
                                 budget_amount: "",
-                                description: "",
+                                budget_description: "",
+                                wallet_name: "",
+                                category_name:""
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
@@ -136,6 +149,7 @@ export default function AddBudgetPopup({
                             {({
                                 errors,
                                 touched,
+                                values,
                                 setFieldValue,
                                 handleSubmit,
                             }) => (
@@ -143,6 +157,7 @@ export default function AddBudgetPopup({
                                     onSubmit={handleSubmit}
                                     className="font-roboto flex flex-col justify-center  w-full h-full"
                                 >
+                              
                                     <div className="flex flex-col justify-between bg-light px-2 sm:px-4 pt-3 md:pt-3 pb-2 md:pb-3 w-full rounded-md ">
                                         <FormGroup className="w-full sm:flex gap-2">
                                             <FormGroup className="flex-1">
@@ -170,7 +185,7 @@ export default function AddBudgetPopup({
                                             </FormGroup>
                                             <FormGroup className="flex-1">
                                                 <CustomLabel
-                                                    labelFor="Budget Name"
+                                                    labelFor="Wallet Name"
                                                     className="button text-primary"
                                                 />
                                                 <CustomSelectInput
@@ -195,6 +210,7 @@ export default function AddBudgetPopup({
                                                         );
                                                     }}
                                                 />
+                                                       <ErrorMessageInput name="wallet_name" />
                                             </FormGroup>
                                         </FormGroup>
 
@@ -225,6 +241,7 @@ export default function AddBudgetPopup({
                                                     labelFor="Limit"
                                                     className="button text-primary"
                                                 />
+                                         
                                                 <CustomField
                                                     id="budget_amount"
                                                     name="budget_amount"
@@ -244,7 +261,7 @@ export default function AddBudgetPopup({
                                                 />
                                             </FormGroup>
                                         </FormGroup>
-
+                                
                                         <FormGroup className="w-full sm:flex  gap-2">
                                             <FormGroup className=" w-full">
                                                 <CustomLabel

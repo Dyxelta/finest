@@ -12,13 +12,16 @@ import * as Yup from "yup";
 import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import { FaMoneyBillWave } from "react-icons/fa";
+import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 
 const validationSchema = Yup.object().shape({
     budget_name: Yup.string().required("Budget name is required"),
+    wallet_name: Yup.string().required("Wallet name is required"),
+    category_name: Yup.string().required("Category name is required"),
     budget_amount: Yup.number()
-        .typeError("Balance must be number")
-        .required("Wallet balance is required"),
-    description: Yup.string(),
+        .typeError("Limit must be number")
+        .required("Budget limit is required"),
+    budget_description: Yup.string().required("Description is required"),
 });
 
 export default function EditBudgetPopup({
@@ -27,13 +30,16 @@ export default function EditBudgetPopup({
     maxWidth = "2xl",
     showCancel = true,
     categoryOptions,
+    walletOptions,
     onClose = () => {},
 }) {
     const [loading, setLoading] = useState(false);
-    const { setData, put } = useForm({
+    const { setData, put, data } = useForm({
         budget_name: "",
         budget_amount: "",
         budget_description: "",
+        wallet_name: "",
+        category_name: "",
     });
 
     const openModal = (error) => {
@@ -50,18 +56,22 @@ export default function EditBudgetPopup({
         setLoading(true);
         put(route("editBudget"), {
             onError: (errors) => {
-                if (errors.budget_amount) {
-                    openModal(errors.budget_amount);
+                if (errors.budget_name) {
+                    openModal(errors.budget_name);
                 } else if (errors.budget_amount) {
                     openModal(errors.budget_amount);
-                } else if (errors.description) {
-                    openModal(errors.description);
+                } else if (errors.budget_description) {
+                    openModal(errors.budget_description);
+                } else if (errors.wallet_name) {
+                    openModal(errors.wallet_name);
+                } else if (errors.category_name) {
+                    openModal(errors.category_name);
                 }
             },
             onSuccess: () => closeModal(),
         });
     };
-
+    const empty = () => {};
     const maxWidthClass = {
         sm: "sm:max-w-sm",
         md: "sm:max-w-md",
@@ -82,7 +92,7 @@ export default function EditBudgetPopup({
                 as="div"
                 id="modal"
                 className="fixed inset-0 flex overflow-y-auto px-4 py-6 sm:px-0 items-center z-50 transform transition-all"
-                onClose={onClose}
+                onClose={empty}
             >
                 <Transition.Child
                     as={Fragment}
@@ -127,7 +137,9 @@ export default function EditBudgetPopup({
                             initialValues={{
                                 budget_name: "",
                                 budget_amount: "",
-                                description: "",
+                                budget_description: "",
+                                wallet_name: "",
+                                category_name: "",
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
@@ -135,6 +147,7 @@ export default function EditBudgetPopup({
                             {({
                                 errors,
                                 touched,
+                                values,
                                 setFieldValue,
                                 handleSubmit,
                             }) => (
@@ -143,7 +156,7 @@ export default function EditBudgetPopup({
                                     className="font-roboto flex flex-col justify-center  w-full h-full"
                                 >
                                     <div className="flex flex-col justify-between bg-light px-2 sm:px-4 pt-3 md:pt-3 pb-2 md:pb-3 w-full rounded-md ">
-                                        <FormGroup className="w-full sm:flex  gap-2">
+                                        <FormGroup className="w-full sm:flex gap-2">
                                             <FormGroup className="flex-1">
                                                 <CustomLabel
                                                     labelFor="Budget Name"
@@ -154,7 +167,7 @@ export default function EditBudgetPopup({
                                                     name="budget_name"
                                                     placeholder="Name of the budget"
                                                     type="text"
-                                                    className="w-full mt-1"
+                                                    className="w-full"
                                                     onChange={(e) => {
                                                         setFieldValue(
                                                             "budget_name",
@@ -167,29 +180,34 @@ export default function EditBudgetPopup({
                                                     }}
                                                 />
                                             </FormGroup>
-
                                             <FormGroup className="flex-1">
                                                 <CustomLabel
-                                                    labelFor="Limit"
+                                                    labelFor="Wallet Name"
                                                     className="button text-primary"
                                                 />
-                                                <CustomField
-                                                    id="budget_amount"
-                                                    name="budget_amount"
-                                                    placeholder="Input your budget limit"
-                                                    type="number"
-                                                    className="w-full mt-1"
+                                                <CustomSelectInput
+                                                    placeholder={
+                                                        "Select Wallet"
+                                                    }
+                                                    defaultValue={
+                                                        values?.wallet_name && {
+                                                            value: values?.wallet_name,
+                                                            label: values?.wallet_name,
+                                                        }
+                                                    }
+                                                    options={walletOptions}
                                                     onChange={(e) => {
                                                         setFieldValue(
-                                                            "budget_amount",
-                                                            e.target.value
+                                                            "wallet_name",
+                                                            e.value
                                                         );
                                                         setData(
-                                                            "budget_amount",
-                                                            e.target.value
+                                                            "wallet_name",
+                                                            e.value
                                                         );
                                                     }}
                                                 />
+                                                <ErrorMessageInput name="wallet_name" />
                                             </FormGroup>
                                         </FormGroup>
 
@@ -200,7 +218,6 @@ export default function EditBudgetPopup({
                                                     className="button text-primary"
                                                 />
                                                 <CustomSelectCategories
-                                                    //harus diganti nanti
                                                     options={categoryOptions}
                                                     onChange={(e) => {
                                                         setFieldValue(
@@ -216,7 +233,34 @@ export default function EditBudgetPopup({
                                                 <ErrorMessageInput name="category_name" />
                                             </FormGroup>
 
-                                            <FormGroup className="mt-1 w-[50%]">
+                                            <FormGroup className="flex-1">
+                                                <CustomLabel
+                                                    labelFor="Limit"
+                                                    className="button text-primary"
+                                                />
+
+                                                <CustomField
+                                                    id="budget_amount"
+                                                    name="budget_amount"
+                                                    placeholder="Input your budget limit"
+                                                    type="number"
+                                                    className="w-full mt-2"
+                                                    onChange={(e) => {
+                                                        setFieldValue(
+                                                            "budget_amount",
+                                                            e.target.value
+                                                        );
+                                                        setData(
+                                                            "budget_amount",
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                />
+                                            </FormGroup>
+                                        </FormGroup>
+
+                                        <FormGroup className="w-full sm:flex  gap-2">
+                                            <FormGroup className=" w-full">
                                                 <CustomLabel
                                                     labelFor="Short Description"
                                                     className="button text-primary"
@@ -226,7 +270,7 @@ export default function EditBudgetPopup({
                                                     name="budget_description"
                                                     placeholder="Describe your budget "
                                                     component="textarea"
-                                                    className="w-full mt-1 resize-none"
+                                                    className="w-full  resize-none"
                                                     rows="4"
                                                     cols="50"
                                                     onChange={(e) => {

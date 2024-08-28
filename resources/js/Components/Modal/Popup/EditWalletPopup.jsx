@@ -218,6 +218,7 @@ export default function EditWalletPopup({
                                             <CustomLabel
                                                 labelFor="Description"
                                                 className="button text-primary"
+                                                isRequired={false}
                                             />
                                             <CustomField
                                                 id="wallet_description"

@@ -149,6 +149,7 @@ const AddSection = ({
                                     <CustomLabel
                                         labelFor="Wallet Name"
                                         className="button text-primary"
+                                        isRequired={false}
                                     />
 
                                     <CustomField
@@ -166,6 +167,7 @@ const AddSection = ({
                                     <CustomLabel
                                         labelFor="Created Date"
                                         className="button text-primary"
+                                        isRequired={false}
                                     />
 
                                     <CustomField
@@ -282,6 +284,7 @@ const AddSection = ({
                                 <CustomLabel
                                     labelFor="Note"
                                     className="button text-primary"
+                                    isRequired={false}
                                 />
                                 <CustomField
                                     id="transaction_note"
