@@ -25,6 +25,8 @@ return new class extends Migration
                 ->on('categories')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            
+            $table->foreignId('wallet_id')->references('id')->on('wallets')->onUpdate('cascade')->onDelete('cascade');
 
             $table->string('budget_name');
             $table->unsignedInteger('budget_amount');
