@@ -6,6 +6,7 @@ use App\Models\Budget;
 use App\Models\Category;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class BudgetController extends Controller
 {
@@ -84,10 +85,18 @@ class BudgetController extends Controller
         return ['budget' => $budget];
     }
 
-    public function showAllUserBudget()
+    public function showAllUserBudget(Request $request)
     {
         $user = auth()->user();
+
+        try {
+            $wallet_id = Crypt::decrypt($request->wallet_id);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json(['error' => 'Invalid wallet ID.'], 400);
+        }
+
         $budgets = Budget::where('user_id', $user->id)
+            ->where('wallet_id', $wallet_id)
             ->with(['category' => function ($query) use ($user) {
                 $query->with(['transactions' => function ($query) use ($user) {
                     $query->where('user_id', $user->id);
