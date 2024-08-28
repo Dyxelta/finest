@@ -95,6 +95,10 @@ class BudgetController extends Controller
             return response()->json(['error' => 'Invalid wallet ID.'], 400);
         }
 
+        if($wallet_id == null) {
+            $wallet_id = Wallet::firstWhere('user_id', $user->id)->id;
+        }
+
         $budgets = Budget::where('user_id', $user->id)
             ->where('wallet_id', $wallet_id)
             ->with(['category' => function ($query) use ($user) {
