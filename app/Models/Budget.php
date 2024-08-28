@@ -12,6 +12,7 @@ class Budget extends Model
     protected $fillable = [
         'user_id',
         'category_id',
+        'wallet_id',
         'budget_name',
         'budget_amount',
         'budget_description',
@@ -23,5 +24,9 @@ class Budget extends Model
 
     public function Category() {
         return $this->belongsTo(Category::class);
+    }
+
+    public function Wallet() {
+        return $this->belongsTo(Wallet::class);
     }
 }
