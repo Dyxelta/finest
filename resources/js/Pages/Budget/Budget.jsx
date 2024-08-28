@@ -25,7 +25,6 @@ export default function BudgetPage({
     expenseCategories,
     incomeCategories,
 }) {
-
     const [showAddBudgetPopup, setShowAddBudgetPopup] = useState(false);
     const [showEditBudgetPopup, setShowEditBudgetPopup] = useState(false);
 
@@ -86,7 +85,7 @@ export default function BudgetPage({
         value: wallet?.wallet_name,
         label: wallet?.wallet_name,
     }));
-   
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -126,9 +125,8 @@ export default function BudgetPage({
                     <div className="">
                         <PrimaryButton
                             className=" w-fit gap-2 rounded-lg py-3 px-1 sm:px-4 md:px-8 button flex items-center"
-                            type="submit"              
+                            type="submit"
                             onClick={() => setShowAddBudgetPopup(true)}
-
                         >
                             <div className="text-[14px] md:text-[20px]">
                                 <FiPlus />
@@ -136,25 +134,35 @@ export default function BudgetPage({
                             <div className="hidden md:block button">
                                 Add Budget
                             </div>
-                            <AddBudgetPopup show={showAddBudgetPopup} categoryOptions={categoryOptions} onClose={() => setShowAddBudgetPopup(false)}/>
+                            <AddBudgetPopup
+                                show={showAddBudgetPopup}
+                                categoryOptions={categoryOptions}
+                                walletOptions={walletOptions}
+                                onClose={() => setShowAddBudgetPopup(false)}
+                            />
                         </PrimaryButton>
                     </div>
                 </div>
             </div>
-            <EditBudgetPopup show={showEditBudgetPopup} categoryOptions={categoryOptions} onClose={() => setShowEditBudgetPopup(false)}/>
-            <div className="grid grid-cols-2 gap-4">
+            <EditBudgetPopup
+                show={showEditBudgetPopup}
+                categoryOptions={categoryOptions}
+                onClose={() => setShowEditBudgetPopup(false)}
+                walletOptions={walletOptions}
+            />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4">
                 <div
                     className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary
                 h-[270px]"
                 >
                     <div className="flex  border-light-grey h-full ">
-                        <div className="flex border-r-2 h-full px-2">
-                            <div className="my-auto bg-primary p-3 rounded-full text-light header-5">
+                        <div className="flex border-r-2 h-full px-1 md:px-2">
+                            <div className="my-auto bg-primary p-2 md:p-3 rounded-full text-light header-5">
                                 <LuDices />
                             </div>
                         </div>
-                        <div className="flex flex-col w-full h-full px-8 py-2">
-                            <div className="grid grid-cols-3  gap-x-4 gap-y-2 h-full">
+                        <div className="flex flex-col w-full h-full px-2 md:px-8 py-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-x-4 gap-y-2 h-full">
                                 <div>
                                     <div className="button">Budget Name :</div>
                                     <div>{showInitialBudget?.budget_name}</div>
@@ -167,7 +175,7 @@ export default function BudgetPage({
                                     <div className="button">Limit :</div>
                                     <div>{showInitialBudget?.budget_name}</div>
                                 </div>
-                                <div className="col-span-3">
+                                <div className="col-span-1 sm:col-span-2 md:col-span-3">
                                     <div className="button">
                                         Short Description :
                                     </div>
@@ -184,7 +192,9 @@ export default function BudgetPage({
                                     </Button>
                                     <Button
                                         className="bg-primary text-light rounded-full p-2 md:p-3 w-fit h-fit"
-                                        onClick={() => setShowEditBudgetPopup(true)}
+                                        onClick={() =>
+                                            setShowEditBudgetPopup(true)
+                                        }
                                     >
                                         <HiPencil size={18} />
                                     </Button>
@@ -198,12 +208,12 @@ export default function BudgetPage({
                 h-[270px]"
                 >
                     <div className="flex  border-light-grey h-full w-full">
-                        <div className="flex border-r-2 h-full px-2">
-                            <div className="my-auto bg-primary p-3 rounded-full text-light header-5">
+                        <div className="flex border-r-2 h-full px-1 md:px-2">
+                            <div className="my-auto bg-primary p-2 md:p-3 rounded-full text-light header-5">
                                 <MdOutlineRecommend />
                             </div>
                         </div>
-                        <div className="flex flex-col w-full h-full px-8 py-1 gap-2">
+                        <div className="flex flex-col w-full h-full px-2 md:px-8 py-1 gap-2">
                             <div className="rounded-lg overflow-hidden w-full  border border-primary flex flex-col ">
                                 <div className="px-4 py-2 bg-primary w-full">
                                     <span className="button text-light w-full">
@@ -211,15 +221,15 @@ export default function BudgetPage({
                                     </span>
                                 </div>
 
-                                <div className="px-5 py-2 h-full flex-col body">
+                                <div className="px-5 py-2 h-full flex-col sub-body md:body">
                                     Looks like your budget is still on the right
                                     track ! Spend no more than{" "}
-                                    <span className="button">
+                                    <span className="sub-body-bold md:button">
                                         {" "}
                                         Rp 5.000 per day
                                     </span>{" "}
                                     in order to avoid overspending your{" "}
-                                    <span className="button">
+                                    <span className="sub-body-bold md:button">
                                         budget limit!
                                     </span>
                                 </div>
@@ -230,7 +240,7 @@ export default function BudgetPage({
                                 items-center gap-2  button"
                                 >
                                     <div className="header-5">
-                                    <PiChartPieSliceLight />
+                                        <PiChartPieSliceLight />
                                     </div>
                                     Spending Limit
                                 </div>

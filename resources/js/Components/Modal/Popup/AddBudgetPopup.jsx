@@ -144,7 +144,7 @@ export default function AddBudgetPopup({
                                     className="font-roboto flex flex-col justify-center  w-full h-full"
                                 >
                                     <div className="flex flex-col justify-between bg-light px-2 sm:px-4 pt-3 md:pt-3 pb-2 md:pb-3 w-full rounded-md ">
-                                        <FormGroup className="w-full sm:flex  gap-2">
+                                        <FormGroup className="w-full sm:flex gap-2">
                                             <FormGroup className="flex-1">
                                                 <CustomLabel
                                                     labelFor="Budget Name"
@@ -155,7 +155,7 @@ export default function AddBudgetPopup({
                                                     name="budget_name"
                                                     placeholder="Name of the budget"
                                                     type="text"
-                                                    className="w-full mt-1"
+                                                    className="w-full"
                                                     onChange={(e) => {
                                                         setFieldValue(
                                                             "budget_name",
@@ -168,26 +168,30 @@ export default function AddBudgetPopup({
                                                     }}
                                                 />
                                             </FormGroup>
-
                                             <FormGroup className="flex-1">
                                                 <CustomLabel
-                                                    labelFor="Limit"
+                                                    labelFor="Budget Name"
                                                     className="button text-primary"
                                                 />
-                                                <CustomField
-                                                    id="budget_amount"
-                                                    name="budget_amount"
-                                                    placeholder="Input your budget limit"
-                                                    type="number"
-                                                    className="w-full mt-1"
+                                                <CustomSelectInput
+                                                    placeholder={
+                                                        "Select Wallet"
+                                                    }
+                                                    defaultValue={
+                                                        values?.wallet_name && {
+                                                            value: values?.wallet_name,
+                                                            label: values?.wallet_name,
+                                                        }
+                                                    }
+                                                    options={walletOptions}
                                                     onChange={(e) => {
                                                         setFieldValue(
-                                                            "budget_amount",
-                                                            e.target.value
+                                                            "wallet_name",
+                                                            e.value
                                                         );
                                                         setData(
-                                                            "budget_amount",
-                                                            e.target.value
+                                                            "wallet_name",
+                                                            e.value
                                                         );
                                                     }}
                                                 />
@@ -216,7 +220,33 @@ export default function AddBudgetPopup({
                                                 <ErrorMessageInput name="category_name" />
                                             </FormGroup>
 
-                                            <FormGroup className="mt-1 w-[50%]">
+                                            <FormGroup className="flex-1">
+                                                <CustomLabel
+                                                    labelFor="Limit"
+                                                    className="button text-primary"
+                                                />
+                                                <CustomField
+                                                    id="budget_amount"
+                                                    name="budget_amount"
+                                                    placeholder="Input your budget limit"
+                                                    type="number"
+                                                    className="w-full mt-2"
+                                                    onChange={(e) => {
+                                                        setFieldValue(
+                                                            "budget_amount",
+                                                            e.target.value
+                                                        );
+                                                        setData(
+                                                            "budget_amount",
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                />
+                                            </FormGroup>
+                                        </FormGroup>
+
+                                        <FormGroup className="w-full sm:flex  gap-2">
+                                            <FormGroup className=" w-full">
                                                 <CustomLabel
                                                     labelFor="Short Description"
                                                     className="button text-primary"
@@ -226,7 +256,7 @@ export default function AddBudgetPopup({
                                                     name="budget_description"
                                                     placeholder="Describe your budget "
                                                     component="textarea"
-                                                    className="w-full mt-1 resize-none"
+                                                    className="w-full  resize-none"
                                                     rows="4"
                                                     cols="50"
                                                     onChange={(e) => {

@@ -93,7 +93,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 openNav ? changeWidth[0] : changeWidth[1]
             } w-full bg-light font-roboto `}
         >
-            <div className="h-screen w-full bg-light flex flex-col justify-between ">
+            <div className="h-screen w-full bg-light flex flex-col justify-between border-r">
                 <div className="w-full">
                     <div className="relative w-full">
                         <div className="flex items-center gap-2 p-4 border-b-2 border-off-white relative justify-between w-full">
