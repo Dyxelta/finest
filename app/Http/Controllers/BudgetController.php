@@ -10,14 +10,15 @@ class BudgetController extends Controller
 {
     public function addBudget(Request $request)
     {
+        $user = auth()->user();
+
         $request->validate([
-            'budget_name' => 'required|unique:budgets',
+            'budget_name' => 'required|unique:budgets, budget_name, NULL, id, user_id' . $user->id,
             'budget_amount' => 'required|numeric',
             'budget_description' => 'required|max:250',
             'category_name' => 'required|string'
         ]);
 
-        $user = auth()->user();
         $category = Category::where('category_name', $request->category_name)->firstOrFail();
 
         Budget::create([
@@ -41,8 +42,10 @@ class BudgetController extends Controller
 
     public function editBudget(Request $request)
     {
+        $user = auth()->user();
+
         $request->validate([
-            'budget_name' => 'required',
+            'budget_name' => 'required|unique:budgets, budget_name, NULL, id, user_id' . $user->id,
             'budget_amount' => 'required|numeric',
             'budget_description' => 'required|max:250',
             'category_name' => 'required|string'
