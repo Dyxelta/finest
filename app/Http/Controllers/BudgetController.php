@@ -14,13 +14,21 @@ class BudgetController extends Controller
     {
         $user = auth()->user();
 
-        $request->validate([
-            'budget_name' => 'required|unique:budgets,budget_name,NULL,id,user_id,' . $user->id,
-            'budget_amount' => 'required|numeric',
-            'budget_description' => 'required|max:250',
-            'category_name' => 'required|string',
-            'wallet_name' => 'required|string'
-        ]);
+            $request->validate([
+                'budget_name' => 'required|unique:budgets, budget_name, NULL, id, user_id' . $user->id,
+                'budget_amount' => 'required|numeric',
+                'budget_description' => 'required|max:250',
+                'category_name' => ['required|string', function($attribute, $value, $fail) use ($user) {
+                    $category = Category::whereFirst('category_name', $value);
+
+                    $budgetCategory = Budget::where('user_id', $user->id)->where('category_id', $category->id)->exists();
+
+                    if($budgetCategory){
+                        $fail('Budget with current category already exists');
+                    }
+                }],
+                'wallet_name' => 'required|string'
+            ]);
 
         $category = Category::where('category_name', $request->category_name)->firstOrFail();
         $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
