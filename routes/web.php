@@ -51,12 +51,12 @@ Route::middleware('auth')->group(function () {
 
 
     //dashboard
-    Route::get('/dashboard', function () {
+    Route::get('/dashboard', function (Request $request) {
         $transactionData = app(TransactionController::class)->showAllUserTransaction();
 
         $walletData = app(WalletController::class)->showAllWalletByUserID();
 
-        $budgetData = app(BudgetController::class)->showAllUserBudget();
+        $budgetData = app(BudgetController::class)->showAllUserBudget($request);
 
         return Inertia::render('Dashboard', array_merge($transactionData, $walletData, $budgetData));
     })->name('dashboard');

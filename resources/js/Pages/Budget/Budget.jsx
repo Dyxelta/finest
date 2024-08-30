@@ -3,20 +3,21 @@ import HeaderInfo from "@/Components/Budget/HeaderInfo";
 import PrimaryButton from "@/Components/PrimaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-import { Head } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 
+import AddBudgetPopup from "@/Components/Modal/Popup/AddBudgetPopup";
+import EditBudgetPopup from "@/Components/Modal/Popup/EditBudgetPopup";
 import "boxicons";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FiPlus } from "react-icons/fi";
+import { GrInfo } from "react-icons/gr";
 import { HiPencil } from "react-icons/hi2";
 import { LuDices } from "react-icons/lu";
-import { MdOutlineRecommend } from "react-icons/md";
-import { Button } from "reactstrap";
 import { PiChartPieSliceLight } from "react-icons/pi";
-import AddBudgetPopup from "@/Components/Modal/Popup/AddBudgetPopup";
-import EditBudgetPopup from "@/Components/Modal/Popup/EditBudgetPopup";
+import { Button } from "reactstrap";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 
 export default function BudgetPage({
     auth,
@@ -24,32 +25,32 @@ export default function BudgetPage({
     wallets,
     expenseCategories,
     incomeCategories,
+    id_wallet,
 }) {
     const [showAddBudgetPopup, setShowAddBudgetPopup] = useState(false);
     const [showEditBudgetPopup, setShowEditBudgetPopup] = useState(false);
 
-    const [selectedWallet, setSelectedWallet] = useState(
-        wallets[0].wallet_name
+    const [showInitialBudget, setShowInitialBudget] = useState(
+        budgets?.length !== 0 ? budgets[0] : []
     );
+    const [selectedWallet, setSelectedWallet] = useState();
 
     const categoryOptions = [
         {
             label: "Expense",
-            options: expenseCategories.map((expense) => ({
-                value: expense?.category_name,
-                label: expense?.category_name,
-            })),
-        },
-        {
-            label: "Income",
-            options: incomeCategories.map((income) => ({
-                value: income?.category_name,
-                label: income?.category_name,
-            })),
+            options: expenseCategories
+                .filter(
+                    (category) =>
+                        !budgets.some(
+                            (budget) => category.id === budget.category_id
+                        )
+                )
+                .map((expense) => ({
+                    value: expense?.category_name,
+                    label: expense?.category_name,
+                })),
         },
     ];
-
-    const [showInitialBudget, setShowInitialBudget] = useState(budgets[0]);
 
     let totalExpenseBudgetAmount = budgets.reduce((total, budget) => {
         return total + budget?.budget_amount;
@@ -59,9 +60,16 @@ export default function BudgetPage({
         return total + budget?.budget_amount;
     }, 0);
 
-    const carousel = useRef(null);
+    useEffect(() => {
+        if (id_wallet) {
+            const idwallet = parseInt(id_wallet);
+            const matchingWallet =
+                wallets.find((wallet) => wallet.id === idwallet) ?? wallets[0];
+            setSelectedWallet(matchingWallet);
+        }
+    }, [id_wallet]);
 
-    {console.log(budgets,"uihegrferudfhuioghsfduiohsgdf")}
+    const carousel = useRef(null);
     useEffect(() => {
         const handleScroll = (e) => {
             if (carousel.current) {
@@ -83,9 +91,58 @@ export default function BudgetPage({
     }, []);
 
     const walletOptions = wallets.map((wallet) => ({
-        value: wallet?.wallet_name,
+        value: wallet?.id,
         label: wallet?.wallet_name,
     }));
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const { delete: destroy, setData } = useForm({
+        id: budgets?.length !== 0 ? budgets[0].id : "",
+    });
+
+    const handleDelete = () => {
+        if (showInitialBudget.length !== 0) {
+            if (!isDeleting) {
+                const onClose = () => {
+                    setIsDeleting(true);
+                    destroy(route("deleteBudget", showInitialBudget.id), {
+                        onSuccess: () => {
+                            setShowInitialBudget(null);
+                            setIsDeleting(false);
+                            showSuccessModal(
+                                "Success",
+                                "Budget has been deleted successfully"
+                            );
+                        },
+                        onError: () => {
+                            setIsDeleting(false);
+                            showErrorModal("Error", "Something went wrong");
+                        },
+                    });
+                };
+
+                showErrorModal(
+                    "Error",
+                    "Are you sure you want to delete this budget?",
+                    () => onClose(),
+                    undefined,
+                    true,
+                    true
+                );
+            } else {
+                return;
+            }
+        } else {
+            showErrorModal(
+                "Error",
+                "No Budget Selected!",
+                undefined,
+                undefined,
+                true,
+                true
+            );
+        }
+    };
 
     return (
         <AuthenticatedLayout
@@ -116,6 +173,7 @@ export default function BudgetPage({
                             budget={budget}
                             showInitialBudget={showInitialBudget}
                             setShowInitialBudget={setShowInitialBudget}
+                            setData={setData}
                         />
                     ))}
                 </motion.div>
@@ -138,8 +196,8 @@ export default function BudgetPage({
                             <AddBudgetPopup
                                 show={showAddBudgetPopup}
                                 categoryOptions={categoryOptions}
-                                walletOptions={walletOptions}
                                 onClose={() => setShowAddBudgetPopup(false)}
+                                selectedWallet={selectedWallet}
                             />
                         </PrimaryButton>
                     </div>
@@ -150,6 +208,9 @@ export default function BudgetPage({
                 categoryOptions={categoryOptions}
                 onClose={() => setShowEditBudgetPopup(false)}
                 walletOptions={walletOptions}
+                showInitialBudget={showInitialBudget}
+                selectedWallet={selectedWallet}
+                expenseCategories={expenseCategories}
             />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4">
                 <div
@@ -185,7 +246,10 @@ export default function BudgetPage({
                             </div>
                             <div className="w-full flex justify-end">
                                 <div className="flex gap-2 md:gap-4 h-fit">
-                                    <Button className="border-2 border-expense p-2 md:p-3 rounded-full w-fit h-fit">
+                                    <Button
+                                        className="border-2 border-expense p-2 md:p-3 rounded-full w-fit h-fit"
+                                        onClick={() => handleDelete()}
+                                    >
                                         <FaRegTrashCan
                                             className="text-expense"
                                             size={17}
@@ -204,13 +268,11 @@ export default function BudgetPage({
                         </div>
                     </div>
                 </div>
-                <div
-                    className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary h-[270px]"
-                >
+                <div className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary h-[270px]">
                     <div className="flex  border-light-grey h-full w-full">
                         <div className="flex border-r-2 h-full px-1 md:px-2">
                             <div className="my-auto bg-primary p-2 md:p-3 rounded-full text-light header-5">
-                                <MdOutlineRecommend />
+                                <GrInfo />
                             </div>
                         </div>
                         <div className="flex flex-col w-full h-full px-2 md:px-8 py-1 gap-2">

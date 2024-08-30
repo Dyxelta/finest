@@ -29,7 +29,7 @@ return new class extends Migration
             $table->foreignId('wallet_id')->references('id')->on('wallets')->onUpdate('cascade')->onDelete('cascade');
 
             $table->string('budget_name');
-            $table->unsignedInteger('budget_amount');
+            $table->unsignedBigInteger('budget_amount');
             $table->string('budget_description');
             $table->timestamps();
         });

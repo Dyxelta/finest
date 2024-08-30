@@ -44,7 +44,7 @@ export default function CustomField({
                 />
             </div>
             {meta.touched && meta.error && (
-                <div className="text-red-400 my-[3px] text-[14px]">
+                <div className="text-red-400 my-[2px] text-[14px]">
                     {meta.error}
                 </div>
             )}

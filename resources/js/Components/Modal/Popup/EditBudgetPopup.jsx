@@ -1,22 +1,20 @@
 import CustomField from "@/Components/CustomInput/CustomField";
+import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import CustomLabel from "@/Components/CustomLabel";
+import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import Loader from "@/Components/Loader";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
 import { Form, Formik } from "formik";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { FaMoneyBillWave } from "react-icons/fa";
 import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
-import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
-import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
-import { FaMoneyBillWave } from "react-icons/fa";
-import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 
 const validationSchema = Yup.object().shape({
     budget_name: Yup.string().required("Budget name is required"),
-    wallet_name: Yup.string().required("Wallet name is required"),
     category_name: Yup.string().required("Category name is required"),
     budget_amount: Yup.number()
         .typeError("Limit must be number")
@@ -30,22 +28,31 @@ export default function EditBudgetPopup({
     maxWidth = "2xl",
     showCancel = true,
     categoryOptions,
-    walletOptions,
+    selectedWallet,
+    showInitialBudget,
+    expenseCategories,
     onClose = () => {},
 }) {
+    
     const [loading, setLoading] = useState(false);
+    const selectedCategory = showInitialBudget!== null ? expenseCategories.find((cat) => showInitialBudget?.category_id === cat.id) : []
     const { setData, put, data } = useForm({
-        budget_name: "",
-        budget_amount: "",
-        budget_description: "",
+        budget_name: showInitialBudget?.budget_name,
+        budget_amount: showInitialBudget?.budget_amount,
+        budget_description: showInitialBudget?.budget_description,
         wallet_name: "",
-        category_name: "",
+        category_name: selectedCategory?.category_name,
     });
 
     const openModal = (error) => {
+        setLoading(false);
         showErrorModal("Error", error);
     };
-
+    
+    useEffect(() => {
+        setData("wallet_name", selectedWallet?.wallet_name);
+    }, [selectedWallet]);
+    
     const closeModal = () => {
         setLoading(false);
         onClose();
@@ -133,13 +140,14 @@ export default function EditBudgetPopup({
                                 </h5>
                             </div>
                         </div>
+          
                         <Formik
                             initialValues={{
-                                budget_name: "",
-                                budget_amount: "",
-                                budget_description: "",
-                                wallet_name: "",
-                                category_name: "",
+                                budget_name: showInitialBudget?.budget_name ?? "",
+                                budget_amount: showInitialBudget?.budget_amount ?? "",
+                                budget_description: showInitialBudget?.budget_description ?? "",
+                             
+                                category_name: selectedCategory?.category_name ?? "",
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
@@ -181,33 +189,7 @@ export default function EditBudgetPopup({
                                                 />
                                             </FormGroup>
                                             <FormGroup className="flex-1">
-                                                <CustomLabel
-                                                    labelFor="Wallet Name"
-                                                    className="button text-primary"
-                                                />
-                                                <CustomSelectInput
-                                                    placeholder={
-                                                        "Select Wallet"
-                                                    }
-                                                    defaultValue={
-                                                        values?.wallet_name && {
-                                                            value: values?.wallet_name,
-                                                            label: values?.wallet_name,
-                                                        }
-                                                    }
-                                                    options={walletOptions}
-                                                    onChange={(e) => {
-                                                        setFieldValue(
-                                                            "wallet_name",
-                                                            e.value
-                                                        );
-                                                        setData(
-                                                            "wallet_name",
-                                                            e.value
-                                                        );
-                                                    }}
-                                                />
-                                                <ErrorMessageInput name="wallet_name" />
+                                              
                                             </FormGroup>
                                         </FormGroup>
 
@@ -218,6 +200,10 @@ export default function EditBudgetPopup({
                                                     className="button text-primary"
                                                 />
                                                 <CustomSelectCategories
+                                                defaultValue={selectedCategory && {
+                                                    value:selectedCategory?.category_name,
+                                                    label:selectedCategory?.category_name
+                                                }}
                                                     options={categoryOptions}
                                                     onChange={(e) => {
                                                         setFieldValue(

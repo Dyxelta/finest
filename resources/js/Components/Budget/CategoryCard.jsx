@@ -2,17 +2,20 @@ import { formatToRupiah } from "@/Helpers/helperFormat";
 import React from "react";
 import { Button } from "reactstrap";
 
-const CategoryCard = ({ budget, setShowInitialBudget, showInitialBudget }) => {
+const CategoryCard = ({ budget, setShowInitialBudget, showInitialBudget,setData  }) => {
     const isSelected =
         showInitialBudget?.category?.category_name === budget?.category?.category_name;
     const isIncome = budget?.category?.category_is_income === 1;
 
     return (
         <div
-            className={`rounded-lg overflow-hidden w-full max-w-[230px] h-[150px] border ${
+            className={`rounded-lg overflow-hidden w-[230px] h-[150px] border ${
                 isSelected ? "border-primary" : "border-lighter-primary"
             } flex flex-col hover:opacity-80 transition-all duration-300 cursor-pointer`}
-            onClick={() => setShowInitialBudget(budget)}
+            onClick={() => {
+                setShowInitialBudget(budget)
+                setData("id",budget.id)
+            }}
         >
             <div
                 className={`px-2 py-1 ${

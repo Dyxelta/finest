@@ -175,13 +175,13 @@ export default function TransactionRecordsPage({
                   : transaction.category.category_is_income === 0)
     );
 
-    const [wait, setWait] = useState(false);
-
+    
     const walletOptions = initialWallets.map((wallet) => ({
         value: wallet?.id,
         label: wallet?.wallet_name,
     }));
-
+ 
+    const [wait, setWait] = useState(false);
     useEffect(() => {
         const waitSetMonthData = () => {
             if (wait) {
@@ -274,7 +274,7 @@ export default function TransactionRecordsPage({
                                             }
                                             options={getCurrentMonth()}
                                             onChange={(e) => {
-                                                console.log(e, "pilihhhh");
+                                    
                                                 setFieldValue(
                                                     "defaultMonthValue",
                                                     e.value

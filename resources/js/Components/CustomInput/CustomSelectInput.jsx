@@ -41,11 +41,12 @@ const customStyles = {
     }),
 };
 
-const CustomSelectInput = ({ defaultValue, options, onChange, props, placeholder }) => {
+const CustomSelectInput = ({ defaultValue, options, onChange, props, placeholder,value }) => {
     return (
         <>
             <Select
                 {...props}
+                value={value}
                 defaultValue={defaultValue ?? ""}
                 options={options}
                 theme={(theme) => ({
