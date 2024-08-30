@@ -18,15 +18,7 @@ class BudgetController extends Controller
             'budget_name' => 'required|unique:budgets,budget_name,NULL,id,user_id,' . $user->id,
             'budget_amount' => 'required|numeric',
             'budget_description' => 'required|max:250',
-            'category_name' => ['required|string', function ($attribute, $value, $fail) use ($user) {
-                $category = Category::whereFirst('category_name', $value);
-
-                $budgetCategory = Budget::where('user_id', $user->id)->where('category_id', $category->id)->exists();
-
-                if ($budgetCategory) {
-                    $fail('Budget with current category already exists');
-                }
-            }],
+            'category_name' => 'required|string',
             'wallet_name' => 'required|string'
         ]);
 
@@ -57,23 +49,28 @@ class BudgetController extends Controller
     public function editBudget(Request $request)
     {
         $user = auth()->user();
+        $budget = Budget::findOrFail($request->id);
+        $budget_name_exist = $budget->budget_name;
+
+        if($request->budget_name !== $budget_name_exist){
+            $request->validate([
+                'budget_name' => 'required|unique:budgets,budget_name,NULL,id,user_id,' . $user->id
+            ]);
+        }
 
         $request->validate([
-            'budget_name' => 'required|unique:budgets,budget_name,NULL,id,user_id,' . $user->id,
+            'budget_name' => 'required',
             'budget_amount' => 'required|numeric',
             'budget_description' => 'required|max:250',
             'category_name' => 'required|string',
             'wallet_name' => 'required|string'
         ]);
 
-        $budgetId = $request->id;
         $budget_name = $request->budget_name;
         $budget_amount = $request->budget_amount;
         $budget_description = $request->budget_description;
         $category_name = $request->category_name;
         $wallet_name = $request->wallet_name;
-
-        $budget = Budget::findOrFail($budgetId);
 
         $budget->budget_name = $budget_name;
         $budget->category_id = Category::firstWhere('category_name', $category_name)->id;

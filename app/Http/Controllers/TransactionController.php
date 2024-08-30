@@ -7,6 +7,8 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -92,12 +94,28 @@ class TransactionController extends Controller
         $wallet->save();
     }
 
-    public function showAllUserTransaction() {
+    public function showAllUserTransaction(Request $request) {
         $user = auth()->user();
 
-        $transactions = Transaction::where('user_id', $user->id)
-            ->orderBy('transaction_date', 'desc')
-            ->get();
+        try {
+            $wallet_id = Crypt::decrypt($request->wallet_id);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return ['error' => 'Invalid wallet ID.', 'status' => 400];
+        }
+
+        if ($wallet_id == null) {
+            $wallet_id = Wallet::firstWhere('user_id', $user->id)->id;
+        }
+
+        $transactions = Transaction::where('user_id', $user->id)->where('wallet_id', $wallet_id)->with(['category' => function ($query) use ($user) {
+            $query->with(['transactions' => function ($query) use ($user) {
+                $query->whesre('user_id', $user->id);
+            }]);
+        }])->get();
+
+        // $transactions = Transaction::where('user_id', $user->id)
+        //     ->orderBy('transaction_date', 'desc')
+        //     ->get();
 
         return ['transactions' => $transactions];
     }
@@ -148,5 +166,5 @@ class TransactionController extends Controller
 
         return ['transactions' => $transactions,'currMonth' => $selectedMonth];
     }
-
+    
 }

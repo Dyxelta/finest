@@ -37,6 +37,7 @@ export default function EditBudgetPopup({
     const [loading, setLoading] = useState(false);
     const selectedCategory = showInitialBudget!== null ? expenseCategories.find((cat) => showInitialBudget?.category_id === cat.id) : []
     const { setData, put, data } = useForm({
+        id: showInitialBudget?.id,
         budget_name: showInitialBudget?.budget_name,
         budget_amount: showInitialBudget?.budget_amount,
         budget_description: showInitialBudget?.budget_description,
