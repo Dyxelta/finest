@@ -14,12 +14,12 @@ import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-    budget_name: Yup.string().required("Budget name is required"),
+    budget_name: Yup.string().required("Budget name is required").max(30, "Maximum 30 Characters"),
     category_name: Yup.string().required("Category name is required"),
     budget_amount: Yup.number()
         .typeError("Limit must be number")
         .required("Budget limit is required"),
-    budget_description: Yup.string().required("Description is required"),
+    budget_description: Yup.string().required("Description is required").max(150, "Maximum 150 Characters"),
 });
 
 export default function EditBudgetPopup({
@@ -31,12 +31,14 @@ export default function EditBudgetPopup({
     selectedWallet,
     showInitialBudget,
     expenseCategories,
+    selectedCategory,
     onClose = () => {},
 }) {
     
     const [loading, setLoading] = useState(false);
-    const selectedCategory = showInitialBudget!== null ? expenseCategories.find((cat) => showInitialBudget?.category_id === cat.id) : []
+
     const { setData, put, data } = useForm({
+        id: showInitialBudget?.id,
         budget_name: showInitialBudget?.budget_name,
         budget_amount: showInitialBudget?.budget_amount,
         budget_description: showInitialBudget?.budget_description,

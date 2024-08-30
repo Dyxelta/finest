@@ -12,11 +12,11 @@ import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-    wallet_name: Yup.string().required("Wallet name is required"),
+    wallet_name: Yup.string().required("Wallet name is required").max(30, "Maximum 30 Characters"),
     wallet_balance: Yup.number()
         .typeError("Balance must be number")
         .required("Wallet balance is required"),
-    description: Yup.string(),
+    description: Yup.string().max(150, "Maximum 150 Characters"),
 });
 
 export default function AddWalletPopup({

@@ -25,6 +25,7 @@ const validationSchema = Yup.object().shape({
     category_name: Yup.string().required("Category name is required"),
     transaction_amount: Yup.number().required("Transaction amount is required"),
     transaction_date: Yup.date().required("Transaction date is required"),
+    transaction_note: Yup.string().max(150, "Maximum 150 Characters")
 });
 
 const AddSection = ({

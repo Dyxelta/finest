@@ -29,10 +29,10 @@ export default function BudgetPage({
 }) {
     const [showAddBudgetPopup, setShowAddBudgetPopup] = useState(false);
     const [showEditBudgetPopup, setShowEditBudgetPopup] = useState(false);
-
     const [showInitialBudget, setShowInitialBudget] = useState(
         budgets?.length !== 0 ? budgets[0] : []
     );
+    const selectedCategory = showInitialBudget!== null ? expenseCategories.find((cat) => showInitialBudget?.category_id === cat.id) : []
     const [selectedWallet, setSelectedWallet] = useState();
 
     const categoryOptions = [
@@ -211,6 +211,7 @@ export default function BudgetPage({
                 showInitialBudget={showInitialBudget}
                 selectedWallet={selectedWallet}
                 expenseCategories={expenseCategories}
+                selectedCategory={selectedCategory}
             />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4">
                 <div
@@ -231,17 +232,17 @@ export default function BudgetPage({
                                 </div>
                                 <div>
                                     <div className="button">Category :</div>
-                                    <div>{showInitialBudget?.budget_name}</div>
+                                    <div>{selectedCategory?.category_name}</div>
                                 </div>
                                 <div>
                                     <div className="button">Limit :</div>
-                                    <div>{showInitialBudget?.budget_name}</div>
+                                    <div>{showInitialBudget?.budget_amount}</div>
                                 </div>
                                 <div className="col-span-1 sm:col-span-2 md:col-span-3">
                                     <div className="button">
                                         Short Description :
                                     </div>
-                                    <div>{showInitialBudget?.budget_name}</div>
+                                    <div>{showInitialBudget?.budget_description}</div>
                                 </div>
                             </div>
                             <div className="w-full flex justify-end">

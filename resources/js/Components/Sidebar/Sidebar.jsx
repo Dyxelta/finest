@@ -35,7 +35,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
             Children: [
                 {
                     Title: "Dashboard",
-                    href: "",
+                    href: "dashboard",
                     icon: <MdDashboard size={24} />,
                 },
             ],
@@ -45,27 +45,27 @@ const Sidebar = ({ openNav, setOpenNav }) => {
             Children: [
                 {
                     Title: "Add Transaction",
-                    href: "",
+                    href: "addTransasction",
                     icon: <CiSquarePlus size={24} />,
                 },
                 {
                     Title: "Recurring Transaction",
-                    href: "",
+                    href: "recurringTransactionPage",
                     icon: <RxLoop size={22} />,
                 },
                 {
                     Title: "Financial Analysis",
-                    href: "",
+                    href: "dashboard",
                     icon: <BsGraphUp size={22} />,
                 },
                 {
                     Title: "Transaction Records",
-                    href: "",
+                    href: "transactionPage",
                     icon: <GrHistory size={22} />,
                 },
                 {
                     Title: "Transaction Report",
-                    href: "",
+                    href: "dashboard",
                     icon: <LuClipboardList size={24} />,
                 },
             ],
@@ -75,12 +75,12 @@ const Sidebar = ({ openNav, setOpenNav }) => {
             Children: [
                 {
                     Title: "Wallet",
-                    href: "",
+                    href: "walletPage",
                     icon: <FaWallet size={22} />,
                 },
                 {
                     Title: "Budget",
-                    href: "",
+                    href: "budgetPage",
                     icon: <FaMoneyBillWave size={22} />,
                 },
             ],
@@ -99,7 +99,11 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                         <div className="flex items-center gap-2 p-4 border-b-2 border-off-white relative justify-between w-full">
                             <div
                                 className="flex items-center gap-2  border-off-white relative w-full"
-                                onClick={() => setOpenProfile(openNav ?  !openProfile : false)}
+                                onClick={() =>
+                                    setOpenProfile(
+                                        openNav ? !openProfile : false
+                                    )
+                                }
                             >
                                 <div className="p-[10px] bg-darker-primary w-fit rounded-md">
                                     <CiUser size={24} color="#FDFDFD" />
@@ -219,7 +223,8 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                 )}
                                 <div className=" py-1 flex flex-col gap-1 pt-2 ">
                                     {menu.Children.map((subMenu, index) => (
-                                        <div
+                                        <Link
+                                            href={route(subMenu?.href)}
                                             className={` relative group flex gap-2 text-primary ${
                                                 openNav ? "py-3 px-4" : "p-3"
                                             }  rounded-md  hover:bg-off-white `}
@@ -258,7 +263,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                                         : ""}
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     ))}
                                 </div>
                             </div>

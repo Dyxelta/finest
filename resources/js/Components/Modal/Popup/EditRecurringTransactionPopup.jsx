@@ -25,7 +25,7 @@ const validationSchema = Yup.object().shape({
     recurring_transaction_date: Yup.date().required(
         "Transaction date is required"
     ),
-    recurring_transaction_note: Yup.string(),
+    recurring_transaction_note: Yup.string().max(150, "Maximum 150 Characters"),
 });
 
 export default function EditRecurringTransactionPopup({

@@ -15,12 +15,12 @@ import { FaMoneyBillWave } from "react-icons/fa";
 import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 
 const validationSchema = Yup.object().shape({
-    budget_name: Yup.string().required("Budget name is required"),
+    budget_name: Yup.string().required("Budget name is required").max(30, "Maximum 30 Characters"),
     category_name: Yup.string().required("Category name is required"),
     budget_amount: Yup.number()
         .typeError("Limit must be number")
         .required("Budget limit is required"),
-    budget_description: Yup.string().required("Description is required"),
+    budget_description: Yup.string().required("Description is required").max(150, "Maximum 150 Characters"),
 });
 
 export default function AddBudgetPopup({
