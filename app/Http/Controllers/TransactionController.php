@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
-    public function addTransaction(Request $request) {
+    public function addTransaction(Request $request)
+    {
 
         $request->validate([
             'wallet_name' => 'required|string',
@@ -44,13 +45,15 @@ class TransactionController extends Controller
         return redirect()->intended(route('transactionPage'));
     }
 
-    public function deleteTransaction(Transaction $transaction) {
+    public function deleteTransaction(Transaction $transaction)
+    {
         $transaction->delete();
 
         return redirect()->back();
     }
 
-    public function editTransaction(Request $request) {
+    public function editTransaction(Request $request)
+    {
 
         $request->validate([
             'wallet_name' => 'required|string',
@@ -89,12 +92,14 @@ class TransactionController extends Controller
         return redirect()->intended(route('transactionPage'));
     }
 
-    private function changeWalletBalance(Wallet $wallet, $amount) {
+    private function changeWalletBalance(Wallet $wallet, $amount)
+    {
         $wallet->wallet_balance += $amount;
         $wallet->save();
     }
 
-    public function showAllUserTransaction(Request $request) {
+    public function showAllUserTransaction(Request $request)
+    {
         $user = auth()->user();
 
         try {
@@ -120,7 +125,8 @@ class TransactionController extends Controller
         return ['transactions' => $transactions];
     }
 
-    public function showTransactionByWallet(Wallet $wallet) {
+    public function showTransactionByWallet(Wallet $wallet)
+    {
 
         $userId = auth()->user()->id;
 
@@ -134,21 +140,40 @@ class TransactionController extends Controller
         return ['transactions' => $transactions];
     }
 
-    public function showTransactionByCategory(Category $category) {
-
+    public function showTransactionByCategory(Request $request)
+    {
         $userId = auth()->user()->id;
+        $selectedMonth = $request->month ?? now()->month;
+        $currentYear = now()->year;
 
-        $categoryId = $category->id;
+        $year = ($selectedMonth > now()->month) ? $currentYear - 1 : $currentYear;
 
-        $transactions = Transaction::where('user_id', $userId)
-            ->where('category_id', $categoryId)
-            ->orderBy('transaction_date', 'desc')
+        $startDate = Carbon::createFromDate($year, $selectedMonth, 1)->startOfMonth();
+        $endDate = Carbon::createFromDate($year, $selectedMonth, 1)->endOfMonth();
+
+        $categoryTransactionsQuery = Transaction::where('user_id', $userId)
+            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->whereHas('category', function ($query) {
+                $query->where('is_expense', true);
+            });
+
+        if ($request->wallet_name && $request->wallet_name != "All Wallet") {
+            $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+            $categoryTransactionsQuery->where('wallet_id', $wallet->id);
+        }
+
+        $categoryTransactions = $categoryTransactionsQuery
+            ->selectRaw('category_id, SUM(transaction_amount) as total_amount')
+            ->groupBy('category_id')
+            ->with('category')
+            ->orderBy('total_amount', 'desc')
             ->get();
 
-        return ['transactions' => $transactions];
+        return ['category_transactions' => $categoryTransactions, 'currMonth' => $selectedMonth];
     }
 
-    public function showTransactionByMonth(Request $request) {
+    public function showTransactionByMonth(Request $request)
+    {
         $userId = auth()->user()->id;
         $selectedMonth = $request->month ?? now()->month;
         $currentYear = now()->year;
@@ -164,7 +189,6 @@ class TransactionController extends Controller
             ->with(['wallet', 'category'])
             ->get();
 
-        return ['transactions' => $transactions,'currMonth' => $selectedMonth];
+        return ['transactions' => $transactions, 'currMonth' => $selectedMonth];
     }
-    
 }
