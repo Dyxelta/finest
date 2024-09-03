@@ -191,4 +191,48 @@ class TransactionController extends Controller
 
         return ['transactions' => $transactions, 'currMonth' => $selectedMonth];
     }
+
+    public function showTransactionOverview(Request $request)
+    {
+        $userId = auth()->user()->id;
+        $currentDate = now();
+        $startDate = $currentDate->copy()->subMonths(11)->startOfMonth();
+        $endDate = $currentDate->endOfMonth();
+
+        $walletCondition = function ($query) use ($request) {
+            if ($request->wallet_name && $request->wallet_name != "All Wallet") {
+                $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+                $query->where('wallet_id', $wallet->id);
+            }
+        };
+
+        $expenseDataPerMonth = Transaction::where('user_id', $userId)
+            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->whereHas('category', function ($query) {
+                $query->where('is_expense', true);
+            })
+            ->where($walletCondition)
+            ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, SUM(transaction_amount) as total_amount')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
+
+        $incomeDataPerMonth = Transaction::where('user_id', $userId)
+            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->whereHas('category', function ($query) {
+                $query->where('is_expense', false);
+            })
+            ->where($walletCondition)
+            ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, SUM(transaction_amount) as total_amount')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
+
+        return [
+            'monthly_expense_data' => $expenseDataPerMonth,
+            'monthly_income_data' => $incomeDataPerMonth
+        ];
+    }
 }
