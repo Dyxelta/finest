@@ -114,7 +114,7 @@ class TransactionController extends Controller
 
         $transactions = Transaction::where('user_id', $user->id)->where('wallet_id', $wallet_id)->with(['category' => function ($query) use ($user) {
             $query->with(['transactions' => function ($query) use ($user) {
-                $query->whesre('user_id', $user->id);
+                $query->where('user_id', $user->id);
             }]);
         }])->get();
 
@@ -234,5 +234,31 @@ class TransactionController extends Controller
             'monthly_expense_data' => $expenseDataPerMonth,
             'monthly_income_data' => $incomeDataPerMonth
         ];
+    }
+
+    public function getSummaryReport(Request $request){
+        $userId = auth()->user()->id;
+
+        $summary_report = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
+        ->join('categories', 'transactions.category_id', '=', 'categories.id')
+        ->where('transactions.user_id', $userId)
+        ->where('transactions.wallet_id', $request->walletId)
+        ->whereMonth('transactions.transaction_date', $request->transaction_month)
+        ->groupBy('categories.category_is_income')
+        ->get()
+        ->mapWithKeys(function ($item) {
+            return [
+                $item->category_is_income ? 'income' : 'expense' => $item->total_amount
+            ];
+        });
+
+        $summary_report = $summary_report->merge([
+            'income' => $summary_report->get('income',0),
+            'expense' => $summary_report->get('expense',0)
+        ]);
+
+        $summary_report['total_balance'] = $summary_report['income'] - $summary_report['expense'];
+
+        return ['summary_report' => $summary_report];
     }
 }
