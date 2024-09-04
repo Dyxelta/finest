@@ -16,36 +16,39 @@ import {
     Text,
 } from "recharts";
 
-function CustomTick(props) {
-    const {
-        fill,
-        height,
-        orientation,
-        payload,
-        stroke,
-        textAnchor,
-        type,
-        width,
-        x,
-        y,
-        offset
-    } = props;
+const CustomTick = ({ x, y, payload }) => {
+    let text = payload.value;
+  
 
+    const words = text.split(' ');
+    let lines = [];
+  
+    words.forEach((word, index) => {
+      if (word === '&' && index > 0) {
+        lines[lines.length - 1] += ` &`;
+      } else {
+        lines.push(word);
+      }
+    });
+  
     return (
-        <Text
-            x={x}
-            y={y + offset}
-            style={{ fontSize: "12px" }}
-            fill="#000000"
+      <g transform={`translate(${x},${y})`}>
+        {lines.map((line, index) => (
+          <text
+            key={index}
+            x={0}
+            y={index * 12} 
             textAnchor="middle"
-            width="170"
-            verticalAnchor="start"
-        >
-            {payload}
-        </Text>
+            fill="#666"
+            fontSize={9}
+          >
+            <tspan dy={6}>{line}</tspan>
+          </text>
+        ))}
+      </g>
     );
-}
-
+  };
+  
 export default function TransactionReportPage({ auth, currMonth }) {
     const { post, get, setData } = useForm({
         month: "",
@@ -207,29 +210,33 @@ export default function TransactionReportPage({ auth, currMonth }) {
                             />
                         </div>
                     </div>
-                    <ResponsiveContainer width="100%" height="85%">
-                        <BarChart
-                            width={500}
-                            height={240}
-                            data={data}
-                            margin={{
-                                top: 5,
-                                right: 0,
-                                left: 0,
-                                bottom: 5,
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis
-                                dataKey="name"
-                                tick={<CustomTick />}
-                                dy={10}
-                            />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="pv" fill="#2D5074" />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <div className="flex w-full justify-center h-full">
+                        <ResponsiveContainer width="90%" height="85%">
+                            <BarChart
+                                width={500}
+                                height={240}
+                                data={data}
+                                margin={{
+                                    top: 5,
+                                    right: 0,
+                                    left: 0,
+                                    bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis
+                                    className="mt-8"
+                                    dataKey={"name"}
+                                    tick={<CustomTick />}
+                                    interval={0}
+                                    fontSize={8}
+                                />
+                                <YAxis />
+                                <Tooltip />
+                                <Bar dataKey="pv" fill="#2D5074" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>
