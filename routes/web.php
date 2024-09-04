@@ -133,7 +133,7 @@ Route::middleware('auth')->group(function () {
         $budgetData = app(BudgetController::class)->showAllUserBudget($request);
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $categoryData = app(CategoryController::class)->showAllCategories();
-        
+
         return Inertia::render('Budget/Budget', array_merge($budgetData, $walletData, $categoryData));
     })->name('budgetPage');
 
@@ -144,9 +144,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/delete-budget/{budget:id}', [BudgetController::class, 'deleteBudget'])->name('deleteBudget');
 
     Route::get('/transactionReport', function(Request $request) {
-        $transactionOverview = app(TransactionController::class)->showTransactionOverview($request);
+        $transactionController = app(TransactionController::class);
 
-        return Inertia::render('TransactionReport/TransactionReport', $transactionOverview);
+        $transactionOverview = $transactionController->showTransactionOverview($request);
+
+        $transactionCategory = $transactionController->showTransactionByCategory($request);
+
+        return Inertia::render('TransactionReport/TransactionReport', array_merge($transactionOverview, $transactionCategory));
     })->name('transactionReportPage');
 });
 
