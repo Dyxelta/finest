@@ -143,9 +143,10 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-budget/{budget:id}', [BudgetController::class, 'deleteBudget'])->name('deleteBudget');
 
-    Route::get('/transactionReport', function() {
+    Route::get('/transactionReport', function(Request $request) {
+        $transactionOverview = app(TransactionController::class)->showTransactionOverview($request);
 
-        return Inertia::render('TransactionReport/TransactionReport');
+        return Inertia::render('TransactionReport/TransactionReport', $transactionOverview);
     })->name('transactionReportPage');
 });
 

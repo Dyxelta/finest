@@ -230,35 +230,30 @@ class TransactionController extends Controller
             ->orderBy('month', 'desc')
             ->get();
 
+            $summaryReport = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('transactions.user_id', $userId)
+            ->where('transactions.wallet_id', $request->walletId)
+            ->whereMonth('transactions.transaction_date', $request->transactionMonth)
+            ->groupBy('categories.category_is_income')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [
+                    $item->category_is_income ? 'income' : 'expense' => $item->total_amount
+                ];
+            });
+    
+            $summaryReport = $summaryReport->merge([
+                'income' => $summaryReport->get('income',0),
+                'expense' => $summaryReport->get('expense',0)
+            ]);
+    
+            $summaryReport['total_balance'] = $summaryReport['income'] - $summaryReport['expense'];
+
         return [
             'monthly_expense_data' => $expenseDataPerMonth,
-            'monthly_income_data' => $incomeDataPerMonth
+            'monthly_income_data' => $incomeDataPerMonth,
+            'summary_report_data' => $summaryReport
         ];
-    }
-
-    public function getSummaryReport(Request $request){
-        $userId = auth()->user()->id;
-
-        $summary_report = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
-        ->join('categories', 'transactions.category_id', '=', 'categories.id')
-        ->where('transactions.user_id', $userId)
-        ->where('transactions.wallet_id', $request->walletId)
-        ->whereMonth('transactions.transaction_date', $request->transaction_month)
-        ->groupBy('categories.category_is_income')
-        ->get()
-        ->mapWithKeys(function ($item) {
-            return [
-                $item->category_is_income ? 'income' : 'expense' => $item->total_amount
-            ];
-        });
-
-        $summary_report = $summary_report->merge([
-            'income' => $summary_report->get('income',0),
-            'expense' => $summary_report->get('expense',0)
-        ]);
-
-        $summary_report['total_balance'] = $summary_report['income'] - $summary_report['expense'];
-
-        return ['summary_report' => $summary_report];
     }
 }
