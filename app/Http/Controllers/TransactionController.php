@@ -230,7 +230,7 @@ class TransactionController extends Controller
             ->orderBy('month', 'desc')
             ->get();
 
-            $summaryReport = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
+        $summaryReport = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->where('transactions.user_id', $userId)
             ->where('transactions.wallet_id', $request->walletId)
@@ -243,12 +243,12 @@ class TransactionController extends Controller
                 ];
             });
 
-            $summaryReport = $summaryReport->merge([
-                'income' => $summaryReport->get('income',0),
-                'expense' => $summaryReport->get('expense',0)
-            ]);
+        $summaryReport = $summaryReport->merge([
+            'income' => $summaryReport->get('income', 0),
+            'expense' => $summaryReport->get('expense', 0)
+        ]);
 
-            $summaryReport['total_balance'] = $summaryReport['income'] - $summaryReport['expense'];
+        $summaryReport['total_balance'] = $summaryReport['income'] - $summaryReport['expense'];
 
         return [
             'monthly_expense_data' => $expenseDataPerMonth,
