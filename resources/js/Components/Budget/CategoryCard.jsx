@@ -9,7 +9,7 @@ const CategoryCard = ({ budget, setShowInitialBudget, showInitialBudget,setData 
 
     return (
         <div
-            className={`rounded-lg overflow-hidden w-[230px] h-[150px] border ${
+            className={`rounded-lg overflow-hidden min-w-[180px] md:min-w-[230px] h-[150px] border ${
                 isSelected ? "border-primary" : "border-lighter-primary"
             } flex flex-col hover:opacity-80 transition-all duration-300 cursor-pointer`}
             onClick={() => {

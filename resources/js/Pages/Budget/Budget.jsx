@@ -18,6 +18,7 @@ import { LuDices } from "react-icons/lu";
 import { PiChartPieSliceLight } from "react-icons/pi";
 import { Button } from "reactstrap";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
+import { formatToRupiah } from "@/Helpers/helperFormat";
 
 export default function BudgetPage({
     auth,
@@ -32,7 +33,12 @@ export default function BudgetPage({
     const [showInitialBudget, setShowInitialBudget] = useState(
         budgets?.length !== 0 ? budgets[0] : []
     );
-    const selectedCategory = showInitialBudget!== null ? expenseCategories.find((cat) => showInitialBudget?.category_id === cat.id) : []
+    const selectedCategory =
+        showInitialBudget !== null
+            ? expenseCategories.find(
+                  (cat) => showInitialBudget?.category_id === cat.id
+              )
+            : [];
     const [selectedWallet, setSelectedWallet] = useState();
 
     const categoryOptions = [
@@ -70,7 +76,13 @@ export default function BudgetPage({
     }, [id_wallet]);
 
     const carousel = useRef(null);
+    const [length, setLength] = useState();
     useEffect(() => {
+        if (progressBarRef.current) {
+            const progressBarWidth = progressBarRef.current.offsetWidth;
+            setLength(progressBarWidth);
+        }
+
         const handleScroll = (e) => {
             if (carousel.current) {
                 e.preventDefault();
@@ -144,6 +156,162 @@ export default function BudgetPage({
         }
     };
 
+    const progressBarRef = useRef(null);
+
+    useEffect(() => {}, []);
+
+    const countRecommendedBudgetAmount = () => {
+        const { transactions } = showInitialBudget.category;
+
+        const today = new Date();
+        const nextMonth = new Date(
+            today.getFullYear(),
+            today.getMonth() + 1,
+            1
+        );
+        const endOfMonth = new Date(nextMonth - 1);
+
+        const timeDifference = endOfMonth.getTime() - today.getTime();
+        const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+        if (transactions.length !== 0) {
+            const totalSpending = transactions.reduce((total, transaction) => {
+                return total + Math.abs(transaction.transaction_amount);
+            }, 0);
+
+            const finalResult = showInitialBudget.budget_amount - totalSpending;
+
+            if (finalResult < 0) {
+                return (
+                    <div className="px-4 py-1 h-full flex-col sub-body md:body">
+                        <div>
+                            You’ve exceeded your budget for{" "}
+                            {selectedCategory.category_name} by{" "}
+                            <span className="text-expense sub-body-bold md:button">
+                                {formatToRupiah(Math.abs(finalResult))}
+                            </span>{" "}
+                            this month.
+                        </div>
+                        <div>
+                            <span className="sub-body-bold md:button text-primary">Note: </span>
+                            Consider reducing your spending in other categories
+                            for the remainder of the month to stay on track.
+                        </div>
+                    </div>
+                );
+            } else {
+                const averageDailySpending = finalResult / dayDifference;
+                return (
+                    <div className="px-5 py-2 h-full flex-col sub-body md:body">
+                        Looks like your budget is still on the right track !
+                        <br />
+                        <span className="sub-body-bold md:button ">Note: </span>{" "}
+                        Spend no more than{" "}
+                        <span className="sub-body-bold md:button">
+                            {" "}
+                            {formatToRupiah(
+                                Math.floor(averageDailySpending)
+                            )}{" "}
+                            per day
+                        </span>{" "}
+                        in order to avoid overspending your{" "}
+                        <span className="sub-body-bold md:button">
+                            budget limit!
+                        </span>
+                    </div>
+                );
+            }
+        } else {
+            const averageDailySpending =
+                showInitialBudget.budget_amount / dayDifference;
+
+            return (
+                <div className="px-5 py-2 h-full flex-col sub-body md:body">
+                    Looks like your budget is still on the right track !
+                    <br />
+                    <span className="sub-body-bold md:button ">Note: </span> Spend no
+                    more than{" "}
+                    <span className="sub-body-bold md:button">
+                        {" "}
+                        {formatToRupiah(Math.floor(averageDailySpending))} per
+                        day
+                    </span>{" "}
+                    in order to avoid overspending your{" "}
+                    <span className="sub-body-bold md:button">
+                        budget limit!
+                    </span>
+                </div>
+            );
+        }
+    };
+
+    const showSpendingLimit = () => {
+        const { transactions } = showInitialBudget.category;
+        if (transactions.length !== 0) {
+            const totalSpending = transactions.reduce((total, transaction) => {
+                return total + Math.abs(transaction.transaction_amount);
+            }, 0);
+            const finalResult = showInitialBudget.budget_amount - totalSpending;
+            const getProgressBarPercentage =
+                totalSpending / showInitialBudget.budget_amount;
+            const currProgressLength = length * getProgressBarPercentage;
+
+            if (finalResult < 0) {
+                return (
+                    <div className="flex items-end w-full flex-col body">
+                        <div className="text-expense">
+                            {formatToRupiah(totalSpending)} /{" "}
+                            {formatToRupiah(showInitialBudget.budget_amount)}
+                        </div>
+                        <div
+                            className="border-primary border h-5 w-full rounded-full relative overflow-hidden mt-2"
+                            ref={progressBarRef}
+                        >
+                            <div className="absolute left-0 bg-primary w-full h-full"></div>
+                        </div>
+                    </div>
+                );
+            } else {
+                return (
+                    <div className="flex items-end w-full flex-col body">
+                        <div className="sub-body md:body">
+                            {formatToRupiah(totalSpending)} /{" "}
+                            {formatToRupiah(showInitialBudget.budget_amount)}
+                        </div>
+                        <div
+                            className="border-primary border h-3 md:h-5 w-full rounded-full relative overflow-hidden mt-2"
+                            ref={progressBarRef}
+                        >
+                            <div
+                                className="absolute left-0 bg-primary h-full rounded-full"
+                                style={{
+                                    width: `${Math.ceil(currProgressLength)}px`,
+                                }}
+                            ></div>
+                        </div>
+                    </div>
+                );
+            }
+        } else {
+            return (
+                <div className="flex items-end w-full flex-col body">
+                    <div className="">
+                        0 / {formatToRupiah(showInitialBudget.budget_amount)}
+                    </div>
+                    <div
+                        className="border-primary border h-5 w-full rounded-full relative overflow-hidden mt-2"
+                        ref={progressBarRef}
+                    >
+                        <div
+                            className="absolute left-0 bg-primary h-full"
+                            style={{ width: "0px" }}
+                        ></div>
+                    </div>
+                </div>
+            );
+        }
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -153,7 +321,7 @@ export default function BudgetPage({
                 </h2>
             }
         >
-            <Head title="Transaction Records" />
+            <Head title="Budget" />
 
             <HeaderInfo
                 walletOptions={walletOptions}
@@ -213,10 +381,10 @@ export default function BudgetPage({
                 expenseCategories={expenseCategories}
                 selectedCategory={selectedCategory}
             />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-4">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-2 lg:gap-4">
                 <div
                     className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary
-                h-[270px]"
+               h-[290px]"
                 >
                     <div className="flex  border-light-grey h-full ">
                         <div className="flex border-r-2 h-full px-1 md:px-2">
@@ -236,13 +404,17 @@ export default function BudgetPage({
                                 </div>
                                 <div>
                                     <div className="button">Limit :</div>
-                                    <div>{showInitialBudget?.budget_amount}</div>
+                                    <div>
+                                        {showInitialBudget?.budget_amount}
+                                    </div>
                                 </div>
                                 <div className="col-span-1 sm:col-span-2 md:col-span-3">
                                     <div className="button">
                                         Short Description :
                                     </div>
-                                    <div>{showInitialBudget?.budget_description}</div>
+                                    <div>
+                                        {showInitialBudget?.budget_description}
+                                    </div>
                                 </div>
                             </div>
                             <div className="w-full flex justify-end">
@@ -269,14 +441,14 @@ export default function BudgetPage({
                         </div>
                     </div>
                 </div>
-                <div className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary h-[270px]">
-                    <div className="flex  border-light-grey h-full w-full">
+                <div className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary h-[290px] ">
+                    <div className="flex  border-light-grey h-full w-full ">
                         <div className="flex border-r-2 h-full px-1 md:px-2">
                             <div className="my-auto bg-primary p-2 md:p-3 rounded-full text-light header-5">
                                 <GrInfo />
                             </div>
                         </div>
-                        <div className="flex flex-col w-full h-full px-2 md:px-8 py-1 gap-2">
+                        <div className="flex flex-col w-full h-full px-2 md:px-4 py-1 gap-2 justify-center">
                             <div className="rounded-lg overflow-hidden w-full  border border-primary flex flex-col ">
                                 <div className="px-4 py-2 bg-primary w-full">
                                     <span className="button text-light w-full">
@@ -284,22 +456,11 @@ export default function BudgetPage({
                                     </span>
                                 </div>
 
-                                <div className="px-5 py-2 h-full flex-col sub-body md:body">
-                                    Looks like your budget is still on the right
-                                    track ! Spend no more than{" "}
-                                    <span className="sub-body-bold md:button">
-                                        {" "}
-                                        Rp 5.000 per day
-                                    </span>{" "}
-                                    in order to avoid overspending your{" "}
-                                    <span className="sub-body-bold md:button">
-                                        budget limit!
-                                    </span>
-                                </div>
+                                {countRecommendedBudgetAmount()}
                             </div>
-                            <div className="rounded-lg overflow-hidden w-full  border border-primary flex flex-col ">
+                            <div className="rounded-lg overflow-hidden w-full  border border-primary flex flex-col px-5 py-2">
                                 <div
-                                    className="px-5 py-2 h-full flex 
+                                    className="  h-full flex 
                                 items-center gap-2  button"
                                 >
                                     <div className="header-5">
@@ -307,6 +468,7 @@ export default function BudgetPage({
                                     </div>
                                     Spending Limit
                                 </div>
+                                {showSpendingLimit()}
                             </div>
                         </div>
                     </div>

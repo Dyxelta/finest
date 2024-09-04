@@ -21,13 +21,13 @@ class WalletSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        // DB::table('wallets')->insert([
-        //     'user_id' => 1,
-        //     'wallet_name' => 'Wallet Namessss',
-        //     'wallet_balance' => 10000000,
-        //     'wallet_description' => 'Wallet description',
-        //     'created_at' => now(),
-        //     'updated_at' => now()
-        // ]);
+        DB::table('wallets')->insert([
+            'user_id' => 1,
+            'wallet_name' => 'Wallet Namessss',
+            'wallet_balance' => 10000000,
+            'wallet_description' => 'Wallet description',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
     }
 }

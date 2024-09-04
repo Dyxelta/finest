@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
 
     //dashboard
     Route::get('/dashboard', function (Request $request) {
-        $transactionData = app(TransactionController::class)->showAllUserTransaction();
+        $transactionData = app(TransactionController::class)->showAllUserTransaction($request);
 
         $walletData = app(WalletController::class)->showAllWalletByUserID();
 
@@ -142,6 +142,11 @@ Route::middleware('auth')->group(function () {
     Route::put('/edit-budget', [BudgetController::class, 'editBudget'])->name('editBudget');
 
     Route::delete('/delete-budget/{budget:id}', [BudgetController::class, 'deleteBudget'])->name('deleteBudget');
+
+    Route::get('/transactionReport', function() {
+
+        return Inertia::render('TransactionReport/TransactionReport');
+    })->name('transactionReportPage');
 });
 
 require __DIR__ . '/auth.php';
