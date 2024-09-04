@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
-    public function addTransaction(Request $request) {
+    public function addTransaction(Request $request)
+    {
 
         $request->validate([
             'wallet_name' => 'required|string',
@@ -44,13 +45,15 @@ class TransactionController extends Controller
         return redirect()->intended(route('transactionPage'));
     }
 
-    public function deleteTransaction(Transaction $transaction) {
+    public function deleteTransaction(Transaction $transaction)
+    {
         $transaction->delete();
 
         return redirect()->back();
     }
 
-    public function editTransaction(Request $request) {
+    public function editTransaction(Request $request)
+    {
 
         $request->validate([
             'wallet_name' => 'required|string',
@@ -89,12 +92,14 @@ class TransactionController extends Controller
         return redirect()->intended(route('transactionPage'));
     }
 
-    private function changeWalletBalance(Wallet $wallet, $amount) {
+    private function changeWalletBalance(Wallet $wallet, $amount)
+    {
         $wallet->wallet_balance += $amount;
         $wallet->save();
     }
 
-    public function showAllUserTransaction(Request $request) {
+    public function showAllUserTransaction(Request $request)
+    {
         $user = auth()->user();
 
         try {
@@ -109,7 +114,7 @@ class TransactionController extends Controller
 
         $transactions = Transaction::where('user_id', $user->id)->where('wallet_id', $wallet_id)->with(['category' => function ($query) use ($user) {
             $query->with(['transactions' => function ($query) use ($user) {
-                $query->whesre('user_id', $user->id);
+                $query->where('user_id', $user->id);
             }]);
         }])->get();
 
@@ -120,7 +125,8 @@ class TransactionController extends Controller
         return ['transactions' => $transactions];
     }
 
-    public function showTransactionByWallet(Wallet $wallet) {
+    public function showTransactionByWallet(Wallet $wallet)
+    {
 
         $userId = auth()->user()->id;
 
@@ -134,21 +140,40 @@ class TransactionController extends Controller
         return ['transactions' => $transactions];
     }
 
-    public function showTransactionByCategory(Category $category) {
-
+    public function showTransactionByCategory(Request $request)
+    {
         $userId = auth()->user()->id;
+        $selectedMonth = $request->month ?? now()->month;
+        $currentYear = now()->year;
 
-        $categoryId = $category->id;
+        $year = ($selectedMonth > now()->month) ? $currentYear - 1 : $currentYear;
 
-        $transactions = Transaction::where('user_id', $userId)
-            ->where('category_id', $categoryId)
-            ->orderBy('transaction_date', 'desc')
+        $startDate = Carbon::createFromDate($year, $selectedMonth, 1)->startOfMonth();
+        $endDate = Carbon::createFromDate($year, $selectedMonth, 1)->endOfMonth();
+
+        $categoryTransactionsQuery = Transaction::where('user_id', $userId)
+            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->whereHas('category', function ($query) {
+                $query->where('is_expense', true);
+            });
+
+        if ($request->wallet_name && $request->wallet_name != "All Wallet") {
+            $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+            $categoryTransactionsQuery->where('wallet_id', $wallet->id);
+        }
+
+        $categoryTransactions = $categoryTransactionsQuery
+            ->selectRaw('category_id, SUM(transaction_amount) as total_amount')
+            ->groupBy('category_id')
+            ->with('category')
+            ->orderBy('total_amount', 'desc')
             ->get();
 
-        return ['transactions' => $transactions];
+        return ['category_transactions' => $categoryTransactions, 'currMonth' => $selectedMonth];
     }
 
-    public function showTransactionByMonth(Request $request) {
+    public function showTransactionByMonth(Request $request)
+    {
         $userId = auth()->user()->id;
         $selectedMonth = $request->month ?? now()->month;
         $currentYear = now()->year;
@@ -164,7 +189,76 @@ class TransactionController extends Controller
             ->with(['wallet', 'category'])
             ->get();
 
-        return ['transactions' => $transactions,'currMonth' => $selectedMonth];
+        return ['transactions' => $transactions, 'currMonth' => $selectedMonth];
     }
-    
+
+    public function showTransactionOverview(Request $request)
+    {
+        $userId = auth()->user()->id;
+        $currentDate = now();
+        $startDate = $currentDate->copy()->subMonths(11)->startOfMonth();
+        $endDate = $currentDate->endOfMonth();
+
+        $walletCondition = function ($query) use ($request) {
+            if ($request->wallet_name && $request->wallet_name != "All Wallet") {
+                $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+                $query->where('wallet_id', $wallet->id);
+            }
+        };
+
+        $expenseDataPerMonth = Transaction::where('user_id', $userId)
+            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->whereHas('category', function ($query) {
+                $query->where('is_expense', true);
+            })
+            ->where($walletCondition)
+            ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, SUM(transaction_amount) as total_amount')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
+
+        $incomeDataPerMonth = Transaction::where('user_id', $userId)
+            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->whereHas('category', function ($query) {
+                $query->where('is_expense', false);
+            })
+            ->where($walletCondition)
+            ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, SUM(transaction_amount) as total_amount')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
+
+        return [
+            'monthly_expense_data' => $expenseDataPerMonth,
+            'monthly_income_data' => $incomeDataPerMonth
+        ];
+    }
+
+    public function getSummaryReport(Request $request){
+        $userId = auth()->user()->id;
+
+        $summary_report = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
+        ->join('categories', 'transactions.category_id', '=', 'categories.id')
+        ->where('transactions.user_id', $userId)
+        ->where('transactions.wallet_id', $request->walletId)
+        ->whereMonth('transactions.transaction_date', $request->transaction_month)
+        ->groupBy('categories.category_is_income')
+        ->get()
+        ->mapWithKeys(function ($item) {
+            return [
+                $item->category_is_income ? 'income' : 'expense' => $item->total_amount
+            ];
+        });
+
+        $summary_report = $summary_report->merge([
+            'income' => $summary_report->get('income',0),
+            'expense' => $summary_report->get('expense',0)
+        ]);
+
+        $summary_report['total_balance'] = $summary_report['income'] - $summary_report['expense'];
+
+        return ['summary_report' => $summary_report];
+    }
 }
