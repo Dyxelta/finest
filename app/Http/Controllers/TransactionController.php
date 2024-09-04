@@ -154,7 +154,7 @@ class TransactionController extends Controller
         $categoryTransactionsQuery = Transaction::where('user_id', $userId)
             ->whereBetween('transaction_date', [$startDate, $endDate])
             ->whereHas('category', function ($query) {
-                $query->where('is_expense', true);
+                $query->where('category_is_income', false);
             });
 
         if ($request->wallet_name && $request->wallet_name != "All Wallet") {
@@ -209,7 +209,7 @@ class TransactionController extends Controller
         $expenseDataPerMonth = Transaction::where('user_id', $userId)
             ->whereBetween('transaction_date', [$startDate, $endDate])
             ->whereHas('category', function ($query) {
-                $query->where('is_expense', true);
+                $query->where('category_is_income', false);
             })
             ->where($walletCondition)
             ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, SUM(transaction_amount) as total_amount')
@@ -221,7 +221,7 @@ class TransactionController extends Controller
         $incomeDataPerMonth = Transaction::where('user_id', $userId)
             ->whereBetween('transaction_date', [$startDate, $endDate])
             ->whereHas('category', function ($query) {
-                $query->where('is_expense', false);
+                $query->where('category_is_income', true);
             })
             ->where($walletCondition)
             ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, SUM(transaction_amount) as total_amount')
@@ -242,7 +242,8 @@ class TransactionController extends Controller
                     $item->category_is_income ? 'income' : 'expense' => $item->total_amount
                 ];
             });
-    
+            
+            $summaryReport = collect($summaryReport);
             $summaryReport = $summaryReport->merge([
                 'income' => $summaryReport->get('income',0),
                 'expense' => $summaryReport->get('expense',0)

@@ -18,37 +18,43 @@ import {
 
 const CustomTick = ({ x, y, payload }) => {
     let text = payload.value;
-  
 
-    const words = text.split(' ');
+    const words = text.split(" ");
     let lines = [];
-  
+
     words.forEach((word, index) => {
-      if (word === '&' && index > 0) {
-        lines[lines.length - 1] += ` &`;
-      } else {
-        lines.push(word);
-      }
+        if (word === "&" && index > 0) {
+            lines[lines.length - 1] += ` &`;
+        } else {
+            lines.push(word);
+        }
     });
-  
+
     return (
-      <g transform={`translate(${x},${y})`}>
-        {lines.map((line, index) => (
-          <text
-            key={index}
-            x={0}
-            y={index * 12} 
-            textAnchor="middle"
-            fill="#666"
-            fontSize={9}
-          >
-            <tspan dy={6}>{line}</tspan>
-          </text>
-        ))}
-      </g>
+        <g transform={`translate(${x},${y})`}>
+            {lines.map((line, index) => (
+                <text
+                    key={index}
+                    x={0}
+                    y={index * 12}
+                    textAnchor="middle"
+                    fill="#666"
+                    fontSize={8}
+                >
+                    <tspan dy={6}>{line}</tspan>
+                </text>
+            ))}
+        </g>
     );
-  };
-  
+};
+
+const CustomBar = (props) => {
+    const { x, y, width, height, index } = props;
+    const fillColor = index % 2 === 1 ? "#CAD8E7" : "#2D5074";
+
+    return <rect x={x} y={y} width={width} height={height} fill={fillColor} />;
+};
+
 export default function TransactionReportPage({ auth, currMonth }) {
     const { post, get, setData } = useForm({
         month: "",
@@ -184,19 +190,19 @@ export default function TransactionReportPage({ auth, currMonth }) {
             }
         >
             <Head title="Transaction Reports" />
-            <div className="">
-                <div className="bg-light rounded-lg w-full h-[350px] px-4 py-2">
+            <div className="grid grid-cols-2 grid-rows-3 gap-2 text-primary">
+                <div className="bg-light rounded-lg w-full h-[375px] px-2 md:px-4 py-2 col-span-2 ">
                     <div className="flex w-full justify-between">
-                        <div className="flex items-center gap-2 text-primary">
+                        <div className="flex items-center gap-2 ">
                             <div className="header-5">
                                 {" "}
                                 <CgNotes />
                             </div>
-                            <div className=" button md:header-5">
+                            <div className="sub-body md:button lg:header-5">
                                 Monthly Report Overview
                             </div>
                         </div>
-                        <div className="w-52">
+                        <div className="w-32 md:w-52 text-[10px] lg:body">
                             <CustomSelectInput
                                 placeholder={"Select Month"}
                                 defaultValue={{
@@ -210,8 +216,8 @@ export default function TransactionReportPage({ auth, currMonth }) {
                             />
                         </div>
                     </div>
-                    <div className="flex w-full justify-center h-full">
-                        <ResponsiveContainer width="90%" height="85%">
+                    <div className="flex justify-center h-full pt-2 w-full md:w-[95%] mx-auto">
+                        <ResponsiveContainer width="100%" height="85%">
                             <BarChart
                                 width={500}
                                 height={240}
@@ -225,15 +231,206 @@ export default function TransactionReportPage({ auth, currMonth }) {
                             >
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis
-                                    className="mt-8"
-                                    dataKey={"name"}
+                                    className="hidden lg:block"
+                                    dataKey="name"
                                     tick={<CustomTick />}
                                     interval={0}
-                                    fontSize={8}
                                 />
-                                <YAxis />
+                                <YAxis
+                                    className="m-0 p-0 text-[8px] md:text-[10px] w-[30px] md:w-[50px]"
+                                    width={40}
+                                />
                                 <Tooltip />
-                                <Bar dataKey="pv" fill="#2D5074" />
+                                <Bar dataKey="pv" shape={<CustomBar />} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+                <div className="bg-light rounded-lg w-full h-[375px] px-4 py-4">
+                    <div className="flex flex-col  w-full gap-4">
+                        <div className="flex items-center gap-2 ">
+                            <div className="header-5">
+                                {" "}
+                                <CgNotes />
+                            </div>
+                            <div className="sub-body md:button lg:header-5">
+                                Summary Report
+                            </div>
+                        </div>
+                        <div className="w-full button md:header-5 border-b border-primary py-1">
+                            Total Balance :
+                        </div>
+                    </div>
+                    <div className="flex flex-col  h-full pt-2 w-full ">
+                        <div className="rounded-xl bg-lighter-primary py-2 px-4 ">
+                            <div className="flex justify-between button">
+                                <div>Total Income</div>
+                                <div>Rp 5000000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-light rounded-lg w-full h-[375px] px-2 md:px-4 py-2">
+                    <div className="flex w-full justify-between">
+                        <div className="flex items-center gap-2 ">
+                            <div className="header-5">
+                                {" "}
+                                <CgNotes />
+                            </div>
+                            <div className="sub-body md:button lg:header-5">
+                                Monthly Report Overview
+                            </div>
+                        </div>
+                        <div className="w-32 md:w-52 text-[10px] lg:body">
+                            <CustomSelectInput
+                                placeholder={"Select Month"}
+                                defaultValue={{
+                                    value: monthValue,
+                                    label: monthName,
+                                }}
+                                options={getCurrentMonth()}
+                                onChange={(e) => {
+                                    setData("month", e.value);
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className="flex justify-center h-full pt-2 w-full md:w-[95%] mx-auto">
+                        <ResponsiveContainer width="100%" height="85%">
+                            <BarChart
+                                width={500}
+                                height={240}
+                                data={data}
+                                margin={{
+                                    top: 5,
+                                    right: 0,
+                                    left: 0,
+                                    bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis
+                                    className="hidden lg:block"
+                                    dataKey="name"
+                                    tick={<CustomTick />}
+                                    interval={0}
+                                />
+                                <YAxis
+                                    className="m-0 p-0 text-[8px] md:text-[10px] w-[30px] md:w-[50px]"
+                                    width={40}
+                                />
+                                <Tooltip />
+                                <Bar dataKey="pv" shape={<CustomBar />} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+                <div className="bg-light rounded-lg w-full h-[375px] px-2 md:px-4 py-2">
+                    <div className="flex w-full justify-between">
+                        <div className="flex items-center gap-2 ">
+                            <div className="header-5">
+                                {" "}
+                                <CgNotes />
+                            </div>
+                            <div className="sub-body md:button lg:header-5">
+                                Monthly Report Overview
+                            </div>
+                        </div>
+                        <div className="w-32 md:w-52 text-[10px] lg:body">
+                            <CustomSelectInput
+                                placeholder={"Select Month"}
+                                defaultValue={{
+                                    value: monthValue,
+                                    label: monthName,
+                                }}
+                                options={getCurrentMonth()}
+                                onChange={(e) => {
+                                    setData("month", e.value);
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className="flex justify-center h-full pt-2 w-full md:w-[95%] mx-auto">
+                        <ResponsiveContainer width="100%" height="85%">
+                            <BarChart
+                                width={500}
+                                height={240}
+                                data={data}
+                                margin={{
+                                    top: 5,
+                                    right: 0,
+                                    left: 0,
+                                    bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis
+                                    className="hidden lg:block"
+                                    dataKey="name"
+                                    tick={<CustomTick />}
+                                    interval={0}
+                                />
+                                <YAxis
+                                    className="m-0 p-0 text-[8px] md:text-[10px] w-[30px] md:w-[50px]"
+                                    width={40}
+                                />
+                                <Tooltip />
+                                <Bar dataKey="pv" shape={<CustomBar />} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+                <div className="bg-light rounded-lg w-full h-[375px] px-2 md:px-4 py-2">
+                    <div className="flex w-full justify-between">
+                        <div className="flex items-center gap-2 ">
+                            <div className="header-5">
+                                {" "}
+                                <CgNotes />
+                            </div>
+                            <div className="sub-body md:button lg:header-5">
+                                Monthly Report Overview
+                            </div>
+                        </div>
+                        <div className="w-32 md:w-52 text-[10px] lg:body">
+                            <CustomSelectInput
+                                placeholder={"Select Month"}
+                                defaultValue={{
+                                    value: monthValue,
+                                    label: monthName,
+                                }}
+                                options={getCurrentMonth()}
+                                onChange={(e) => {
+                                    setData("month", e.value);
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className="flex justify-center h-full pt-2 w-full md:w-[95%] mx-auto">
+                        <ResponsiveContainer width="100%" height="85%">
+                            <BarChart
+                                width={500}
+                                height={240}
+                                data={data}
+                                margin={{
+                                    top: 5,
+                                    right: 0,
+                                    left: 0,
+                                    bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis
+                                    className="hidden lg:block"
+                                    dataKey="name"
+                                    tick={<CustomTick />}
+                                    interval={0}
+                                />
+                                <YAxis
+                                    className="m-0 p-0 text-[8px] md:text-[10px] w-[30px] md:w-[50px]"
+                                    width={40}
+                                />
+                                <Tooltip />
+                                <Bar dataKey="pv" shape={<CustomBar />} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>

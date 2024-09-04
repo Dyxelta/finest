@@ -41,10 +41,11 @@ const customStyles = {
     }),
 };
 
-const CustomSelectInput = ({ defaultValue, options, onChange, props, placeholder,value, isDisabled=false }) => {
+const CustomSelectInput = ({ defaultValue, options, onChange, props, placeholder,value, isDisabled=false, className}) => {
     return (
         <>
             <Select
+            className={className}
             isDisabled={isDisabled}
                 {...props}
                 value={value}
