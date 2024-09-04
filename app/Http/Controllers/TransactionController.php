@@ -169,7 +169,7 @@ class TransactionController extends Controller
             ->orderBy('total_amount', 'desc')
             ->get();
 
-        return ['category_transactions' => $categoryTransactions, 'currMonth' => $selectedMonth];
+        return ['category_transactions' => $categoryTransactions, 'currMonth' => $selectedMonth, 'currWallet' => $wallet];
     }
 
     public function showTransactionByMonth(Request $request)
@@ -242,12 +242,12 @@ class TransactionController extends Controller
                     $item->category_is_income ? 'income' : 'expense' => $item->total_amount
                 ];
             });
-    
+
             $summaryReport = $summaryReport->merge([
                 'income' => $summaryReport->get('income',0),
                 'expense' => $summaryReport->get('expense',0)
             ]);
-    
+
             $summaryReport['total_balance'] = $summaryReport['income'] - $summaryReport['expense'];
 
         return [
