@@ -142,6 +142,7 @@ class TransactionController extends Controller
 
     public function showTransactionByCategory(Request $request)
     {
+
         $userId = auth()->user()->id;
         $selectedMonth = $request->month ?? now()->month;
         $currentYear = now()->year;
@@ -157,10 +158,12 @@ class TransactionController extends Controller
                 $query->where('category_is_income', false);
             });
 
+        $wallet = null;
         if ($request->wallet_name && $request->wallet_name != "All Wallet") {
             $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
             $categoryTransactionsQuery->where('wallet_id', $wallet->id);
         }
+
 
         $categoryTransactions = $categoryTransactionsQuery
             ->selectRaw('category_id, SUM(transaction_amount) as total_amount')
@@ -230,11 +233,12 @@ class TransactionController extends Controller
             ->orderBy('month', 'desc')
             ->get();
 
+            
         $summaryReport = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->where('transactions.user_id', $userId)
             ->where('transactions.wallet_id', $request->walletId)
-            ->whereMonth('transactions.transaction_date', $request->transactionMonth)
+            ->whereMonth('transactions.transaction_date', $request->month)
             ->groupBy('categories.category_is_income')
             ->get()
             ->mapWithKeys(function ($item) {
@@ -242,12 +246,12 @@ class TransactionController extends Controller
                     $item->category_is_income ? 'income' : 'expense' => $item->total_amount
                 ];
             });
-            
-            $summaryReport = collect($summaryReport);
-            $summaryReport = $summaryReport->merge([
-                'income' => $summaryReport->get('income',0),
-                'expense' => $summaryReport->get('expense',0)
-            ]);
+
+        $summaryReport = collect($summaryReport);
+        $summaryReport = $summaryReport->merge([
+            'income' => $summaryReport->get('income', 0),
+            'expense' => $summaryReport->get('expense', 0)
+        ]);
 
         $summaryReport['total_balance'] = $summaryReport['income'] - $summaryReport['expense'];
 

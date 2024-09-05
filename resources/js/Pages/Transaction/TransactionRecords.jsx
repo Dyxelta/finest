@@ -370,7 +370,7 @@ export default function TransactionRecordsPage({
                                                         )
                                                     )
                                             ) : (
-                                                <div className="flex flex-col w-full h-[300px] md:h-[400px] justify-center items-center text-primary bg-blue-gray-50 border mt-2 rounded-xl gap-4">
+                                                <div className="flex flex-col w-full h-[300px] md:h-[400px] justify-center items-center text-primary border mt-2 rounded-xl gap-4">
                                                     <div className="text-[64px] md:text-[84px] lg:text-[110px]">
                                                         <TbMoodEmpty />
                                                     </div>

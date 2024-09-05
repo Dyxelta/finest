@@ -65,7 +65,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 },
                 {
                     Title: "Transaction Report",
-                    href: "dashboard",
+                    href: "transactionReportPage",
                     icon: <LuClipboardList size={24} />,
                 },
             ],
