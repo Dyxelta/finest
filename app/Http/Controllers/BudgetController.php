@@ -23,7 +23,7 @@ class BudgetController extends Controller
         ]);
 
         $category = Category::where('category_name', $request->category_name)->firstOrFail();
-        $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+        $wallet = Wallet::where('user_id', $user->id)->where('wallet_name', $request->wallet_name)->firstOrFail();
 
         Budget::create([
             'user_id' => $user->id,
