@@ -125,7 +125,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-recurring-transaction/{recurringTransaction:id}', [RecurringTransactionController::class, 'deleteRecurringTransaction'])->name('deleteRecurringTransaction');
 
-    Route::get('/budget', function(Request $request) {
+    Route::get('/budget', function (Request $request) {
 
         $encryptedWalletId = Crypt::encrypt($request->wallet_id);
         $request->merge(['wallet_id' => $encryptedWalletId]);
@@ -143,7 +143,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-budget/{budget:id}', [BudgetController::class, 'deleteBudget'])->name('deleteBudget');
 
-    Route::get('/transactionReport', function(Request $request) {
+    Route::get('/transactionReport', function (Request $request) {
         $transactionController = app(TransactionController::class);
 
         $transactionOverview = $transactionController->showTransactionOverview($request);
