@@ -66,7 +66,7 @@ class WalletController extends Controller
     public function showWalletById(Request $request) {
         $walletId = $request->id;
 
-        $wallet = Wallet::where('wallet_id', $walletId)->get()->first();
+        $wallet = Wallet::where('id', $walletId)->get()->first();
 
         return ['wallet' => $wallet];
     }

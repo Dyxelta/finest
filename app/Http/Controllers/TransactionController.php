@@ -54,6 +54,7 @@ class TransactionController extends Controller
 
     public function editTransaction(Request $request)
     {
+        $user = auth()->user;
 
         $request->validate([
             'wallet_name' => 'required|string',
@@ -68,7 +69,7 @@ class TransactionController extends Controller
 
         $transaction = Transaction::findOrFail($transactionId);
 
-        $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+        $wallet = Wallet::where('user_id', $user->id)->where('wallet_name', $request->wallet_name)->firstOrFail();
         $category = Category::where('category_name', $request->category_name)->firstOrFail();
 
         $originalAmount = $transaction->transaction_amount;
@@ -160,7 +161,7 @@ class TransactionController extends Controller
 
         $wallet = null;
         if ($request->wallet_name && $request->wallet_name != "All Wallet") {
-            $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+            $wallet = Wallet::where('user_id', $userId)->where('wallet_name', $request->wallet_name)->firstOrFail();
             $categoryTransactionsQuery->where('wallet_id', $wallet->id);
         }
 
