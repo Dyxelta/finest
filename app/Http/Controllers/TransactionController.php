@@ -239,7 +239,7 @@ class TransactionController extends Controller
         $summaryReport = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->where('transactions.user_id', $userId)
-            ->where('transactions.wallet_id', $request->walletId)
+            ->where($walletCondition)
             ->whereMonth('transactions.transaction_date', $request->month)
             ->groupBy('categories.category_is_income')
             ->get()
