@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { CgNotes } from "react-icons/cg";
 
 
-const SummaryReportOverview = ({ totalIncome, totalExpense, note }) => {
+const SummaryReportOverview = ({ summary_report, note }) => {
     const progressBarRef = useRef(null);
     const [length, setLength] = useState();
     useEffect(() => {
@@ -25,7 +25,7 @@ const SummaryReportOverview = ({ totalIncome, totalExpense, note }) => {
                     </div>
                 </div>
                 <div className="w-full button md:header-5 border-b border-primary py-1">
-                    Total Balance:
+                    Total Balance: <span>{}</span>
                 </div>
             </div>
             <div className="flex flex-col h-full pt-2 w-full gap-2">
@@ -33,7 +33,7 @@ const SummaryReportOverview = ({ totalIncome, totalExpense, note }) => {
                     <div className="flex justify-between items-center button">
                         <div>Total Income</div>
                         <div className="body">
-                            {formatToRupiah(totalIncome)}
+                            {formatToRupiah(summary_report?.totalIncome)}
                         </div>
                     </div>
                     <div
@@ -53,12 +53,12 @@ const SummaryReportOverview = ({ totalIncome, totalExpense, note }) => {
                     <div className="flex justify-between items-center button">
                         <div>Total Expense</div>
                         <div className="body">
-                            {formatToRupiah(totalExpense)}
+                            {formatToRupiah(summary_report?.totalExpense)}
                         </div>
                     </div>
                     <div
                         className="border-primary border h-3 md:h-5 w-full rounded-full relative overflow-hidden mt-2"
-                        ref={progressBarRef}
+                       
                     >
                         <div
                             className="absolute left-0 bg-primary h-full rounded-full"

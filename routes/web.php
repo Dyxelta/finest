@@ -146,10 +146,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/transactionReport', function (Request $request) {
         $transactionController = app(TransactionController::class);
         $transactionOverview = $transactionController->showTransactionOverview($request);
-        
+
         $transactionCategory = $transactionController->showTransactionByCategory($request);
         $walletData = app(WalletController::class)->showAllWalletByUserID();
- 
+
         return Inertia::render('TransactionReport/TransactionReport', array_merge($transactionOverview, $transactionCategory, $walletData));
     })->name('transactionReportPage');
 });

@@ -1,3 +1,4 @@
+import { parseMonth } from "@/Helpers/helperFormat";
 import React from "react";
 import { CgNotes } from "react-icons/cg";
 import {
@@ -13,17 +14,17 @@ import {
 
 const IncomeReportOverview = ({
     generateMonthsArray,
-    fillMissingMonths,
+    generate12MonthsChart,
     monthly_income_data,
-    parseMonth
+
 }) => {
     const monthsArr = generateMonthsArray();
     const newMonthlydata = monthly_income_data.map((mon) => ({
         ...mon, 
         monthName: parseMonth(mon.month)
     }))
-    console.log(newMonthlydata,"uifhsdghuisdfuihogsfd")
-    const data = fillMissingMonths(monthsArr, newMonthlydata);
+
+    const data = generate12MonthsChart(monthsArr, newMonthlydata);
     return (
         <React.Fragment>
             <div className="flex w-full justify-between">

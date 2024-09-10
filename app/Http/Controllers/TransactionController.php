@@ -198,6 +198,7 @@ class TransactionController extends Controller
 
     public function showTransactionOverview(Request $request)
     {
+
         $userId = auth()->user()->id;
         $currentDate = now();
         $startDate = $currentDate->copy()->subMonths(11)->startOfMonth();
@@ -256,11 +257,11 @@ class TransactionController extends Controller
         ]);
 
         $summaryReport['total_balance'] = $summaryReport['income'] - $summaryReport['expense'];
-
+    
         return [
             'monthly_expense_data' => $expenseDataPerMonth,
             'monthly_income_data' => $incomeDataPerMonth,
-            'summary_report_data' => $summaryReport
+            'summary_report' => $summaryReport
         ];
     }
 }

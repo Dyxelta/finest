@@ -30,7 +30,7 @@ const generateMonthsArray = () => {
     return monthsArray.reverse();
 };
 
-const fillMissingMonths = (monthsArray, data) => {
+const generate12MonthsChart = (monthsArray, data) => {
     return monthsArray.map((mon) => {
         const matchingData = data.find(
             (item) => item.month === mon.month
@@ -46,10 +46,10 @@ export default function TransactionReportPage({
     currWallet,
     monthly_expense_data,
     monthly_income_data,
-    summary_report_data,
+    summary_report,
     wallets,
 }) {
-
+console.log(summary_report,"uidfhuhisdfuiohgdf")
     const { post, get, setData } = useForm({
         month: currMonth,
         wallet_name: currWallet?.wallet_name,
@@ -94,14 +94,7 @@ export default function TransactionReportPage({
         return months;
     };
 
-    const parseMonth = (id) => {
-        const monthValues = parseInt(id) ?? new Date().getMonth() + 1;
-        const currentYears = new Date().getFullYear();
-        return new Date(currentYears, monthValues - 1).toLocaleString(
-            "default",
-            { month: "short" }
-        );
-    };
+    
 
     const allWallet = {
         wallet_name: "All Wallet",
@@ -163,8 +156,7 @@ export default function TransactionReportPage({
 
                 <div className="bg-light rounded-lg w-full h-[375px] px-4 md:px-8 py-4">
                     <SummaryReportOverview
-                        totalExpense={500000}
-                        totalIncome={500000}
+                        summary_report={summary_report}
                         note={
                             "Oh no! looks like you went overboard with your expense, please make sure to properly balance your expense and income "
                         }
@@ -187,17 +179,17 @@ export default function TransactionReportPage({
                 <div className="bg-light rounded-lg w-full h-[375px] px-4 md:px-8 py-4 col-span-2 ">
                     <IncomeReportOverview 
                         generateMonthsArray={generateMonthsArray}
-                        fillMissingMonths={fillMissingMonths}
+                        generate12MonthsChart={generate12MonthsChart}
                         monthly_income_data={monthly_income_data}
-                        parseMonth={parseMonth}
+             
                     />
                 </div>
                 <div className="bg-light rounded-lg w-full h-[375px] px-4 md:px-8 py-4 col-span-2 ">
                     <ExpenseReportOverview 
                         generateMonthsArray={generateMonthsArray}
-                        fillMissingMonths={fillMissingMonths}
+                        generate12MonthsChart={generate12MonthsChart}
                         monthly_expense_data={monthly_expense_data}
-                        parseMonth={parseMonth}
+           
                     />
                 </div>
             </div>

@@ -20,4 +20,11 @@ export function formatDate(dateString) {
     return `${day} ${month} ${year}`;
 }
 
-
+export const parseMonth = (id) => {
+    const monthValues = parseInt(id) ?? new Date().getMonth() + 1;
+    const currentYears = new Date().getFullYear();
+    return new Date(currentYears, monthValues - 1).toLocaleString(
+        "default",
+        { month: "short" }
+    );
+};
