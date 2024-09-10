@@ -236,7 +236,10 @@ class TransactionController extends Controller
             ->orderBy('month', 'desc')
             ->get();
 
-            
+        if(!$request->has('month')) {
+            $request->merge(['month' => now()->month]);
+        }
+
         $summaryReport = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->where('transactions.user_id', $userId)
