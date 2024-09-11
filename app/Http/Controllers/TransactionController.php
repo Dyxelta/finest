@@ -201,7 +201,7 @@ class TransactionController extends Controller
         $userId = auth()->user()->id;
         $currentDate = now();
         $startDate = $currentDate->copy()->subMonths(11)->startOfMonth();
-        $endDate = $currentDate->endOfMonth();
+        $endDate = $currentDate->endOfMonth();      
 
         $walletCondition = function ($query) use ($request) {
             if ($request->wallet_name && $request->wallet_name != "All Wallet") {
@@ -234,14 +234,31 @@ class TransactionController extends Controller
             ->orderBy('month', 'desc')
             ->get();
 
+        return [
+            'monthly_expense_data' => $expenseDataPerMonth,
+            'monthly_income_data' => $incomeDataPerMonth,
+        ];
+    }
+
+    public function showSummaryReportData(Request $request){
         if(!$request->has('month')) {
             $request->merge(['month' => now()->month]);
+            $request->merge(['last_month' => now()->month == 1 ? 12 : now()->month-1]);
         }
 
-        $summaryReport = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
-            ->join('categories', 'transactions.category_id', '=', 'categories.id')
-            ->where('transactions.user_id', $userId)
-            ->where($walletCondition)
+        $userId = auth()->user()->id;
+
+        $walletCondition = function ($query) use ($request) {
+            if ($request->wallet_name && $request->wallet_name != "All Wallet") {
+                $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+                $query->where('wallet_id', $wallet->id);
+            }
+        };
+
+        $currMonthIncomeData = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
+                ->join('categories', 'transactions.category_id', '=', 'categories.id')
+                ->where('transactions.user_id', $userId)
+                ->where($walletCondition)
             ->whereMonth('transactions.transaction_date', $request->month)
             ->groupBy('categories.category_is_income')
             ->get()
@@ -251,18 +268,38 @@ class TransactionController extends Controller
                 ];
             });
 
-        $summaryReport = collect($summaryReport);
-        $summaryReport = $summaryReport->merge([
-            'income' => $summaryReport->get('income', 0),
-            'expense' => $summaryReport->get('expense', 0)
+        $lastMonthIncomeData = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
+                ->join('categories', 'transactions.category_id', '=', 'categories.id')
+                ->where('transactions.user_id', $userId)
+                ->where($walletCondition)
+            ->whereMonth('transactions.transaction_date', $request->last_month)
+            ->groupBy('categories.category_is_income')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [
+                    $item->category_is_income ? 'income' : 'expense' => $item->total_amount
+                ];
+            });
+
+        $currMonthIncomeData = collect($currMonthIncomeData);
+        $currMonthIncomeData = $currMonthIncomeData->merge([
+            'income' => $currMonthIncomeData->get('income', 0),
+            'expense' => $currMonthIncomeData->get('expense', 0)
         ]);
 
-        $summaryReport['total_balance'] = $summaryReport['income'] - $summaryReport['expense'];
+        $lastMonthIncomeData = collect($lastMonthIncomeData);
+        $lastMonthIncomeData = $lastMonthIncomeData->merge([
+            'income' => $lastMonthIncomeData->get('income', 0),
+            'expense' => $lastMonthIncomeData->get('expense', 0)
+        ]);
+
+        $currMonthNet = $currMonthIncomeData['income'] - $currMonthIncomeData['expense'];
+        $lastMonthNet = $lastMonthIncomeData['income'] - $lastMonthIncomeData['expense'];
 
         return [
-            'monthly_expense_data' => $expenseDataPerMonth,
-            'monthly_income_data' => $incomeDataPerMonth,
-            'summary_report_data' => $summaryReport
+            'summary_report_data' => $currMonthIncomeData,
+            'current_month_net_income' => $currMonthNet,
+            'last_month_net_income' => $lastMonthNet
         ];
     }
 }
