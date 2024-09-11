@@ -7,8 +7,7 @@ import {
     XAxis,
     YAxis,
     CartesianGrid,
-    Tooltip,
-    Legend,
+
     ResponsiveContainer,
 } from "recharts";
 
@@ -39,7 +38,7 @@ const IncomeReportOverview = ({
                 </div>
             </div>
             <div className="flex justify-center h-full pt-2 w-full md:w-[95%] mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="95%">
                     <LineChart
                         width={500}
                         height={300}
@@ -54,9 +53,7 @@ const IncomeReportOverview = ({
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
-                 
-
-                        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                        <Line type="monotone" dataKey="uv" stroke="#317E3D" />
                     </LineChart>
                 </ResponsiveContainer>
             </div>

@@ -1,8 +1,7 @@
-import CustomShowAlertModal from '@/Components/Modal/CustomFunctionAlertModal';
-import React, { useEffect } from 'react';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-
+import CustomShowAlertModal from "@/Components/Modal/CustomFunctionAlertModal";
+import React, { useEffect } from "react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const MySwal = withReactContent(Swal);
 
@@ -13,10 +12,7 @@ const ModalContent = ({
     onClose,
     maxWidth,
     showButton,
-
 }) => {
-
-
     return (
         <CustomShowAlertModal
             title={title}
@@ -25,7 +21,6 @@ const ModalContent = ({
             maxWidth={maxWidth}
             showButton={showButton}
             onClose={onClose}
-      
         />
     );
 };
@@ -39,12 +34,12 @@ export const showSuccessModal = (
     outsideClick = false
 ) => {
     MySwal.fire({
-        position: 'center',
+        position: "center",
         html: (
-            <div id="custom-modal-container">
+            <div>
                 <ModalContent
                     title={title}
-                    headerColor={'blue'}
+                    headerColor={"blue"}
                     content={content}
                     maxWidth={maxWidth}
                     showButton={showButton}
@@ -52,7 +47,7 @@ export const showSuccessModal = (
                         MySwal.close();
                         onClose();
                     }}
-                    exit= {() => {
+                    exit={() => {
                         MySwal.close();
                     }}
                 />
@@ -61,7 +56,7 @@ export const showSuccessModal = (
         showDenyButton: false,
         showCancelButton: false,
         showConfirmButton: false,
-        padding: '0',
+     
         allowOutsideClick: outsideClick,
     });
 };
@@ -76,21 +71,20 @@ export const showErrorModal = (
     outsideClick = false
 ) => {
     MySwal.fire({
-        position: 'center',
+        position: "center",
         html: (
-            <div id="custom-modal-container">
+            <div>
                 <ModalContent
                     title={title}
-                    headerColor={'red'}
+                    headerColor={"red"}
                     content={content}
                     maxWidth={maxWidth}
                     showButton={showButton}
                     onClose={() => {
-                        
                         onClose();
                         MySwal.close();
                     }}
-                    exit= {() => {
+                    exit={() => {
                         MySwal.close();
                     }}
                 />
@@ -99,7 +93,7 @@ export const showErrorModal = (
         showDenyButton: false,
         showCancelButton: false,
         showConfirmButton: false,
-        padding: '0',
+     
         allowOutsideClick: outsideClick,
     });
 };

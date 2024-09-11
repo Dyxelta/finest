@@ -23,7 +23,7 @@ const ExpenseReportOverview = ({
         ...mon, 
         monthName: parseMonth(mon.month)
     }))
-    console.log(newMonthlydata,"uifhsdghuisdfuihogsfd")
+
     const data = generate12MonthsChart(monthsArr, newMonthlydata);
     return (
         <React.Fragment>
@@ -39,7 +39,7 @@ const ExpenseReportOverview = ({
                 </div>
             </div>
             <div className="flex justify-center h-full pt-2 w-full md:w-[95%] mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="95%">
                     <LineChart
                         width={500}
                         height={300}
@@ -52,12 +52,12 @@ const ExpenseReportOverview = ({
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="monthName" />
+                        <XAxis  dataKey="monthName" />
                         <YAxis />
                 
               
 
-                        <Line type="monotone" dataKey="total_amount" stroke="#82ca9d" />
+                        <Line type="monotone" dataKey="total_amount" stroke="#C02317" />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
