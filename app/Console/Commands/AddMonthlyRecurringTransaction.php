@@ -53,7 +53,7 @@ class AddMonthlyRecurringTransaction extends Command
     private function createTransaction($recurringTransaction, $date)
     {
         $category = $recurringTransaction->category;
-        $transactionAmount = $category->transaction_is_income
+        $transactionAmount = $category->category_is_income
             ? $recurringTransaction->recurring_transaction_amount
             : -$recurringTransaction->recurring_transaction_amount;
 
