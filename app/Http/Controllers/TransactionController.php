@@ -216,7 +216,7 @@ class TransactionController extends Controller
                 $query->where('category_is_income', false);
             })
             ->where($walletCondition)
-            ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, SUM(transaction_amount) as total_amount')
+            ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, CAST(SUM(transaction_amount) AS SIGNED) as total_amount')
             ->groupBy('year', 'month')
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')
@@ -228,7 +228,7 @@ class TransactionController extends Controller
                 $query->where('category_is_income', true);
             })
             ->where($walletCondition)
-            ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, SUM(transaction_amount) as total_amount')
+            ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, CAST(SUM(transaction_amount) AS SIGNED) as total_amount')
             ->groupBy('year', 'month')
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')
@@ -254,7 +254,7 @@ class TransactionController extends Controller
             }
         };
 
-        $selectedMonthTransactionData = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
+        $selectedMonthTransactionData = Transaction::selectRaw('CAST(SUM(transaction_amount) AS SIGNED) as total_amount, categories.category_is_income')
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->where('transactions.user_id', $userId)
             ->where($walletCondition)
@@ -267,7 +267,7 @@ class TransactionController extends Controller
                 ];
             });
 
-        $lastMonthTransactionData = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
+        $lastMonthTransactionData = Transaction::selectRaw('CAST(SUM(transaction_amount) AS SIGNED) as total_amount, categories.category_is_income')
             ->join('categories', 'transactions.category_id', '=', 'categories.id')
             ->where('transactions.user_id', $userId)
             ->where($walletCondition)
