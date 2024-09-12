@@ -27,7 +27,7 @@ class TransactionController extends Controller
 
         $category = Category::where('category_name', $request->category_name)->firstOrFail();
 
-        $transactionAmount = $category->transaction_is_income ? $request->transaction_amount : -$request->transaction_amount;
+        $transactionAmount = $category->category_is_income ? $request->transaction_amount : -$request->transaction_amount;
 
         $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
 
@@ -74,7 +74,7 @@ class TransactionController extends Controller
 
         $originalAmount = $transaction->transaction_amount;
 
-        $transactionAmount = $category->transaction_is_income ? $request->transaction_amount : -$request->transaction_amount;
+        $transactionAmount = $category->category_is_income ? $request->transaction_amount : -$request->transaction_amount;
 
         $transactionNote = $request->transaction_note ?? '';
         $transactionDate = $request->transaction_date;
