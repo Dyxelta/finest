@@ -26,7 +26,7 @@ class RecurringTransactionController extends Controller
 
         $category = Category::where('category_name', $request->category_name)->firstOrFail();
 
-        $recurringTransactionAmount = $category->transaction_is_income ? $request->recurring_transaction_amount : -$request->recurring_transaction_amount;
+        $recurringTransactionAmount = $category->category_is_income ? $request->recurring_transaction_amount : -$request->recurring_transaction_amount;
 
         $wallet = Wallet::where('user_id', $user->id)->where('wallet_name', $request->wallet_name)->firstOrFail();
 
@@ -72,7 +72,7 @@ class RecurringTransactionController extends Controller
 
         $originalAmount = $recurringTransaction->transaction_amount;
 
-        $recurringTransactionAmount = $category->transaction_is_income ? $request->recurring_transaction_amount : -$request->recurring_transaction_amount;
+        $recurringTransactionAmount = $category->category_is_income ? $request->recurring_transaction_amount : -$request->recurring_transaction_amount;
 
         $recurringTransactionNote = $request->recurring_transaction_note ?? '';
         $recurringTransactionDate = $request->recurring_transaction_date;
@@ -103,7 +103,7 @@ class RecurringTransactionController extends Controller
     private function createTransaction($recurringTransaction, $date)
     {
         $category = $recurringTransaction->category;
-        $transactionAmount = $category->transaction_is_income
+        $transactionAmount = $category->category_is_income
             ? $recurringTransaction->recurring_transaction_amount
             : -$recurringTransaction->recurring_transaction_amount;
 
