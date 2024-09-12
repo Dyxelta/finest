@@ -2,7 +2,6 @@ import ExpenseReportOverview from "@/Components/TransactionReports/ExpenseReport
 import IncomeReportOverview from "@/Components/TransactionReports/IncomeReportOverview";
 import MonthlyReportOverview from "@/Components/TransactionReports/MonthlyReportOverview";
 import ShowNetIncomeOverview from "@/Components/TransactionReports/ShowNetIncomeOverview";
-import ShowNetIncome from "@/Components/TransactionReports/ShowNetIncomeOverview";
 import SummaryReportOverview from "@/Components/TransactionReports/SummaryReportOverView";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
@@ -47,8 +46,10 @@ export default function TransactionReportPage({
     currWallet,
     monthly_expense_data,
     monthly_income_data,
-    summary_report,
+    summary_report_data,
     wallets,
+    current_month_net_income,
+    last_month_net_income,
 }) {
     const { get, setData } = useForm({
         month: currMonth,
@@ -66,7 +67,7 @@ export default function TransactionReportPage({
 
     const monthValue = parseInt(currMonth) ?? new Date().getMonth() + 1;
     const currentYear = new Date().getFullYear();
-    const monthName = new Date(currentYear, monthValue).toLocaleString(
+    const monthName = new Date(currentYear, monthValue - 1).toLocaleString(
         "default",
         { month: "long" }
     );
@@ -147,15 +148,17 @@ export default function TransactionReportPage({
                 </div>
 
                 <div className="bg-light rounded-lg w-full h-[300px] md:h-[375px] px-4 md:px-8 py-4 col-span-2 md:col-span-1">
-                    <SummaryReportOverview summary_report={summary_report} />
+                    <SummaryReportOverview
+                        summary_report_data={summary_report_data}
+                    />
                 </div>
                 <div className="bg-light rounded-lg w-full h-[300px] md:h-[375px] p-3 col-span-2 md:col-span-1 ">
                     <div className="w-full h-full bg-background rounded-xl z-50 relative overflow-hidden">
-                    <img
-                        src={DecorBG}
-                        alt="DecorBG"
-                        className=" absolute right-[-80px] top-[-80px] w-[300px] h-[200px] -z-0"
-                    />
+                        <img
+                            src={DecorBG}
+                            alt="DecorBG"
+                            className=" absolute right-[-80px] top-[-80px] w-[300px] h-[200px] -z-0"
+                        />
                         <div className="flex w-full justify-between z-50 items-center px-1 lg:px-4 relative">
                             <div className="flex items-center gap-2 mt-2">
                                 <div className="sub-body-bold lg:button xl:header-5 bg-light rounded-md px-4 py-2 ">
@@ -173,7 +176,12 @@ export default function TransactionReportPage({
                             </div>
                         </div>
                         <div className="flex justify-center h-full pt-2 w-full md:w-[95%] mx-auto mt-4 relative">
-                            <ShowNetIncomeOverview />
+                            <ShowNetIncomeOverview
+                                current_month_net_income={
+                                    current_month_net_income
+                                }
+                                last_month_net_income={last_month_net_income}
+                            />
                         </div>
                     </div>
                 </div>

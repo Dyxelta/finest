@@ -27,7 +27,7 @@ class TransactionController extends Controller
 
         $category = Category::where('category_name', $request->category_name)->firstOrFail();
 
-        $transactionAmount = $category->transaction_is_income ? $request->transaction_amount : -$request->transaction_amount;
+        $transactionAmount = $category->category_is_income ? $request->transaction_amount : -$request->transaction_amount;
 
         $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
 
@@ -202,7 +202,7 @@ class TransactionController extends Controller
         $userId = auth()->user()->id;
         $currentDate = now();
         $startDate = $currentDate->copy()->subMonths(11)->startOfMonth();
-        $endDate = $currentDate->endOfMonth();      
+        $endDate = $currentDate->endOfMonth();
 
         $walletCondition = function ($query) use ($request) {
             $userId = auth()->user()->id;
@@ -242,10 +242,11 @@ class TransactionController extends Controller
         ];
     }
 
-    public function showSummaryReportData(Request $request){
-        if(!$request->has('month')) {
+    public function showSummaryReportData(Request $request)
+    {
+        if (!$request->has('month')) {
             $request->merge(['month' => now()->month]);
-            $request->merge(['last_month' => now()->month == 1 ? 12 : now()->month-1]);
+            $request->merge(['last_month' => now()->month == 1 ? 12 : now()->month - 1]);
         }
 
         $userId = auth()->user()->id;
@@ -258,9 +259,9 @@ class TransactionController extends Controller
         };
 
         $currMonthIncomeData = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
-                ->join('categories', 'transactions.category_id', '=', 'categories.id')
-                ->where('transactions.user_id', $userId)
-                ->where($walletCondition)
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('transactions.user_id', $userId)
+            ->where($walletCondition)
             ->whereMonth('transactions.transaction_date', $request->month)
             ->groupBy('categories.category_is_income')
             ->get()
@@ -271,9 +272,9 @@ class TransactionController extends Controller
             });
 
         $lastMonthIncomeData = Transaction::selectRaw('SUM(transaction_amount) as total_amount, categories.category_is_income')
-                ->join('categories', 'transactions.category_id', '=', 'categories.id')
-                ->where('transactions.user_id', $userId)
-                ->where($walletCondition)
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('transactions.user_id', $userId)
+            ->where($walletCondition)
             ->whereMonth('transactions.transaction_date', $request->last_month)
             ->groupBy('categories.category_is_income')
             ->get()

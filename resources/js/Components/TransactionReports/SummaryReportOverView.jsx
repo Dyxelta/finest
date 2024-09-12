@@ -2,7 +2,8 @@ import { formatToRupiah } from "@/Helpers/helperFormat";
 import React, { useEffect, useRef, useState } from "react";
 import { CgNotes } from "react-icons/cg";
 
-const SummaryReportOverview = ({ summary_report }) => {
+const SummaryReportOverview = ({ summary_report_data}) => {
+
     const progressBarRef = useRef(null);
     const [length, setLength] = useState();
     useEffect(() => {
@@ -12,16 +13,24 @@ const SummaryReportOverview = ({ summary_report }) => {
         }
     }, []);
 
-    const totalAbsoluteResult =
-        summary_report?.income + Math.abs(summary_report?.expense);
+    const totalAbsoluteResult = parseInt(summary_report_data?.income) + parseInt(Math.abs(summary_report_data?.expense));
 
     const getProgressLength = (value) => {
+        if(value === 0 ){
+            return 0
+        }
         return Math.ceil((value / totalAbsoluteResult) * length);
     };
 
     const getPercentageLength = (value) => {
-        return Math.ceil((value / totalAbsoluteResult) * 100);
+        if(value === 0 ){
+
+            return 0
+        }
+        return (value / totalAbsoluteResult) * 100;
     };
+
+
     return (
         <React.Fragment>
             <div className="flex flex-col w-full gap-4">
@@ -39,7 +48,7 @@ const SummaryReportOverview = ({ summary_report }) => {
                     <div className="flex justify-between items-center button">
                         <div className="sub-body-bold md:body">Total Income</div>
                         <div className="sub-body-bold md:body">
-                            {formatToRupiah(summary_report?.income)}
+                            {formatToRupiah(summary_report_data?.income)}
                         </div>
                     </div>
                     <div
@@ -50,12 +59,12 @@ const SummaryReportOverview = ({ summary_report }) => {
                             className="absolute left-0 bg-primary h-full rounded-full  "
                             style={{
                                 width: `${getProgressLength(
-                                    summary_report?.income
+                                    summary_report_data?.income
                                 )}px`,
                             }}
                         ></div>
                         <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-light sub-body">
-                            {getPercentageLength(summary_report?.income)}%
+                            {Math.floor(getPercentageLength(summary_report_data?.income))}%
                         </div>
                     </div>
                 </div>
@@ -64,7 +73,7 @@ const SummaryReportOverview = ({ summary_report }) => {
                     <div className="flex justify-between items-center button">
                         <div className="sub-body-bold md:body">Total Expense</div>
                         <div className="sub-body-bold md:body">
-                            {formatToRupiah(summary_report?.expense)}
+                            {formatToRupiah(summary_report_data?.expense)}
                         </div>
                     </div>
                     <div className="border-primary border h-4 md:h-5 w-full rounded-full relative overflow-hidden mt-2 bg-lighter-primary">
@@ -72,12 +81,12 @@ const SummaryReportOverview = ({ summary_report }) => {
                             className="absolute left-0 bg-primary h-full rounded-full  "
                             style={{
                                 width: `${getProgressLength(
-                                    summary_report?.expense
+                                    summary_report_data?.expense
                                 )}px`,
                             }}
                         ></div>
                         <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-light sub-body">
-                            {getPercentageLength(summary_report?.expense)}%
+                            {Math.ceil(getPercentageLength(summary_report_data?.expense))}%
                         </div>
                     </div>
                 </div>
@@ -85,7 +94,7 @@ const SummaryReportOverview = ({ summary_report }) => {
                 <div>
                     <span className="sub-body-bold lg:button text-primary mx-1">
                         Note:{" "}
-                        {getPercentageLength(summary_report?.expense) > 50 ? (
+                        {getPercentageLength(summary_report_data?.expense) > 50 ? (
                             <>
                                 <span className="text-expense">Oh No!</span>{" "}
                                 <span className="sub-body lg:body">
@@ -96,7 +105,7 @@ const SummaryReportOverview = ({ summary_report }) => {
                             </>
                         ) : (
                             <>
-                                <span className="text-expense">
+                                <span className="text-income">
                                     Well done!{" "}
                                 </span>
                                 <span className="sub-body lg:body">

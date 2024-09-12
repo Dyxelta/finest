@@ -1,49 +1,48 @@
-import { formatToRupiah } from "@/Helpers/helperFormat";
+import { formatToRupiah, RupiahFormatTooltip } from "@/Helpers/helperFormat";
 import {
-    ComposedChart,
-    Line,
-    Area,
     Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
     BarChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis
 } from "recharts";
+
 const CustomizedLabel = (props) => {
-    const { x, y, fill, value } = props;
+    const { x, y, fill, value, width } = props;
+    const adjustedX = value < 0 ? x + width + 5 : x + 10;
     return (
         <text
-            x={x+10}
-            y={y+25}
+            x={adjustedX}
+            y={y + 25}
             fontSize="16"
             fontFamily="sans-serif"
-            fill="#ffffff"
+            fill={value === 0 ? "#1B3046" : "#FDFDFD"}
             textAnchor="start"
         >
-            {formatToRupiah(value)}
+            {value < 0
+                ? `- ${formatToRupiah(Math.abs(value))}`
+                : formatToRupiah(value)}
         </text>
     );
 };
 
-const data = [
-    {
-        name: "Current Net Income",
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: "Last Month Net Income",
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
-    },
-];
+const ShowNetIncomeOverview = ({
+    current_month_net_income,
+    last_month_net_income,
+}) => {
+    
+    const data = [
+        {
+            name: "Current Net Income",
+            value: current_month_net_income,
+        },
+        {
+            name: "Last Month Net Income",
+            value: last_month_net_income,
+        },
+    ];
 
-const ShowNetIncomeOverview = () => {
     return (
         <div className="flex justify-center h-full pt-2 w-full md:w-[95%] ">
             <ResponsiveContainer width="100%" height="70%">
@@ -60,18 +59,32 @@ const ShowNetIncomeOverview = () => {
                     }}
                     barCategoryGap="10px"
                 >
-                    <XAxis type="number" className="sub-body lg:body" hide/>
+                    <Tooltip
+                        contentStyle={{
+                            backgroundColor: "#EBF0F6",
+                            borderRadius: "8px",
+                      
+                            color: "#2D5074",
+                        }}
+                        content={<RupiahFormatTooltip/>}
+                    />
+
+                    <XAxis type="number" className="sub-body lg:body" hide />
                     <YAxis
-                    
                         tickLine={false}
                         type="category"
                         width={90}
                         dataKey="name"
+                        tick={{ fill: "#2D5074" }}
                         className="sub-body lg:body"
-                   
                     />
-
-                    <Bar dataKey="pv" barSize={40} fill="#2D5074"  label={<CustomizedLabel />}/>
+                    <Bar
+                        dataKey="value"
+                        barSize={40}
+                        fill="#2D5074"
+                        label={<CustomizedLabel />}
+                        activeStyle={{ fill: "#CAD8E7" }}
+                    />
                 </BarChart>
             </ResponsiveContainer>
         </div>

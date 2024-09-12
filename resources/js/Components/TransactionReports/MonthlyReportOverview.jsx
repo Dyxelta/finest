@@ -1,3 +1,4 @@
+import { RupiahFormatTooltip } from "@/Helpers/helperFormat";
 import React from "react";
 import { CgNotes } from "react-icons/cg";
 import { TbMoodEmpty } from "react-icons/tb";
@@ -8,11 +9,11 @@ import {
     ResponsiveContainer,
     Tooltip,
     XAxis,
-    YAxis
+    YAxis,
 } from "recharts";
 import CustomSelectInput from "../CustomInput/CustomSelectInput";
 
-const CustomTick = ({ x, y, payload }) => {
+const FormatXAxis = ({ x, y, payload }) => {
     let text = payload.value;
 
     const words = text.split(" ");
@@ -44,7 +45,7 @@ const CustomTick = ({ x, y, payload }) => {
     );
 };
 
-const CustomBar = (props) => {
+const BarColor = (props) => {
     const { x, y, width, height, index } = props;
     const fillColor = index % 2 === 1 ? "#CAD8E7" : "#2D5074";
 
@@ -54,6 +55,7 @@ const CustomBar = (props) => {
 
     return <rect x={x} y={y} width={width} height={height} fill={fillColor} />;
 };
+
 const MonthlyReportOverview = ({
     category_transactions,
     walletOptions,
@@ -64,7 +66,6 @@ const MonthlyReportOverview = ({
     setData,
     setWait,
     MonthlyReportData,
-
 }) => {
     return (
         <React.Fragment>
@@ -122,21 +123,30 @@ const MonthlyReportOverview = ({
                             width={500}
                             height={240}
                             data={MonthlyReportData}
-                            margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
+                            margin={{ top: 5, right: 15, left: 15, bottom: 5 }}
                         >
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis
                                 className="hidden lg:block"
                                 dataKey="name"
-                                tick={<CustomTick />}
+                                tick={<FormatXAxis />}
                                 interval={0}
                             />
                             <YAxis
                                 className="m-0 p-0 text-[8px] md:text-[10px] w-[30px] md:w-[50px]"
                                 width={40}
+                                yA
                             />
-                            <Tooltip />
-                            <Bar dataKey="value" shape={<CustomBar />} />
+                            <Tooltip
+                                contentStyle={{
+                                    backgroundColor: "#EBF0F6",
+                                    borderRadius: "8px",
+
+                                    color: "#2D5074",
+                                }}
+                                content={<RupiahFormatTooltip/>}
+                            />
+                            <Bar dataKey="value" shape={<BarColor />} />
                         </BarChart>
                     </ResponsiveContainer>
                 ) : (
