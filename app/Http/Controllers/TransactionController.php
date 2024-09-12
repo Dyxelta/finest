@@ -198,14 +198,16 @@ class TransactionController extends Controller
 
     public function showTransactionOverview(Request $request)
     {
+
         $userId = auth()->user()->id;
         $currentDate = now();
         $startDate = $currentDate->copy()->subMonths(11)->startOfMonth();
         $endDate = $currentDate->endOfMonth();
 
         $walletCondition = function ($query) use ($request) {
+            $userId = auth()->user()->id;
             if ($request->wallet_name && $request->wallet_name != "All Wallet") {
-                $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+                $wallet = Wallet::where('user_id', $userId)->where('wallet_name', $request->wallet_name)->firstOrFail();
                 $query->where('wallet_id', $wallet->id);
             }
         };

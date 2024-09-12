@@ -158,7 +158,7 @@ export default function BudgetPage({
 
     const progressBarRef = useRef(null);
 
-    useEffect(() => {}, []);
+
 
     const countRecommendedBudgetAmount = () => {
         const { transactions } = showInitialBudget.category;

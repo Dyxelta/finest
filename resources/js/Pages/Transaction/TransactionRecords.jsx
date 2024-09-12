@@ -55,6 +55,7 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
                 {transaction?.transaction_note}
             </td>
             <td className="py-2 px-4 text-center  w-[200px]">
+         
                 {formatToRupiah(transaction?.transaction_amount)}
             </td>
             <td className="py-2 px-4 text-center w-[150px]">
@@ -109,6 +110,7 @@ export default function TransactionRecordsPage({
     wallets,
     currMonth,
 }) {
+    {console.log(transactions)}
     const [pagination, setPagination] = useState(1);
     const [category, setCategory] = useState("Income");
     const [selectedWallet, setSelectedWallet] = useState("All Wallet");
