@@ -23,7 +23,7 @@ class UserController extends Controller
                 'regex:/[a-z]/',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                'regex:/[!@#$%^&*(),.?":{}|<>]/',
+                'regex:/[!@#$%^&*(),.?":{}|<>_\-+=~`\/[\]\\]/',
             ],
             'confirm_pass' => 'required_with:password|same:password',
         ]);
@@ -95,7 +95,7 @@ class UserController extends Controller
                 'regex:/[a-z]/',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                'regex:/[!@#$%^&*(),.?":{}|<>]/',
+                'regex:/[!@#$%^&*(),.?":{}|<>_\-+=~`\/[\]\\]/',
             ],
             'confirm_password' => 'required_with:new_password|same:new_password',
         ]);
