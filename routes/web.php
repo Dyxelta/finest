@@ -111,6 +111,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-transaction/{transaction:id}', [TransactionController::class, 'deleteTransaction'])->name('deleteTransaction');
 
+    //Recurring Transaction
     Route::get('/recurringTransaction', function (Request $request) {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $recurringTransactionData = app(RecurringTransactionController::class)->showRecurringTransactionByWallet($request);
@@ -125,6 +126,7 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-recurring-transaction/{recurringTransaction:id}', [RecurringTransactionController::class, 'deleteRecurringTransaction'])->name('deleteRecurringTransaction');
 
+    //Budget
     Route::get('/budget', function (Request $request) {
 
         $encryptedWalletId = Crypt::encrypt($request->wallet_id);
@@ -143,21 +145,23 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/delete-budget/{budget:id}', [BudgetController::class, 'deleteBudget'])->name('deleteBudget');
 
+    //Transaction Report
     Route::get('/transactionReport', function (Request $request) {
         $transactionController = app(TransactionController::class);
         $transactionOverview = $transactionController->showTransactionOverview($request);
         $summaryReportData = $transactionController->showSummaryReportData($request);
-        
+
         $transactionCategory = $transactionController->showTransactionByCategory($request);
         $walletData = app(WalletController::class)->showAllWalletByUserID();
- 
+
         return Inertia::render('TransactionReport/TransactionReport', array_merge($transactionOverview, $summaryReportData, $transactionCategory, $walletData));
     })->name('transactionReportPage');
 
+    //Transaction Analysis
     Route::get('/transactionAnalysis', function (Request $request) {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $categoryData = app(CategoryController::class)->showAllCategories();
-        return Inertia::render('TransactionAnalysis/TransactionAnalysis', array_merge($walletData,$categoryData));
+        return Inertia::render('TransactionAnalysis/TransactionAnalysis', array_merge($walletData, $categoryData));
     })->name('transactionAnalysisPage');
 });
 
