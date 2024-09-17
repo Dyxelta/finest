@@ -45,7 +45,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
             Children: [
                 {
                     Title: "Add Transaction",
-                    href: "addTransasction",
+                    href: "addTransaction",
                     icon: <CiSquarePlus size={24} />,
                 },
                 {
@@ -55,7 +55,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 },
                 {
                     Title: "Financial Analysis",
-                    href: "dashboard",
+                    href: "transactionAnalysisPage",
                     icon: <BsGraphUp size={22} />,
                 },
                 {

@@ -225,7 +225,7 @@ export default function TransactionRecordsPage({
                             <div className="bg-white pt-3 mt-1 rounded-xl px-4 lg:px-10 flex flex-col-reverse md:flex-row md:justify-between">
                                 <div className="flex items-center gap-4 md:gap-8 relative w-fit px-2 mt-4 md:mt-0">
                                     <div
-                                        className={`body md:header-5 pb-1 transition-all duration-500 ${
+                                        className={`body md:header-5 pb-1 transition-all duration-500 cursor-pointer ${
                                             category === "Income"
                                                 ? "text-primary"
                                                 : "hover:text-grey"
@@ -238,7 +238,7 @@ export default function TransactionRecordsPage({
                                         Income
                                     </div>
                                     <div
-                                        className={`body md:header-5 pb-1 transition-all duration-500 ${
+                                        className={`body md:header-5 pb-1 transition-all duration-500 cursor-pointer ${
                                             category === "Expense"
                                                 ? "text-primary"
                                                 : "hover:text-grey"

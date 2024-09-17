@@ -1,4 +1,4 @@
-import { RupiahFormatTooltip } from "@/Helpers/helperFormat";
+import { formatYAxis, RupiahFormatTooltip } from "@/Helpers/helperFormat";
 import React from "react";
 import { CgNotes } from "react-icons/cg";
 import { TbMoodEmpty } from "react-icons/tb";
@@ -123,7 +123,7 @@ const MonthlyReportOverview = ({
                             width={500}
                             height={240}
                             data={MonthlyReportData}
-                            margin={{ top: 5, right: 15, left: 15, bottom: 5 }}
+                            margin={{ top: 5, right: 15, left: 70, bottom: 5 }}
                         >
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis
@@ -135,7 +135,7 @@ const MonthlyReportOverview = ({
                             <YAxis
                                 className="m-0 p-0 text-[8px] md:text-[10px] w-[30px] md:w-[50px]"
                                 width={40}
-                                yA
+                                tickFormatter={formatYAxis}
                             />
                             <Tooltip
                                 contentStyle={{

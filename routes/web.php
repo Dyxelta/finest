@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
         $categories = app(CategoryController::class)->showAllCategories();
 
         return Inertia::render('Transaction/AddTransactionPage', array_merge($walletData, $categories));
-    })->name('addTransasction');
+    })->name('addTransaction');
 
     Route::get('/transaction/edit-transaction/{transaction:id}', function (Transaction $transaction) {
         $transaction->load(['wallet', 'category']);
@@ -153,6 +153,12 @@ Route::middleware('auth')->group(function () {
  
         return Inertia::render('TransactionReport/TransactionReport', array_merge($transactionOverview, $summaryReportData, $transactionCategory, $walletData));
     })->name('transactionReportPage');
+
+    Route::get('/transactionAnalysis', function (Request $request) {
+        $walletData = app(WalletController::class)->showAllWalletByUserID();
+        $categoryData = app(CategoryController::class)->showAllCategories();
+        return Inertia::render('TransactionAnalysis/TransactionAnalysis', array_merge($walletData,$categoryData));
+    })->name('transactionAnalysisPage');
 });
 
 require __DIR__ . '/auth.php';

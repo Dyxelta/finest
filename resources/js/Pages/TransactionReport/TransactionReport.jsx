@@ -71,6 +71,7 @@ export default function TransactionReportPage({
         "default",
         { month: "long" }
     );
+    
     const getCurrentMonth = () => {
         const currentMonth = new Date().getMonth();
 

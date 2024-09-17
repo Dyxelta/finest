@@ -93,7 +93,7 @@ const HeaderInfo = ({ transactions, selectedWallet }) => {
                     </div>
                 </div>
                 <Link
-                    href={route("addTransasction")}
+                    href={route("addTransaction")}
                     className="flex items-center px-2 md:px-4 gap-1 md:gap-3"
                 >
                     <PrimaryButton
