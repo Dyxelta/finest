@@ -8,10 +8,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
 use App\Models\Transaction;
-use Database\Factories\WalletFactory;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -128,9 +125,6 @@ Route::middleware('auth')->group(function () {
 
     //Budget
     Route::get('/budget', function (Request $request) {
-
-        $encryptedWalletId = Crypt::encrypt($request->wallet_id);
-        $request->merge(['wallet_id' => $encryptedWalletId]);
 
         $budgetData = app(BudgetController::class)->showAllUserBudget($request);
         $walletData = app(WalletController::class)->showAllWalletByUserID();

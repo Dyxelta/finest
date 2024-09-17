@@ -6,7 +6,6 @@ use App\Models\Budget;
 use App\Models\Category;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 
 class BudgetController extends Controller
 {
@@ -95,11 +94,7 @@ class BudgetController extends Controller
     {
         $user = auth()->user();
 
-        try {
-            $wallet_id = Crypt::decrypt($request->wallet_id);
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            return ['error' => 'Invalid wallet ID.', 'status' => 400];
-        }
+        $wallet_id = $request->wallet_id;
 
         if ($wallet_id == null) {
             $wallet_id = Wallet::firstWhere('user_id', $user->id)->id;
