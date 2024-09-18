@@ -293,4 +293,25 @@ class TransactionController extends Controller
             'last_month_net_income' => $lastMonthNet
         ];
     }
+
+    public function getAnalysisData(Request $request){
+        $userId = auth()->user()->id;
+
+        $walletCondition = function ($query) use ($request) {
+            $userId = auth()->user()->id;
+            if ($request->wallet_name && $request->wallet_name != "All Wallet") {
+                $wallet = Wallet::where('user_id', $userId)->where('wallet_name', $request->wallet_name)->firstOrFail();
+                $query->where('wallet_id', $wallet->id);
+            }
+        };
+        
+        $average_all_transactions = Transaction::selectRaw('sum(transaction_amount)/count(transactions.id) as average_total, categories.category_is_income')
+        ->join('categories', 'transactions.category_id', '=', 'categories.id')
+        ->where('transactions.user_id', $userId)
+        ->where($walletCondition)
+        ->groupBy('categories.category_is_income')
+        ->get();
+
+        return ['average_all_transactions' => $average_all_transactions];
+    }
 }

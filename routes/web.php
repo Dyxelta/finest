@@ -155,7 +155,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/transactionAnalysis', function (Request $request) {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $categoryData = app(CategoryController::class)->showAllCategories();
-        return Inertia::render('TransactionAnalysis/TransactionAnalysis', array_merge($walletData, $categoryData));
+
+        $averageData = app(TransactionController::class)->getAnalysisData($request);
+
+        return Inertia::render('TransactionAnalysis/TransactionAnalysis', array_merge($walletData, $categoryData, $averageData));
     })->name('transactionAnalysisPage');
 });
 
