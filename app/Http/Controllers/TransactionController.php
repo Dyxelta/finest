@@ -294,24 +294,63 @@ class TransactionController extends Controller
         ];
     }
 
-    public function getAnalysisData(Request $request){
+    public function getAnalysisData(Request $request)
+    {
         $userId = auth()->user()->id;
 
-        $walletCondition = function ($query) use ($request) {
-            $userId = auth()->user()->id;
+        $sixMonthsAgo = now()->subMonths(6)->startOfMonth();
+        $startOfMonth = now()->startOfMonth();
+        $today = now()->endOfDay();
+
+        $walletCondition = function ($query) use ($request, $userId) {
             if ($request->wallet_name && $request->wallet_name != "All Wallet") {
-                $wallet = Wallet::where('user_id', $userId)->where('wallet_name', $request->wallet_name)->firstOrFail();
+                $wallet = Wallet::where('user_id', $userId)
+                    ->where('wallet_name', $request->wallet_name)
+                    ->firstOrFail();
                 $query->where('wallet_id', $wallet->id);
             }
         };
-        
-        $average_all_transactions = Transaction::selectRaw('sum(transaction_amount)/count(transactions.id) as average_total, categories.category_is_income')
-        ->join('categories', 'transactions.category_id', '=', 'categories.id')
-        ->where('transactions.user_id', $userId)
-        ->where($walletCondition)
-        ->groupBy('categories.category_is_income')
-        ->get();
 
-        return ['average_all_transactions' => $average_all_transactions];
+        $category = Category::where('category_name', $request->category_name)->firstOrFail();
+
+        $baseQuery = Transaction::where('user_id', $userId)
+            ->where($walletCondition)
+            ->where('category_id', $category->id);
+
+        $monthlyTotalTransaction = $baseQuery
+            ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
+            ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, CAST(SUM(transaction_amount) AS SIGNED) as total_amount')
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
+
+        $averageTransactionLastSixMonth = $baseQuery
+            ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
+            ->selectRaw('CAST(sum(transaction_amount)/count(transactions.id) AS SIGNED) as average_total')
+            ->first();
+
+        $totalTransactionThisMonth = $baseQuery
+            ->whereBetween('transaction_date', [$startOfMonth, $today])
+            ->selectRaw('CAST(sum(transaction_amount) AS SIGNED) as total_transaction')
+            ->first();
+
+        $highestTransaction = $baseQuery
+            ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
+            ->orderBy('transaction_amount', 'ASC')
+            ->first();
+
+        $lowestTransaction = $baseQuery
+            ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
+            ->orderBy('transaction_amount', 'DESC')
+            ->first();
+
+        return [
+            'monthly_total_transaction' => $monthlyTotalTransaction,
+            'average_transaction_last_six_month' => $averageTransactionLastSixMonth,
+            'total_transaction_this_month' => $totalTransactionThisMonth,
+            'highest_transaction' => $highestTransaction,
+            'lowest_transaction' => $lowestTransaction,
+        ];
     }
 }
