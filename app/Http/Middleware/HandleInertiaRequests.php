@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Reminder;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,11 +30,17 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return [
-            ...parent::share($request),
+        return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
             ],
-        ];
+
+            // Share reminders globally
+            'reminders' => fn () => $request->user()
+                ? Reminder::where('user_id', $request->user()->id)
+                    ->whereMonth('created_at', now()->month)
+                    ->get()
+                : [],
+        ]);
     }
 }
