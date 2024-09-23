@@ -299,6 +299,7 @@ class TransactionController extends Controller
         $userId = auth()->user()->id;
 
         $sixMonthsAgo = now()->subMonths(6)->startOfMonth();
+        $endOfLastMonth = now()->subMonth()->endOfMonth();
         $startOfMonth = now()->startOfMonth();
         $today = now()->endOfDay();
 
@@ -326,7 +327,7 @@ class TransactionController extends Controller
             ->get();
 
         $averageTransactionLastSixMonth = $baseQuery
-            ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
+            ->whereBetween('transaction_date', [$sixMonthsAgo, $endOfLastMonth])
             ->selectRaw('CAST(sum(transaction_amount)/count(transactions.id) AS SIGNED) as average_total')
             ->first();
 
