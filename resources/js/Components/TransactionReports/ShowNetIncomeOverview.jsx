@@ -44,7 +44,7 @@ const ShowNetIncomeOverview = ({
     ];
 
     return (
-        <div className="flex justify-center h-full pt-2 w-full md:w-[95%] ">
+        <div className="flex justify-center h-full pt-4 w-full md:w-[95%] ">
             <ResponsiveContainer width="100%" height="70%">
                 <BarChart
                     layout="vertical"

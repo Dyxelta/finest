@@ -1,9 +1,8 @@
 import { Link, usePage } from "@inertiajs/react";
-import { Card, CardBody, Collapse, Typography } from "@material-tailwind/react";
+import { Collapse } from "@material-tailwind/react";
 import "boxicons";
 import { useState } from "react";
-import { Lock } from "react-feather";
-import { BiLock, BiSolidPencil } from "react-icons/bi";
+import { BiSolidPencil } from "react-icons/bi";
 import { BsGraphUp } from "react-icons/bs";
 import { CiLock, CiSquarePlus, CiUser } from "react-icons/ci";
 import { FaMoneyBillWave, FaWallet } from "react-icons/fa";
@@ -17,8 +16,8 @@ import {
     TbCircleArrowUpRightFilled,
 } from "react-icons/tb";
 import { Button } from "reactstrap";
-import EditAccountPopup from "../Modal/Popup/EditAccountPopup";
 import ChangePasswordPopup from "../Modal/Popup/ChangePasswordPopup";
+import EditAccountPopup from "../Modal/Popup/EditAccountPopup";
 
 const Sidebar = ({ openNav, setOpenNav }) => {
     const changeWidth = [

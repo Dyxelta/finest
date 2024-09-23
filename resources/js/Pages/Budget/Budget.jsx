@@ -19,6 +19,7 @@ import { PiChartPieSliceLight } from "react-icons/pi";
 import { Button } from "reactstrap";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { formatToRupiah } from "@/Helpers/helperFormat";
+import { getRemainingDays } from "@/Helpers/remainingDays";
 
 export default function BudgetPage({
     auth,
@@ -158,21 +159,10 @@ export default function BudgetPage({
 
     const progressBarRef = useRef(null);
 
-
-
     const countRecommendedBudgetAmount = () => {
         const { transactions } = showInitialBudget.category;
 
-        const today = new Date();
-        const nextMonth = new Date(
-            today.getFullYear(),
-            today.getMonth() + 1,
-            1
-        );
-        const endOfMonth = new Date(nextMonth - 1);
-
-        const timeDifference = endOfMonth.getTime() - today.getTime();
-        const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        const dayDifference = getRemainingDays()
 
         if (transactions.length !== 0) {
             const totalSpending = transactions.reduce((total, transaction) => {
@@ -193,7 +183,9 @@ export default function BudgetPage({
                             this month.
                         </div>
                         <div>
-                            <span className="sub-body-bold md:button text-primary">Note: </span>
+                            <span className="sub-body-bold md:button text-primary">
+                                Note:{" "}
+                            </span>
                             Consider reducing your spending in other categories
                             for the remainder of the month to stay on track.
                         </div>
@@ -205,7 +197,9 @@ export default function BudgetPage({
                     <div className="px-5 py-2 h-full flex-col sub-body md:body">
                         Looks like your budget is still on the right track !
                         <br />
-                        <span className="sub-body-bold md:button ">Note: </span>{" "}
+                        <span className="sub-body-bold md:button ">
+                            Note:{" "}
+                        </span>{" "}
                         Spend no more than{" "}
                         <span className="sub-body-bold md:button">
                             {" "}
@@ -229,8 +223,10 @@ export default function BudgetPage({
                 <div className="px-5 py-2 h-full flex-col sub-body md:body">
                     Looks like your budget is still on the right track !
                     <br />
-                    <span className="sub-body-bold md:button ">Note: </span> Spend no
-                    more than{" "}
+                    <span className="sub-body-bold md:button ">
+                        Note:{" "}
+                    </span>{" "}
+                    Spend no more than{" "}
                     <span className="sub-body-bold md:button">
                         {" "}
                         {formatToRupiah(Math.floor(averageDailySpending))} per

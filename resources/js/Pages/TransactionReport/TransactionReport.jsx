@@ -10,34 +10,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { CgNotes } from "react-icons/cg";
 import DecorBG from "../../../../public/image/public/DecorBG.png";
-const generateMonthsArray = () => {
-    const monthsArray = [];
-    const currentMonth = moment().month() + 1;
-    const currentYear = moment().year();
-    for (let i = 0; i < 12; i++) {
-        const month = currentMonth - i;
-        const year = currentYear - Math.floor((11 - month) / 12);
-        const adjustedMonth = (month + 12) % 12 || 12;
-        const monthName = moment(`${year}-${adjustedMonth}`, "YYYY-M").format(
-            "MMM"
-        );
-
-        monthsArray.push({
-            total_amount: 0,
-            month: month,
-            monthName: monthName,
-        });
-    }
-
-    return monthsArray.reverse();
-};
-
-const generate12MonthsChart = (monthsArray, data) => {
-    return monthsArray.map((mon) => {
-        const matchingData = data.find((item) => item.month === mon.month);
-        return matchingData || mon;
-    });
-};
+import CustomTooltip from "@/Helpers/Tooltip";
 
 export default function TransactionReportPage({
     auth,
@@ -71,7 +44,7 @@ export default function TransactionReportPage({
         "default",
         { month: "long" }
     );
-    
+
     const getCurrentMonth = () => {
         const currentMonth = new Date().getMonth();
 
@@ -168,7 +141,8 @@ export default function TransactionReportPage({
                             </div>
                             <div className="flex items-center gap-1 lg:gap-2 mt-2">
                                 <div className="sub-body-bold lg:button  xl:header-5  bg-light rounded-md px-4 py-2 m">
-                                    Net Income Overview
+                                    Net Income Overview{" "}
+                                    <CustomTooltip content="Net Income Overview displays the net income for the selected month, along with the previous month's figure." />
                                 </div>
                                 <div className="sub-body-bold lg:button xl:header-5 bg-light rounded-full p-3 ">
                                     {" "}
@@ -188,15 +162,11 @@ export default function TransactionReportPage({
                 </div>
                 <div className="bg-light rounded-lg w-full h-[300px] md:h-[375px] px-4 md:px-8 py-4 col-span-2 ">
                     <IncomeReportOverview
-                        generateMonthsArray={generateMonthsArray}
-                        generate12MonthsChart={generate12MonthsChart}
                         monthly_income_data={monthly_income_data}
                     />
                 </div>
                 <div className="bg-light rounded-lg w-full h-[300px] md:h-[375px] px-4 md:px-8 py-4 col-span-2 ">
                     <ExpenseReportOverview
-                        generateMonthsArray={generateMonthsArray}
-                        generate12MonthsChart={generate12MonthsChart}
                         monthly_expense_data={monthly_expense_data}
                     />
                 </div>

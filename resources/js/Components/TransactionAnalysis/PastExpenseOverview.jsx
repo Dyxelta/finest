@@ -1,15 +1,14 @@
 import {
-    generateMonthsArray,
+    generate6MonthsArray,
     generateMonthsChart,
     useChartMargin,
 } from "@/Helpers/chartsHelper";
 import {
     formatYAxis,
     parseMonth,
-    RupiahFormatTooltip
+    RupiahFormatTooltip,
 } from "@/Helpers/helperFormat";
 import CustomTooltip from "@/Helpers/Tooltip";
-import React from "react";
 import { CgNotes } from "react-icons/cg";
 import {
     CartesianGrid,
@@ -21,17 +20,19 @@ import {
     YAxis,
 } from "recharts";
 
-const IncomeReportOverview = ({ monthly_income_data }) => {
-    const monthsArr = generateMonthsArray();
-    const newMonthlydata = monthly_income_data.map((mon) => ({
+const PastExpenseOverview = ({ monthly_total_transaction }) => {
+    console.log(monthly_total_transaction);
+    const monthsArr = generate6MonthsArray();
+    const newMonthlydata = monthly_total_transaction.map((mon) => ({
         ...mon,
-
+        total_amount: Math.abs(mon.total_amount),
         monthName: parseMonth(mon.month),
     }));
-    const data = generateMonthsChart(monthsArr, newMonthlydata);
 
+    const data = generateMonthsChart(monthsArr, newMonthlydata);
+   
     return (
-        <React.Fragment>
+        <div className="bg-light p-2 md:p-4 rounded-md text-primary">
             <div className="flex w-full justify-between">
                 <div className="flex items-center gap-2 ">
                     <div className="header-5">
@@ -39,12 +40,12 @@ const IncomeReportOverview = ({ monthly_income_data }) => {
                         <CgNotes />
                     </div>
                     <div className="sub-body md:button lg:header-5">
-                        Income Report Overview{" "}
-                        <CustomTooltip content="Income Report Overview presents the monthly income amount from all income categories  over the past 12 months, starting from the current month." />
+                        Past Expense Overview{" "}
+                        <CustomTooltip content="Past Expense Overview shows the information of the amount of expense based of the expense transaction for each month for the past 6 month" />
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center h-full pt-4 w-full md:w-[100%] mx-auto">
+            <div className="flex justify-center h-[350px] pt-4 w-full md:w-[100%] mx-auto">
                 <ResponsiveContainer width="100%" height="95%">
                     <LineChart
                         width={500}
@@ -56,8 +57,14 @@ const IncomeReportOverview = ({ monthly_income_data }) => {
                     >
                         <Tooltip content={<RupiahFormatTooltip />} />
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="monthName" />
-                        <YAxis tickFormatter={formatYAxis} />
+                        <XAxis
+                            dataKey="monthName"
+                            className="text-[10px] md:text-[12px]"
+                        />
+                        <YAxis
+                            tickFormatter={formatYAxis}
+                            className="text-[9px] md:text-[14px]"
+                        />
                         <Line
                             type="monotone"
                             dataKey="total_amount"
@@ -66,8 +73,8 @@ const IncomeReportOverview = ({ monthly_income_data }) => {
                     </LineChart>
                 </ResponsiveContainer>
             </div>
-        </React.Fragment>
+        </div>
     );
 };
 
-export default IncomeReportOverview;
+export default PastExpenseOverview;

@@ -1,9 +1,9 @@
 import { formatToRupiah } from "@/Helpers/helperFormat";
+import CustomTooltip from "@/Helpers/Tooltip";
 import React, { useEffect, useRef, useState } from "react";
 import { CgNotes } from "react-icons/cg";
 
-const SummaryReportOverview = ({ summary_report_data}) => {
-
+const SummaryReportOverview = ({ summary_report_data }) => {
     const progressBarRef = useRef(null);
     const [length, setLength] = useState();
     useEffect(() => {
@@ -13,23 +13,23 @@ const SummaryReportOverview = ({ summary_report_data}) => {
         }
     }, []);
 
-    const totalAbsoluteResult = parseInt(summary_report_data?.income) + parseInt(Math.abs(summary_report_data?.expense));
+    const totalAbsoluteResult =
+        parseInt(summary_report_data?.income) +
+        parseInt(Math.abs(summary_report_data?.expense));
 
     const getProgressLength = (value) => {
-        if(value === 0 ){
-            return 0
+        if (value === 0) {
+            return 0;
         }
         return Math.ceil((value / totalAbsoluteResult) * length);
     };
 
     const getPercentageLength = (value) => {
-        if(value === 0 ){
-
-            return 0
+        if (value === 0) {
+            return 0;
         }
         return (value / totalAbsoluteResult) * 100;
     };
-
 
     return (
         <React.Fragment>
@@ -39,14 +39,17 @@ const SummaryReportOverview = ({ summary_report_data}) => {
                         <CgNotes />
                     </div>
                     <div className="sub-body md:button lg:header-5">
-                        Summary Report
+                        Summary Report{" "}
+                        <CustomTooltip content="Summary Report provide the information of income and expenses for the selected wallet and month." />
                     </div>
                 </div>
             </div>
             <div className="flex flex-col h-full  w-full gap-2">
                 <div className="rounded-xl bg-background py-2 md:py-4 px-2 md:px-4 mt-1 md:mt-6">
                     <div className="flex justify-between items-center button">
-                        <div className="sub-body-bold md:body">Total Income</div>
+                        <div className="sub-body-bold md:body">
+                            Total Income
+                        </div>
                         <div className="sub-body-bold md:body">
                             {formatToRupiah(summary_report_data?.income)}
                         </div>
@@ -64,14 +67,19 @@ const SummaryReportOverview = ({ summary_report_data}) => {
                             }}
                         ></div>
                         <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-light sub-body">
-                            {Math.floor(getPercentageLength(summary_report_data?.income))}%
+                            {Math.floor(
+                                getPercentageLength(summary_report_data?.income)
+                            )}
+                            %
                         </div>
                     </div>
                 </div>
 
                 <div className="rounded-xl bg-background py-2 md:py-4 px-2 md:px-4 md:mb-4 lg:mb-6">
                     <div className="flex justify-between items-center button">
-                        <div className="sub-body-bold md:body">Total Expense</div>
+                        <div className="sub-body-bold md:body">
+                            Total Expense
+                        </div>
                         <div className="sub-body-bold md:body">
                             {formatToRupiah(summary_report_data?.expense)}
                         </div>
@@ -86,7 +94,12 @@ const SummaryReportOverview = ({ summary_report_data}) => {
                             }}
                         ></div>
                         <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-light sub-body">
-                            {Math.ceil(getPercentageLength(summary_report_data?.expense))}%
+                            {Math.ceil(
+                                getPercentageLength(
+                                    summary_report_data?.expense
+                                )
+                            )}
+                            %
                         </div>
                     </div>
                 </div>
@@ -94,7 +107,8 @@ const SummaryReportOverview = ({ summary_report_data}) => {
                 <div>
                     <span className="sub-body-bold lg:button text-primary mx-1">
                         Note:{" "}
-                        {getPercentageLength(summary_report_data?.expense) > 50 ? (
+                        {getPercentageLength(summary_report_data?.expense) >
+                        50 ? (
                             <>
                                 <span className="text-expense">Oh No!</span>{" "}
                                 <span className="sub-body lg:body">
@@ -105,9 +119,7 @@ const SummaryReportOverview = ({ summary_report_data}) => {
                             </>
                         ) : (
                             <>
-                                <span className="text-income">
-                                    Well done!{" "}
-                                </span>
+                                <span className="text-income">Well done! </span>
                                 <span className="sub-body lg:body">
                                     Your income exceeds your expenses. Keep up
                                     the great financial management!

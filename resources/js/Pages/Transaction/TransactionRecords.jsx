@@ -110,7 +110,7 @@ export default function TransactionRecordsPage({
     wallets,
     currMonth,
 }) {
-    {console.log(transactions)}
+
     const [pagination, setPagination] = useState(1);
     const [category, setCategory] = useState("Income");
     const [selectedWallet, setSelectedWallet] = useState("All Wallet");
@@ -184,6 +184,7 @@ export default function TransactionRecordsPage({
     }));
  
     const [wait, setWait] = useState(false);
+    
     useEffect(() => {
         const waitSetMonthData = () => {
             if (wait) {

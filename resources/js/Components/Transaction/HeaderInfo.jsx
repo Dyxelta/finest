@@ -8,7 +8,7 @@ import { Link } from "@inertiajs/react";
 import { formatToRupiah } from "@/Helpers/helperFormat";
 
 const HeaderInfo = ({ transactions, selectedWallet }) => {
-    console.log(transactions)
+
     const getHeaderInfoTransaction = selectedWallet === "All Wallet" ? transactions : transactions.filter((transaction) => transaction?.wallet?.id === selectedWallet )
     const calculateTotalIncome = (transactions) => {
         return getHeaderInfoTransaction.length !== 0

@@ -1,4 +1,5 @@
 export function formatToRupiah(value) {
+
     if (!value) {
         return 0;
     }

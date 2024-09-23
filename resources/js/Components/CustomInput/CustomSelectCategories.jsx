@@ -60,16 +60,17 @@ const CustomOption = (props) => (
     <components.Option {...props}>{props.data.label}</components.Option>
 );
 
-const MySelect = ({
+const CustomSelectCategories = ({
     onChange,
     options,
     className,
     props,
     defaultValue = "",
+
 }) => (
     <Select
         defaultValue={defaultValue}
-        className={`mt-2 ${className}`}
+        className={` ${className}`}
         {...props}
         onChange={onChange}
         options={options}
@@ -77,6 +78,7 @@ const MySelect = ({
         styles={customStyles}
         isSearchable={false}
         placeholder="Select Category"
+        
         menuPortalTarget={document.body} 
         theme={(theme) => ({
             ...theme,
@@ -90,4 +92,4 @@ const MySelect = ({
     />
 );
 
-export default MySelect;
+export default CustomSelectCategories;

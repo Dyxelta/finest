@@ -12,6 +12,8 @@ import {
     YAxis,
 } from "recharts";
 import CustomSelectInput from "../CustomInput/CustomSelectInput";
+import CustomTooltip from "@/Helpers/Tooltip";
+import { useChartMargin } from "@/Helpers/chartsHelper";
 
 const FormatXAxis = ({ x, y, payload }) => {
     let text = payload.value;
@@ -75,7 +77,8 @@ const MonthlyReportOverview = ({
                         <CgNotes />
                     </div>
                     <div className="sub-body md:button lg:header-5">
-                        Monthly Report Overview
+                        Monthly Report Overview{" "}
+                        <CustomTooltip content="Monthly Report Overview displays the total expenses for each category in the selected month." />
                     </div>
                 </div>
                 <div className="flex items-center gap-2 ">
@@ -116,14 +119,16 @@ const MonthlyReportOverview = ({
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center h-full pt-2 w-full md:w-[95%] mx-auto">
+            <div className="flex justify-center h-full pt-4 w-full md:w-[95%] mx-auto">
                 {category_transactions && category_transactions.length !== 0 ? (
                     <ResponsiveContainer width="100%" height="85%">
                         <BarChart
                             width={500}
                             height={240}
                             data={MonthlyReportData}
-                            margin={{ top: 5, right: 15, left: 70, bottom: 5 }}
+                            margin={
+                                useChartMargin()
+                            }
                         >
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis
@@ -133,7 +138,7 @@ const MonthlyReportOverview = ({
                                 interval={0}
                             />
                             <YAxis
-                                className="m-0 p-0 text-[8px] md:text-[10px] w-[30px] md:w-[50px]"
+                                className="m-0 p-0 text-[8px] md:text-[14px] w-[30px] md:w-[50px]"
                                 width={40}
                                 tickFormatter={formatYAxis}
                             />
@@ -144,7 +149,7 @@ const MonthlyReportOverview = ({
 
                                     color: "#2D5074",
                                 }}
-                                content={<RupiahFormatTooltip/>}
+                                content={<RupiahFormatTooltip />}
                             />
                             <Bar dataKey="value" shape={<BarColor />} />
                         </BarChart>
