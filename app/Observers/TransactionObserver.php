@@ -17,6 +17,7 @@ class TransactionObserver
      */
     public function created(Transaction $transaction)
     {
+
         $userId = $transaction->user_id;
         $categoryId = $transaction->category_id;
         $walletId = $transaction->wallet_id;
@@ -31,6 +32,7 @@ class TransactionObserver
 
         // If the budget exists, calculate total monthly expenses for the category and wallet
         if ($budget) {
+
             $totalExpenses = Transaction::where('user_id', $userId)
                 ->where('category_id', $categoryId)
                 ->where('wallet_id', $walletId)
@@ -38,15 +40,17 @@ class TransactionObserver
                 ->sum('transaction_amount');
 
             // Calculate percentage of the budget spent
-            $percentageSpent = ($totalExpenses / $budget->budget_amount) * 100;
+            $percentageSpent = (abs($totalExpenses) / $budget->budget_amount) * 100;
 
             // If expenses are above 90% but below 100%, send a 90% reminder
             if ($percentageSpent >= 90 && $percentageSpent < 100) {
-                $this->createReminder($userId, "Budget Limit Warning! You have spent 90% of your budget '{$budget->budget_name}' in wallet '{$wallet->wallet_name}'.");
+
+                $this->createReminder($userId, "Budget Limit Warning! You have spent 90% of your budget {$budget->budget_name} in wallet {$wallet->wallet_name}.");
             }
             // If expenses exceed the budget, send an "over-budget" reminder
             else if ($percentageSpent >= 100) {
-                $this->createReminder($userId, "Budget Limit Over! Your current expense has exceeded the budget limit of '{$budget->budget_name}' in wallet '{$wallet->wallet_name}'.");
+
+                $this->createReminder($userId, "Budget Limit Over! Your current expense has exceeded the budget limit of {$budget->budget_name} in wallet {$wallet->wallet_name}.");
             }
         }
     }

@@ -35,7 +35,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 {
                     Title: "Dashboard",
                     href: "dashboard",
-                    icon: <MdDashboard size={24} />,
+                    icon: <MdDashboard size={22} />,
                 },
             ],
         },
@@ -45,27 +45,27 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 {
                     Title: "Add Transaction",
                     href: "addTransaction",
-                    icon: <CiSquarePlus size={24} />,
+                    icon: <CiSquarePlus size={22} />,
                 },
                 {
                     Title: "Recurring Transaction",
                     href: "recurringTransactionPage",
-                    icon: <RxLoop size={22} />,
+                    icon: <RxLoop size={21} />,
                 },
                 {
                     Title: "Financial Analysis",
                     href: "transactionAnalysisPage",
-                    icon: <BsGraphUp size={22} />,
+                    icon: <BsGraphUp size={20} />,
                 },
                 {
                     Title: "Transaction Records",
                     href: "transactionPage",
-                    icon: <GrHistory size={22} />,
+                    icon: <GrHistory size={20} />,
                 },
                 {
                     Title: "Transaction Report",
                     href: "transactionReportPage",
-                    icon: <LuClipboardList size={24} />,
+                    icon: <LuClipboardList size={21} />,
                 },
             ],
         },
@@ -75,12 +75,12 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 {
                     Title: "Wallet",
                     href: "walletPage",
-                    icon: <FaWallet size={22} />,
+                    icon: <FaWallet size={20} />,
                 },
                 {
                     Title: "Budget",
                     href: "budgetPage",
-                    icon: <FaMoneyBillWave size={22} />,
+                    icon: <FaMoneyBillWave size={20} />,
                 },
             ],
         },
@@ -148,9 +148,10 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                 } translate-y-[-50%] p-1 bg-white rounded-full border-e-2 `}
                             >
                                 {openNav ? (
-                                    <TbCircleArrowUpRightFilled size={30} />
-                                ) : (
                                     <TbCircleArrowUpLeftFilled size={30} />
+                                ) : (
+                                    <TbCircleArrowUpRightFilled size={30} />
+                               
                                 )}
                             </Button>
                         </div>
@@ -201,7 +202,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                         {menuArray.map((menu, index) => (
                             <div className={`${openNav ? "pt-1" : ""}`}>
                                 <div
-                                    className={`transition-opacity duration-300 ease-in-out cursor-default ${
+                                    className={`transition-opacity duration-300 ease-in-out cursor-default body ${
                                         openNav
                                             ? "opacity-100"
                                             : "opacity-0 w-0"
@@ -232,24 +233,24 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                                 className={
                                                     openNav
                                                         ? "hidden"
-                                                        : " w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre text-gray-900 rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1"
+                                                        : " w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre  rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1"
                                                 }
                                             >
                                                 {subMenu.Title}
                                             </h2>
                                             <div
-                                                className={` transition-transform flex  duration-500 ease-in-out ${
+                                                className={` transition-transform flex  duration-500 ease-in-out items-center ${
                                                     openNav
                                                         ? "group-hover:translate-x-2"
                                                         : "justify-center items-center"
                                                 } gap-2`}
                                             >
-                                                <div>{subMenu.icon}</div>
+                                                <div >{subMenu.icon}</div>
                                                 <div
-                                                    className={`transition-all ease-in-out overflow-hidden  ${
+                                                    className={`transition-all ease-in-out overflow-hidden sub-body-14  ${
                                                         openNav
                                                             ? " max-w-full opacity-100 delay-300  duration-500"
-                                                            : " max-w-[0] opacity-0 duration-100"
+                                                            : " max-w-[0] opacity-0 duration-100 "
                                                     }`}
                                                     style={{
                                                         minWidth: openNav

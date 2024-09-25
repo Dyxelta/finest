@@ -25,6 +25,7 @@ const ExpenseReportOverview = ({ monthly_expense_data }) => {
     const monthsArr = generateMonthsArray();
     const newMonthlydata = monthly_expense_data.map((mon) => ({
         ...mon,
+        total_amount: Math.abs(mon.total_amount),
         monthName: parseMonth(mon.month),
     }));
 

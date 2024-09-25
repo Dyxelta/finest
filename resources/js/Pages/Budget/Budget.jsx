@@ -451,7 +451,6 @@ export default function BudgetPage({
                                         Recommendation
                                     </span>
                                 </div>
-
                                 {countRecommendedBudgetAmount()}
                             </div>
                             <div className="rounded-lg overflow-hidden w-full  border border-primary flex flex-col px-5 py-2">

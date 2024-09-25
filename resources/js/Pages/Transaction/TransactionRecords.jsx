@@ -55,7 +55,6 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
                 {transaction?.transaction_note}
             </td>
             <td className="py-2 px-4 text-center  w-[200px]">
-         
                 {formatToRupiah(transaction?.transaction_amount)}
             </td>
             <td className="py-2 px-4 text-center w-[150px]">
@@ -110,7 +109,6 @@ export default function TransactionRecordsPage({
     wallets,
     currMonth,
 }) {
-
     const [pagination, setPagination] = useState(1);
     const [category, setCategory] = useState("Income");
     const [selectedWallet, setSelectedWallet] = useState("All Wallet");
@@ -177,14 +175,13 @@ export default function TransactionRecordsPage({
                   : transaction.category.category_is_income === 0)
     );
 
-    
     const walletOptions = initialWallets.map((wallet) => ({
         value: wallet?.id,
         label: wallet?.wallet_name,
     }));
- 
+
     const [wait, setWait] = useState(false);
-    
+
     useEffect(() => {
         const waitSetMonthData = () => {
             if (wait) {
@@ -212,7 +209,10 @@ export default function TransactionRecordsPage({
         >
             <Head title="Transaction Records" />
             <div className="w-full">
-                <HeaderInfo transactions={transactions} selectedWallet={selectedWallet}/>
+                <HeaderInfo
+                    transactions={transactions}
+                    selectedWallet={selectedWallet}
+                />
                 <Formik
                     initialValues={{
                         defaultMonthValue: monthValue || "",
@@ -277,7 +277,6 @@ export default function TransactionRecordsPage({
                                             }
                                             options={getCurrentMonth()}
                                             onChange={(e) => {
-                                    
                                                 setFieldValue(
                                                     "defaultMonthValue",
                                                     e.value

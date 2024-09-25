@@ -13,11 +13,6 @@ class ReminderSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('reminders')->insert([
-            'user_id' => 1,
-            'message' => 'Your wallet\'s balance is almost out',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+  
     }
 }
