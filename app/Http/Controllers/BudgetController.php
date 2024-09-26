@@ -51,7 +51,7 @@ class BudgetController extends Controller
         $budget = Budget::findOrFail($request->id);
         $budget_name_exist = $budget->budget_name;
 
-        if($request->budget_name !== $budget_name_exist){
+        if ($request->budget_name !== $budget_name_exist) {
             $request->validate([
                 'budget_name' => 'required|unique:budgets,budget_name,NULL,id,user_id,' . $user->id
             ]);
@@ -109,8 +109,10 @@ class BudgetController extends Controller
             }])
             ->get();
 
-        return ['budgets' => $budgets,
-        'id_wallet' => $wallet_id];
+        return [
+            'budgets' => $budgets,
+            'id_wallet' => $wallet_id
+        ];
     }
 
     public function showReccommendedDailyExpense()

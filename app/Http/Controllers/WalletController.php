@@ -22,8 +22,6 @@ class WalletController extends Controller
             'wallet_balance' => $request->wallet_balance,
             'wallet_description' => $request->wallet_description ?? '',
         ]);
-
-        // return redirect('/wallets');
     }
 
     public function deleteWallet(Wallet $wallet) {
@@ -69,5 +67,13 @@ class WalletController extends Controller
         $wallet = Wallet::where('id', $walletId)->get()->first();
 
         return ['wallet' => $wallet];
+    }
+
+    public function showUserWalletTotalBalance() {
+        $userId = auth()->user()->id;
+
+        $totalBalance = Wallet::where('user_id', $userId)->sum('wallet_balance');
+
+        return ['total_balance' => $totalBalance];
     }
 }
