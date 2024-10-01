@@ -91,6 +91,16 @@ class TransactionController extends Controller
         return redirect()->intended(route('transactionPage'));
     }
 
+    // private function getDashboardTransactionData(){
+    //     $user = auth()->user()->id;
+
+    //     $walletCondition = function ($query) {
+    //         $userId = auth()->user()->id;
+    //         $wallet = Wallet::where('user_id', $userId)->where('wallet_name', $request->wallet_name)->firstOrFail();
+    //             $query->where('wallet_id', $wallet->id);
+    //     };
+    // }
+
     private function changeWalletBalance(Wallet $wallet, $amount)
     {
         $wallet->wallet_balance += $amount;
@@ -104,10 +114,7 @@ class TransactionController extends Controller
         $wallet_id = $request->wallet_id;
 
         if ($wallet_id == null) {
-            $wallet = Wallet::firstWhere('user_id', $user->id);
-            if ($wallet){
-                $wallet_id = $wallet->id;
-            }
+            $wallet_id = Wallet::firstWhere('user_id', $user->id)->id;
         }
 
         $transactions = Transaction::where('user_id', $user->id)->where('wallet_id', $wallet_id)->with(['category' => function ($query) use ($user) {

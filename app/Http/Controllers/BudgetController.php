@@ -97,10 +97,7 @@ class BudgetController extends Controller
         $wallet_id = $request->wallet_id;
 
         if ($wallet_id == null) {
-            $wallet = Wallet::firstWhere('user_id', $user->id);
-            if ($wallet){
-                $wallet_id = $wallet->id;
-            }
+            $wallet_id = Wallet::firstWhere('user_id', $user->id)->id;
         }
 
         $budgets = Budget::where('user_id', $user->id)
