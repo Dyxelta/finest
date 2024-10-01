@@ -101,6 +101,7 @@ class TransactionController extends Controller
         $user = auth()->user();
 
         $transactions = Transaction::where('user_id', $user->id)
+        ->with('category')
         ->orderBy('transaction_date', 'desc')
         ->get();
 
