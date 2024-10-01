@@ -104,7 +104,10 @@ class TransactionController extends Controller
         $wallet_id = $request->wallet_id;
 
         if ($wallet_id == null) {
-            $wallet_id = Wallet::firstWhere('user_id', $user->id)->id;
+            $wallet = Wallet::firstWhere('user_id', $user->id);
+            if ($wallet){
+                $wallet_id = $wallet->id;
+            }
         }
 
         $transactions = Transaction::where('user_id', $user->id)->where('wallet_id', $wallet_id)->with(['category' => function ($query) use ($user) {
