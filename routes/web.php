@@ -59,7 +59,9 @@ Route::middleware('auth')->group(function () {
 
         $budgetData = app(BudgetController::class)->showAllUserBudget($request);
 
-        return Inertia::render('Dashboard', array_merge($transactionData, $summaryReportData, $walletData, $totalWalletBalance, $budgetData));
+        $topBudgets = app(BudgetController::class)->showUserTopBudget();
+
+        return Inertia::render('Dashboard', array_merge($transactionData, $summaryReportData, $walletData, $totalWalletBalance, $budgetData, $topBudgets));
     })->name('dashboard');
 
 
