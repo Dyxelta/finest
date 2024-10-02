@@ -127,4 +127,30 @@ class BudgetController extends Controller
         $rec_budget = (int)floor($rec_budget / 1000) * 1000;
         return ['budget' => number_format($rec_budget)];
     }
+
+    public function showUserTopBudget() {
+        $userId = auth()->user()->id;
+
+        $budgets = Budget::where('user_id', $userId)->get();
+
+        $budgetPercentages = $budgets->map(function ($budget) {
+
+            $totalTransactionAmount = $budget->Category->Transactions()->where('wallet_id', $budget->wallet_id)->sum('transaction_amount');
+
+            $percentage = $budget->budget_amount > 0 ? ($totalTransactionAmount / $budget->budget_amount) * 100 : 0;
+
+            return [
+                'budget_name' => $budget->budget_name,
+                'budget_amount' => $budget->budget_amount,
+                'total_transaction_amount' => $totalTransactionAmount,
+                'percentage' => $percentage,
+                'wallet_id' => $budget->wallet_id,
+                'category_id' => $budget->category_id,
+            ];
+        });
+
+        $topBudgets = $budgetPercentages->sortByDesc('percentage')->take(5);
+
+        return ['top_budgets' => $topBudgets];
+    }
 }
