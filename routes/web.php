@@ -51,13 +51,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function (Request $request) {
         $transactionData = app(TransactionController::class)->showAllUserTransaction($request);
 
+        $summaryReportData = app(TransactionController::class)->showSummaryReportData($request);
+
         $walletData = app(WalletController::class)->showAllWalletByUserID();
+
+        $totalWalletBalance = app(WalletController::class)->showUserWalletTotalBalance();
 
         $budgetData = app(BudgetController::class)->showAllUserBudget($request);
 
-        $summaryReportData = app(TransactionController::class)->showSummaryReportData($request);
-
-        return Inertia::render('Dashboard', array_merge($transactionData, $walletData, $budgetData, $summaryReportData));
+        return Inertia::render('Dashboard', array_merge($transactionData, $summaryReportData, $walletData, $totalWalletBalance, $budgetData));
     })->name('dashboard');
 
 
