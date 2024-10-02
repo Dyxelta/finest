@@ -52,12 +52,12 @@ Route::middleware('auth')->group(function () {
         $transactionData = app(TransactionController::class)->showAllUserTransaction($request);
 
         $walletData = app(WalletController::class)->showAllWalletByUserID();
-
+        $walletTotalBalance = app(WalletController::class)->showUserWalletTotalBalance();
         $budgetData = app(BudgetController::class)->showAllUserBudget($request);
 
         $summaryReportData = app(TransactionController::class)->showSummaryReportData($request);
 
-        return Inertia::render('Dashboard', array_merge($transactionData, $walletData, $budgetData, $summaryReportData));
+        return Inertia::render('Dashboard', array_merge($transactionData, $walletData, $budgetData, $summaryReportData, $walletTotalBalance));
     })->name('dashboard');
 
 

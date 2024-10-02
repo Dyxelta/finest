@@ -17,18 +17,22 @@ const SummaryReportOverview = ({ summary_report_data }) => {
         parseInt(summary_report_data?.income) +
         parseInt(Math.abs(summary_report_data?.expense));
 
-    const getProgressLength = (value) => {
+    const getProgressLength = (value, type) => {
         if (value === 0) {
             return 0;
         }
-        return Math.ceil((value / totalAbsoluteResult) * length);
+        return type === "expense"
+        ? Math.ceil((value / totalAbsoluteResult) * length)
+        : Math.floor((value / totalAbsoluteResult) * length);
     };
 
-    const getPercentageLength = (value) => {
+    const getPercentageLength = (value, type) => {
         if (value === 0) {
             return 0;
         }
-        return (value / totalAbsoluteResult) * 100;
+        return type === "expense"
+        ? Math.ceil((value / totalAbsoluteResult) * 100)
+        : Math.floor((value / totalAbsoluteResult) * 100);
     };
 
     return (
@@ -62,13 +66,13 @@ const SummaryReportOverview = ({ summary_report_data }) => {
                             className="absolute left-0 bg-primary h-full rounded-full  "
                             style={{
                                 width: `${getProgressLength(
-                                    summary_report_data?.income
+                                    summary_report_data?.income, "income"
                                 )}px`,
                             }}
                         ></div>
                         <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-light sub-body">
                             {Math.floor(
-                                getPercentageLength(summary_report_data?.income)
+                                getPercentageLength(summary_report_data?.income, "income")
                             )}
                             %
                         </div>
@@ -89,14 +93,14 @@ const SummaryReportOverview = ({ summary_report_data }) => {
                             className="absolute left-0 bg-primary h-full rounded-full  "
                             style={{
                                 width: `${getProgressLength(
-                                    summary_report_data?.expense
+                                    Math.abs(summary_report_data?.expense,"expense")
                                 )}px`,
                             }}
                         ></div>
                         <div className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-light sub-body">
                             {Math.ceil(
                                 getPercentageLength(
-                                    summary_report_data?.expense
+                                    Math.abs(summary_report_data?.expense, "expense")
                                 )
                             )}
                             %

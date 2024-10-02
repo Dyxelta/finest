@@ -52,7 +52,7 @@ class TransactionController extends Controller
 
     public function editTransaction(Request $request)
     {
-        $user = auth()->user;
+        $user = auth()->user();
 
         $request->validate([
             'wallet_name' => 'required|string',
@@ -101,9 +101,9 @@ class TransactionController extends Controller
         $user = auth()->user();
 
         $transactions = Transaction::where('user_id', $user->id)
-        ->with('category')
-        ->orderBy('transaction_date', 'desc')
-        ->get();
+            ->with('category')
+            ->orderBy('transaction_date', 'desc')
+            ->get();
 
         return ['transactions' => $transactions];
     }
@@ -222,7 +222,7 @@ class TransactionController extends Controller
     public function showSummaryReportData(Request $request)
     {
         $selectedMonth = $request->month ?? now()->month;
-        $lastMonth = ($request->month == 1 ? 12 : $request->month - 1) ?? (now()->month == 1 ? 12 : now()->month - 1);
+        $lastMonth = $selectedMonth == 1 ? 12 : $selectedMonth - 1;
 
         $userId = auth()->user()->id;
 
@@ -271,9 +271,9 @@ class TransactionController extends Controller
             'expense' => $lastMonthTransactionData->get('expense', 0)
         ]);
 
-        $selectedMonthNet = $selectedMonthTransactionData['income'] - $selectedMonthTransactionData['expense'];
-        $lastMonthNet = $lastMonthTransactionData['income'] - $lastMonthTransactionData['expense'];
-
+        $selectedMonthNet = $selectedMonthTransactionData['income'] + $selectedMonthTransactionData['expense'];
+        $lastMonthNet = $lastMonthTransactionData['income'] + $lastMonthTransactionData['expense'];
+        
         return [
             'summary_report_data' => $selectedMonthTransactionData,
             'current_month_net_income' => $selectedMonthNet,

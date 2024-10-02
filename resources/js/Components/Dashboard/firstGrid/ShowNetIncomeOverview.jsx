@@ -8,11 +8,13 @@ import {
     YAxis
 } from "recharts";
 
+
+
 const ShowNetIncomeOverview = ({
     current_month_net_income,
     last_month_net_income,
 }) => {
-    
+    console.log(current_month_net_income,last_month_net_income)
     const data = [
         {
             name: "Current Net Income",
@@ -25,12 +27,12 @@ const ShowNetIncomeOverview = ({
     ];
 
     return (
-        <div className="flex justify-center h-full pt-4 w-full md:w-[95%] ">
-            <ResponsiveContainer width="100%" height="70%">
+        <div className="flex justify-center h-full  w-full md:w-[95%] relative z-50">
+            <ResponsiveContainer width="100%" height="75%">
                 <BarChart
                     layout="vertical"
                     width={500}
-                    height={100}
+                    height={120}
                     data={data}
                     margin={{
                         top: 20,
@@ -38,7 +40,7 @@ const ShowNetIncomeOverview = ({
                         bottom: 20,
                         left: 0,
                     }}
-                    barCategoryGap="10px"
+                    barCategoryGap="10%"
                 >
                     <Tooltip
                         contentStyle={{
@@ -63,7 +65,7 @@ const ShowNetIncomeOverview = ({
                         dataKey="value"
                         barSize={40}
                         fill="#2D5074"
-                
+               
                         activeStyle={{ fill: "#CAD8E7" }}
                     />
                 </BarChart>
