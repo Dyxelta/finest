@@ -74,6 +74,6 @@ class WalletController extends Controller
 
         $totalBalance = Wallet::where('user_id', $userId)->sum('wallet_balance');
 
-        return ['wallet_total_balance' => $totalBalance];
+        return ['total_balance' => $totalBalance];
     }
 }

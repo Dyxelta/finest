@@ -28,7 +28,7 @@ const AllWalletOverview = ({ total_balance, wallets }) => {
     const COLORS = ["#2D5074", "#1B3046"];
     return (
         <div className="py-1 px-2 z-50 relative text-primary">
-            <div className="button md:header-5 flex justify-between w-full font-roboto  z-50">
+            <div className="button md:header-5 flex justify-between w-full font-roboto  z-50 mt-1">
                 <div>
                     All Wallet Overview{" "}
                     <CustomTooltip content="Net Income Overview displays the net income for the selected month, along with the previous month's figure." />

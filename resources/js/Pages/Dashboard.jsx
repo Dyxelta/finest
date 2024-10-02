@@ -29,13 +29,14 @@ export default function Dashboard({
     last_month_net_income,
     current_month_total_income,
     current_month_total_expense,
-    total_balance
+    total_balance,
+    top_budgets,
 }) {
     const [checkWallet, setCheckWallet] = useState(
         wallets && wallets.length !== 0 ? false : true
     );
     const [Popup, setPopup] = useState();
-
+console.log(top_budgets,"huiguhsogduihgsfdig")
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -54,7 +55,10 @@ export default function Dashboard({
                             DecorBG={DecorBG1}
                             className=" absolute right-[-110px] top-[-80px] w-[250px] h-[300px] -z-0"
                         >
-                            <AllWalletOverview total_balance={total_balance} wallets={wallets}/>
+                            <AllWalletOverview
+                                total_balance={total_balance}
+                                wallets={wallets}
+                            />
                         </ReusableDecorBackground>
                     </div>
                     <div className="col-span-4 relative bg-light p-2 rounded-md">
@@ -87,7 +91,11 @@ export default function Dashboard({
                         </ReusableDecorBackground>
                     </div>
                 </div>
-                <div className="col-span-2  row-span-2 bg-light rounded-md"></div>
+                <div className="col-span-2  row-span-2 bg-light rounded-md p-2">
+                    <ReusableDecorBackground>
+                        
+                    </ReusableDecorBackground>
+                </div>
                 <div className="col-span-5 bg-light rounded-md grid grid-cols-9 p-2 gap-2 ">
                     {" "}
                     <div className="col-span-5  grid grid-cols-4  grid-rows-5">
@@ -135,7 +143,14 @@ export default function Dashboard({
                             DecorBG={DecorBG1}
                             className=" absolute left-[-90px] top-[-85px] w-[250px] h-[300px] -z-0 rotate-[265deg]"
                         >
-                            <CashflowGraph current_month_total_income={current_month_total_income} current_month_total_expense={current_month_total_expense}/>
+                            <CashflowGraph
+                                current_month_total_income={
+                                    current_month_total_income
+                                }
+                                current_month_total_expense={
+                                    current_month_total_expense
+                                }
+                            />
                         </ReusableDecorBackground>
                     </div>
                 </div>
