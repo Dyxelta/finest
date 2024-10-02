@@ -62,7 +62,6 @@ class TransactionController extends Controller
             'transaction_date' => 'required'
         ]);
 
-
         $transactionId = $request->id;
 
         $transaction = Transaction::findOrFail($transactionId);
@@ -107,34 +106,23 @@ class TransactionController extends Controller
         $wallet->save();
     }
 
-    public function showAllUserTransaction(Request $request)
+    public function showAllUserTransaction()
     {
         $user = auth()->user();
 
-        $wallet_id = $request->wallet_id;
-
-        if ($wallet_id == null) {
-            $wallet_id = Wallet::firstWhere('user_id', $user->id)->id;
-        }
-
-        $transactions = Transaction::where('user_id', $user->id)->where('wallet_id', $wallet_id)->with(['category' => function ($query) use ($user) {
-            $query->with(['transactions' => function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            }]);
-        }])->get();
+        $transactions = Transaction::where('user_id', $user->id)
+        ->with('category')
+        ->orderBy('transaction_date', 'desc')
+        ->get();
 
         return ['transactions' => $transactions];
     }
 
     public function showTransactionByWallet(Wallet $wallet)
     {
-
-        $userId = auth()->user()->id;
-
         $walletId = $wallet->id;
 
-        $transactions = Transaction::where('user_id', $userId)
-            ->where('wallet_id', $walletId)
+        $transactions = Transaction::where('wallet_id', $walletId)
             ->orderBy('transaction_date', 'desc')
             ->get();
 
@@ -164,7 +152,6 @@ class TransactionController extends Controller
             $wallet = Wallet::where('user_id', $userId)->where('wallet_name', $request->wallet_name)->firstOrFail();
             $categoryTransactionsQuery->where('wallet_id', $wallet->id);
         }
-
 
         $categoryTransactions = $categoryTransactionsQuery
             ->selectRaw('category_id, SUM(transaction_amount) as total_amount')
@@ -300,7 +287,10 @@ class TransactionController extends Controller
         return [
             'summary_report_data' => $selectedMonthTransactionData,
             'current_month_net_income' => $selectedMonthNet,
-            'last_month_net_income' => $lastMonthNet
+            'last_month_net_income' => $lastMonthNet,
+            'current_month_total_income' => $selectedMonthTransactionData['income'],
+            'current_month_total_expense' => $selectedMonthTransactionData['expense']
+
         ];
     }
 
