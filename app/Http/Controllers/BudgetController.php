@@ -139,13 +139,16 @@ class BudgetController extends Controller
 
             $percentage = $budget->budget_amount > 0 ? (abs($totalTransactionAmount) / $budget->budget_amount) * 100 : 0;
 
+            $wallet = Wallet::where('id', $budget->wallet_id)->firstOrFail();
+            $category = Category::where('id', $budget->category_id)->firstOrFail();
+
             return [
                 'budget_name' => $budget->budget_name,
                 'budget_amount' => $budget->budget_amount,
                 'total_transaction_amount' => $totalTransactionAmount,
                 'percentage' => $percentage,
-                'wallet_name' => $budget->wallet_name,
-                'category_name' => $budget->category_name,
+                'wallet_name' => $wallet->wallet_name,
+                'category_name' => $category->category_name,
             ];
         });
 
