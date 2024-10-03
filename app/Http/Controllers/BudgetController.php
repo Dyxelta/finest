@@ -97,7 +97,10 @@ class BudgetController extends Controller
         $wallet_id = $request->wallet_id;
 
         if ($wallet_id == null) {
-            $wallet_id = Wallet::firstWhere('user_id', $user->id)->id;
+            $wallet = Wallet::firstWhere('user_id', $user->id);
+            if($wallet){
+                $wallet_id =  $wallet->id;
+            }
         }
 
         $budgets = Budget::where('user_id', $user->id)
@@ -137,15 +140,18 @@ class BudgetController extends Controller
 
             $totalTransactionAmount = $budget->Category->Transactions()->where('wallet_id', $budget->wallet_id)->sum('transaction_amount');
 
-            $percentage = $budget->budget_amount > 0 ? ($totalTransactionAmount / $budget->budget_amount) * 100 : 0;
+            $percentage = $budget->budget_amount > 0 ? (abs($totalTransactionAmount) / $budget->budget_amount) * 100 : 0;
+
+            $wallet = Wallet::where('id', $budget->wallet_id)->firstOrFail();
+            $category = Category::where('id', $budget->category_id)->firstOrFail();
 
             return [
                 'budget_name' => $budget->budget_name,
                 'budget_amount' => $budget->budget_amount,
                 'total_transaction_amount' => $totalTransactionAmount,
                 'percentage' => $percentage,
-                'wallet_id' => $budget->wallet_id,
-                'category_id' => $budget->category_id,
+                'wallet_name' => $wallet->wallet_name,
+                'category' => $category,
             ];
         });
 

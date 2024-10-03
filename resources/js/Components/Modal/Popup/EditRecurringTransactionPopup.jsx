@@ -222,6 +222,7 @@ export default function EditRecurringTransactionPopup({
                                                         e.value
                                                     );
                                                 }}
+                                                className={"mt-[7px]"}
                                             />
                                             <ErrorMessageInput name="wallet_name" />
                                         </FormGroup>

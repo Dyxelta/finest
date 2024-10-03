@@ -36,7 +36,20 @@ export const RupiahFormatTooltip = ({ active, payload, label }) => {
         return (
             <div className=" bg-lighter-primary p-2 shadow-lg rounded">
                 <p className="button">{`${label}`}</p>
-                <p>{`Total Amount: ${formatToRupiah(payload[0].value)}`}</p>
+                <p className="sub-body-14">{`Total Amount: ${formatToRupiah(payload[0].value)}`}</p>
+            </div>
+        );
+    }
+    return null;
+};
+
+export const RupiahFormatTooltipPieChart = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className=" bg-lighter-primary p-2 shadow-lg rounded">
+      
+                <p className="button">{`${payload[0].name}`}</p>
+                <p className="sub-body-14">{`Total Amount: ${formatToRupiah(payload[0].payload.value)}`}</p>
             </div>
         );
     }

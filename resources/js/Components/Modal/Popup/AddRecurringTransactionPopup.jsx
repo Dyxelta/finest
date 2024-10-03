@@ -25,7 +25,7 @@ const validationSchema = Yup.object().shape({
     recurring_transaction_date: Yup.date().required(
         "Transaction date is required"
     ),
-    recurring_transaction_note: Yup.string().max(150, "Maximum 150 Characters")
+    recurring_transaction_note: Yup.string().max(150, "Maximum 150 Characters"),
 });
 
 export default function AddRecurringTransactionPopup({
@@ -52,10 +52,12 @@ export default function AddRecurringTransactionPopup({
     };
 
     const closeModal = () => {
-
         setLoading(false);
         onClose();
-        showSuccessModal("Success", "Recurring Transaction has been created successfully");
+        showSuccessModal(
+            "Success",
+            "Recurring Transaction has been created successfully"
+        );
     };
 
     const close = () => {
@@ -134,7 +136,7 @@ export default function AddRecurringTransactionPopup({
                                 </h5>
                             </div>
                         </div>
-                 
+
                         <Formik
                             initialValues={{
                                 wallet_name: "",
@@ -155,7 +157,6 @@ export default function AddRecurringTransactionPopup({
                                 handleSubmit,
                             }) => (
                                 <Form onSubmit={handleSubmit}>
-                                
                                     <FormGroup className="w-full sm:flex gap-2 mt-4">
                                         <FormGroup className="flex-1">
                                             <CustomLabel
@@ -163,7 +164,7 @@ export default function AddRecurringTransactionPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomSelectInput
-                                            placeholder={"Select Wallet"}
+                                                placeholder={"Select Wallet"}
                                                 options={walletOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(
@@ -175,6 +176,7 @@ export default function AddRecurringTransactionPopup({
                                                         e.value
                                                     );
                                                 }}
+                                                className={"mt-[7px]"}
                                             />
                                             <ErrorMessageInput name="wallet_name" />
                                         </FormGroup>
@@ -201,7 +203,6 @@ export default function AddRecurringTransactionPopup({
                                                     );
                                                 }}
                                             />
-                                           
                                         </FormGroup>
                                     </FormGroup>
 
@@ -231,7 +232,7 @@ export default function AddRecurringTransactionPopup({
                                                     );
                                                 }}
                                             />
-                                              <ErrorMessageInput name="recurring_transaction_date" />
+                                            <ErrorMessageInput name="recurring_transaction_date" />
                                         </FormGroup>
 
                                         <FormGroup className="flex-1">
@@ -281,7 +282,7 @@ export default function AddRecurringTransactionPopup({
                                                 );
                                             }}
                                         />
-                                           <ErrorMessageInput name="recurring_transaction_note" />
+                                        <ErrorMessageInput name="recurring_transaction_note" />
                                     </FormGroup>
                                     <div className="p-4 w-full">
                                         <div className="w-full flex justify-end items-center">
@@ -290,9 +291,7 @@ export default function AddRecurringTransactionPopup({
                                                     className={`self-end mt-2  border-expense border px-6 py-[7px] rounded-md body mr-4 text-expense transition-colors duration-500 hover:bg-expense hover:text-light`}
                                                     onClick={() => onClose()}
                                                 >
-                                                   
-                                                        Cancel
-                                              
+                                                    Cancel
                                                 </Button>
                                             )}
 

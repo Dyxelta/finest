@@ -5,12 +5,12 @@ import ShowNetIncomeOverview from "@/Components/TransactionReports/ShowNetIncome
 import SummaryReportOverview from "@/Components/TransactionReports/SummaryReportOverView";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
+import CustomTooltip from "@/Helpers/Tooltip";
+import { ReusableDecorBackground } from "@/Helpers/reusableDecorBackground";
 import { Head, useForm } from "@inertiajs/react";
-import moment from "moment";
 import { useEffect, useState } from "react";
 import { CgNotes } from "react-icons/cg";
 import DecorBG from "../../../../public/image/public/DecorBG.png";
-import CustomTooltip from "@/Helpers/Tooltip";
 
 export default function TransactionReportPage({
     auth,
@@ -127,12 +127,10 @@ export default function TransactionReportPage({
                     />
                 </div>
                 <div className="bg-light rounded-lg w-full h-[300px] md:h-[375px] p-3 col-span-2 md:col-span-1 ">
-                    <div className="w-full h-full bg-background rounded-xl z-50 relative overflow-hidden">
-                        <img
-                            src={DecorBG}
-                            alt="DecorBG"
-                            className=" absolute right-[-80px] top-[-80px] w-[300px] h-[200px] -z-0"
-                        />
+                    <ReusableDecorBackground
+                        DecorBG={DecorBG}
+                        className=" absolute right-[-80px] top-[-80px] w-[300px] h-[200px] -z-0"
+                    >
                         <div className="flex w-full justify-between z-50 items-center px-1 lg:px-4 relative">
                             <div className="flex items-center gap-2 mt-2">
                                 <div className="sub-body-bold lg:button xl:header-5 bg-light rounded-md px-4 py-2 ">
@@ -158,7 +156,7 @@ export default function TransactionReportPage({
                                 last_month_net_income={last_month_net_income}
                             />
                         </div>
-                    </div>
+                    </ReusableDecorBackground>
                 </div>
                 <div className="bg-light rounded-lg w-full h-[300px] md:h-[375px] px-4 md:px-8 py-4 col-span-2 ">
                     <IncomeReportOverview

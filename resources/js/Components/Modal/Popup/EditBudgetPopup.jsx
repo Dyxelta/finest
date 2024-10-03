@@ -188,6 +188,7 @@ export default function EditBudgetPopup({
                                                             e.target.value
                                                         );
                                                     }}
+                                                    
                                                 />
                                             </FormGroup>
                                             <FormGroup className="flex-1">

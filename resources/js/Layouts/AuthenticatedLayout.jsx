@@ -12,6 +12,7 @@ import {
 import ReminderCards from "@/Components/Reminder/ReminderCards";
 import { usePage } from "@inertiajs/react";
 import { AnimatePresence, motion } from "framer-motion";
+import Reminder from "@/Components/Reminder/Reminder";
 
 export default function Authenticated({ user, header, children }) {
     const [openNav, setOpenNav] = useState(false);
@@ -47,7 +48,7 @@ export default function Authenticated({ user, header, children }) {
             >
                 <main className="container flex justify-end w-full mx-auto xl:ml-auto ">
                     <div
-                        className={`w-full py-4 transition-width duration-500 px-4  ${
+                        className={`w-full p-1 transition-width duration-500 px-4  ${
                             openNav
                                 ? "container-open-nav "
                                 : "container delay-200"
@@ -61,55 +62,14 @@ export default function Authenticated({ user, header, children }) {
                                     className="h-[30px] md:h-[35px]"
                                 />
                             </div>
-                            <div
-                                ref={collapseRef}
-                                className="bg-white p-3 rounded-md text-primary relative"
-                            >
-                                <div
-                                    onClick={toggleOpen}
-                                    className="bg-none cursor-pointer"
-                                >
-                                    <FaBell size={24} />
-                                </div>
-                                <div className="absolute z-50 mt-1 text-primary right-0 bottom-0 translate-y-[100%]">
-                                    <AnimatePresence>
-                                        {open && (
-                                            <motion.div
-                                                initial={{ y: -50, opacity: 0 }}
-                                                animate={{ y: 0, opacity: 1 }}
-                                                exit={{ y: -50, opacity: 0 }}
-                                                transition={{
-                                                    duration: 0.3,
-                                                    ease: "easeInOut",
-                                                }}
-                                            >
-                                                <Card className="my-2 mx-auto h-[400px] w-[320px] border-2 border-primary rounded-md text-primary">
-                                                    <div className="px-4 pt-2">
-                                                        <Typography className="header-5 border-b border-primary pb-1">
-                                                            Notifications
-                                                        </Typography>
-                                                    </div>
-
-                                                    <div className="overflow-y-scroll overflow-x-hidden custom-scrollbar flex flex-col">
-                                                        {reminders?.map(
-                                                            (reminder) => (
-                                                                <ReminderCards
-                                                                    key={
-                                                                        reminder.id
-                                                                    }
-                                                                    reminder={
-                                                                        reminder
-                                                                    }
-                                                                />
-                                                            )
-                                                        )}
-                                                    </div>
-                                                </Card>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-                            </div>
+                            <Reminder
+                                collapseRef={collapseRef}
+                                open={open}
+                                toggleOpen={toggleOpen}
+                                reminders={reminders}
+                                Card={Card}
+                                Typography={Typography}
+                            />
                         </div>
 
                         {children}
