@@ -38,7 +38,7 @@ class TransactionController extends Controller
             'transaction_date' => $request->transaction_date,
         ]);
 
-        $this->changeWalletBalance($wallet, $transactionAmount);
+        $this->changeWalletBalance($wallet, $transactionAmount); 
 
         return redirect()->intended(route('transactionPage'));
     }
