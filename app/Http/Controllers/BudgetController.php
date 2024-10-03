@@ -138,7 +138,7 @@ class BudgetController extends Controller
 
         $budgetPercentages = $budgets->map(function ($budget) {
 
-            $totalTransactionAmount = $budget->Category->Transactions()->where('wallet_id', $budget->wallet_id)->sum('transaction_amount');
+            $totalTransactionAmount = (int) $budget->Category->Transactions()->where('wallet_id', $budget->wallet_id)->sum('transaction_amount');
 
             $percentage = $budget->budget_amount > 0 ? (abs($totalTransactionAmount) / $budget->budget_amount) * 100 : 0;
 
