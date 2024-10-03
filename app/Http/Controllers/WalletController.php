@@ -56,7 +56,7 @@ class WalletController extends Controller
     public function showAllWalletByUserID() {
         $user = auth()->user();
 
-        $wallets = Wallet::where('user_id', $user->id)->with('transactions')->get();
+        $wallets = Wallet::where('user_id', $user->id)->with(['transactions.category'])->get();
 
         return ['wallets' => $wallets];
     }
