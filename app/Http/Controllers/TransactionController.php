@@ -16,7 +16,7 @@ class TransactionController extends Controller
         $request->validate([
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
-            'transaction_amount' => 'required|numeric|min:1',
+            'transaction_amount' => 'required|numeric|min:1|max:100000000',
             'transaction_note' => 'nullable|string|max:255',
             'transaction_date' => 'required|date'
         ]);
@@ -57,7 +57,7 @@ class TransactionController extends Controller
         $request->validate([
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
-            'transaction_amount' => 'required|numeric|min:1',
+            'transaction_amount' => 'required|numeric|min:1|max:100000000',
             'transaction_note' => 'nullable|string|max:255',
             'transaction_date' => 'required'
         ]);

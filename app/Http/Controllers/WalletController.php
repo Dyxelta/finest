@@ -10,7 +10,7 @@ class WalletController extends Controller
     public function addWallet(Request $request) {
         $request->validate([
             'wallet_name' => 'required|string',
-            'wallet_balance' => 'required|numeric|min:1',
+            'wallet_balance' => 'required|numeric|min:1|max:1000000000000',
             'wallet_description' => 'nullable|string|max:255'
         ]);
 
@@ -33,7 +33,7 @@ class WalletController extends Controller
     public function editWallet(Request $request) {
         $request->validate([
             'wallet_name' => 'required|string',
-            'wallet_balance' => 'required|numeric|min:1',
+            'wallet_balance' => 'required|numeric|min:1|max:1000000000000',
             'wallet_description' => 'nullable|string|max:255'
         ]);
 

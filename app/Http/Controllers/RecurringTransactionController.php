@@ -17,7 +17,7 @@ class RecurringTransactionController extends Controller
         $request->validate([
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
-            'recurring_transaction_amount' => 'required|numeric|min:1',
+            'recurring_transaction_amount' => 'required|numeric|min:1|max:100000000',
             'recurring_transaction_note' => 'nullable|string|max:255',
             'recurring_transaction_date' => 'required'
         ]);
@@ -58,7 +58,7 @@ class RecurringTransactionController extends Controller
         $request->validate([
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
-            'recurring_transaction_amount' => 'required|numeric|min:1',
+            'recurring_transaction_amount' => 'required|numeric|min:1|max:100000000',
             'recurring_transaction_note' => 'nullable|string|max:255',
             'recurring_transaction_date' => 'required'
         ]);
