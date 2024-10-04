@@ -67,7 +67,7 @@ export default function Dashboard({
                                 <div className="flex items-center gap-1 lg:gap-2 mt-2">
                                     <div className="sub-body-bold lg:button    bg-light rounded-md px-4 py-2 m">
                                         Net Income Overview{" "}
-                                        <CustomTooltip content="Net Income Overview displays the net income for the selected month, along with the previous month's figure." />
+                                        <CustomTooltip content="Net Income Overview displays the net income for the current month, along with the previous month's figure." />
                                     </div>
                                     <div className="sub-body-bold lg:button  bg-light rounded-full p-3 ">
                                         {" "}
@@ -100,7 +100,7 @@ export default function Dashboard({
                             </div>
                             <div>
                                 Cashflow Overview{" "}
-                                <CustomTooltip content="Net Income Overview displays the net income for the selected month, along with the previous month's figure." />
+                                <CustomTooltip content="Cashflow Overviews displays your overall income and expense in this month" />
                             </div>
                         </div>
                         <div className="col-span-4 grid grid-cols-2 row-span-4 gap-2 mt-1">

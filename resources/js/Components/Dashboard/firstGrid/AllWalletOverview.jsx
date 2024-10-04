@@ -29,7 +29,7 @@ const AllWalletOverview = ({ total_balance, wallets }) => {
             <div className="button md:header-5 flex justify-between w-full font-roboto  z-50 mt-1">
                 <div>
                     All Wallet Overview{" "}
-                    <CustomTooltip content="Net Income Overview displays the net income for the selected month, along with the previous month's figure." />
+                    <CustomTooltip content="All Wallet Overview displays balance of each wallet and the total balance of all wallet" />
                 </div>
                 <div className="p-2 bg-light rounded-full flex justify-center items-center">
                     <FaWallet />
