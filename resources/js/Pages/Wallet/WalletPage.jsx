@@ -7,11 +7,15 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 import { Head, useForm } from "@inertiajs/react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "react-feather";
 import { BiDetail } from "react-icons/bi";
 import { FaWallet } from "react-icons/fa";
-import { FaArrowTrendDown, FaArrowTrendUp, FaRegTrashCan } from "react-icons/fa6";
+import {
+    FaArrowTrendDown,
+    FaArrowTrendUp,
+    FaRegTrashCan,
+} from "react-icons/fa6";
 import { HiPencil } from "react-icons/hi2";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Button } from "reactstrap";
@@ -68,6 +72,7 @@ export default function Dashboard({ auth, wallets }) {
                                 "Success",
                                 "Wallet has been deleted successfully"
                             );
+                            window.location.reload();
                         },
                         onError: () => {
                             setIsDeleting(false);
@@ -137,7 +142,7 @@ export default function Dashboard({ auth, wallets }) {
                     </div>
                     <div
                         id="Slider"
-                        className="inline-flex w-full h-full scrollbar-hide whitespace-nowrap scroll-smooth overflow-y-hidden"
+                        className="inline-flex w-full h-full scrollbar-hide whitespace-nowrap scroll-smooth overflow-hidden"
                     >
                         {wallets?.map((wallet, index) => (
                             <motion.div
