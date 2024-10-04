@@ -137,7 +137,7 @@ class BudgetController extends Controller
         $budgets = Budget::where('user_id', $userId)->get();
 
         $budgetPercentages = $budgets->map(function ($budget) {
-            $thisMonth = now()->month();
+            $thisMonth = now()->month;
 
             $totalTransactionAmount = (int) $budget->Category->Transactions()
             ->where('wallet_id', $budget->wallet_id)
