@@ -102,22 +102,17 @@ class RecurringTransactionController extends Controller
 
     private function createTransaction($recurringTransaction, $date)
     {
-        $category = $recurringTransaction->category;
-        $transactionAmount = $category->category_is_income
-            ? $recurringTransaction->recurring_transaction_amount
-            : -$recurringTransaction->recurring_transaction_amount;
-
         Transaction::create([
             'user_id' => $recurringTransaction->user_id,
             'wallet_id' => $recurringTransaction->wallet_id,
             'category_id' => $recurringTransaction->category_id,
-            'transaction_amount' => $transactionAmount,
+            'transaction_amount' => $recurringTransaction->recurring_transaction_amount,
             'transaction_note' => $recurringTransaction->recurring_transaction_note ?? '',
             'transaction_date' => $date,
         ]);
 
         $wallet = $recurringTransaction->wallet;
-        $this->changeWalletBalance($wallet, $transactionAmount);
+        $this->changeWalletBalance($wallet, $recurringTransaction->recurring_transaction_amount);
     }
 
     private function changeWalletBalance(Wallet $wallet, $amount)
