@@ -92,7 +92,7 @@ class RecurringTransactionController extends Controller
     {
         $today = now();
         $start = Carbon::parse($recurringTransaction->recurring_transaction_date);
-        $end = $today->copy()->startOfMonth();
+        $end = $today;
 
         while ($start < $end) {
             $this->createTransaction($recurringTransaction, $start);
