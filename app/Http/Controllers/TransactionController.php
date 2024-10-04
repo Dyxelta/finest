@@ -323,7 +323,7 @@ class TransactionController extends Controller
             ->where($walletCondition)
             ->where('category_id', $category->id);
 
-        $monthlyTotalTransaction = $baseQuery
+        $monthlyTotalTransaction = (clone $baseQuery)
             ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
             ->selectRaw('YEAR(transaction_date) as year, MONTH(transaction_date) as month, CAST(SUM(transaction_amount) AS SIGNED) as total_amount')
             ->groupBy('year', 'month')
@@ -331,24 +331,26 @@ class TransactionController extends Controller
             ->orderBy('month', 'desc')
             ->get();
 
-        $averageTransactionLastSixMonth = $baseQuery
+        $averageTransactionLastSixMonth = (clone $baseQuery)
             ->whereBetween('transaction_date', [$sixMonthsAgo, $endOfLastMonth])
             ->selectRaw('CAST(sum(transaction_amount)/count(transactions.id) AS SIGNED) as average_total')
             ->first();
 
-        $totalTransactionThisMonth = $baseQuery
+        $totalTransactionThisMonth = (clone $baseQuery)
             ->whereBetween('transaction_date', [$startOfMonth, $today])
             ->selectRaw('CAST(sum(transaction_amount) AS SIGNED) as total_transaction')
             ->first();
 
-        $highestTransaction = $baseQuery
+        $highestTransaction = (clone $baseQuery)
             ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
             ->orderBy('transaction_amount', 'ASC')
+            ->pluck('transaction_amount')
             ->first();
 
-        $lowestTransaction = $baseQuery
+        $lowestTransaction = (clone $baseQuery)
             ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
             ->orderBy('transaction_amount', 'DESC')
+            ->pluck('transaction_amount')
             ->first();
 
         return [
