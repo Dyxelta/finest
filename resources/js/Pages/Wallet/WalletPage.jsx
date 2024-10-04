@@ -104,6 +104,13 @@ export default function Dashboard({ auth, wallets }) {
         }
     };
 
+    const ExpenseTransactions = selectedWallet?.transactions.filter(
+        (transaction) => transaction.category.category_is_income === 0
+    );
+    const IncomeTransactions = selectedWallet?.transactions?.filter(
+        (transaction) => transaction.category.category_is_income === 1
+    );
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -299,11 +306,11 @@ export default function Dashboard({ auth, wallets }) {
                         <div className="text-primary flex h-full flex-col justify-center px-4">
                             <h1 className="body ">Total Income</h1>
                             <h2 className="header-5 ">
-                                {selectedWallet?.transactions &&
-                                selectedWallet?.transactions.length !== 0
+                                {IncomeTransactions &&
+                                IncomeTransactions.length !== 0
                                     ? formatToRupiah(
                                           calculateTotalTransaction(
-                                              selectedWallet?.transactions
+                                              IncomeTransactions
                                           )
                                       )
                                     : "No Income Transaction yet"}
@@ -317,11 +324,11 @@ export default function Dashboard({ auth, wallets }) {
                         <div className="text-primary flex h-full flex-col justify-center px-4">
                             <h1 className="body">Total Expense</h1>
                             <h2 className="header-5">
-                                {selectedWallet?.transactions &&
-                                selectedWallet?.transactions.length !== 0
+                                {ExpenseTransactions &&
+                                ExpenseTransactions.length !== 0
                                     ? formatToRupiah(
                                           calculateTotalTransaction(
-                                              selectedWallet?.transactions
+                                              ExpenseTransactions
                                           )
                                       )
                                     : "No Expense Transaction yet"}

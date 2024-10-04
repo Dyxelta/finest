@@ -23,14 +23,13 @@ export default function TransactionReportPage({
     };
 
     const initialWallets = [allWallet, ...wallets];
-    const { get, setData, data } = useForm({
+    const { get, setData } = useForm({
         category_name: currCategory?.category_name,
         wallet_name: currWallet,
     });
 
     const [wait, setWait] = useState(false);
     useEffect(() => {
-        console.log(data, "sdfyuigdfsyuigsdfuihdfgs");
         const getTransactions = () => {
             if (wait) {
                 try {

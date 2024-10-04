@@ -32,15 +32,16 @@ const AverageSpendingAnalysis = ({
             return (
                 <div className="flex items-end w-full flex-col body">
                     <div className="text-expense">
-                        {formatToRupiah(
+                    {formatToRupiah(
                             Math.abs(
-                                average_transaction_last_six_month?.average_total
+                                total_transaction_this_month?.total_transaction
                             )
-                        )}{" "}
+                        )}
+                        {" "}
                         /{" "}
                         {formatToRupiah(
                             Math.abs(
-                                total_transaction_this_month?.total_transaction
+                                average_transaction_last_six_month?.average_total
                             )
                         )}
                     </div>
@@ -57,17 +58,18 @@ const AverageSpendingAnalysis = ({
                 <div className="flex w-full flex-col body">
                     <div className="flex items-center justify-between">
                         <div className="sub-body md:body">
-                            {formatToRupiah(
+                        {formatToRupiah(
                                 Math.abs(
-                                    average_transaction_last_six_month?.average_total
+                                    total_transaction_this_month?.total_transaction
                                 )
                             )}{" "}
                             /{" "}
                             {formatToRupiah(
                                 Math.abs(
-                                    total_transaction_this_month?.total_transaction
+                                    average_transaction_last_six_month?.average_total
                                 )
                             )}
+                           
                         </div>
                         <div className="sub-body md:body">
                             {getProgressBarPercentage * 100}%
