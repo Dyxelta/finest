@@ -1,4 +1,4 @@
-import { formatToRupiah, RupiahFormatTooltip } from "@/Helpers/helperFormat";
+import { RupiahFormatTooltip } from "@/Helpers/helperFormat";
 import {
     Bar,
     BarChart,

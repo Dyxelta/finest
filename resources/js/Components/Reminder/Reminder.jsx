@@ -1,6 +1,5 @@
-import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { FaBell } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
 import ReminderCards from "./ReminderCards";
 
 const Reminder = ({

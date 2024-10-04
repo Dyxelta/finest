@@ -1,7 +1,6 @@
-import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { Fragment } from "react";
 import { Button } from "reactstrap";
-import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 export default function CustomModal({
     children,

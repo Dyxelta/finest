@@ -1,24 +1,21 @@
+import AllWalletOverview from "@/Components/Dashboard/firstGrid/AllWalletOverview";
+import ShowNetIncomeOverview from "@/Components/Dashboard/firstGrid/ShowNetIncomeOverview";
+import LatestTransaction from "@/Components/Dashboard/fourthGrid/LatestTransaction";
+import CashflowGraph from "@/Components/Dashboard/secondGrid/CashflowGraph";
+import IncomeExpenseThisMonth from "@/Components/Dashboard/secondGrid/IncomeExpenseThisMonth";
+import TopBudgets from "@/Components/Dashboard/thirdGrid/TopBudgets";
 import AlertModal from "@/Components/Modal/AlertModal";
 import AddWalletPopup from "@/Components/Modal/Popup/AddWalletPopup";
 import { ReusableDecorBackground } from "@/Helpers/reusableDecorBackground";
+import CustomTooltip from "@/Helpers/Tooltip";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import { useState } from "react";
+import { BsGraphDownArrow, BsGraphUpArrow } from "react-icons/bs";
+import { CgNotes } from "react-icons/cg";
+import { FaWallet } from "react-icons/fa";
 import DecorBG1 from "../../../public/image/public/DecorBG1.png";
 import DecorBG2 from "../../../public/image/public/DecorBG2.png";
-import AllWalletOverview from "@/Components/Dashboard/firstGrid/AllWalletOverview";
-import { FaWallet } from "react-icons/fa";
-import ShowNetIncomeOverview from "@/Components/Dashboard/firstGrid/ShowNetIncomeOverview";
-import CustomTooltip from "@/Helpers/Tooltip";
-import { CgNotes } from "react-icons/cg";
-import CashflowGraph from "@/Components/Dashboard/secondGrid/CashflowGraph";
-import { GrHistory } from "react-icons/gr";
-import { Button } from "reactstrap";
-import { TbArrowNarrowLeft, TbArrowNarrowRight } from "react-icons/tb";
-import PrimaryButton from "@/Components/PrimaryButton";
-import LatestTransaction from "@/Components/Dashboard/fourthGrid/LatestTransaction";
-import IncomeExpenseThisMonth from "@/Components/Dashboard/secondGrid/IncomeExpenseThisMonth";
-import { BsGraphDownArrow, BsGraphUpArrow } from "react-icons/bs";
 
 export default function Dashboard({
     auth,
@@ -36,21 +33,21 @@ export default function Dashboard({
         wallets && wallets.length !== 0 ? false : true
     );
     const [Popup, setPopup] = useState();
-console.log(top_budgets,"huiguhsogduihgsfdig")
+
     return (
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 className="font-semibold text-large text-gray-800 leading-tight">
                     Dashboard
                 </h2>
             }
         >
             <Head title="Dashboard" />
 
-            <div className="grid grid-cols-7 grid-rows-2 w-full  gap-2 sm:px-8 text-primary z-0 relative font-roboto">
-                <div className="col-span-5 grid grid-cols-8  gap-2 relative">
-                    <div className="col-span-4 relative bg-light p-2 rounded-md">
+            <div className="grid grid-cols-7 grid-rows-1 tablet:grid-rows-3 large:grid-rows-2 w-full  gap-2 text-primary z-0 relative font-roboto">
+                <div className="grid large:row-span-1 tablet:row-span-2 row-span-1 col-span-7 tablet:col-span-4 large:col-span-5  grid-cols-4 large:grid-cols-8  gap-2 relative ">
+                    <div className="col-span-4 relative bg-light p-1 md:p-2 rounded-md">
                         <ReusableDecorBackground
                             DecorBG={DecorBG1}
                             className=" absolute right-[-110px] top-[-80px] w-[250px] h-[300px] -z-0"
@@ -61,7 +58,7 @@ console.log(top_budgets,"huiguhsogduihgsfdig")
                             />
                         </ReusableDecorBackground>
                     </div>
-                    <div className="col-span-4 relative bg-light p-2 rounded-md">
+                    <div className="col-span-4 relative bg-light p-1 md:p-2 rounded-md">
                         <ReusableDecorBackground
                             DecorBG={DecorBG1}
                             className="absolute top-[-130px] left-[-80px] w-[250px] h-[300px] -z-0 rotate-[270deg]"
@@ -91,14 +88,12 @@ console.log(top_budgets,"huiguhsogduihgsfdig")
                         </ReusableDecorBackground>
                     </div>
                 </div>
-                <div className="col-span-2  row-span-2 bg-light rounded-md p-2">
-                    <ReusableDecorBackground>
-                        
-                    </ReusableDecorBackground>
+                <div className="col-span-7 tablet:col-span-3 large:col-span-2  row-span-1 tablet:row-span-2 bg-light rounded-md p-1 md:p-2 overflow-y-auto ">
+                    <TopBudgets top_budgets={top_budgets} />
                 </div>
-                <div className="col-span-5 bg-light rounded-md grid grid-cols-9 p-2 gap-2 ">
+                <div className="col-span-7 large:col-span-5 bg-light rounded-md grid grid-cols-10 p-1 md:p-2 gap-2 ">
                     {" "}
-                    <div className="col-span-5  grid grid-cols-4  grid-rows-5">
+                    <div className="col-span-10 tablet:col-span-6  grid grid-cols-4  grid-rows-5">
                         <div className="col-span-4 row-span-1 header-5 flex items-center gap-2">
                             <div className="rounded-md bg-background p-2 ">
                                 <FaWallet />
@@ -108,12 +103,12 @@ console.log(top_budgets,"huiguhsogduihgsfdig")
                                 <CustomTooltip content="Net Income Overview displays the net income for the selected month, along with the previous month's figure." />
                             </div>
                         </div>
-                        <div className="col-span-4 flex row-span-4 gap-2">
+                        <div className="col-span-4 grid grid-cols-2 row-span-4 gap-2 mt-1">
                             {" "}
-                            <div className="flex-1 relative">
+                            <div className=" relative">
                                 <ReusableDecorBackground
                                     DecorBG={DecorBG2}
-                                    className=" absolute right-[-120px] bottom-[-180px] min-w-[400px] h-[300px] -z-0"
+                                    className=" absolute right-[-120px]  bottom-[-230px] md:bottom-[-180px] min-w-[400px] h-[300px] -z-0"
                                 >
                                     <IncomeExpenseThisMonth
                                         type={"Income"}
@@ -122,10 +117,10 @@ console.log(top_budgets,"huiguhsogduihgsfdig")
                                     />
                                 </ReusableDecorBackground>
                             </div>
-                            <div className="flex-1 relative">
+                            <div className="relative">
                                 <ReusableDecorBackground
                                     DecorBG={DecorBG2}
-                                    className=" absolute right-[-120px] bottom-[-180px] min-w-[400px] h-[300px] -z-0"
+                                    className=" absolute right-[-120px]  bottom-[-230px] md:bottom-[-180px] min-w-[400px] h-[300px] -z-0"
                                 >
                                     <IncomeExpenseThisMonth
                                         type={"Expense"}
@@ -138,7 +133,7 @@ console.log(top_budgets,"huiguhsogduihgsfdig")
                             </div>
                         </div>
                     </div>
-                    <div className="col-span-4 relative  rounded-md">
+                    <div className="col-span-10 tablet:col-span-4 relative  rounded-md">
                         <ReusableDecorBackground
                             DecorBG={DecorBG1}
                             className=" absolute left-[-90px] top-[-85px] w-[250px] h-[300px] -z-0 rotate-[265deg]"
@@ -178,8 +173,8 @@ console.log(top_budgets,"huiguhsogduihgsfdig")
                     }}
                 />
             </div>
-            <div className="mt-2  sm:px-8  h-fit">
-                <div className=" bg-light p-3 rounded-md h-fit ">
+            <div className="mt-2  h-fit">
+                <div className=" bg-light p-3 rounded-md h-fit \">
                     <LatestTransaction transactions={transactions} />
                 </div>
             </div>

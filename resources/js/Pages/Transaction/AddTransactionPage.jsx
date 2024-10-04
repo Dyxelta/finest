@@ -1,5 +1,4 @@
 import AddSection from "@/Components/Transaction/AddTransaction/AddSection";
-import MainSection from "@/Components/Transaction/AddTransaction/AddSection";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";

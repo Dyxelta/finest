@@ -49,7 +49,7 @@ const CashflowGraph = ({
     const COLORS = ["#1B3046","#2D5074"];
     return (
         <div className="py-1 px-4 z-50 relative text-primary">
-            <div className="flex justify-end">
+            <div className="flex justify-center tablet:justify-end">
                 <div className="w-2/3 p-0">
                     <ResponsiveContainer width="100%" height={180}>
                         <PieChart>
@@ -78,7 +78,7 @@ const CashflowGraph = ({
                     </ResponsiveContainer>
                 </div>
             </div>
-            <div className="flex w-full justify-end z-50 items-center relative">
+            <div className="flex w-full justify-center tablet:justify-end z-50 items-center relative">
                 <div className="flex items-center gap-1 lg:gap-2 mt-2">
                     <div className="sub-body-bold lg:button    bg-light rounded-md px-4 py-2 m">
                         Net Income Overview{" "}

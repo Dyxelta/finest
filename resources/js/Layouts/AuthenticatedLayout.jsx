@@ -1,18 +1,12 @@
+import Reminder from "@/Components/Reminder/Reminder";
 import Sidebar from "@/Components/Sidebar/Sidebar";
+import { usePage } from "@inertiajs/react";
+import {
+    Card,
+    Typography
+} from "@material-tailwind/react";
 import { useEffect, useRef, useState } from "react";
 import logoLetter from "../../../public/image/app/Logo-letter.png";
-import { FaBell } from "react-icons/fa";
-import {
-    Button,
-    Card,
-    CardBody,
-    Collapse,
-    Typography,
-} from "@material-tailwind/react";
-import ReminderCards from "@/Components/Reminder/ReminderCards";
-import { usePage } from "@inertiajs/react";
-import { AnimatePresence, motion } from "framer-motion";
-import Reminder from "@/Components/Reminder/Reminder";
 
 export default function Authenticated({ user, header, children }) {
     const [openNav, setOpenNav] = useState(false);

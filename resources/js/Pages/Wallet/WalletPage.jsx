@@ -6,19 +6,18 @@ import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 import { Head, useForm } from "@inertiajs/react";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { Plus } from "react-feather";
 import { BiDetail } from "react-icons/bi";
 import { FaWallet } from "react-icons/fa";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { FaArrowTrendDown, FaArrowTrendUp, FaRegTrashCan } from "react-icons/fa6";
 import { HiPencil } from "react-icons/hi2";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Button } from "reactstrap";
-import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import logo from "../../../../public/image/app/Logo.png";
 import Left from "../../../../public/image/wallet/Left.png";
 import Right from "../../../../public/image/wallet/Right.png";
-import { motion } from "framer-motion";
 
 export default function Dashboard({ auth, wallets }) {
     const [selectedWallet, setSelectedWallet] = useState(wallets[0] ?? null);

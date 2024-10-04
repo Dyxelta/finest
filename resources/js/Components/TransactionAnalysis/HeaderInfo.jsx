@@ -1,7 +1,7 @@
+import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import { getExpenseCategoryOptions, getWalletOptions } from "@/Helpers/options";
 import { Formik } from "formik";
 import CustomSelectInput from "../CustomInput/CustomSelectInput";
-import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 const HeaderInfo = ({
     expenseCategories,
     initialWallets,

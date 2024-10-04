@@ -1,7 +1,7 @@
 import { formatToRupiah } from "@/Helpers/helperFormat";
 import { getRemainingDays } from "@/Helpers/remainingDays";
 import CustomTooltip from "@/Helpers/Tooltip";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CgNotes } from "react-icons/cg";
 
 const AverageSpendingAnalysis = ({

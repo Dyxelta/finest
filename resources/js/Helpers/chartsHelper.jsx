@@ -51,7 +51,7 @@ export const generate6MonthsArray = () => {
     return monthsArray.reverse();
 };
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const useChartMargin = () => {
     const breakpoints = {
@@ -75,10 +75,61 @@ export const useChartMargin = () => {
                 setMargin(breakpoints.defaultMargins);
             }
         };
-        
-        handleMarginChart()
+
+        handleMarginChart();
     }, []);
 
-
     return margin;
+};
+
+export const usePieChartOuterRadius = () => {
+    const breakpoints = {
+        mobile: 768,
+        mobileMargin: 60,
+        defaultMargins: 75,
+    };
+
+    const [outerRadius, setOuterRadius] = useState(breakpoints.defaultMargins);
+
+    useEffect(() => {
+        const handleOuterRadius = () => {
+            const width = window.innerWidth;
+            if (width < breakpoints.mobile) {
+                setOuterRadius(breakpoints.mobileMargin);
+            } else {
+                setOuterRadius(breakpoints.defaultMargins);
+            }
+        };
+
+        handleOuterRadius();
+    }, []);
+
+    return outerRadius;
+};
+
+export const usePieChartInnerRadius = () => {
+    const breakpoints = {
+        mobile: 768,
+
+        mobileMargin: 46,
+
+        defaultMargins: 60,
+    };
+
+    const [innerRadius, setInnerRadius] = useState(breakpoints.defaultMargins);
+
+    useEffect(() => {
+        const handleInnerRadius = () => {
+            const width = window.innerWidth;
+            if (width < breakpoints.mobile) {
+                setInnerRadius(breakpoints.mobileMargin);
+            } else {
+                setInnerRadius(breakpoints.defaultMargins);
+            }
+        };
+
+        handleInnerRadius();
+    }, []);
+
+    return innerRadius;
 };

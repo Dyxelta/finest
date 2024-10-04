@@ -1,6 +1,4 @@
 import { formatToRupiah } from "@/Helpers/helperFormat";
-import React from "react";
-import { Button } from "reactstrap";
 
 const CategoryCard = ({ budget, setShowInitialBudget, showInitialBudget,setData  }) => {
     const isSelected =

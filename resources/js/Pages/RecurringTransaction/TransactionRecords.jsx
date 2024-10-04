@@ -1,25 +1,25 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 import { formatDate, formatToRupiah } from "@/Helpers/helperFormat";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 
 import { BiSolidPencil } from "react-icons/bi";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { HiMiniEllipsisVertical } from "react-icons/hi2";
 import { Button, Table } from "reactstrap";
 
-import HeaderInfo from "@/Components/RecurringTransaction/HeaderInfo";
-import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
-import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { CgNotes } from "react-icons/cg";
-import PrimaryButton from "@/Components/PrimaryButton";
-import { FiPlus } from "react-icons/fi";
-import "boxicons";
-import { TbMoodEmpty } from "react-icons/tb";
-import PaginationTransaction from "@/Components/Transaction/PaginationTransaction";
 import AddRecurringTransactionPopup from "@/Components/Modal/Popup/AddRecurringTransactionPopup";
 import EditRecurringTransactionPopup from "@/Components/Modal/Popup/EditRecurringTransactionPopup";
+import PrimaryButton from "@/Components/PrimaryButton";
+import HeaderInfo from "@/Components/RecurringTransaction/HeaderInfo";
+import PaginationTransaction from "@/Components/Transaction/PaginationTransaction";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
+import "boxicons";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { CgNotes } from "react-icons/cg";
+import { FiPlus } from "react-icons/fi";
+import { TbMoodEmpty } from "react-icons/tb";
 
 const ViewTable = ({
     transaction,

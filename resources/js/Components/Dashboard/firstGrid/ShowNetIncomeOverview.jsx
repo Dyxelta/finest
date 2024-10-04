@@ -1,4 +1,4 @@
-import { formatToRupiah, RupiahFormatTooltip } from "@/Helpers/helperFormat";
+import { RupiahFormatTooltip } from "@/Helpers/helperFormat";
 import {
     Bar,
     BarChart,
@@ -14,7 +14,7 @@ const ShowNetIncomeOverview = ({
     current_month_net_income,
     last_month_net_income,
 }) => {
-    console.log(current_month_net_income,last_month_net_income)
+
     const data = [
         {
             name: "Current Net Income",

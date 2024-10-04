@@ -1,18 +1,16 @@
+import { usePieChartInnerRadius, usePieChartOuterRadius } from "@/Helpers/chartsHelper";
 import {
     formatToRupiah,
     RupiahFormatTooltipPieChart,
 } from "@/Helpers/helperFormat";
 import CustomTooltip from "@/Helpers/Tooltip";
-import React from "react";
 import { FaWallet } from "react-icons/fa";
 import {
-    PieChart,
-    Pie,
-    Sector,
     Cell,
+    Pie,
+    PieChart,
     ResponsiveContainer,
-    Tooltip,
-    LabelList,
+    Tooltip
 } from "recharts";
 
 const AllWalletOverview = ({ total_balance, wallets }) => {
@@ -47,8 +45,8 @@ const AllWalletOverview = ({ total_balance, wallets }) => {
                                 data={walletChartData}
                                 cx="50%"
                                 cy="50%"
-                                innerRadius={55}
-                                outerRadius={75}
+                                innerRadius={usePieChartInnerRadius()}
+                                outerRadius={usePieChartOuterRadius()}
                                 labelLine={false}
                                 paddingAngle={2}
                             >
@@ -67,7 +65,7 @@ const AllWalletOverview = ({ total_balance, wallets }) => {
                 </div>
                 <div className="w-1/2 flex flex-col mt-auto mb-4">
                     <div className="button ">Total Balance: </div>
-                    <div className="sub-body-14">
+                    <div className="sub-body lg:sub-body-14">
                         {formatToRupiah(total_balance)}
                     </div>
                 </div>

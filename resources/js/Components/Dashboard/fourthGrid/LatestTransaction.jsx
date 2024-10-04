@@ -27,18 +27,18 @@ const ViewTable = ({ transaction }) => {
 
 const LatestTransaction = ({ transactions }) => {
     return (
-        <div>
+        <div className="overflow-x-auto">
             <div className="flex justify-between">
                 <div className="flex gap-2 items-center">
                     <div className="p-2 bg-primary text-light rounded-md">
                         <GrHistory size={24} />
                     </div>
-                    <span className="text-primary header-5">
+                    <span className="text-primary button md:header-5">
                         Latest Transaction
                     </span>
                 </div>
                 <Link href={route("transactionPage")}>
-                    <PrimaryButton className="flex items-center gap-2 py-2 px-6 bg-primary text-light rounded-md">
+                    <PrimaryButton className="flex items-center gap-2 py-2 px-6 bg-primary text-light rounded-md sub-body-bold md:button">
                         View More <TbArrowNarrowRight />
                     </PrimaryButton>
                 </Link>

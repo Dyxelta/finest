@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import CustomSelectInput from "../CustomInput/CustomSelectInput";
-import { Formik } from "formik";
-import CustomField from "../CustomInput/CustomField";
 import { formatToRupiah } from "@/Helpers/helperFormat";
 import { useForm } from "@inertiajs/react";
+import { Formik } from "formik";
+import { useEffect, useState } from "react";
+import CustomSelectInput from "../CustomInput/CustomSelectInput";
 
 const HeaderInfo = ({
     walletOptions,

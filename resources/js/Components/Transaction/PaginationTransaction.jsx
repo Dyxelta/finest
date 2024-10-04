@@ -1,9 +1,8 @@
-import React from "react";
-import { Button } from "reactstrap";
 import {
-    MdKeyboardDoubleArrowRight,
     MdKeyboardDoubleArrowLeft,
+    MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
+import { Button } from "reactstrap";
 
 const PaginationTransaction = ({ pageLength, setPagination, pagination }) => {
     console.log(pageLength - 2 <= pagination, "iosduhfjisdiohfsdisdifho")

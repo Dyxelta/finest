@@ -1,5 +1,4 @@
 import moment from "moment";
-import React from "react";
 import { HiBell } from "react-icons/hi";
 
 const ReminderCards = ({reminder}) => {

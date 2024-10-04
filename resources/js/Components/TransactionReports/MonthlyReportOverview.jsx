@@ -1,3 +1,5 @@
+import CustomTooltip from "@/Helpers/Tooltip";
+import { useChartMargin } from "@/Helpers/chartsHelper";
 import { formatYAxis, RupiahFormatTooltip } from "@/Helpers/helperFormat";
 import React from "react";
 import { CgNotes } from "react-icons/cg";
@@ -12,8 +14,6 @@ import {
     YAxis,
 } from "recharts";
 import CustomSelectInput from "../CustomInput/CustomSelectInput";
-import CustomTooltip from "@/Helpers/Tooltip";
-import { useChartMargin } from "@/Helpers/chartsHelper";
 
 const FormatXAxis = ({ x, y, payload }) => {
     let text = payload.value;
