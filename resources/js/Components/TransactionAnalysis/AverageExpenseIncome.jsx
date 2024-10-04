@@ -36,7 +36,7 @@ const AverageExpenseIncome = ({
                         <CustomTooltip content="Shows the information of the average total income based on all income transaction records." />
                     </h1>
                     <h2 className="body md:header-5-light">
-                        {formatToRupiah(Math.abs(highest_transaction?.total_transaction) ?? 0)}
+                        {formatToRupiah(Math.abs(highest_transaction) ?? 0)}
                     </h2>
                 </div>
             </div>
@@ -50,7 +50,7 @@ const AverageExpenseIncome = ({
                         <CustomTooltip content="Shows the information of the average total expense based on all expense transaction records." />
                     </h1>
                     <h2 className="body md:header-5-light">
-                        {formatToRupiah(Math.abs(lowest_transaction?.total_transaction) ?? 0)}
+                        {formatToRupiah(Math.abs(lowest_transaction) ?? 0)}
                     </h2>
                 </div>
             </div>
