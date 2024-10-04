@@ -83,6 +83,7 @@ const AddSection = ({
         });
     };
 
+    
     return (
         <div
             className={`w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:grid-rows-4 gap-3`}
@@ -115,7 +116,9 @@ const AddSection = ({
                         }
                         options={walletOptions}
                         onChange={(e) => {
+                
                             setSelectedWallet(e);
+                            setData("wallet_name", e.wallet_name)
                         }}
                     />
                 </div>
