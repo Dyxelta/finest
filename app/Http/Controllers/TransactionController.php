@@ -38,13 +38,18 @@ class TransactionController extends Controller
             'transaction_date' => $request->transaction_date,
         ]);
 
-        $this->changeWalletBalance($wallet, $transactionAmount); 
+        $this->changeWalletBalance($wallet, $transactionAmount);
 
         return redirect()->intended(route('transactionPage'));
     }
 
     public function deleteTransaction(Transaction $transaction)
     {
+        $wallet = Wallet::where('id', $transaction->wallet_id)->firstOrFail();
+        $transactionAmount = -$transaction->transaction_amount;
+
+        $this->changeWalletBalance($wallet, $transactionAmount);
+
         $transaction->delete();
 
         return redirect()->back();
@@ -283,7 +288,7 @@ class TransactionController extends Controller
 
         $selectedMonthNet = $selectedMonthTransactionData['income'] + $selectedMonthTransactionData['expense'];
         $lastMonthNet = $lastMonthTransactionData['income'] + $lastMonthTransactionData['expense'];
-        
+
         return [
             'summary_report_data' => $selectedMonthTransactionData,
             'current_month_net_income' => $selectedMonthNet,
