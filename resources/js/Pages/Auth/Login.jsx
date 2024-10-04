@@ -15,6 +15,7 @@ import Loader from "@/Components/Loader";
 import { showErrorModal } from "@/Helpers/utils";
 import { useState } from "react";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -47,6 +48,7 @@ export default function Login() {
         });
     };
 
+    const [openPass, setOpenPass] = useState();
     return (
         <div className="relative h-screen bg-background">
             <img
@@ -152,7 +154,11 @@ export default function Login() {
                                                     id="password"
                                                     name="password"
                                                     placeholder="Must be 8-20 Characters"
-                                                    type="password"
+                                                    type={
+                                                        openPass
+                                                            ? "text"
+                                                            : "password"
+                                                    }
                                                     className="w-full mt-1"
                                                     icon={
                                                         <Lock
@@ -185,6 +191,28 @@ export default function Login() {
                                                             e.target.value
                                                         );
                                                     }}
+                                                    password={
+                                                        <div
+                                                            onClick={() =>
+                                                                setOpenPass(
+                                                                    !openPass
+                                                                )
+                                                            }
+                                                            className="cursor-pointer relative"
+                                                        >
+                                                            {openPass ? (
+                                                                <FaRegEyeSlash
+                                                                    size={18}
+                                                                    color="grey"
+                                                                />
+                                                            ) : (
+                                                                <FaRegEye
+                                                                    size={18}
+                                                                    color="grey"
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    }
                                                 />
                                             </FormGroup>
                                         </FormGroup>

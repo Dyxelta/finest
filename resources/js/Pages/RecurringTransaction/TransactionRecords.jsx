@@ -34,7 +34,6 @@ const ViewTable = ({
 
     const deleteTransaction = (id) => {
         const onClose = () => {
-  
             destroy(route("deleteRecurringTransaction", id), {
                 onSuccess: () => {
                     showSuccessModal(
@@ -69,7 +68,9 @@ const ViewTable = ({
                 {transaction?.recurring_transaction_note}
             </td>
             <td className="py-2 px-4 text-center  w-[200px]">
-                {formatToRupiah(transaction?.recurring_transaction_amount)}
+                {formatToRupiah(
+                    Math.abs(transaction?.recurring_transaction_amount)
+                )}
             </td>
             <td className="py-2 px-4 text-center w-[150px]">
                 {formatDate(transaction?.recurring_transaction_date)}
@@ -88,7 +89,7 @@ const ViewTable = ({
                     >
                         <div className=" bg-white border rounded-md flex flex-col  shadow-lg">
                             <Button
-                                onClick={async() => {
+                                onClick={async () => {
                                     await setSelectedTransaction(transaction);
                                     setOpenEditRecurringTransaction(true);
                                 }}
@@ -102,12 +103,9 @@ const ViewTable = ({
                             <Button
                                 className="py-2 px-2 w-full flex items-center gap-2 text-expense hover:bg-gray-100 hover:opacity-70 duration-300 transition-all sub-body-14"
                                 onClick={() => {
-                              
-                        
                                     deleteTransaction(transaction?.id);
                                 }}
                             >
-                 
                                 <FaRegTrashCan size={16} /> Delete
                             </Button>
                         </div>
@@ -125,9 +123,8 @@ export default function TransactionRecordsPage({
     expenseCategories,
     incomeCategories,
 }) {
-    
     const [openAddRecurringTransaction, setOpenAddRecurringTransaction] =
-    useState(false);
+        useState(false);
     const [openEditRecurringTransaction, setOpenEditRecurringTransaction] =
         useState(false);
 
@@ -207,7 +204,6 @@ export default function TransactionRecordsPage({
         label: wallet?.wallet_name,
     }));
 
- 
     return (
         <AuthenticatedLayout
             user={auth.user}

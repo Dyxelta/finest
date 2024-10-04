@@ -160,7 +160,7 @@ export default function BudgetPage({
     const progressBarRef = useRef(null);
 
     const countRecommendedBudgetAmount = () => {
-        const { transactions } = showInitialBudget.category;
+        const transactions = showInitialBudget?.category?.transaction ?? [];
 
         const dayDifference = getRemainingDays()
 
@@ -242,7 +242,7 @@ export default function BudgetPage({
     };
 
     const showSpendingLimit = () => {
-        const { transactions } = showInitialBudget.category;
+        const transactions = showInitialBudget?.category?.transaction ?? [];
         if (transactions.length !== 0) {
             const totalSpending = transactions.reduce((total, transaction) => {
                 return total + Math.abs(transaction.transaction_amount);

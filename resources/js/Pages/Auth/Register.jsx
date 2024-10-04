@@ -15,6 +15,7 @@ import logo from "../../../../public/image/app/Logo.png";
 import upperMotive from "../../../../public/image/register/Component 10.png";
 import lowerLeftMotive from "../../../../public/image/register/lowerLeftMotive.png";
 import lowerRightMotive from "../../../../public/image/register/lowerRightMotive.png";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -47,7 +48,7 @@ const SignupSchema = Yup.object().shape({
 
 export default function Register({ status, canResetPassword }) {
     const openModal = (error) => {
-        setLoading(false)
+        setLoading(false);
         showErrorModal("Error", error);
     };
     const [loading, setLoading] = useState(false);
@@ -59,7 +60,7 @@ export default function Register({ status, canResetPassword }) {
     });
 
     const submit = async (values) => {
-        setLoading(true)
+        setLoading(true);
         post(route("createAccount"), {
             onError: (errors) => {
                 if (errors.username) {
@@ -72,10 +73,11 @@ export default function Register({ status, canResetPassword }) {
                     openModal(errors.confirm_pass);
                 }
             },
-            onSuccess: () => setLoading(false)
+            onSuccess: () => setLoading(false),
         });
     };
-
+    const [openPass, setOpenPass] = useState();
+    const [openConfirmPass, setOpenConfirmPass] = useState();
     return (
         <div className="mx-auto w-full flex self-center">
             <div className="relative h-screen w-full">
@@ -223,7 +225,11 @@ export default function Register({ status, canResetPassword }) {
                                                         id="password"
                                                         name="password"
                                                         placeholder="Must be 8-20 Characters"
-                                                        type="password"
+                                                        type={
+                                                            openPass
+                                                                ? "text"
+                                                                : "password"
+                                                        }
                                                         className="w-full mt-1"
                                                         icon={
                                                             <Lock
@@ -242,6 +248,32 @@ export default function Register({ status, canResetPassword }) {
                                                                 e.target.value
                                                             );
                                                         }}
+                                                        password={
+                                                            <div
+                                                                onClick={() =>
+                                                                    setOpenPass(
+                                                                        !openPass
+                                                                    )
+                                                                }
+                                                                className="cursor-pointer relative"
+                                                            >
+                                                                {openPass ? (
+                                                                    <FaRegEyeSlash
+                                                                        size={
+                                                                            18
+                                                                        }
+                                                                        color="grey"
+                                                                    />
+                                                                ) : (
+                                                                    <FaRegEye
+                                                                        size={
+                                                                            18
+                                                                        }
+                                                                        color="grey"
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        }
                                                     />
                                                 </FormGroup>
 
@@ -255,7 +287,11 @@ export default function Register({ status, canResetPassword }) {
                                                         id="confirmPassword"
                                                         name="confirm_pass"
                                                         placeholder="Must be 8-20 Characters"
-                                                        type="password"
+                                                        type={
+                                                            openConfirmPass
+                                                                ? "text"
+                                                                : "password"
+                                                        }
                                                         className="w-full mt-1"
                                                         icon={
                                                             <Lock
@@ -273,6 +309,32 @@ export default function Register({ status, canResetPassword }) {
                                                                 e.target.value
                                                             );
                                                         }}
+                                                        password={
+                                                            <div
+                                                                onClick={() =>
+                                                                    setOpenConfirmPass(
+                                                                        !openConfirmPass
+                                                                    )
+                                                                }
+                                                                className="cursor-pointer relative"
+                                                            >
+                                                                {openConfirmPass ? (
+                                                                    <FaRegEyeSlash
+                                                                        size={
+                                                                            18
+                                                                        }
+                                                                        color="grey"
+                                                                    />
+                                                                ) : (
+                                                                    <FaRegEye
+                                                                        size={
+                                                                            18
+                                                                        }
+                                                                        color="grey"
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        }
                                                     />
                                                 </FormGroup>
                                             </FormGroup>
@@ -284,7 +346,7 @@ export default function Register({ status, canResetPassword }) {
                                                     disabled={loading}
                                                     loading={loading}
                                                 >
-                                                      {loading ? (
+                                                    {loading ? (
                                                         <div className="flex items-center">
                                                             <Loader
                                                                 className={`w-[30px] h-6 mr-1`}

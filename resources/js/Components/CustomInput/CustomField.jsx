@@ -6,6 +6,7 @@ export default function CustomField({
     className = "",
     isFocused = false,
     icon,
+    password = false,
     ...props
 }) {
     const [field, meta] = useField(props);
@@ -31,7 +32,7 @@ export default function CustomField({
                     {...props}
                     type={type}
                     className={
-                        `border-gray-300 transition-shadow duration-300 ${
+                        `border-gray-300 transition-shadow duration-300 z-40 ${
                             meta.touched && meta.error
                                 ? "border-red-500 ring-red-500 focus:ring-red-500 focus:border-red-500 focus:shadow-[0_4px_6px_rgba(255,0,0,0.2)]"
                                 : "focus:ring-primary focus:border-primary focus:shadow-[0_4px_6px_rgba(0,123,255,0.3)]"
@@ -42,6 +43,11 @@ export default function CustomField({
                     }
                     innerRef={inputRef}
                 />
+                {password && (
+                    <div className="absolute inset-y-0 right-0 pr-3 pt-[2px] flex items-center z-50">
+                        {password}
+                    </div>
+                )}
             </div>
             {meta.touched && meta.error && (
                 <div className="text-red-400 my-[2px] text-[14px]">
