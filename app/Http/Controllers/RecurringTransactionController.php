@@ -13,7 +13,6 @@ class RecurringTransactionController extends Controller
 {
     public function addRecurringTransaction(Request $request)
     {
-
         $request->validate([
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
@@ -70,8 +69,6 @@ class RecurringTransactionController extends Controller
         $wallet = Wallet::where('user_id', $user->id)->where('wallet_name', $request->wallet_name)->firstOrFail();
         $category = Category::where('category_name', $request->category_name)->firstOrFail();
 
-        $originalAmount = $recurringTransaction->transaction_amount;
-
         $recurringTransactionAmount = $category->category_is_income ? $request->recurring_transaction_amount : -$request->recurring_transaction_amount;
 
         $recurringTransactionNote = $request->recurring_transaction_note ?? '';
@@ -121,7 +118,8 @@ class RecurringTransactionController extends Controller
         $wallet->save();
     }
 
-    public function showRecurringTransactionByWallet(Request $request){
+    public function showRecurringTransactionByWallet()
+    {
         $userId = auth()->user()->id;
 
         $recurring_transaction = RecurringTransaction::where('user_id', $userId)->orderBy('id', 'asc')->with(['wallet', 'category'])->get();

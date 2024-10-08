@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class WalletController extends Controller
 {
-    public function addWallet(Request $request) {
+    public function addWallet(Request $request)
+    {
         $request->validate([
             'wallet_name' => 'required|string',
             'wallet_balance' => 'required|numeric|min:1|max:1000000000000',
@@ -24,13 +25,15 @@ class WalletController extends Controller
         ]);
     }
 
-    public function deleteWallet(Wallet $wallet) {
+    public function deleteWallet(Wallet $wallet)
+    {
         $wallet->delete();
 
         return redirect()->back();
     }
 
-    public function editWallet(Request $request) {
+    public function editWallet(Request $request)
+    {
         $request->validate([
             'wallet_name' => 'required|string',
             'wallet_balance' => 'required|numeric|min:1|max:1000000000000',
@@ -53,7 +56,8 @@ class WalletController extends Controller
         return redirect()->back();
     }
 
-    public function showAllWalletByUserID() {
+    public function showAllWalletByUserID()
+    {
         $user = auth()->user();
 
         $wallets = Wallet::where('user_id', $user->id)->with(['transactions.category'])->get();
@@ -61,7 +65,8 @@ class WalletController extends Controller
         return ['wallets' => $wallets];
     }
 
-    public function showWalletById(Request $request) {
+    public function showWalletById(Request $request)
+    {
         $walletId = $request->id;
 
         $wallet = Wallet::where('id', $walletId)->get()->first();
@@ -69,7 +74,8 @@ class WalletController extends Controller
         return ['wallet' => $wallet];
     }
 
-    public function showUserWalletTotalBalance() {
+    public function showUserWalletTotalBalance()
+    {
         $userId = auth()->user()->id;
 
         $totalBalance = Wallet::where('user_id', $userId)->sum('wallet_balance');
