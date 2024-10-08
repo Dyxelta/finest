@@ -28,6 +28,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
     const [openProfile, setOpenProfile] = useState(false);
     const [openEditProfile, setOpenEditProfile] = useState(false);
     const [openChangePassword, setOpenChangePassword] = useState(false);
+ 
     const menuArray = [
         {
             Title: "Menus",
@@ -35,6 +36,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 {
                     Title: "Dashboard",
                     href: "dashboard",
+                    currentUrl:"dashboard",
                     icon: <MdDashboard size={22} />,
                 },
             ],
@@ -45,26 +47,31 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 {
                     Title: "Add Transaction",
                     href: "addTransaction",
+                    currentUrl:"addTransaction",
                     icon: <CiSquarePlus size={22} />,
                 },
                 {
                     Title: "Recurring Transaction",
+                    currentUrl:"recurringTransaction",
                     href: "recurringTransactionPage",
                     icon: <RxLoop size={21} />,
                 },
                 {
                     Title: "Financial Analysis",
                     href: "transactionAnalysisPage",
+                    currentUrl:"transactionAnalysis",
                     icon: <BsGraphUp size={20} />,
                 },
                 {
                     Title: "Transaction Records",
                     href: "transactionPage",
+                    currentUrl:"transactionRecords",
                     icon: <GrHistory size={20} />,
                 },
                 {
                     Title: "Transaction Report",
                     href: "transactionReportPage",
+                    currentUrl:"transactionReport",
                     icon: <LuClipboardList size={21} />,
                 },
             ],
@@ -75,17 +82,22 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 {
                     Title: "Wallet",
                     href: "walletPage",
+                    currentUrl: "wallets",
                     icon: <FaWallet size={20} />,
                 },
                 {
                     Title: "Budget",
                     href: "budgetPage",
+                    currentUrl: "budget",
                     icon: <FaMoneyBillWave size={20} />,
                 },
             ],
         },
     ];
-
+    const isActive = (menuItem) => {
+        const currentUrl = window.location.pathname.toLowerCase(); // Get the current URL path
+        return currentUrl.includes(menuItem.currentUrl.toLowerCase()); // Check if it matches
+      };
     return (
         <nav
             className={`fixed transition-all duration-500 ease-in-out h-screen z-50 ${
@@ -225,7 +237,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                     {menu.Children.map((subMenu, index) => (
                                         <Link
                                             href={route(subMenu?.href)}
-                                            className={` relative group flex gap-2 text-primary ${
+                                            className={` relative group flex gap-2 ${isActive(subMenu) ? "bg-primary text-white": "text-primary"}  ${
                                                 openNav ? "py-3 px-4" : "p-3"
                                             }  rounded-md  hover:bg-off-white `}
                                         >

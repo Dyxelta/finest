@@ -79,21 +79,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/delete-wallet/{wallet:id}', [WalletController::class, 'deleteWallet'])->name('deleteWallet');
 
     //transaction
-    Route::get('/transaction', function (Request $request) {
+    Route::get('/transactionRecords', function (Request $request) {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $transactionData = app(TransactionController::class)->showTransactionByMonth($request);
 
         return Inertia::render('Transaction/TransactionRecords', array_merge($transactionData, $walletData));
     })->name('transactionPage');
 
-    Route::get('/transaction/add-transaction', function () {
+    Route::get('/transaction/addTransaction', function () {
         $walletData = app(WalletController::class)->showAllWalletByUserID();
         $categories = app(CategoryController::class)->showAllCategories();
 
         return Inertia::render('Transaction/AddTransactionPage', array_merge($walletData, $categories));
     })->name('addTransaction');
 
-    Route::get('/transaction/edit-transaction/{transaction:id}', function (Transaction $transaction) {
+    Route::get('/transaction/editTransaction/{transaction:id}', function (Transaction $transaction) {
         $transaction->load(['wallet', 'category']);
 
         $walletData = app(WalletController::class)->showAllWalletByUserID();
