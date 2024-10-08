@@ -95,8 +95,8 @@ const Sidebar = ({ openNav, setOpenNav }) => {
         },
     ];
     const isActive = (menuItem) => {
-        const currentUrl = window.location.pathname.toLowerCase(); // Get the current URL path
-        return currentUrl.includes(menuItem.currentUrl.toLowerCase()); // Check if it matches
+        const currentUrl = window.location.pathname.toLowerCase(); 
+        return currentUrl.includes(menuItem.currentUrl.toLowerCase()); 
       };
     return (
         <nav
@@ -245,7 +245,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                                 className={
                                                     openNav
                                                         ? "hidden"
-                                                        : " w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre  rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1"
+                                                        : " w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre  rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1 text-primary"
                                                 }
                                             >
                                                 {subMenu.Title}
