@@ -38,7 +38,6 @@ class BudgetController extends Controller
 
     public function deleteBudget(Request $request)
     {
-
         $budget = Budget::findOrFail($request->id);
 
         $budget->delete();
@@ -85,7 +84,7 @@ class BudgetController extends Controller
     public function showBudgetById($id)
     {
         $user = auth()->user();
-        $budget = Budget::firstWhere('user_id', 1)->where('id', $id)->get();
+        $budget = Budget::firstWhere('user_id', $user->id)->where('id', $id)->get();
 
         return ['budget' => $budget];
     }
@@ -98,7 +97,7 @@ class BudgetController extends Controller
 
         if ($wallet_id == null) {
             $wallet = Wallet::firstWhere('user_id', $user->id);
-            if($wallet){
+            if ($wallet) {
                 $wallet_id =  $wallet->id;
             }
         }
@@ -131,7 +130,8 @@ class BudgetController extends Controller
         return ['budget' => number_format($rec_budget)];
     }
 
-    public function showUserTopBudget() {
+    public function showUserTopBudget()
+    {
         $userId = auth()->user()->id;
 
         $budgets = Budget::where('user_id', $userId)->get();
@@ -140,9 +140,9 @@ class BudgetController extends Controller
             $thisMonth = now()->month;
 
             $totalTransactionAmount = (int) $budget->Category->Transactions()
-            ->where('wallet_id', $budget->wallet_id)
-            ->whereMonth('transaction_date', $thisMonth)
-            ->sum('transaction_amount');
+                ->where('wallet_id', $budget->wallet_id)
+                ->whereMonth('transaction_date', $thisMonth)
+                ->sum('transaction_amount');
 
             $percentage = $budget->budget_amount > 0 ? (abs($totalTransactionAmount) / $budget->budget_amount) * 100 : 0;
 
