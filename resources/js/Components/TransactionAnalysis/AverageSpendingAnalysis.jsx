@@ -129,10 +129,11 @@ const AverageSpendingAnalysis = ({
                                 Available Balance Left:
                             </div>
                             <div className="sub-body md:body ">
-                                {formatToRupiah(
+                                {average_transaction_last_six_month?.average_total +
+                                        total_transaction_this_month?.total_transaction > 0 ? formatToRupiah(
                                     average_transaction_last_six_month?.average_total +
                                         total_transaction_this_month?.total_transaction
-                                )}
+                                ) : "0"}
                             </div>
                         </div>
                         <div className="flex flex-col ">
@@ -140,12 +141,13 @@ const AverageSpendingAnalysis = ({
                                 Spending Limit:
                             </div>
                             <div className="sub-body md:body ">
-                                {formatToRupiah(
+                                {average_transaction_last_six_month?.average_total +
+                                            total_transaction_this_month?.total_transaction > 0 ? formatToRupiah(
                                     AverageSpendingRecommendation(
                                         average_transaction_last_six_month?.average_total +
                                             total_transaction_this_month?.total_transaction
                                     )
-                                )}
+                                ) : "0"}
                             </div>
                         </div>
                         <div className="flex flex-col ">
