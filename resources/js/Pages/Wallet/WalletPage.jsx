@@ -7,7 +7,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 import { Head, useForm } from "@inertiajs/react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Plus } from "react-feather";
 import { BiDetail } from "react-icons/bi";
 import { FaWallet } from "react-icons/fa";

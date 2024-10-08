@@ -69,7 +69,7 @@ const CustomSelectCategories = ({
 }) => (
     <Select
         defaultValue={defaultValue}
-        className={` ${className} mt-[7px]`}
+        className={` ${className}`}
         {...props}
         onChange={onChange}
         options={options}

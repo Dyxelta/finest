@@ -9,7 +9,9 @@ const AverageSpendingAnalysis = ({
     lowest_transaction,
     highest_transaction,
     total_transaction_this_month,
+    currCategory,
 }) => {
+    console.log(currCategory, "uisdfhhuguiohuhiosdfg");
     const progressBarRef = useRef();
     const [length, setLength] = useState();
     useEffect(() => {
@@ -32,12 +34,11 @@ const AverageSpendingAnalysis = ({
             return (
                 <div className="flex items-end w-full flex-col body">
                     <div className="text-expense">
-                    {formatToRupiah(
+                        {formatToRupiah(
                             Math.abs(
                                 total_transaction_this_month?.total_transaction
                             )
-                        )}
-                        {" "}
+                        )}{" "}
                         /{" "}
                         {formatToRupiah(
                             Math.abs(
@@ -45,6 +46,7 @@ const AverageSpendingAnalysis = ({
                             )
                         )}
                     </div>
+                    <div className="sub-body md:body">100%</div>
                     <div
                         className="border-primary border h-5 w-full rounded-full relative overflow-hidden mt-2"
                         ref={progressBarRef}
@@ -58,7 +60,7 @@ const AverageSpendingAnalysis = ({
                 <div className="flex w-full flex-col body">
                     <div className="flex items-center justify-between">
                         <div className="sub-body md:body">
-                        {formatToRupiah(
+                            {formatToRupiah(
                                 Math.abs(
                                     total_transaction_this_month?.total_transaction
                                 )
@@ -69,7 +71,6 @@ const AverageSpendingAnalysis = ({
                                     average_transaction_last_six_month?.average_total
                                 )
                             )}
-                           
                         </div>
                         <div className="sub-body md:body">
                             {getProgressBarPercentage * 100}%
@@ -109,11 +110,13 @@ const AverageSpendingAnalysis = ({
             </div>
             <div className=" flex items-center justify-center gap-2 pt-2 md:p-1 ">
                 <box-icon
-                    type="logo"
-                    name="discord-alt"
+                    type="solid"
+                    name={currCategory?.icon}
                     color="#2D5074"
+        
                 ></box-icon>
-                <span className="header-5">Entertainment</span>
+
+                <span className="header-5">{currCategory?.category_name}</span>
             </div>
             <div className="flex  mt-2 flex-wrap w-full">
                 <div className="flex gap-2 mb-2 w-full">
@@ -127,27 +130,31 @@ const AverageSpendingAnalysis = ({
                             </div>
                             <div className="sub-body md:body ">
                                 {formatToRupiah(
-                                    average_transaction_last_six_month?.average_total -
+                                    average_transaction_last_six_month?.average_total +
                                         total_transaction_this_month?.total_transaction
                                 )}
                             </div>
                         </div>
                         <div className="flex flex-col ">
-                            <div className="sub-body-bold md:button ">Spending Limit:</div>
+                            <div className="sub-body-bold md:button ">
+                                Spending Limit:
+                            </div>
                             <div className="sub-body md:body ">
                                 {formatToRupiah(
                                     AverageSpendingRecommendation(
-                                        average_transaction_last_six_month?.average_total -
+                                        average_transaction_last_six_month?.average_total +
                                             total_transaction_this_month?.total_transaction
                                     )
                                 )}
                             </div>
                         </div>
                         <div className="flex flex-col ">
-                            <div className="sub-body-bold md:button ">Status:</div>
+                            <div className="sub-body-bold md:button ">
+                                Status:
+                            </div>
                             <div className="sub-body md:body ">
                                 {AverageSpendingRecommendation(
-                                    average_transaction_last_six_month?.average_total -
+                                    average_transaction_last_six_month?.average_total +
                                         total_transaction_this_month?.total_transaction
                                 ) < 0 ? (
                                     <span className="text-expense">
@@ -161,15 +168,17 @@ const AverageSpendingAnalysis = ({
                     </div>
 
                     {AverageSpendingRecommendation(
-                        average_transaction_last_six_month?.average_total -
+                        average_transaction_last_six_month?.average_total +
                             total_transaction_this_month?.total_transaction
                     ) < 0 ? (
                         <div className="p-2 md:p-4 rounded-md justify-between mt-2  w-full sub-body md:body">
-                            <span className="sub-body-bold md:button">Notes: </span>
+                            <span className="sub-body-bold md:button">
+                                Notes:{" "}
+                            </span>
                             You have overspent by{" "}
                             <span className="text-expense">
                                 {formatToRupiah(
-                                    average_transaction_last_six_month?.average_total -
+                                    average_transaction_last_six_month?.average_total +
                                         total_transaction_this_month?.total_transaction
                                 )}
                             </span>{" "}
@@ -181,12 +190,14 @@ const AverageSpendingAnalysis = ({
                         </div>
                     ) : (
                         <div className="p-2 md:p-4 rounded-md justify-between mt-2 w-full sub-body md:body">
-                            <span className="sub-body-bold md:button">Notes: </span>
+                            <span className="sub-body-bold md:button">
+                                Notes:{" "}
+                            </span>
                             Spend no more than{" "}
                             <span className="sub-body-bold md:button">
                                 {formatToRupiah(
                                     AverageSpendingRecommendation(
-                                        average_transaction_last_six_month?.average_total -
+                                        average_transaction_last_six_month?.average_total +
                                             total_transaction_this_month?.total_transaction
                                     )
                                 )}{" "}

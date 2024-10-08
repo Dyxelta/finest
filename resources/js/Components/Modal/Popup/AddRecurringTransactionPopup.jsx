@@ -241,6 +241,7 @@ export default function AddRecurringTransactionPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomSelectCategories
+                                            className={'mt-1'}
                                                 options={categoryOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(

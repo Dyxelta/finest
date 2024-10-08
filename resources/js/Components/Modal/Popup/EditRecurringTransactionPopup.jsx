@@ -287,6 +287,7 @@ export default function EditRecurringTransactionPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomSelectCategories
+                                                className={"mt-1"}
                                                 defaultValue={
                                                     values?.category_name && {
                                                         values: values?.category_name,

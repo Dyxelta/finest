@@ -110,7 +110,7 @@ export default function TransactionRecordsPage({
     currMonth,
 }) {
     const [pagination, setPagination] = useState(1);
-    const [category, setCategory] = useState("Income");
+    const [category, setCategory] = useState("Expense");
     const [selectedWallet, setSelectedWallet] = useState("All Wallet");
 
     let getCurrentStartSlice = 1 * ((pagination - 1) * 10);

@@ -266,6 +266,7 @@ const EditSection = ({
                                             );
                                             setData("category_name", e.value);
                                         }}
+                                        className={'mt-1'}
                                     />
                                     <ErrorMessageInput name="category_name" />
                                 </FormGroup>

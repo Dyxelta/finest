@@ -23,7 +23,7 @@ export default function TransactionReportPage({
     };
 
     const initialWallets = [allWallet, ...wallets];
-    const { get, setData } = useForm({
+    const { get, setData,data } = useForm({
         category_name: currCategory?.category_name,
         wallet_name: currWallet,
     });
@@ -87,6 +87,7 @@ export default function TransactionReportPage({
                             total_transaction_this_month={
                                 total_transaction_this_month
                             }
+                            currCategory={currCategory}
                         />
                     </div>
                 </div>

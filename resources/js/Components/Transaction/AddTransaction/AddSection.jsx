@@ -247,6 +247,7 @@ const AddSection = ({
                                         className="button text-primary"
                                     />
                                     <CustomSelectCategories
+                                    className={'mt-1'}
                                         options={categories}
                                         onChange={(e) => {
                                             setFieldValue(
