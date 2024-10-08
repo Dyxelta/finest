@@ -190,16 +190,16 @@ export default function Dashboard({ auth, wallets }) {
                                             ></div>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col items-center">
-                                        <div className="button md:header-5 text-center">
+                                    <div className="flex flex-col items-center overflow-hidden">
+                                        <div className="button md:header-5 text-center w-full overflow-hidden text-ellipsis whitespace-nowrap">
                                             {wallet?.wallet_name}
                                         </div>
                                         <div
-                                            className={`sub-body md:sub-body-14 ${
+                                            className={`sub-body md:sub-body-14 w-full overflow-hidden text-ellipsis whitespace-nowrap text-center ${
                                                 selectedIndex === index
                                                     ? "text-white"
                                                     : "text-grey"
-                                            } text-center`}
+                                            }`}
                                         >
                                             {wallet?.wallet_description}
                                         </div>
@@ -241,8 +241,8 @@ export default function Dashboard({ auth, wallets }) {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col md:flex-row  mt-4 h-[400px] md:h-[200px] gap-4 lg:gap-8">
-                <div className="flex-1 w-full border-l-4 border-primary px-4 py-3 bg-light">
+            <div className="flex flex-col  mt-4 gap-4 ">
+                <div className=" w-full border-l-4 border-primary px-4 py-3 bg-light">
                     <div className=" flex justify-between">
                         <div className="flex h-fit items-center text-light gap-2">
                             <div className="p-2 bg-primary rounded-md ">
@@ -283,27 +283,48 @@ export default function Dashboard({ auth, wallets }) {
                             </Button>
                         </div>
                     </div>
-                    <div className="text-primary mt-2">
-                        <h5 className="body ">Total Balance</h5>
-                        <h5 className="header-5 ">
-                            {formatToRupiah(selectedWallet?.wallet_balance)}
-                        </h5>
-                    </div>
-                    <div className="text-primary mt-2">
-                        <h5 className="body">Created Date</h5>
+                    <div className="flex flex-col md:flex-row gap-4">
+                        <div className="md:flex-1">
+                            <div className="text-primary mt-2">
+                                <h5 className="body ">Wallet Name</h5>
+                                <h5 className="header-5 ">
+                                    {selectedWallet?.wallet_name}
+                                </h5>
+                            </div>
+                            <div className="text-primary mt-2">
+                                <h5 className="body">Description</h5>
 
-                        <h5 className="header-5 ">
-                            {formatDate(selectedWallet?.created_at)}
-                        </h5>
+                                <h5 className="header-5 overflow-hidden text-ellipsis whitespace-break-spaces">
+                                    {selectedWallet?.wallet_description}
+                                </h5>
+                            </div>
+                        </div>
+                        <div className="md:flex-1">
+                            <div className="text-primary mt-2">
+                                <h5 className="body ">Total Balance</h5>
+                                <h5 className="header-5 ">
+                                    {formatToRupiah(
+                                        selectedWallet?.wallet_balance
+                                    )}
+                                </h5>
+                            </div>
+                            <div className="text-primary mt-2">
+                                <h5 className="body">Created Date</h5>
+
+                                <h5 className="header-5 ">
+                                    {formatDate(selectedWallet?.created_at)}
+                                </h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div className="h-full flex-1 flex-col w-full flex justify-between gap-2 text-light">
+                <div className="h-full flex-col md:flex-row w-full flex justify-between gap-2 text-light">
                     <div className="bg-light w-full flex-1 rounded-md flex">
-                        <div className="bg-primary flex w-fit h-full  px-2 items-center justify-center rounded-md">
+                        <div className="bg-primary flex w-fit h-auto px-2 items-center justify-center rounded-md ">
                             <FaArrowTrendUp size={24} />
                         </div>
-                        <div className="text-primary flex h-full flex-col justify-center px-4">
+                        <div className="text-primary flex h-full flex-col justify-center px-4 py-4">
                             <h1 className="body ">Total Income</h1>
                             <h2 className="header-5 ">
                                 {IncomeTransactions &&
@@ -318,10 +339,10 @@ export default function Dashboard({ auth, wallets }) {
                         </div>
                     </div>
                     <div className="bg-light w-full flex-1 rounded-md flex">
-                        <div className="bg-primary flex w-fit h-full  px-2 items-center justify-center rounded-md">
+                        <div className="bg-primary flex w-fit  h-auto  px-2 items-center justify-center rounded-md">
                             <FaArrowTrendDown size={24} />
                         </div>
-                        <div className="text-primary flex h-full flex-col justify-center px-4">
+                        <div className="text-primary flex h-full flex-col justify-center px-4 py-4">
                             <h1 className="body">Total Expense</h1>
                             <h2 className="header-5">
                                 {ExpenseTransactions &&
@@ -338,33 +359,6 @@ export default function Dashboard({ auth, wallets }) {
                 </div>
             </div>
 
-            <div className="flex justify-center items-center  mt-4 h-[200px] gap-4 lg:gap-8 bg-light relative text-primary">
-                <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8 px-10 md:px-14 lg:px-20 text-center md:text-start">
-                    <img
-                        src={logo}
-                        alt="Logo"
-                        className="w-[80px] h-[80px] lg:w-[150px] lg:h-[150px]"
-                    />
-                    <div className="flex flex-col">
-                        <div className="body lg:header-4-light">
-                            Take control of your finances effortlessly
-                        </div>
-                        <div className=" w-full md:max-w-[360px] header-5 md:header-3 lg:header-2 ">
-                            Simplify Your Finances, Amplify Your Life
-                        </div>
-                    </div>
-                </div>
-                <img
-                    src={Left}
-                    alt="Logo"
-                    className="w-[50px] md:w-[140px] lg:w-[200px] xl:w-[350px] h-full absolute top-0 left-0"
-                />
-                <img
-                    src={Right}
-                    alt="Logo"
-                    className="w-[50px] md:w-[140px] lg:w-[200px] xl:w-[350px] h-full absolute top-0 right-0"
-                />
-            </div>
             <AddWalletPopup
                 show={openAddWallet}
                 headerColor={"blue"}

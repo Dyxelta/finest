@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import logoLetter from "../../../public/image/app/Logo-letter.png";
 
 export default function Authenticated({ user, header, children }) {
-    const [openNav, setOpenNav] = useState(false);
+    const [openNav, setOpenNav] = useState(true);
     const [open, setOpen] = useState(false);
     const { reminders } = usePage().props;
     const toggleOpen = () => setOpen((cur) => !cur);
@@ -44,7 +44,7 @@ export default function Authenticated({ user, header, children }) {
                     <div
                         className={`w-full p-1 transition-width duration-500 px-4  ${
                             openNav
-                                ? "container-open-nav "
+                                ? "container-open-nav"
                                 : "container delay-200"
                         }`}
                     >
