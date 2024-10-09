@@ -33,7 +33,7 @@ const CategoryCard = ({ budget, setShowInitialBudget, showInitialBudget,setData 
                             size="18px"
                         />
                     </div>
-                    <span className="button">{budget?.category?.category_name}</span>
+                    <span className="sub-body-bold md:button">{budget?.category?.category_name}</span>
                 </div>
             </div>
 

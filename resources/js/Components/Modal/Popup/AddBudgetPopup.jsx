@@ -172,7 +172,7 @@ export default function AddBudgetPopup({
                                                     name="budget_name"
                                                     placeholder="Name of the budget"
                                                     type="text"
-                                                    className="w-full"
+                                                    className="w-full "
                                                     onChange={(e) => {
                                                         setFieldValue(
                                                             "budget_name",
@@ -194,10 +194,7 @@ export default function AddBudgetPopup({
                                                     labelFor="Budget Category"
                                                     className="button text-primary"
                                                 />
-                                                {console.log(
-                                                    data,
-                                                    "sdguhifuishdfisduifh"
-                                                )}
+                                         
                                                 <CustomSelectCategories
                                                     options={categoryOptions}
                                                     onChange={(e) => {
@@ -211,6 +208,7 @@ export default function AddBudgetPopup({
                                                             e.value
                                                         );
                                                     }}
+                                                    className={'mt-2'}
                                                 />
                                                 <ErrorMessageInput name="category_name" />
                                             </FormGroup>

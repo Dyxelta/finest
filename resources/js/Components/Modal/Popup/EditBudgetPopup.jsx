@@ -218,6 +218,7 @@ export default function EditBudgetPopup({
                                                             e.value
                                                         );
                                                     }}
+                                                    className={'mt-2'}
                                                 />
                                                 <ErrorMessageInput name="category_name" />
                                             </FormGroup>

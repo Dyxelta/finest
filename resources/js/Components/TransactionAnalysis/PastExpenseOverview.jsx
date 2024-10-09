@@ -59,11 +59,11 @@ const PastExpenseOverview = ({ monthly_total_transaction }) => {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis
                             dataKey="monthName"
-                            className="text-[10px] md:text-[12px]"
+                            className="text-[10px] hidden lg:block"
                         />
                         <YAxis
                             tickFormatter={formatYAxis}
-                            className="text-[9px] md:text-[14px]"
+                            className="text-[9px] hidden lg:block"
                         />
                         <Line
                             type="monotone"

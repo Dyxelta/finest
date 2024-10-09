@@ -56,7 +56,7 @@ const ExpenseReportOverview = ({ monthly_expense_data }) => {
                     >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="monthName" />
-                        <YAxis tickFormatter={formatYAxis} />
+                        <YAxis tickFormatter={formatYAxis} className="text-[9px] hidden lg:block"/>
 
                         <Tooltip content={<RupiahFormatTooltip />} />
 

@@ -138,7 +138,7 @@ const MonthlyReportOverview = ({
                                 interval={0}
                             />
                             <YAxis
-                                className="m-0 p-0 text-[8px] md:text-[14px] w-[30px] md:w-[50px]"
+                                className="m-0 p-0 text-[8px] md:text-[10px] w-[30px] md:w-[50px] hidden md:block"
                                 width={40}
                                 tickFormatter={formatYAxis}
                             />

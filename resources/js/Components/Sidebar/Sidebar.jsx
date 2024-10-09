@@ -28,7 +28,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
     const [openProfile, setOpenProfile] = useState(false);
     const [openEditProfile, setOpenEditProfile] = useState(false);
     const [openChangePassword, setOpenChangePassword] = useState(false);
- 
+
     const menuArray = [
         {
             Title: "Menus",
@@ -36,7 +36,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 {
                     Title: "Dashboard",
                     href: "dashboard",
-                    currentUrl:"dashboard",
+                    currentUrl: "dashboard",
                     icon: <MdDashboard size={22} />,
                 },
             ],
@@ -47,31 +47,31 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                 {
                     Title: "Add Transaction",
                     href: "addTransaction",
-                    currentUrl:"addTransaction",
+                    currentUrl: "addTransaction",
                     icon: <CiSquarePlus size={22} />,
                 },
                 {
                     Title: "Recurring Transaction",
-                    currentUrl:"recurringTransaction",
+                    currentUrl: "recurringTransaction",
                     href: "recurringTransactionPage",
                     icon: <RxLoop size={21} />,
                 },
                 {
                     Title: "Financial Analysis",
                     href: "transactionAnalysisPage",
-                    currentUrl:"transactionAnalysis",
+                    currentUrl: "transactionAnalysis",
                     icon: <BsGraphUp size={20} />,
                 },
                 {
                     Title: "Transaction Records",
                     href: "transactionPage",
-                    currentUrl:"transactionRecords",
+                    currentUrl: "transactionRecords",
                     icon: <GrHistory size={20} />,
                 },
                 {
                     Title: "Transaction Report",
                     href: "transactionReportPage",
-                    currentUrl:"transactionReport",
+                    currentUrl: "transactionReport",
                     icon: <LuClipboardList size={21} />,
                 },
             ],
@@ -95,9 +95,9 @@ const Sidebar = ({ openNav, setOpenNav }) => {
         },
     ];
     const isActive = (menuItem) => {
-        const currentUrl = window.location.pathname.toLowerCase(); // Get the current URL path
-        return currentUrl.includes(menuItem.currentUrl.toLowerCase()); // Check if it matches
-      };
+        const currentUrl = window.location.pathname.toLowerCase();
+        return currentUrl.includes(menuItem.currentUrl.toLowerCase());
+    };
     return (
         <nav
             className={`fixed transition-all duration-500 ease-in-out h-screen z-50 ${
@@ -163,7 +163,6 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                     <TbCircleArrowUpLeftFilled size={30} />
                                 ) : (
                                     <TbCircleArrowUpRightFilled size={30} />
-                               
                                 )}
                             </Button>
                         </div>
@@ -237,15 +236,20 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                     {menu.Children.map((subMenu, index) => (
                                         <Link
                                             href={route(subMenu?.href)}
-                                            className={` relative group flex gap-2 ${isActive(subMenu) ? "bg-primary text-white": "text-primary"}  ${
-                                                openNav ? "py-3 px-4" : "p-3"
-                                            }  rounded-md  hover:bg-off-white `}
+                                            className={` relative group flex gap-2 rounded-md  
+                                            ${
+                                                isActive(subMenu)
+                                                    ? "bg-primary text-white hover:bg-dark-primary"
+                                                    : "text-primary hover:bg-off-white"
+                                            }  
+                                            ${openNav ? "py-3 px-4" : "p-3"}
+                                        `}
                                         >
                                             <h2
                                                 className={
                                                     openNav
                                                         ? "hidden"
-                                                        : " w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre  rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1"
+                                                        : " w-0 opacity-0 overflow-hidden absolute  bg-white font-semibold whitespace-pre  rounded-xl drop-shadow-lg px-0 py-0 group-hover:px-4 group-hover:py-2 left-[68px] duration-100 group-hover:w-auto group-hover:opacity-100 transition-all bottom-1 text-primary"
                                                 }
                                             >
                                                 {subMenu.Title}
@@ -257,7 +261,7 @@ const Sidebar = ({ openNav, setOpenNav }) => {
                                                         : "justify-center items-center"
                                                 } gap-2`}
                                             >
-                                                <div >{subMenu.icon}</div>
+                                                <div>{subMenu.icon}</div>
                                                 <div
                                                     className={`transition-all ease-in-out overflow-hidden sub-body-14  ${
                                                         openNav

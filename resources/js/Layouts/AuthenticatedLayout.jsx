@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import logoLetter from "../../../public/image/app/Logo-letter.png";
 
 export default function Authenticated({ user, header, children }) {
-    const [openNav, setOpenNav] = useState(true);
+    const [openNav, setOpenNav] = useState(false);
     const [open, setOpen] = useState(false);
     const { reminders } = usePage().props;
     const toggleOpen = () => setOpen((cur) => !cur);
