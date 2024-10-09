@@ -16,7 +16,7 @@ class TransactionController extends Controller
         $request->validate([
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
-            'transaction_amount' => 'required|numeric|min:1|max:100000000',
+            'transaction_amount' => 'required|numeric|min:1|max:1000000000',
             'transaction_note' => 'nullable|string|max:255',
             'transaction_date' => 'required|date'
         ]);
@@ -62,7 +62,7 @@ class TransactionController extends Controller
         $request->validate([
             'wallet_name' => 'required|string',
             'category_name' => 'required|string',
-            'transaction_amount' => 'required|numeric|min:1|max:100000000',
+            'transaction_amount' => 'required|numeric|min:1|max:1000000000',
             'transaction_note' => 'nullable|string|max:255',
             'transaction_date' => 'required'
         ]);
@@ -94,16 +94,6 @@ class TransactionController extends Controller
 
         return redirect()->intended(route('transactionPage'));
     }
-
-    // private function getDashboardTransactionData(){
-    //     $user = auth()->user()->id;
-
-    //     $walletCondition = function ($query) {
-    //         $userId = auth()->user()->id;
-    //         $wallet = Wallet::where('user_id', $userId)->where('wallet_name', $request->wallet_name)->firstOrFail();
-    //             $query->where('wallet_id', $wallet->id);
-    //     };
-    // }
 
     private function changeWalletBalance(Wallet $wallet, $amount)
     {

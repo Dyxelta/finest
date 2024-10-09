@@ -16,7 +16,7 @@ class BudgetController extends Controller
         $request->validate([
             'budget_name' => 'required|unique:budgets,budget_name,NULL,id,user_id,' . $user->id,
             'budget_amount' => 'required|numeric|min:1|max:900000000000000000',
-            'budget_description' => 'required|max:250',
+            'budget_description' => 'required|max:150',
             'category_name' => 'required|string',
             'wallet_name' => 'required|string'
         ]);
