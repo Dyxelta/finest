@@ -30,7 +30,7 @@ const PastExpenseOverview = ({ monthly_total_transaction }) => {
     }));
 
     const data = generateMonthsChart(monthsArr, newMonthlydata);
-   
+
     return (
         <div className="bg-light p-2 md:p-4 rounded-md text-primary">
             <div className="flex w-full justify-between">
@@ -46,32 +46,32 @@ const PastExpenseOverview = ({ monthly_total_transaction }) => {
                 </div>
             </div>
             <div className="flex justify-center h-[350px] pt-4 w-full md:w-[100%] mx-auto">
-                <ResponsiveContainer width="100%" height="95%">
-                    <LineChart
-                        width={500}
-                        height={300}
-                        data={data}
-                        margin={
-                            useChartMargin()
-                        }
-                    >
-                        <Tooltip content={<RupiahFormatTooltip />} />
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis
-                            dataKey="monthName"
-                            className="text-[10px] hidden lg:block"
-                        />
-                        <YAxis
-                            tickFormatter={formatYAxis}
-                            className="text-[9px] hidden lg:block"
-                        />
-                        <Line
-                            type="monotone"
-                            dataKey="total_amount"
-                            stroke="#317E3D"
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
+                <div className="w-[1200px] overflow-x-scroll custom-scrollbar">
+                    <ResponsiveContainer width={1200} height="95%">
+                        <LineChart
+                            width={1200}
+                            height={300}
+                            data={data}
+                            margin={useChartMargin()}
+                        >
+                            <Tooltip content={<RupiahFormatTooltip />} />
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis
+                                dataKey="monthName"
+                                className="text-[10px] hidden lg:block"
+                            />
+                            <YAxis
+                                tickFormatter={formatYAxis}
+                                className="text-[9px] hidden lg:block"
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="total_amount"
+                                stroke="#317E3D"
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
         </div>
     );

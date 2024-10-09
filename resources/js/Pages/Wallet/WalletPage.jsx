@@ -149,7 +149,7 @@ export default function Dashboard({ auth, wallets }) {
                     </div>
                     <div
                         id="Slider"
-                        className="inline-flex w-full h-full scrollbar-hide whitespace-nowrap scroll-smooth overflow-hidden"
+                        className="inline-flex w-full h-full overflow-x-scroll custom-scrollbar md:scrollbar-hide md:whitespace-nowrap md:scroll-smooth md:overflow-hidden"
                     >
                         {wallets?.map((wallet, index) => (
                             <motion.div

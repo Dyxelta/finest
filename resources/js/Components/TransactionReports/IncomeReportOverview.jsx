@@ -6,7 +6,7 @@ import {
 import {
     formatYAxis,
     parseMonth,
-    RupiahFormatTooltip
+    RupiahFormatTooltip,
 } from "@/Helpers/helperFormat";
 import CustomTooltip from "@/Helpers/Tooltip";
 import React from "react";
@@ -45,26 +45,29 @@ const IncomeReportOverview = ({ monthly_income_data }) => {
                 </div>
             </div>
             <div className="flex justify-center h-full pt-4 w-full md:w-[100%] mx-auto">
-                <ResponsiveContainer width="100%" height="95%">
-                    <LineChart
-                        width={500}
-                        height={300}
-                        data={data}
-                        margin={
-                            useChartMargin()
-                        }
-                    >
-                        <Tooltip content={<RupiahFormatTooltip />} />
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="monthName" />
-                        <YAxis tickFormatter={formatYAxis} className="text-[9px] hidden lg:block"/>
-                        <Line
-                            type="monotone"
-                            dataKey="total_amount"
-                            stroke="#317E3D"
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
+                <div className="w-[1200px] overflow-x-scroll">
+                    <ResponsiveContainer width={1200} height="95%">
+                        <LineChart
+                            width={1200}
+                            height={300}
+                            data={data}
+                            margin={useChartMargin()}
+                        >
+                            <Tooltip content={<RupiahFormatTooltip />} />
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="monthName" />
+                            <YAxis
+                                tickFormatter={formatYAxis}
+                                className="text-[9px] "
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="total_amount"
+                                stroke="#317E3D"
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
         </React.Fragment>
     );

@@ -11,7 +11,7 @@ import {
     ResponsiveContainer,
     Tooltip,
     XAxis,
-    YAxis,
+    YAxis
 } from "recharts";
 import CustomSelectInput from "../CustomInput/CustomSelectInput";
 
@@ -31,7 +31,8 @@ const FormatXAxis = ({ x, y, payload }) => {
 
     return (
         <g transform={`translate(${x},${y})`}>
-            {lines.map((line, index) => (
+            {
+            lines.map((line, index) => (
                 <text
                     key={index}
                     x={0}
@@ -119,41 +120,40 @@ const MonthlyReportOverview = ({
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center h-full pt-4 w-full md:w-[95%] mx-auto">
+            <div className="flex justify-center h-full pt-2 md:pt-8 w-full md:w-[95%] mx-auto">
                 {category_transactions && category_transactions.length !== 0 ? (
-                    <ResponsiveContainer width="100%" height="85%">
-                        <BarChart
-                            width={500}
-                            height={240}
-                            data={MonthlyReportData}
-                            margin={
-                                useChartMargin()
-                            }
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis
-                                className="hidden lg:block"
-                                dataKey="name"
-                                tick={<FormatXAxis />}
-                                interval={0}
-                            />
-                            <YAxis
-                                className="m-0 p-0 text-[8px] md:text-[10px] w-[30px] md:w-[50px] hidden md:block"
-                                width={40}
-                                tickFormatter={formatYAxis}
-                            />
-                            <Tooltip
-                                contentStyle={{
-                                    backgroundColor: "#EBF0F6",
-                                    borderRadius: "8px",
-
-                                    color: "#2D5074",
-                                }}
-                                content={<RupiahFormatTooltip />}
-                            />
-                            <Bar dataKey="value" shape={<BarColor />} />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <div className="w-[1200px] md:w-full overflow-x-scroll h-[90%] md:h-full custom-scrollbar">
+                        <ResponsiveContainer width={1200} height="85%">
+                            <BarChart
+                                width={1200}
+                                height={240}
+                                data={MonthlyReportData}
+                                margin={useChartMargin()}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis
+                                    className=""
+                                    dataKey="name"
+                                    tick={<FormatXAxis />}
+                                    interval={0}
+                                />
+                                <YAxis
+                                    className="m-0 p-0 text-[8px] md:text-[10px] w-[30px] md:w-[50px] "
+                                    width={40}
+                                    tickFormatter={formatYAxis}
+                                />
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: "#EBF0F6",
+                                        borderRadius: "8px",
+                                        color: "#2D5074",
+                                    }}
+                                    content={<RupiahFormatTooltip />}
+                                />
+                                <Bar dataKey="value" shape={<BarColor />} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
                 ) : (
                     <div className="flex flex-col w-full h-full justify-center items-center text-primary rounded-xl gap-4">
                         <div className="text-[64px] md:text-[84px] lg:text-[110px]">

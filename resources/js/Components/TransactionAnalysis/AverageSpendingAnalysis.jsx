@@ -33,20 +33,22 @@ const AverageSpendingAnalysis = ({
         if (finalResult < 0) {
             return (
                 <div className="flex items-end w-full flex-col body">
-                    <div className="text-expense">
-                        {formatToRupiah(
-                            Math.abs(
-                                total_transaction_this_month?.total_transaction
-                            )
-                        )}{" "}
-                        /{" "}
-                        {formatToRupiah(
-                            Math.abs(
-                                average_transaction_last_six_month?.average_total
-                            )
-                        )}
+                    <div className="flex items-center justify-between">
+                        <div className="text-expense">
+                            {formatToRupiah(
+                                Math.abs(
+                                    total_transaction_this_month?.total_transaction
+                                )
+                            )}{" "}
+                            /{" "}
+                            {formatToRupiah(
+                                Math.abs(
+                                    average_transaction_last_six_month?.average_total
+                                )
+                            )}
+                        </div>
+                        <div className="sub-body md:body">100%</div>
                     </div>
-                    <div className="sub-body md:body">100%</div>
                     <div
                         className="border-primary border h-5 w-full rounded-full relative overflow-hidden mt-2"
                         ref={progressBarRef}
@@ -113,7 +115,6 @@ const AverageSpendingAnalysis = ({
                     type="solid"
                     name={currCategory?.icon}
                     color="#2D5074"
-        
                 ></box-icon>
 
                 <span className="header-5">{currCategory?.category_name}</span>
@@ -130,10 +131,13 @@ const AverageSpendingAnalysis = ({
                             </div>
                             <div className="sub-body md:body ">
                                 {average_transaction_last_six_month?.average_total +
-                                        total_transaction_this_month?.total_transaction > 0 ? formatToRupiah(
-                                    average_transaction_last_six_month?.average_total +
-                                        total_transaction_this_month?.total_transaction
-                                ) : "0"}
+                                    total_transaction_this_month?.total_transaction >
+                                0
+                                    ? formatToRupiah(
+                                          average_transaction_last_six_month?.average_total +
+                                              total_transaction_this_month?.total_transaction
+                                      )
+                                    : "0"}
                             </div>
                         </div>
                         <div className="flex flex-col ">
@@ -142,12 +146,15 @@ const AverageSpendingAnalysis = ({
                             </div>
                             <div className="sub-body md:body ">
                                 {average_transaction_last_six_month?.average_total +
-                                            total_transaction_this_month?.total_transaction > 0 ? formatToRupiah(
-                                    AverageSpendingRecommendation(
-                                        average_transaction_last_six_month?.average_total +
-                                            total_transaction_this_month?.total_transaction
-                                    )
-                                ) : "0"}
+                                    total_transaction_this_month?.total_transaction >
+                                0
+                                    ? formatToRupiah(
+                                          AverageSpendingRecommendation(
+                                              average_transaction_last_six_month?.average_total +
+                                                  total_transaction_this_month?.total_transaction
+                                          )
+                                      )
+                                    : "0"}
                             </div>
                         </div>
                         <div className="flex flex-col ">

@@ -45,28 +45,29 @@ const ExpenseReportOverview = ({ monthly_expense_data }) => {
                 </div>
             </div>
             <div className="flex justify-center h-full pt-4 w-full md:w-[100%] mx-auto">
-                <ResponsiveContainer width="100%" height="95%">
-                    <LineChart
-                        width={500}
-                        height={300}
-                        data={data}
-                        margin={
-                            useChartMargin()
-                        }
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="monthName" />
-                        <YAxis tickFormatter={formatYAxis} className="text-[9px] hidden lg:block"/>
-
-                        <Tooltip content={<RupiahFormatTooltip />} />
-
-                        <Line
-                            type="monotone"
-                            dataKey="total_amount"
-                            stroke="#C02317"
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
+                <div className="w-[1200px] overflow-x-scroll">
+                    <ResponsiveContainer width={1200} height="95%">
+                        <LineChart
+                            width={1200}
+                            height={300}
+                            data={data}
+                            margin={useChartMargin()}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="monthName" />
+                            <YAxis
+                                tickFormatter={formatYAxis}
+                                className="text-[9px] "
+                            />
+                            <Tooltip content={<RupiahFormatTooltip />} />
+                            <Line
+                                type="monotone"
+                                dataKey="total_amount"
+                                stroke="#C02317"
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
         </React.Fragment>
     );

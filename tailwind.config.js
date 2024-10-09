@@ -41,6 +41,9 @@ const tailwindConfig = withMT({
                 tablet: "950px",
                 large: "1200px",
             },
+            zIndex: {
+                '100': '100',
+              }
         },
     },
 
