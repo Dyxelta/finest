@@ -389,19 +389,19 @@ export default function BudgetPage({
                             </div>
                         </div>
                         <div className="flex flex-col w-full h-full px-2 md:px-8 py-2">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-x-4 gap-y-2 h-full">
-                                <div>
-                                    <div className="button">Budget Name :</div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 h-full">
+                                <div >
+                                    <div className="button col-span-1 ">Budget Name :</div>
                                     <div>{showInitialBudget?.budget_name}</div>
                                 </div>
                                 <div>
                                     <div className="button">Category :</div>
                                     <div>{selectedCategory?.category_name}</div>
                                 </div>
-                                <div>
+                                <div className=" col-span-1 sm:col-span-2">
                                     <div className="button">Limit :</div>
                                     <div>
-                                        {showInitialBudget?.budget_amount}
+                                        {formatToRupiah(showInitialBudget?.budget_amount)}
                                     </div>
                                 </div>
                                 <div className="col-span-1 sm:col-span-2 md:col-span-3">

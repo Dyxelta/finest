@@ -57,7 +57,7 @@ const IncomeReportOverview = ({ monthly_income_data }) => {
                         <Tooltip content={<RupiahFormatTooltip />} />
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="monthName" />
-                        <YAxis tickFormatter={formatYAxis} />
+                        <YAxis tickFormatter={formatYAxis} className="text-[9px] hidden lg:block"/>
                         <Line
                             type="monotone"
                             dataKey="total_amount"

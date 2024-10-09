@@ -57,9 +57,9 @@ export const useChartMargin = () => {
     const breakpoints = {
         mobile: 768,
         tablet: 1024,
-        mobileMargin: { top: 5, right: 10, left: 40, bottom: 5 },
+        mobileMargin: { top: 5, right: 10, left: 0, bottom: 5 },
         tabletMargin: { top: 5, right: 15, left: 70, bottom: 5 },
-        defaultMargins: { top: 5, right: 20, left: 90, bottom: 5 },
+        defaultMargins: { top: 5, right: 20, left: 100, bottom: 5 },
     };
 
     const [margin, setMargin] = useState(breakpoints.defaultMargins);
