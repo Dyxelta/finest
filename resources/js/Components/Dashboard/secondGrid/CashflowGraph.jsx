@@ -46,7 +46,7 @@ const CashflowGraph = ({
         current_month_total_income,
         Math.abs(current_month_total_expense)
     );
-    const COLORS = ["#1B3046","#2D5074"];
+    const COLORS = ["#317E3D","#950606"];
     return (
         <div className="py-1 px-4 z-50 relative text-primary">
             <div className="flex justify-center tablet:justify-end">

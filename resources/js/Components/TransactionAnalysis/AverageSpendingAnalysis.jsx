@@ -1,4 +1,5 @@
 import { formatToRupiah } from "@/Helpers/helperFormat";
+import { getProgressBarBorder, getProgressBarColor } from "@/Helpers/progressBar";
 import { getRemainingDays } from "@/Helpers/remainingDays";
 import CustomTooltip from "@/Helpers/Tooltip";
 import { useEffect, useRef, useState } from "react";
@@ -33,8 +34,8 @@ const AverageSpendingAnalysis = ({
         if (finalResult < 0) {
             return (
                 <div className="flex items-end w-full flex-col body">
-                    <div className="flex items-center justify-between">
-                        <div className="text-expense">
+                    <div className="flex items-center justify-between w-full text-expense">
+                        <div>
                             {formatToRupiah(
                                 Math.abs(
                                     total_transaction_this_month?.total_transaction
@@ -50,10 +51,39 @@ const AverageSpendingAnalysis = ({
                         <div className="sub-body md:body">100%</div>
                     </div>
                     <div
+                        className="border-expense border h-5 w-full rounded-full relative overflow-hidden mt-2"
+                        ref={progressBarRef}
+                    >
+                        <div className="absolute left-0 bg-expense w-full h-full"></div>
+                    </div>
+                </div>
+            );
+        } else if (
+            Math.abs(total_transaction_this_month?.total_transaction) <= 0
+        ) {
+            return (
+                <div className="flex items-end w-full flex-col body">
+                    <div className="flex items-center justify-between w-full">
+                        <div className="text-primary">
+                            {formatToRupiah(
+                                Math.abs(
+                                    total_transaction_this_month?.total_transaction
+                                )
+                            )}{" "}
+                            /{" "}
+                            {formatToRupiah(
+                                Math.abs(
+                                    average_transaction_last_six_month?.average_total
+                                )
+                            )}
+                        </div>
+                        <div className="sub-body md:body">0%</div>
+                    </div>
+                    <div
                         className="border-primary border h-5 w-full rounded-full relative overflow-hidden mt-2"
                         ref={progressBarRef}
                     >
-                        <div className="absolute left-0 bg-primary w-full h-full"></div>
+                        <div className="absolute left-0 bg-primary w-0 h-full"></div>
                     </div>
                 </div>
             );
@@ -79,11 +109,11 @@ const AverageSpendingAnalysis = ({
                         </div>
                     </div>
                     <div
-                        className="border-primary border h-3 md:h-5 w-full rounded-full relative overflow-hidden mt-2"
+                        className={`${getProgressBarBorder(getProgressBarPercentage *100)} border h-3 md:h-5 w-full rounded-full relative overflow-hidden mt-2`}
                         ref={progressBarRef}
                     >
                         <div
-                            className="absolute left-0 bg-primary h-full rounded-full"
+                            className={`absolute left-0 ${getProgressBarColor(getProgressBarPercentage *100)} h-full rounded-full`}
                             style={{
                                 width: `${Math.ceil(currProgressLength)}px`,
                             }}
@@ -96,6 +126,7 @@ const AverageSpendingAnalysis = ({
 
     const AverageSpendingRecommendation = (values) => {
         const dayDifference = getRemainingDays();
+
         return values / dayDifference;
     };
     return (
@@ -161,10 +192,13 @@ const AverageSpendingAnalysis = ({
                             <div className="sub-body-bold md:button ">
                                 Status:
                             </div>
+                            {console.log(
+                                total_transaction_this_month?.total_transaction
+                            )}
                             <div className="sub-body md:body ">
                                 {AverageSpendingRecommendation(
-                                    average_transaction_last_six_month?.average_total +
-                                        total_transaction_this_month?.total_transaction
+                                    total_transaction_this_month?.total_transaction -
+                                        average_transaction_last_six_month?.average_total
                                 ) < 0 ? (
                                     <span className="text-expense">
                                         Spending Limit Overspent
@@ -177,8 +211,8 @@ const AverageSpendingAnalysis = ({
                     </div>
 
                     {AverageSpendingRecommendation(
-                        average_transaction_last_six_month?.average_total +
-                            total_transaction_this_month?.total_transaction
+                        total_transaction_this_month?.total_transaction -
+                            average_transaction_last_six_month?.average_total
                     ) < 0 ? (
                         <div className="p-2 md:p-4 rounded-md justify-between mt-2  w-full sub-body md:body">
                             <span className="sub-body-bold md:button">
@@ -187,8 +221,8 @@ const AverageSpendingAnalysis = ({
                             You have overspent by{" "}
                             <span className="text-expense">
                                 {formatToRupiah(
-                                    average_transaction_last_six_month?.average_total +
-                                        total_transaction_this_month?.total_transaction
+                                    total_transaction_this_month?.total_transaction -
+                                        average_transaction_last_six_month?.average_total
                                 )}
                             </span>{" "}
                             and exceeded your
@@ -206,8 +240,10 @@ const AverageSpendingAnalysis = ({
                             <span className="sub-body-bold md:button">
                                 {formatToRupiah(
                                     AverageSpendingRecommendation(
-                                        average_transaction_last_six_month?.average_total +
-                                            total_transaction_this_month?.total_transaction
+                                        Math.abs(
+                                            average_transaction_last_six_month?.average_total +
+                                                total_transaction_this_month?.total_transaction
+                                        )
                                     )
                                 )}{" "}
                                 per day

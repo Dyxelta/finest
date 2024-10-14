@@ -302,7 +302,7 @@ export default function Dashboard({ auth, wallets }) {
                         <div className="md:flex-1">
                             <div className="text-primary mt-2">
                                 <h5 className="body ">Total Balance</h5>
-                                <h5 className="header-5 ">
+                                <h5 className={`header-5 ${selectedWallet?.wallet_balance < 0 && 'text-expense'}`}>
                                     {formatToRupiah(
                                         selectedWallet?.wallet_balance
                                     )}

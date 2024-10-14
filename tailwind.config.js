@@ -33,9 +33,10 @@ const tailwindConfig = withMT({
                 "dark-grey": "#585858",
                 background: "#EBF0F6",
                 income: "#317E3D",
-                warning: "#ECE41D",
+        
                 expense: "#C02317",
                 "off-white": "#E5E5E5",
+                warning:"#c76e00"
             },
             screens: {
                 tablet: "950px",

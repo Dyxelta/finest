@@ -14,12 +14,16 @@ import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-    budget_name: Yup.string().required("Budget name is required").max(30, "Maximum 30 Characters"),
+    budget_name: Yup.string()
+        .required("Budget name is required")
+        .max(30, "Maximum 30 Characters"),
     category_name: Yup.string().required("Category name is required"),
     budget_amount: Yup.number()
         .typeError("Limit must be number")
         .required("Budget limit is required"),
-    budget_description: Yup.string().required("Description is required").max(150, "Maximum 150 Characters"),
+    budget_description: Yup.string()
+        .required("Description is required")
+        .max(150, "Maximum 150 Characters"),
 });
 
 export default function EditBudgetPopup({
@@ -34,31 +38,45 @@ export default function EditBudgetPopup({
     selectedCategory,
     onClose = () => {},
 }) {
-    
     const [loading, setLoading] = useState(false);
 
     const { setData, put, data } = useForm({
-        id: showInitialBudget?.id,
-        budget_name: showInitialBudget?.budget_name,
-        budget_amount: showInitialBudget?.budget_amount,
-        budget_description: showInitialBudget?.budget_description,
-        wallet_name: "",
-        category_name: selectedCategory?.category_name,
+        id: showInitialBudget?.id || "",
+        budget_name: showInitialBudget?.budget_name || "",
+        budget_amount: showInitialBudget?.budget_amount || 0,
+        budget_description: showInitialBudget?.budget_description || "",
+        wallet_name: selectedWallet?.wallet_name || "",
+        category_name: selectedCategory?.category_name || "", 
     });
 
     const openModal = (error) => {
         setLoading(false);
         showErrorModal("Error", error);
     };
-    
+
     useEffect(() => {
-        setData("wallet_name", selectedWallet?.wallet_name);
-    }, [selectedWallet]);
+        if (selectedWallet?.wallet_name) {
+
+            setData({
+                wallet_name:selectedWallet?.wallet_name,
+                id:showInitialBudget?.id,
+                budget_name:showInitialBudget?.budget_name,
+                budget_amount:showInitialBudget?.budget_amount,
+                budget_description:showInitialBudget?.budget_description,
+                category_name:selectedCategory?.category_name
+            })
+            console.log(selectedWallet?.wallet_name,data ,"Masuk")
+        }
     
+        
+    }, [selectedWallet, showInitialBudget, selectedCategory]);
+
     const closeModal = () => {
         setLoading(false);
         onClose();
-        showSuccessModal("Success", "Budget has been edited successfully");
+        showSuccessModal("Success", "Budget has been edited successfully", () =>
+            window.location.reload()
+        );
     };
 
     const close = () => {
@@ -142,14 +160,18 @@ export default function EditBudgetPopup({
                                 </h5>
                             </div>
                         </div>
-          
+
                         <Formik
                             initialValues={{
-                                budget_name: showInitialBudget?.budget_name ?? "",
-                                budget_amount: showInitialBudget?.budget_amount ?? "",
-                                budget_description: showInitialBudget?.budget_description ?? "",
-                             
-                                category_name: selectedCategory?.category_name ?? "",
+                                budget_name:
+                                    showInitialBudget?.budget_name ?? "",
+                                budget_amount:
+                                    showInitialBudget?.budget_amount ?? "",
+                                budget_description:
+                                    showInitialBudget?.budget_description ?? "",
+
+                                category_name:
+                                    selectedCategory?.category_name ?? "",
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
@@ -188,12 +210,9 @@ export default function EditBudgetPopup({
                                                             e.target.value
                                                         );
                                                     }}
-                                                    
                                                 />
                                             </FormGroup>
-                                            <FormGroup className="flex-1">
-                                              
-                                            </FormGroup>
+                                            <FormGroup className="flex-1"></FormGroup>
                                         </FormGroup>
 
                                         <FormGroup className="w-full sm:flex  gap-2">
@@ -203,10 +222,12 @@ export default function EditBudgetPopup({
                                                     className="button text-primary"
                                                 />
                                                 <CustomSelectCategories
-                                                defaultValue={selectedCategory && {
-                                                    value:selectedCategory?.category_name,
-                                                    label:selectedCategory?.category_name
-                                                }}
+                                                    defaultValue={
+                                                        selectedCategory && {
+                                                            value: selectedCategory?.category_name,
+                                                            label: selectedCategory?.category_name,
+                                                        }
+                                                    }
                                                     options={categoryOptions}
                                                     onChange={(e) => {
                                                         setFieldValue(
@@ -218,7 +239,7 @@ export default function EditBudgetPopup({
                                                             e.value
                                                         );
                                                     }}
-                                                    className={'mt-2'}
+                                                    className={"mt-2"}
                                                 />
                                                 <ErrorMessageInput name="category_name" />
                                             </FormGroup>

@@ -6,7 +6,7 @@ const IncomeExpenseThisMonth = ({ type, amount, icon }) => {
     return (
         <div className="p-2 w-full h-full flex flex-col justify-between z-50 relative">
             <div className="flex flex-col gap-2 p-2">
-                <div className="sub-body md:body ">{type} This Month</div>
+                <div className="sub-body md:body">{type} This Month</div>
                 <div className="sub-body-bold xl:button">{formatToRupiah(amount)}</div>
             </div>
             <div className="flex button justify-end w-full ">
