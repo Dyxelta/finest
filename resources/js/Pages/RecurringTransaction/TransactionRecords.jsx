@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import { CgNotes } from "react-icons/cg";
 import { FiPlus } from "react-icons/fi";
 import { TbMoodEmpty } from "react-icons/tb";
+import { getCategoriesOptions, getWalletOptionsWithId } from "@/Helpers/options";
 
 const ViewTable = ({
     transaction,
@@ -123,41 +124,6 @@ export default function TransactionRecordsPage({
     expenseCategories,
     incomeCategories,
 }) {
-    const [openAddRecurringTransaction, setOpenAddRecurringTransaction] =
-        useState(false);
-    const [openEditRecurringTransaction, setOpenEditRecurringTransaction] =
-        useState(false);
-
-    const [pagination, setPagination] = useState(1);
-    let getCurrentStartSlice = 1 * ((pagination - 1) * 10);
-    let getCurrentEndSlice = pagination * 10;
-
-    const [selectedWallet, setSelectedWallet] = useState(
-        wallets[0].wallet_name
-    );
-
-    const mergedCategories = [...expenseCategories, ...incomeCategories];
-    const [category, setCategory] = useState(mergedCategories[0].category_name);
-
-    const categoryOptions = [
-        {
-            label: "Expense",
-            options: expenseCategories.map((expense) => ({
-                value: expense?.category_name,
-                label: expense?.category_name,
-            })),
-        },
-        {
-            label: "Income",
-            options: incomeCategories.map((income) => ({
-                value: income?.category_name,
-                label: income?.category_name,
-            })),
-        },
-    ];
-
-    const carousel = useRef(null);
-
     useEffect(() => {
         const handleScroll = (e) => {
             if (carousel.current) {
@@ -178,6 +144,29 @@ export default function TransactionRecordsPage({
         };
     }, []);
 
+    const [openAddRecurringTransaction, setOpenAddRecurringTransaction] =
+        useState(false);
+    const [openEditRecurringTransaction, setOpenEditRecurringTransaction] =
+        useState(false);
+
+    const [pagination, setPagination] = useState(1);
+    let getCurrentStartSlice = 1 * ((pagination - 1) * 10);
+    let getCurrentEndSlice = pagination * 10;
+
+    const [selectedWallet, setSelectedWallet] = useState(
+        wallets[0].wallet_name
+    );
+
+    const mergedCategories = [...expenseCategories, ...incomeCategories];
+    const [category, setCategory] = useState(mergedCategories[0]);
+
+    const walletOptions = getWalletOptionsWithId(wallets)
+
+    const categoryOptions = getCategoriesOptions(expenseCategories, incomeCategories)
+
+    const carousel = useRef(null);
+
+  
     const [openRecurringTransactionId, setOpenRecurringTransactionId] =
         useState(null);
 
@@ -193,16 +182,11 @@ export default function TransactionRecordsPage({
     const getFilteredTransactions = recurring_transaction.filter(
         (transaction) =>
             transaction?.wallet?.wallet_name === selectedWallet &&
-            category === transaction?.category?.category_name
+            category?.category_name === transaction?.category?.category_name
     );
     let totalAmount = getFilteredTransactions.reduce((total, transaction) => {
         return total + transaction?.recurring_transaction_amount;
-    }, 0);
-
-    const walletOptions = wallets.map((wallet) => ({
-        value: wallet?.wallet_name,
-        label: wallet?.wallet_name,
-    }));
+    }, 0); 
 
     return (
         <AuthenticatedLayout
@@ -231,15 +215,15 @@ export default function TransactionRecordsPage({
                             <div
                                 key={index}
                                 className={`px-3 py-2 ${
-                                    category === cat.category_name
+                                    category.category_name === cat.category_name
                                         ? "bg-white"
                                         : "bg-gray-300"
                                 } flex items-center min-w-[220px] rounded-t-xl gap-2`}
-                                onClick={() => setCategory(cat.category_name)}
+                                onClick={() => setCategory(cat)}
                             >
                                 <div
                                     className={`p-2 ${
-                                        category === cat.category_name
+                                        category.category_name === cat.category_name
                                             ? " bg-primary text-light"
                                             : "bg-lighter-primary text-primary "
                                     } flex justify-center items-center w-[40px] h-[40px] rounded-md`}
@@ -248,7 +232,7 @@ export default function TransactionRecordsPage({
                                         name={cat.icon}
                                         type="solid"
                                         color={
-                                            category === cat.category_name
+                                            category.category_name === cat.category_name
                                                 ? "white"
                                                 : "#2D5074"
                                         }
@@ -352,7 +336,7 @@ export default function TransactionRecordsPage({
                                             <TbMoodEmpty />
                                         </div>
                                         <div className="header-5 md:header-3">
-                                            No {category} Transactions Yet...
+                                            No {category.category_name} Transactions Yet...
                                         </div>
                                     </div>
                                 )}

@@ -10,14 +10,14 @@ export const getCategoriesOptions = (expenseCategories, incomeCategories) => {
         {
             label: "Expense",
             options: expenseCategories.map((expense) => ({
-                value: expense?.category_name,
+                value: expense?.id,
                 label: expense?.category_name,
             })),
         },
         {
             label: "Income",
             options: incomeCategories.map((income) => ({
-                value: income?.category_name,
+                value: income?.id,
                 label: income?.category_name,
             })),
         },
@@ -35,4 +35,11 @@ export const getExpenseCategoryOptions = (categories) => {
                 })),
         },
     ];
+};
+
+export const getWalletOptionsWithId = (wallets) => {
+    return wallets.map((wallet) => ({
+        value: wallet?.id,
+        label: wallet?.wallet_name,
+    }));
 };

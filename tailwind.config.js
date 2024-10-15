@@ -32,19 +32,19 @@ const tailwindConfig = withMT({
                 "light-grey": "#C6C6C6",
                 "dark-grey": "#585858",
                 background: "#EBF0F6",
-                income: "#317E3D",
-        
-                expense: "#C02317",
+                income: "#255D24",
+
+                expense: "#A52A2A",
                 "off-white": "#E5E5E5",
-                warning:"#c76e00"
+                warning: "#B58900",
             },
             screens: {
                 tablet: "950px",
                 large: "1200px",
             },
             zIndex: {
-                '100': '100',
-              }
+                100: "100",
+            },
         },
     },
 

@@ -1,4 +1,5 @@
 import EditSection from "@/Components/Transaction/EditTransaction/EditSection";
+import { getCategoriesOptions, getWalletOptionsWithId } from "@/Helpers/options";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
@@ -12,28 +13,9 @@ export default function AddTransactionPage({
 }) {
     const [selectedWallet, setSelectedWallet] = useState(transaction?.wallet);
 
-    const walletOptions = wallets.map((wallet) => ({
-        ...wallet,
-        value: wallet?.id,
-        label: wallet?.wallet_name,
-    }));
+    const walletOptions = getWalletOptionsWithId(wallets)
 
-    const categories = [
-        {
-            label: "Expense",
-            options: expenseCategories.map((expense) => ({
-                value: expense?.category_name,
-                label: expense?.category_name,
-            })),
-        },
-        {
-            label: "Income",
-            options: incomeCategories.map((income) => ({
-                value: income?.category_name,
-                label: income?.category_name,
-            })),
-        },
-    ];
+    const categories = getCategoriesOptions(expenseCategories, incomeCategories)
 
     return (
         <AuthenticatedLayout

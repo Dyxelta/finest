@@ -15,7 +15,7 @@ import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
     budget_name: Yup.string().required("Budget name is required").max(30, "Maximum 30 Characters"),
-    category_name: Yup.string().required("Category name is required"),
+    category_id: Yup.number().required("Category name is required"),
     budget_amount: Yup.number()
         .typeError("Limit must be number")
         .required("Budget limit is required"),
@@ -32,16 +32,17 @@ export default function AddBudgetPopup({
     onClose = () => {},
 }) {
     const [loading, setLoading] = useState(false);
+
     const { setData, post, data } = useForm({
         budget_name: "",
         budget_amount: "",
         budget_description: "",
-        wallet_name: selectedWallet?.wallet_name,
-        category_name: "",
+        wallet_id: selectedWallet?.id,
+        category_id: "",
     });
 
     useEffect(() => {
-        setData("wallet_name", selectedWallet?.wallet_name);
+        setData("wallet_id", selectedWallet?.id);
     }, [selectedWallet]);
     
     const openModal = (error) => {
@@ -66,10 +67,10 @@ export default function AddBudgetPopup({
                     openModal(errors.budget_amount);
                 } else if (errors.budget_description) {
                     openModal(errors.budget_description);
-                } else if (errors.wallet_name) {
-                    openModal(errors.wallet_name);
-                } else if (errors.category_name) {
-                    openModal(errors.category_name);
+                } else if (errors.wallet_id) {
+                    openModal(errors.wallet_id);
+                } else if (errors.category_id) {
+                    openModal(errors.category_id);
                 }
             },
             onSuccess: () => closeModal(),
@@ -77,6 +78,7 @@ export default function AddBudgetPopup({
     };
 
     const empty = () => {};
+    
     const maxWidthClass = {
         sm: "sm:max-w-sm",
         md: "sm:max-w-md",
@@ -144,7 +146,7 @@ export default function AddBudgetPopup({
                                 budget_amount: "",
                                 budget_description: "",
 
-                                category_name: "",
+                                category_id: "",
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
@@ -198,19 +200,20 @@ export default function AddBudgetPopup({
                                                 <CustomSelectCategories
                                                     options={categoryOptions}
                                                     onChange={(e) => {
+                                            
                                                         setFieldValue(
-                                                            "category_name",
+                                                            "category_id",
                                                             e.value
                                                         );
-                                                        console.log();
+                                                
                                                         setData(
-                                                            "category_name",
+                                                            "category_id",
                                                             e.value
                                                         );
                                                     }}
                                                     className={'mt-2'}
                                                 />
-                                                <ErrorMessageInput name="category_name" />
+                                                <ErrorMessageInput name="category_id" />
                                             </FormGroup>
 
                                             <FormGroup className="flex-1">

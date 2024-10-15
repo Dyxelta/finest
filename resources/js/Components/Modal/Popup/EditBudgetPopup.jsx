@@ -17,7 +17,7 @@ const validationSchema = Yup.object().shape({
     budget_name: Yup.string()
         .required("Budget name is required")
         .max(30, "Maximum 30 Characters"),
-    category_name: Yup.string().required("Category name is required"),
+    category_id: Yup.number().required("Category name is required"),
     budget_amount: Yup.number()
         .typeError("Limit must be number")
         .required("Budget limit is required"),
@@ -45,8 +45,8 @@ export default function EditBudgetPopup({
         budget_name: showInitialBudget?.budget_name || "",
         budget_amount: showInitialBudget?.budget_amount || 0,
         budget_description: showInitialBudget?.budget_description || "",
-        wallet_name: selectedWallet?.wallet_name || "",
-        category_name: selectedCategory?.category_name || "", 
+        wallet_id: selectedWallet?.id,
+        category_id: selectedCategory?.id || "",
     });
 
     const openModal = (error) => {
@@ -56,19 +56,15 @@ export default function EditBudgetPopup({
 
     useEffect(() => {
         if (selectedWallet?.wallet_name) {
-
             setData({
-                wallet_name:selectedWallet?.wallet_name,
-                id:showInitialBudget?.id,
-                budget_name:showInitialBudget?.budget_name,
-                budget_amount:showInitialBudget?.budget_amount,
-                budget_description:showInitialBudget?.budget_description,
-                category_name:selectedCategory?.category_name
-            })
-            console.log(selectedWallet?.wallet_name,data ,"Masuk")
+                id: showInitialBudget?.id,
+                budget_name: showInitialBudget?.budget_name,
+                budget_amount: showInitialBudget?.budget_amount,
+                budget_description: showInitialBudget?.budget_description,
+                wallet_id: selectedWallet?.id,
+                category_id: selectedCategory?.id,
+            });
         }
-    
-        
     }, [selectedWallet, showInitialBudget, selectedCategory]);
 
     const closeModal = () => {
@@ -89,10 +85,10 @@ export default function EditBudgetPopup({
                     openModal(errors.budget_amount);
                 } else if (errors.budget_description) {
                     openModal(errors.budget_description);
-                } else if (errors.wallet_name) {
-                    openModal(errors.wallet_name);
-                } else if (errors.category_name) {
-                    openModal(errors.category_name);
+                } else if (errors.wallet_id) {
+                    openModal(errors.wallet_id);
+                } else if (errors.category_id) {
+                    openModal(errors.category_id);
                 }
             },
             onSuccess: () => closeModal(),
@@ -170,8 +166,7 @@ export default function EditBudgetPopup({
                                 budget_description:
                                     showInitialBudget?.budget_description ?? "",
 
-                                category_name:
-                                    selectedCategory?.category_name ?? "",
+                                category_id: selectedCategory?.id ?? "",
                             }}
                             validationSchema={validationSchema}
                             onSubmit={close}
@@ -224,18 +219,19 @@ export default function EditBudgetPopup({
                                                 <CustomSelectCategories
                                                     defaultValue={
                                                         selectedCategory && {
-                                                            value: selectedCategory?.category_name,
+                                                            value: selectedCategory?.id,
                                                             label: selectedCategory?.category_name,
                                                         }
                                                     }
                                                     options={categoryOptions}
                                                     onChange={(e) => {
                                                         setFieldValue(
-                                                            "category_name",
+                                                            "category_id",
                                                             e.value
                                                         );
+
                                                         setData(
-                                                            "category_name",
+                                                            "category_id",
                                                             e.value
                                                         );
                                                     }}

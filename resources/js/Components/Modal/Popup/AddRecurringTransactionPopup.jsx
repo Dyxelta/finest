@@ -17,8 +17,8 @@ import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-    wallet_name: Yup.string().required("Wallet name is required"),
-    category_name: Yup.string().required("Category name is required"),
+    wallet_id: Yup.number().required("Wallet name is required"),
+    category_id: Yup.number().required("Category name is required"),
     recurring_transaction_amount: Yup.number().required(
         "Transaction amount is required"
     ),
@@ -39,8 +39,8 @@ export default function AddRecurringTransactionPopup({
 }) {
     const [loading, setLoading] = useState(false);
     const { setData, post, data } = useForm({
-        wallet_name: "",
-        category_name: "",
+        wallet_id: "",
+        category_id: "",
         recurring_transaction_amount: "",
         recurring_transaction_date: "",
         recurring_transaction_note: "",
@@ -64,10 +64,10 @@ export default function AddRecurringTransactionPopup({
         setLoading(true);
         post(route("createRecurringTransaction"), {
             onError: (errors) => {
-                if (errors.wallet_name) {
-                    openModal(errors.wallet_name);
-                } else if (errors.category_name) {
-                    openModal(errors.category_name);
+                if (errors.wallet_id) {
+                    openModal(errors.wallet_id);
+                } else if (errors.category_id) {
+                    openModal(errors.category_id);
                 } else if (errors.recurring_transaction_amount) {
                     openModal(errors.recurring_transaction_amount);
                 } else if (errors.recurring_transaction_date) {
@@ -139,8 +139,8 @@ export default function AddRecurringTransactionPopup({
 
                         <Formik
                             initialValues={{
-                                wallet_name: "",
-                                category_name: "",
+                                wallet_id: "",
+                                category_id: "",
                                 recurring_transaction_amount: "",
                                 recurring_transaction_date: "",
                                 recurring_transaction_note: "",
@@ -168,17 +168,17 @@ export default function AddRecurringTransactionPopup({
                                                 options={walletOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(
-                                                        "wallet_name",
+                                                        "wallet_id",
                                                         e.value
                                                     );
                                                     setData(
-                                                        "wallet_name",
+                                                        "wallet_id",
                                                         e.value
                                                     );
                                                 }}
                                                 className={"mt-[7px]"}
                                             />
-                                            <ErrorMessageInput name="wallet_name" />
+                                            <ErrorMessageInput name="wallet_id" />
                                         </FormGroup>
 
                                         <FormGroup className="flex-1">
@@ -245,16 +245,16 @@ export default function AddRecurringTransactionPopup({
                                                 options={categoryOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(
-                                                        "category_name",
+                                                        "category_id",
                                                         e.value
                                                     );
                                                     setData(
-                                                        "category_name",
+                                                        "category_id",
                                                         e.value
                                                     );
                                                 }}
                                             />
-                                            <ErrorMessageInput name="category_name" />
+                                            <ErrorMessageInput name="category_id" />
                                         </FormGroup>
                                     </FormGroup>
 

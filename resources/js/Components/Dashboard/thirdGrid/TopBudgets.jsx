@@ -48,7 +48,8 @@ const TopBudgets = ({ top_budgets }) => {
             return (
                 <div className="flex items-end w-full flex-col body">
                     <div
-                        className={`border-primary border h-3 w-full rounded-full relative overflow-hidden mt-2 bg-background ${getProgressBarBorder(budget?.percentage)}`}
+                        className={` 
+                            border h-3 w-full rounded-full relative overflow-hidden mt-2 bg-background ${getProgressBarBorder(budget?.percentage)}`}
                         ref={progressBarRef}
                     >
                         <div

@@ -54,7 +54,7 @@ export default function BudgetPage({
                         )
                 )
                 .map((expense) => ({
-                    value: expense?.category_name,
+                    value: expense?.id,
                     label: expense?.category_name,
                 })),
         },
@@ -79,6 +79,7 @@ export default function BudgetPage({
 
     const carousel = useRef(null);
     const [length, setLength] = useState();
+
     useEffect(() => {
         if (progressBarRef.current) {
             const progressBarWidth = progressBarRef.current.offsetWidth;
@@ -108,6 +109,7 @@ export default function BudgetPage({
         value: wallet?.id,
         label: wallet?.wallet_name,
     }));
+
     const [isDeleting, setIsDeleting] = useState(false);
 
     const { delete: destroy, setData } = useForm({

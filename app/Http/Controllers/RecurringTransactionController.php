@@ -52,7 +52,7 @@ class RecurringTransactionController extends Controller
 
     public function editRecurringTransaction(Request $request)
     {
-        $user = auth()->user;
+        $user = auth()->user();
 
         $request->validate([
             'wallet_id' => 'required|numeric',

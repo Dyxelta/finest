@@ -40,7 +40,7 @@ const HeaderInfo = ({
                                     }
                                     options={walletOptions}
                                     onChange={(e) => {
-                                        setSelectedWallet(e.value);
+                                        setSelectedWallet(e.label);
                                     }}
                                 />
                             </div>

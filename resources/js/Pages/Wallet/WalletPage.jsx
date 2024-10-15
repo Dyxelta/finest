@@ -41,7 +41,7 @@ export default function WalletPage({ auth, wallets }) {
     };
 
     const calculateTotalTransaction = (transactions) => {
-        console.log(transactions)
+      
         return transactions.reduce((total, transaction) => {
             return total + transaction.transaction_amount;
         }, 0);
