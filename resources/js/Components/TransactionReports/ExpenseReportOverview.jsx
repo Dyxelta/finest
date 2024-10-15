@@ -63,7 +63,7 @@ const ExpenseReportOverview = ({ monthly_expense_data }) => {
                             <Line
                                 type="monotone"
                                 dataKey="total_amount"
-                                stroke="#C02317"
+                                stroke="#A52A2A"
                             />
                         </LineChart>
                     </ResponsiveContainer>

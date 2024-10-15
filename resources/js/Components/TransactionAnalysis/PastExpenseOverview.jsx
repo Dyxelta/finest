@@ -67,7 +67,7 @@ const PastExpenseOverview = ({ monthly_total_transaction }) => {
                             <Line
                                 type="monotone"
                                 dataKey="total_amount"
-                                stroke="#317E3D"
+                                stroke="#2D7030"
                             />
                         </LineChart>
                     </ResponsiveContainer>
