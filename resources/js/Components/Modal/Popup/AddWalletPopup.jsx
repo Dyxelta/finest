@@ -49,8 +49,8 @@ export default function AddWalletPopup({
         setLoading(true);
         post(route("createWallet"), {
             onError: (errors) => {
-                if (errors.wallet_balance) {
-                    openModal(errors.wallet_balance);
+                if (errors.wallet_name) {
+                    openModal(errors.wallet_name);
                 } else if (errors.wallet_balance) {
                     openModal(errors.wallet_balance);
                 } else if (errors.wallet_description) {

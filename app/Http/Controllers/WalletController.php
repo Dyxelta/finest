@@ -9,8 +9,10 @@ class WalletController extends Controller
 {
     public function addWallet(Request $request)
     {
+        $user = auth()->user();
+
         $request->validate([
-            'wallet_name' => 'required|string',
+            'wallet_name' => 'required|string|max:30|unique:wallets,wallet_name,NULL,id,user_id,' . $user->id,
             'wallet_balance' => 'required|numeric|min:1|max:1000000000000',
             'wallet_description' => 'nullable|string|max:255'
         ]);
@@ -34,8 +36,10 @@ class WalletController extends Controller
 
     public function editWallet(Request $request)
     {
+        $user = auth()->user();
+
         $request->validate([
-            'wallet_name' => 'required|string',
+            'wallet_name' => 'required|string|max:30|unique:wallets,wallet_name,NULL,id,user_id,' . $user->id,
             'wallet_balance' => 'required|numeric|min:1|max:1000000000000',
             'wallet_description' => 'nullable|string|max:255'
         ]);

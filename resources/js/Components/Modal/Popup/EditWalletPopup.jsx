@@ -63,9 +63,9 @@ export default function EditWalletPopup({
         put(route("editWallet"), {
             
             onError: (errors) => {
-                if (errors.wallet_balance) {
+                if (errors.wallet_name) {
                     openModal();
-                    setError(errors.wallet_balance);
+                    setError(errors.wallet_name);
                 } else if (errors.wallet_balance) {
                     openModal();
                     setError(errors.wallet_balance);
@@ -132,10 +132,10 @@ export default function EditWalletPopup({
                             </div>
                             <div className="flex flex-col">
                                 <h1 className="text-primary header-4">
-                                    Add Wallet
+                                    Edit Wallet
                                 </h1>
                                 <h5 className="text-grey sub-body-14">
-                                    Add New Wallet
+                                    Edit your existing wallet
                                 </h5>
                             </div>
                         </div>
