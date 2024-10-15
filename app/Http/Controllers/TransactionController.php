@@ -27,7 +27,7 @@ class TransactionController extends Controller
 
         $transactionAmount = $category->category_is_income ? $request->transaction_amount : -$request->transaction_amount;
 
-        $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+        $wallet =  Wallet::where('user_id', $user->id)->where('wallet_name', $request->wallet_name)->firstOrFail();
 
         Transaction::create([
             'user_id' => $user->id,
@@ -109,7 +109,7 @@ class TransactionController extends Controller
             ->with('category')
             ->orderBy('transaction_date', 'desc')
             ->get();
-
+       
         return ['transactions' => $transactions];
     }
 

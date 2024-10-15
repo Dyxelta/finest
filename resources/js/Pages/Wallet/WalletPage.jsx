@@ -19,11 +19,8 @@ import {
 import { HiPencil } from "react-icons/hi2";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Button } from "reactstrap";
-import logo from "../../../../public/image/app/Logo.png";
-import Left from "../../../../public/image/wallet/Left.png";
-import Right from "../../../../public/image/wallet/Right.png";
 
-export default function Dashboard({ auth, wallets }) {
+export default function WalletPage({ auth, wallets }) {
     const [selectedWallet, setSelectedWallet] = useState(wallets[0] ?? null);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [openAddWallet, setOpenAddWallet] = useState(false);
@@ -44,6 +41,7 @@ export default function Dashboard({ auth, wallets }) {
     };
 
     const calculateTotalTransaction = (transactions) => {
+        console.log(transactions)
         return transactions.reduce((total, transaction) => {
             return total + transaction.transaction_amount;
         }, 0);

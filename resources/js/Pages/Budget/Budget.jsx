@@ -161,7 +161,7 @@ export default function BudgetPage({
     const progressBarRef = useRef(null);
 
     const countRecommendedBudgetAmount = () => {
-        const transactions = showInitialBudget?.category?.transaction ?? [];
+        const transactions = showInitialBudget?.category?.transactions ?? [];
 
         const dayDifference = getRemainingDays()
 
@@ -171,7 +171,7 @@ export default function BudgetPage({
             }, 0);
 
             const finalResult = showInitialBudget.budget_amount - totalSpending;
-
+      
             if (finalResult < 0) {
                 return (
                     <div className="px-4 py-1 h-full flex-col sub-body md:body">

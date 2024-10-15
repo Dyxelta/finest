@@ -1,5 +1,8 @@
 import { formatToRupiah } from "@/Helpers/helperFormat";
-import { getProgressBarBorder, getProgressBarColor } from "@/Helpers/progressBar";
+import {
+    getProgressBarBorder,
+    getProgressBarColor,
+} from "@/Helpers/progressBar";
 import { getRemainingDays } from "@/Helpers/remainingDays";
 import CustomTooltip from "@/Helpers/Tooltip";
 import { useEffect, useRef, useState } from "react";
@@ -27,8 +30,13 @@ const AverageSpendingAnalysis = ({
             Math.abs(average_transaction_last_six_month?.average_total) -
             Math.abs(total_transaction_this_month?.total_transaction);
         const getProgressBarPercentage =
-            Math.abs(average_transaction_last_six_month?.average_total) /
-            Math.abs(total_transaction_this_month?.total_transaction);
+            Math.abs(total_transaction_this_month?.total_transaction) /
+            Math.abs(average_transaction_last_six_month?.average_total);
+
+        console.log(
+            average_transaction_last_six_month?.average_total,
+            total_transaction_this_month?.total_transaction
+        );
         const currProgressLength = length * getProgressBarPercentage;
 
         if (finalResult < 0) {
@@ -109,11 +117,15 @@ const AverageSpendingAnalysis = ({
                         </div>
                     </div>
                     <div
-                        className={`${getProgressBarBorder(getProgressBarPercentage *100)} border h-3 md:h-5 w-full rounded-full relative overflow-hidden mt-2`}
+                        className={`${getProgressBarBorder(
+                            getProgressBarPercentage * 100
+                        )} border h-3 md:h-5 w-full rounded-full relative overflow-hidden mt-2`}
                         ref={progressBarRef}
                     >
                         <div
-                            className={`absolute left-0 ${getProgressBarColor(getProgressBarPercentage *100)} h-full rounded-full`}
+                            className={`absolute left-0 ${getProgressBarColor(
+                                getProgressBarPercentage * 100
+                            )} h-full rounded-full`}
                             style={{
                                 width: `${Math.ceil(currProgressLength)}px`,
                             }}
@@ -160,6 +172,7 @@ const AverageSpendingAnalysis = ({
                             <div className="sub-body-bold md:button ">
                                 Available Balance Left:
                             </div>
+
                             <div className="sub-body md:body ">
                                 {average_transaction_last_six_month?.average_total +
                                     total_transaction_this_month?.total_transaction >
@@ -192,9 +205,7 @@ const AverageSpendingAnalysis = ({
                             <div className="sub-body-bold md:button ">
                                 Status:
                             </div>
-                            {console.log(
-                                total_transaction_this_month?.total_transaction
-                            )}
+
                             <div className="sub-body md:body ">
                                 {AverageSpendingRecommendation(
                                     total_transaction_this_month?.total_transaction -
@@ -241,7 +252,7 @@ const AverageSpendingAnalysis = ({
                                 {formatToRupiah(
                                     AverageSpendingRecommendation(
                                         Math.abs(
-                                            average_transaction_last_six_month?.average_total +
+                                            average_transaction_last_six_month?.average_total -
                                                 total_transaction_this_month?.total_transaction
                                         )
                                     )
