@@ -17,17 +17,14 @@ class BudgetController extends Controller
             'budget_name' => 'required|unique:budgets,budget_name,NULL,id,user_id,' . $user->id,
             'budget_amount' => 'required|numeric|min:1|max:900000000000000000',
             'budget_description' => 'required|max:150',
-            'category_name' => 'required|string',
-            'wallet_name' => 'required|string'
+            'category_id' => 'required|numeric',
+            'wallet_id' => 'required|numeric'
         ]);
-
-        $category = Category::where('category_name', $request->category_name)->firstOrFail();
-        $wallet = Wallet::where('user_id', $user->id)->where('wallet_name', $request->wallet_name)->firstOrFail();
 
         Budget::create([
             'user_id' => $user->id,
-            'category_id' => $category->id,
-            'wallet_id' => $wallet->id,
+            'category_id' => $request->category_id,
+            'wallet_id' => $request->wallet_id,
             'budget_name' => $request->budget_name,
             'budget_amount' => $request->budget_amount,
             'budget_description' => $request->budget_description
@@ -60,19 +57,19 @@ class BudgetController extends Controller
             'budget_name' => 'required',
             'budget_amount' => 'required|numeric|min:1|max:900000000000000000',
             'budget_description' => 'required|max:250',
-            'category_name' => 'required|string',
-            'wallet_name' => 'required|string'
+            'category_id' => 'required|numeric',
+            'wallet_id' => 'required|numeric'
         ]);
 
         $budget_name = $request->budget_name;
         $budget_amount = $request->budget_amount;
         $budget_description = $request->budget_description;
-        $category_name = $request->category_name;
-        $wallet_name = $request->wallet_name;
+        $category_id = $request->category_id;
+        $wallet_id = $request->wallet_id;
 
         $budget->budget_name = $budget_name;
-        $budget->category_id = Category::firstWhere('category_name', $category_name)->id;
-        $budget->wallet_id = Wallet::firstWhere('wallet_name', $wallet_name)->id;
+        $budget->category_id = $category_id;
+        $budget->wallet_id = $wallet_id;
         $budget->budget_amount = $budget_amount;
         $budget->budget_description = $budget_description;
 

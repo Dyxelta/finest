@@ -14,8 +14,8 @@ class TransactionController extends Controller
     {
 
         $request->validate([
-            'wallet_name' => 'required|string',
-            'category_name' => 'required|string',
+            'wallet_id' => 'required|numeric',
+            'category_id' => 'required|numeric',
             'transaction_amount' => 'required|numeric|min:1|max:1000000000',
             'transaction_note' => 'nullable|string|max:255',
             'transaction_date' => 'required|date'
@@ -23,11 +23,11 @@ class TransactionController extends Controller
 
         $user = auth()->user();
 
-        $category = Category::where('category_name', $request->category_name)->firstOrFail();
+        $category = Category::where('id', $request->category_id)->firstOrFail();
 
         $transactionAmount = $category->category_is_income ? $request->transaction_amount : -$request->transaction_amount;
 
-        $wallet = Wallet::where('wallet_name', $request->wallet_name)->firstOrFail();
+        $wallet = Wallet::where('id', $request->wallet_id)->firstOrFail();
 
         Transaction::create([
             'user_id' => $user->id,
@@ -60,8 +60,8 @@ class TransactionController extends Controller
         $user = auth()->user();
 
         $request->validate([
-            'wallet_name' => 'required|string',
-            'category_name' => 'required|string',
+            'wallet_id' => 'required|numeric',
+            'category_id' => 'required|numeric',
             'transaction_amount' => 'required|numeric|min:1|max:1000000000',
             'transaction_note' => 'nullable|string|max:255',
             'transaction_date' => 'required'
@@ -71,8 +71,8 @@ class TransactionController extends Controller
 
         $transaction = Transaction::findOrFail($transactionId);
 
-        $wallet = Wallet::where('user_id', $user->id)->where('wallet_name', $request->wallet_name)->firstOrFail();
-        $category = Category::where('category_name', $request->category_name)->firstOrFail();
+        $wallet = Wallet::where('user_id', $user->id)->where('id', $request->wallet_id)->firstOrFail();
+        $category = Category::where('id', $request->category_id)->firstOrFail();
 
         $originalAmount = $transaction->transaction_amount;
 
