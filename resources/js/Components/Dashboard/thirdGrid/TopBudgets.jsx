@@ -5,6 +5,7 @@ import { TbArrowNarrowRight } from "react-icons/tb";
 import "boxicons";
 import { formatToRupiah } from "@/Helpers/helperFormat";
 import CustomTooltip from "@/Helpers/Tooltip";
+import { getProgressBarBorder, getProgressBarColor } from "@/Helpers/progressBar";
 const TopBudgets = ({ top_budgets }) => {
     const progressBarRef = useRef(null);
     const [length, setLength] = useState();
@@ -22,10 +23,10 @@ const TopBudgets = ({ top_budgets }) => {
             return (
                 <div className="flex items-end w-full flex-col body">
                     <div
-                        className="border-primary border h-3 w-full rounded-full relative overflow-hidden mt-2 bg-background"
+                        className="border-red border h-3 w-full rounded-full relative overflow-hidden mt-2 bg-background"
                         ref={progressBarRef}
                     >
-                        <div className="absolute left-0 bg-primary w-full h-full rounded-full"></div>
+                        <div className="absolute left-0 bg-expense w-full h-full rounded-full"></div>
                     </div>
                 </div>
             );
@@ -47,11 +48,11 @@ const TopBudgets = ({ top_budgets }) => {
             return (
                 <div className="flex items-end w-full flex-col body">
                     <div
-                        className="border-primary border h-3 w-full rounded-full relative overflow-hidden mt-2 bg-background"
+                        className={`border-primary border h-3 w-full rounded-full relative overflow-hidden mt-2 bg-background ${getProgressBarBorder(budget?.percentage)}`}
                         ref={progressBarRef}
                     >
                         <div
-                            className="absolute left-0 bg-primary h-full rounded-full"
+                            className={`absolute left-0 h-full rounded-full  ${getProgressBarColor(budget?.percentage)}`}
                             style={{ width: getLength }}
                         ></div>
                     </div>

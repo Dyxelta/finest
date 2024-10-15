@@ -2,17 +2,17 @@ import { RupiahFormatTooltip } from "@/Helpers/helperFormat";
 import {
     Bar,
     BarChart,
+    Cell,
     ResponsiveContainer,
     Tooltip,
     XAxis,
-    YAxis
+    YAxis,
 } from "recharts";
 
 const ShowNetIncomeOverview = ({
     current_month_net_income,
     last_month_net_income,
 }) => {
-    
     const data = [
         {
             name: "Current Net Income",
@@ -44,10 +44,10 @@ const ShowNetIncomeOverview = ({
                         contentStyle={{
                             backgroundColor: "#EBF0F6",
                             borderRadius: "8px",
-                      
+
                             color: "#2D5074",
                         }}
-                        content={<RupiahFormatTooltip/>}
+                        content={<RupiahFormatTooltip />}
                     />
 
                     <XAxis type="number" className="sub-body lg:body" hide />
@@ -59,13 +59,13 @@ const ShowNetIncomeOverview = ({
                         tick={{ fill: "#2D5074" }}
                         className="sub-body lg:body"
                     />
-                    <Bar
-                        dataKey="value"
-                        barSize={40}
-                        fill="#2D5074"
-                
-                        activeStyle={{ fill: "#CAD8E7" }}
-                    />
+                    <Bar stackId="a" dataKey="value" barSize={40}>
+                        {data.map((entry, index) => (
+                            <Cell
+                                fill={entry.value < 0 ? "#C02317" : "#2D5074"}
+                            />
+                        ))}
+                    </Bar>
                 </BarChart>
             </ResponsiveContainer>
         </div>

@@ -15,7 +15,7 @@ const ViewTable = ({ transaction }) => {
             <td className="py-2 px-4 text-center  w-[300px]">
                 {transaction?.transaction_note}
             </td>
-            <td className="py-2 px-4 text-center  w-[250px]">
+            <td className={`py-2 px-4 text-center  w-[250px] ${transaction?.transaction_amount < 0 ? 'text-expense' : 'text-income'}`}>
                 {formatToRupiah(transaction?.transaction_amount)}
             </td>
             <td className="py-2 px-4 text-center w-[250px]">

@@ -20,6 +20,7 @@ import { Button } from "reactstrap";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { formatToRupiah } from "@/Helpers/helperFormat";
 import { getRemainingDays } from "@/Helpers/remainingDays";
+import { getProgressBarBorder, getProgressBarColor } from "@/Helpers/progressBar";
 
 export default function BudgetPage({
     auth,
@@ -160,7 +161,7 @@ export default function BudgetPage({
     const progressBarRef = useRef(null);
 
     const countRecommendedBudgetAmount = () => {
-        const transactions = showInitialBudget?.category?.transaction ?? [];
+        const transactions = showInitialBudget?.category?.transactions ?? [];
 
         const dayDifference = getRemainingDays()
 
@@ -170,7 +171,7 @@ export default function BudgetPage({
             }, 0);
 
             const finalResult = showInitialBudget.budget_amount - totalSpending;
-
+      
             if (finalResult < 0) {
                 return (
                     <div className="px-4 py-1 h-full flex-col sub-body md:body">
@@ -242,7 +243,8 @@ export default function BudgetPage({
     };
 
     const showSpendingLimit = () => {
-        const transactions = showInitialBudget?.category?.transaction ?? [];
+        const transactions = showInitialBudget?.category?.transactions ?? [];
+ 
         if (transactions.length !== 0) {
             const totalSpending = transactions.reduce((total, transaction) => {
                 return total + Math.abs(transaction.transaction_amount);
@@ -260,10 +262,10 @@ export default function BudgetPage({
                             {formatToRupiah(showInitialBudget.budget_amount)}
                         </div>
                         <div
-                            className="border-primary border h-5 w-full rounded-full relative overflow-hidden mt-2"
+                            className="border-expense border h-5 w-full rounded-full relative overflow-hidden mt-2"
                             ref={progressBarRef}
                         >
-                            <div className="absolute left-0 bg-primary w-full h-full"></div>
+                            <div className="absolute left-0 bg-expense w-full h-full"></div>
                         </div>
                     </div>
                 );
@@ -275,11 +277,11 @@ export default function BudgetPage({
                             {formatToRupiah(showInitialBudget.budget_amount)}
                         </div>
                         <div
-                            className="border-primary border h-3 md:h-5 w-full rounded-full relative overflow-hidden mt-2"
+                            className={`${getProgressBarBorder(getProgressBarPercentage *100)} border h-3 md:h-5 w-full rounded-full relative overflow-hidden mt-2`}
                             ref={progressBarRef}
                         >
                             <div
-                                className="absolute left-0 bg-primary h-full rounded-full"
+                                className={`absolute left-0 ${getProgressBarColor(getProgressBarPercentage *100)} h-full rounded-full`}
                                 style={{
                                     width: `${Math.ceil(currProgressLength)}px`,
                                 }}

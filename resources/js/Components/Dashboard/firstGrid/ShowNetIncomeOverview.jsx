@@ -2,6 +2,7 @@ import { RupiahFormatTooltip } from "@/Helpers/helperFormat";
 import {
     Bar,
     BarChart,
+    Cell,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -61,13 +62,13 @@ const ShowNetIncomeOverview = ({
                         tick={{ fill: "#2D5074" }}
                         className="sub-body lg:body"
                     />
-                    <Bar
-                        dataKey="value"
-                        barSize={40}
-                        fill="#2D5074"
-               
-                        activeStyle={{ fill: "#CAD8E7" }}
-                    />
+                      <Bar stackId="a" dataKey="value" barSize={40}>
+                        {data.map((entry, index) => (
+                            <Cell
+                                fill={entry.value < 0 ? "#950606" : "#2D5074"}
+                            />
+                        ))}
+                    </Bar>
                 </BarChart>
             </ResponsiveContainer>
         </div>

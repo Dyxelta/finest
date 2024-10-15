@@ -90,7 +90,9 @@ const SummaryReportOverview = ({ summary_report_data }) => {
                     </div>
                     <div className="border-primary border h-4 md:h-5 w-full rounded-full relative overflow-hidden mt-2 bg-lighter-primary">
                         <div
-                            className="absolute left-0 bg-primary h-full rounded-full  "
+                            className={`absolute left-0 ${Math.floor(
+                                getPercentageLength(Math.abs(summary_report_data?.expense), "expense")
+                            ) > 50 ? 'bg-expense' : 'bg-primary'} h-full rounded-full `}
                             style={{
                                 width: `${getProgressLength(
                                     Math.abs(summary_report_data?.expense,"expense")
@@ -111,7 +113,7 @@ const SummaryReportOverview = ({ summary_report_data }) => {
                 <div>
                     <span className="sub-body-bold lg:button text-primary mx-1">
                         Note:{" "}
-                        {getPercentageLength(summary_report_data?.expense) >
+                        {getPercentageLength(Math.abs(summary_report_data?.expense)) >
                         50 ? (
                             <>
                                 <span className="text-expense">Oh No!</span>{" "}

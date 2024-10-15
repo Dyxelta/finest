@@ -364,7 +364,7 @@ export default function Register({ status, canResetPassword }) {
                                                     Already have an account?{" "}
                                                     {""}
                                                     <Link
-                                                        href={""}
+                                                        href={"login"}
                                                         className="underline  text-primary  rounded-md fhover:outline-none  hover:ring-darker-primary hover:opacity-85  "
                                                     >
                                                         Sign in

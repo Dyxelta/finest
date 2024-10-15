@@ -47,8 +47,7 @@ const AddSection = ({
         window.location.reload();
     };
 
-    const closeModal = () => {
-      
+    const closeModal = () => {  
         setLoading(false);
         showSuccessModal(
             "Success",

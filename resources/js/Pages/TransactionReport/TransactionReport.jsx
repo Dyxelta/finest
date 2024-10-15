@@ -120,7 +120,6 @@ export default function TransactionReportPage({
                         MonthlyReportData={MonthlyReportData}
                     />
                 </div>
-
                 <div className="bg-light rounded-lg w-full h-[300px] md:h-[375px] px-4 md:px-8 py-4 col-span-2 md:col-span-1">
                     <SummaryReportOverview
                         summary_report_data={summary_report_data}

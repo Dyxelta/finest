@@ -48,13 +48,19 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
             <td className="py-2 px-4 text-center w-[100px]">
                 {index + (pagination - 1) * 10 + 1}
             </td>
-            <td className="py-2 px-4 text-center w-[300px]">
+            <td className="py-2 px-4 text-center w-[200px]">
                 {transaction?.category?.category_name}
             </td>
             <td className="py-2 px-4 text-center  w-[300px]">
                 {transaction?.transaction_note}
             </td>
-            <td className="py-2 px-4 text-center  w-[200px]">
+            <td
+                className={`py-2 px-4 text-center  w-[300px] ${
+                    transaction?.transaction_amount < 0
+                        ? "text-expense"
+                        : "text-income"
+                }`}
+            >
                 {formatToRupiah(transaction?.transaction_amount)}
             </td>
             <td className="py-2 px-4 text-center w-[150px]">
@@ -122,7 +128,7 @@ export default function TransactionRecordsPage({
     };
     const initialWallets = [allWallet, ...wallets];
 
-    const { post, get, setData, data } = useForm({
+    const { get, setData } = useForm({
         month: "",
     });
 
@@ -188,7 +194,7 @@ export default function TransactionRecordsPage({
                 try {
                     get(route("transactionPage"));
                 } catch (error) {
-                    console.error("Error setting data:", error);
+                    console.error("Error:", error);
                 } finally {
                     setWait(false);
                 }
@@ -319,13 +325,13 @@ export default function TransactionRecordsPage({
                                                 <th className="py-2 px-4 text-center w-[100px]  ">
                                                     No
                                                 </th>
-                                                <th className="py-2 px-4 text-center w-[300px]  ">
+                                                <th className="py-2 px-4 text-center w-[200px]  ">
                                                     Transaction Category
                                                 </th>
                                                 <th className="py-2 px-4 text-center w-[300px] ">
                                                     Note
                                                 </th>
-                                                <th className="py-2 px-4 text-center w-[200px]">
+                                                <th className="py-2 px-4 text-center w-[300px]">
                                                     Amount
                                                 </th>
                                                 <th className="py-2 px-4 text-center w-[150px]">
