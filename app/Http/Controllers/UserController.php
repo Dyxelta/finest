@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 
 class UserController extends Controller
 {
@@ -28,11 +29,13 @@ class UserController extends Controller
             'confirm_pass' => 'required_with:password|same:password',
         ]);
 
-        User::create([
+        $user = User::create([
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
+
+        event(new Registered($user));
 
         return redirect('login');
     }
@@ -45,6 +48,16 @@ class UserController extends Controller
         ]);
 
         if (Auth::attempt($request->only('email', 'password'))) {
+
+            if (Auth::user()->email_verified_at == null) {
+
+                Auth::logout();
+
+                return redirect()->back()->withErrors([
+                    'email_verfication' => 'Email has not been verified',
+                ]);
+            }
+
             $request->session()->regenerate();
 
             return redirect()->intended(route('dashboard'));

@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +26,20 @@ use Inertia\Inertia;
 */
 
 Route::get('/', [UserController::class, 'redirectWhenAppOpened']);
+
+Route::get('/email/verify', function () {
+    return inertia('Auth/VerifyEmail');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', function () {
@@ -39,7 +55,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login-user', [UserController::class, 'login'])->name('loginUser');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     //Authentication
     Route::put('/edit-profile', [UserController::class, 'editUserData'])->name('editProfile');
