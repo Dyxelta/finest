@@ -31,34 +31,27 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const openModal = (error) => {};
 
-    const submit = async () => {
+    const submit = () => {
         setLoading(true);
         post(route("loginUser"), {
-            onError: async (errors) => {
+            onError: (errors) => {
                 if (errors.email) {
                     openModal(errors.email);
                 } else if (errors.password) {
                     openModal(errors.password);
                 } else if (errors.email_verfication) {
                     setLoading(false);
-   
-                    try {
-                        await post(route("verification.send"), {
-                            onSuccess: () => {
-                                showSuccessModal("Information", "Verification Email has been sent");
-                            }
-                        });
-                    } catch (error) {
-                        showErrorModal("Error", "Failed to send verification email");
-                    }
-    
-                    showErrorModal("Error", errors.email_verfication);
+                    showErrorModal("Error", errors.email_verfication, () =>
+                        showSuccessModal(
+                            "Information",
+                            "Verification Email has been sent"
+                        )
+                    );
                 }
             },
             onSuccess: () => setLoading(false),
         });
     };
-    
 
     const [openPass, setOpenPass] = useState();
     return (
