@@ -32,7 +32,7 @@ const CashflowGraph = ({
                                 outerRadius={75}
                                 labelLine={false}
                                 paddingAngle={2}
-                                minAngle={25}
+                                minAngle={6}
                             >
                                 {data.map((entry, index) => (
                                     <Cell

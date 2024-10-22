@@ -12,7 +12,7 @@ import lowerLeftMotive from "../../../../public/image/login/LowerLeftMotive.png"
 import upperLeftMotive from "../../../../public/image/login/UpperLeftMotive.png";
 
 import Loader from "@/Components/Loader";
-import { showErrorModal } from "@/Helpers/utils";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { useState } from "react";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
@@ -29,10 +29,7 @@ export default function Login() {
         password: "",
     });
     const [loading, setLoading] = useState(false);
-    const openModal = (error) => {
-        setLoading(false);
-        showErrorModal("Error", error);
-    };
+    const openModal = (error) => {};
 
     const submit = () => {
         setLoading(true);
@@ -42,6 +39,14 @@ export default function Login() {
                     openModal(errors.email);
                 } else if (errors.password) {
                     openModal(errors.password);
+                } else if (errors.email_verfication) {
+                    setLoading(false);
+                    showErrorModal("Error", errors.email_verfication, post(route("verification.send"), {
+                        onSuccess: () => {
+                            showSuccessModal("Information", "Verification Email has been sent")
+                        }
+                    }));
+                    
                 }
             },
             onSuccess: () => setLoading(false),

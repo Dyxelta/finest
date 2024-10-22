@@ -3,7 +3,7 @@ import CustomLabel from "@/Components/CustomLabel";
 import CustomTitle from "@/Components/CustomTitle";
 import Loader from "@/Components/Loader";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { showErrorModal } from "@/Helpers/utils";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { Form, Formik } from "formik";
 import { useState } from "react";
@@ -73,7 +73,10 @@ export default function Register({ status, canResetPassword }) {
                     openModal(errors.confirm_pass);
                 }
             },
-            onSuccess: () => setLoading(false),
+            onSuccess: () => {
+                setLoading(false);
+                showSuccessModal("Information", "Verification Email has been sent")
+            },
         });
     };
     const [openPass, setOpenPass] = useState();
