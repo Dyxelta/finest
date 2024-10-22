@@ -51,6 +51,7 @@ class UserController extends Controller
 
             if (Auth::user()->email_verified_at == null) {
 
+                $request->user()->sendEmailVerificationNotification();
                 Auth::logout();
 
                 return redirect()->back()->withErrors([
