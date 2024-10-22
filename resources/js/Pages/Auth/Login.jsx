@@ -41,7 +41,7 @@ export default function Login() {
                     openModal(errors.password);
                 } else if (errors.email_verfication) {
                     setLoading(false);
-                    showErrorModal("Error", errors.email_verfication, post(route("verification.send"), {
+                    showErrorModal("Error", errors.email_verfication, () => post(route("verification.send"), {
                         onSuccess: () => {
                             showSuccessModal("Information", "Verification Email has been sent")
                         }
