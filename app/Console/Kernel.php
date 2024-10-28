@@ -13,6 +13,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('transaction:add-monthly-recurring')->daily();
+
+        $schedule->command('users:delete-unverified')->daily();
     }
 
     /**
