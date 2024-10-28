@@ -5,8 +5,6 @@ import {
 import { Button } from "reactstrap";
 
 const PaginationTransaction = ({ pageLength, setPagination, pagination }) => {
-    console.log(pageLength - 2 <= pagination, "iosduhfjisdiohfsdisdifho")
-    console.log(pageLength - 2 <= pagination, "iosduhfjisdiohfsdisdifho")
     const getPages = () => {
         const pages = [];
         const showPage = 1;
