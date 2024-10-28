@@ -25,9 +25,12 @@ const VerifyEmail = ({ maxWidth = "md" }) => {
                 <h2 className={`header-4 font-[600] text-primary `}>
                     Verification Email Has Been Sent
                 </h2>
-                <div className="p-4 w-full">
+                <div className="flex flex-col py-4 px-8 w-full">
                     <span className="text-body text-black">
-                        Please Verify Your Email
+                    Please check your inbox and verify your email.
+                    </span>
+                    <span className="text-expense font-bold">
+                    Unverified accounts will be deleted <br /> by the end of the day
                     </span>
                 </div>
             </div>
