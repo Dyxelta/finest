@@ -39,15 +39,7 @@ export default function Login() {
                     openModal(errors.email);
                 } else if (errors.password) {
                     openModal(errors.password);
-                } else if (errors.email_verfication) {
-                    setLoading(false);
-                    showErrorModal("Error", errors.email_verfication, () =>
-                        showSuccessModal(
-                            "Information",
-                            "Verification Email has been sent"
-                        )
-                    );
-                }
+                } 
             },
             onSuccess: () => setLoading(false),
         });
