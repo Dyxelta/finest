@@ -37,7 +37,9 @@ class UserController extends Controller
 
         event(new Registered($user));
 
-        return redirect('login');
+        Auth::login($user);
+
+        return redirect()->route('verification.notice');
     }
 
     public function login(Request $request)
@@ -52,11 +54,8 @@ class UserController extends Controller
             if (Auth::user()->email_verified_at == null) {
 
                 $request->user()->sendEmailVerificationNotification();
-                Auth::logout();
 
-                return redirect()->back()->withErrors([
-                    'email_verfication' => 'Email has not been verified',
-                ]);
+                return redirect()->route('verification.notice');
             }
 
             $request->session()->regenerate();
