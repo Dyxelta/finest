@@ -12,10 +12,9 @@ import lowerLeftMotive from "../../../../public/image/login/LowerLeftMotive.png"
 import upperLeftMotive from "../../../../public/image/login/UpperLeftMotive.png";
 
 import Loader from "@/Components/Loader";
-import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { useState } from "react";
-import logoLetter from "../../../../public/image/app/Logo-letter.png";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import logoLetter from "../../../../public/image/app/Logo-letter.png";
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -29,7 +28,10 @@ export default function Login() {
         password: "",
     });
     const [loading, setLoading] = useState(false);
-    const openModal = (error) => {};
+    const openModal = (error) => {
+        setLoading(false);
+        showErrorModal("Error", error);
+    };
 
     const submit = () => {
         setLoading(true);
@@ -163,9 +165,9 @@ export default function Login() {
                                                             color="grey"
                                                         />
                                                     }
-                                                    onKeyPress={(event) => {
+                                                    onKeyPress={(e) => {
                                                         if (
-                                                            event.key ===
+                                                            e.key ===
                                                             "Enter"
                                                         ) {
                                                             setData(

@@ -29,6 +29,7 @@ export default function TransactionReportPage({
     });
 
     const [wait, setWait] = useState(false);
+
     useEffect(() => {
         const getTransactions = () => {
             if (wait) {
@@ -44,6 +45,7 @@ export default function TransactionReportPage({
 
         getTransactions();
     }, [wait]);
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -66,7 +68,7 @@ export default function TransactionReportPage({
                 />
                 <div className="flex flex-col gap-4">
                     <div>
-                        <PastExpenseOverview monthly_total_transaction={monthly_total_transaction}/>
+                        <PastExpenseOverview monthly_total_transaction={monthly_total_transaction} />
                     </div>
                     <div>
                         <AverageExpenseIncome

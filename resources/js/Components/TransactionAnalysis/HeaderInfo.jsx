@@ -10,12 +10,18 @@ const HeaderInfo = ({
     setData,
     setWait,
 }) => {
+    const CategoryOptions = getExpenseCategoryOptions(
+        expenseCategories
+    )
+
+    CategoryOptions[0].options.unshift({ value: "All Category", label: "All Category" })
+
     return (
         <div className="w-full  rounded-xl  text-primary">
             <Formik
                 initialValues={{
                     selectedWallet: currWallet ?? "All Wallet",
-                    category_name: currCategory?.category_name,
+                    category_name: currCategory ?? "All Category",
                 }}
                 enableReinitialize={true}
             >
@@ -65,9 +71,7 @@ const HeaderInfo = ({
                                                   label: "",
                                               }
                                     }
-                                    options={getExpenseCategoryOptions(
-                                        expenseCategories
-                                    )}
+                                    options={CategoryOptions}
                                     onChange={(e) => {
                          
                                         setData("category_name", e.value);
