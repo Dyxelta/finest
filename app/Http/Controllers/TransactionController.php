@@ -307,11 +307,17 @@ class TransactionController extends Controller
             }
         };
 
-        $category = Category::where('category_name', $request->category_name ?? "Entertainment")->firstOrFail();
+        $categoryCondition = function ($query) use ($request) {
+            if ($request->category_name && $request->category_name != "All Category") {
+                $category = Category::where("category_name", $request->category_name)
+                ->firstOrFail();
+                $query->where('category_id', $category->id);
+            }
+        };
 
         $baseQuery = Transaction::where('user_id', $userId)
             ->where($walletCondition)
-            ->where('category_id', $category->id);
+            ->where($categoryCondition);
 
         $monthlyTotalTransaction = (clone $baseQuery)
             ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
@@ -349,7 +355,7 @@ class TransactionController extends Controller
             'total_transaction_this_month' => $totalTransactionThisMonth,
             'highest_transaction' => $highestTransaction,
             'lowest_transaction' => $lowestTransaction,
-            'currCategory' => $category,
+            'currCategory' => $request->category_name,
             'currWallet' => $request->wallet_name
         ];
     }
