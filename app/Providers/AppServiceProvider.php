@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use App\Observers\TransactionObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Routing\UrlGenerator;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,10 +20,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(UrlGenerator $url)
     {
-        if(env('APP_ENV') !== 'local') {
-            URL::forceScheme('https');
+        if(env('APP_ENV') !== 'local')
+        {
+            $url->forceSchema('https');
         }
         Transaction::observe(TransactionObserver::class);
     }
