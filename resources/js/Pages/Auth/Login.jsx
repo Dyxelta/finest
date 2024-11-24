@@ -15,6 +15,7 @@ import Loader from "@/Components/Loader";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
+import { showErrorModal } from "@/Helpers/utils";
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -29,6 +30,7 @@ export default function Login() {
     });
     const [loading, setLoading] = useState(false);
     const openModal = (error) => {
+        console.log(error)
         setLoading(false);
         showErrorModal("Error", error);
     };
@@ -37,6 +39,7 @@ export default function Login() {
         setLoading(true);
         post(route("loginUser"), {
             onError: (errors) => {
+        
                 if (errors.email) {
                     openModal(errors.email);
                 } else if (errors.password) {
