@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'local'),
+    'env' => env('APP_ENV', 'production'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +55,7 @@ return [
     |
     */
 
-   'url' => env('APP_URL', 'http://localhost'),
+   'url' => env('APP_URL', 'https://finest-production.up.railway.app'),
 
     'asset_url' => env('ASSET_URL'),
 
