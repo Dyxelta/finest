@@ -177,6 +177,7 @@ export default function AddRecurringTransactionPopup({
                                                     );
                                                 }}
                                                 className={"mt-[7px]"}
+                                                errors={errors?.wallet_id}
                                             />
                                             <ErrorMessageInput name="wallet_id" />
                                         </FormGroup>
@@ -231,6 +232,7 @@ export default function AddRecurringTransactionPopup({
                                                         )
                                                     );
                                                 }}
+                                                errors={errors?.recurring_transaction_date}
                                             />
                                             <ErrorMessageInput name="recurring_transaction_date" />
                                         </FormGroup>
@@ -253,6 +255,7 @@ export default function AddRecurringTransactionPopup({
                                                         e.value
                                                     );
                                                 }}
+                                                errors={errors?.category_id}
                                             />
                                             <ErrorMessageInput name="category_id" />
                                         </FormGroup>

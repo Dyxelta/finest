@@ -77,6 +77,7 @@ const HeaderInfo = ({
                                         setData("category_name", e.value);
                                         setWait(true);
                                     }}
+                                    
                                 />
                             </div>
                         </div>

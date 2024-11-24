@@ -49,7 +49,7 @@ const ViewTable = ({
         };
 
         showErrorModal(
-            "Error",
+            "Warning",
             "Are you sure you want to delete this Transaction?",
             () => onClose(),
             undefined,

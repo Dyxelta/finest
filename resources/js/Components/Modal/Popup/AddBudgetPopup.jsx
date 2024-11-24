@@ -212,6 +212,7 @@ export default function AddBudgetPopup({
                                                         );
                                                     }}
                                                     className={'mt-2'}
+                                                    errors={errors?.category_id}
                                                 />
                                                 <ErrorMessageInput name="category_id" />
                                             </FormGroup>

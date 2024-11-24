@@ -1,12 +1,26 @@
 import Select, { components } from "react-select";
 
-const customStyles = {
-    control: (provided, _) => ({
+const CustomOption = (props) => (
+    <components.Option {...props}>{props.data.label}</components.Option>
+);
+
+const customStyles = (hasError) => ({
+    control: (provided, state) => ({
         ...provided,
-        borderRadius: "5px",
+        borderRadius: "6px",
+        borderColor: hasError
+            ? state.isFocused
+                ? "#F44336" 
+                : "#F44336" 
+            : state.isFocused
+            ? "#CAD8E7"
+            : provided.borderColor,
         "&:hover": {
-            borderColor: "#CAD8E7",
+            borderColor: hasError
+                ? "#CD5C5C" 
+                : "#CAD8E7",
         },
+        boxShadow: hasError && state.isFocused ? "0 0 0 1px #FF0000" : provided.boxShadow,
     }),
     singleValue: (provided, state) => ({
         ...provided,
@@ -44,19 +58,14 @@ const customStyles = {
     }),
     menuPortal: (provided) => ({
         ...provided,
-        zIndex: 9999, // Make sure the menuPortal has a high z-index as well
+        zIndex: 9999,
     }),
-};
+});
 
 const GroupHeading = (props) => (
     <div style={{ fontWeight: "bold", margin: "2px 0px 2px 10px" }}>
-
         {props.children}
     </div>
-);
-
-const CustomOption = (props) => (
-    <components.Option {...props}>{props.data.label}</components.Option>
 );
 
 const CustomSelectCategories = ({
@@ -65,7 +74,7 @@ const CustomSelectCategories = ({
     className,
     props,
     defaultValue = "",
-
+    errors = null,
 }) => (
     <Select
         defaultValue={defaultValue}
@@ -74,11 +83,10 @@ const CustomSelectCategories = ({
         onChange={onChange}
         options={options}
         components={{ GroupHeading, Option: CustomOption }}
-        styles={customStyles}
+        styles={customStyles(errors)}
         isSearchable={false}
         placeholder="Select Category"
-        
-        menuPortalTarget={document.body} 
+        menuPortalTarget={document.body}
         theme={(theme) => ({
             ...theme,
             borderRadius: 0,

@@ -35,7 +35,7 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
         };
 
         showErrorModal(
-            "Error",
+            "Warning",
             "Are you sure you want to delete this Transaction?",
             () => onClose(),
             undefined,

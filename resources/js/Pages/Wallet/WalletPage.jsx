@@ -80,7 +80,7 @@ export default function WalletPage({ auth, wallets }) {
                 };
 
                 showErrorModal(
-                    "Error",
+                    "Warning",
                     "Are you sure you want to delete this wallet?",
                     () => onClose(),
                     undefined,

@@ -262,6 +262,7 @@ console.log(categories)
                                             setData("category_id", e.value);
                                         }}
                                         className={"mt-1"}
+                                        errors={errors?.category_id}
                                     />
                                     <ErrorMessageInput name="category_id" />
                                 </FormGroup>
@@ -335,9 +336,10 @@ console.log(categories)
                                             moment(e).format("YYYY-MM-DD")
                                         );
                                     }}
+                                    errors={errors?.transaction_date}
                                 />
                             </FormGroup>
-                            {console.log(errors, "dfjigdfijgjdfigo")}
+                        
                             <div className="lg:p-4 w-full">
                                 <div className="w-full flex justify-end items-center lg:mt-6 mt-4">
                                     <Button

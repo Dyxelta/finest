@@ -138,7 +138,7 @@ export default function BudgetPage({
                 };
 
                 showErrorModal(
-                    "Error",
+                    "Warning",
                     "Are you sure you want to delete this budget?",
                     () => onClose(),
                     undefined,

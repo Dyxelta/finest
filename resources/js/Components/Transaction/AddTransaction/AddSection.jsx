@@ -255,6 +255,7 @@ const AddSection = ({
                                             );
                                             setData("category_id", e.value);
                                         }}
+                                        errors={errors?.category_id}
                                     />
                                     <ErrorMessageInput name="category_id" />
                                 </FormGroup>
@@ -330,6 +331,7 @@ const AddSection = ({
                                             moment(e).format("YYYY-MM-DD")
                                         );
                                     }}
+                                    errors={errors?.transaction_date}
                                 />
                                 <ErrorMessageInput name="transaction_date" />
                             </FormGroup>

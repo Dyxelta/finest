@@ -40,12 +40,12 @@ class TransactionObserver
                 ->sum('transaction_amount');
 
             // Calculate percentage of the budget spent
-            $percentageSpent = (abs($totalExpenses) / $budget->budget_amount) * 100;
+            $percentageSpent = round((abs($totalExpenses) / $budget->budget_amount) * 100, 2);
 
             // If expenses are above 90% but below 100%, send a 90% reminder
             if ($percentageSpent >= 90 && $percentageSpent < 100) {
 
-                $this->createReminder($userId, "Budget Limit Warning! You have spent {$percentageSpent} of your budget {$budget->budget_name} in wallet {$wallet->wallet_name}.");
+                $this->createReminder($userId, "Budget Limit Warning! You have spent {$percentageSpent} % of your budget {$budget->budget_name} in wallet {$wallet->wallet_name}.");
             }
             // If expenses exceed the budget, send an "over-budget" reminder
             else if ($percentageSpent >= 100) {
