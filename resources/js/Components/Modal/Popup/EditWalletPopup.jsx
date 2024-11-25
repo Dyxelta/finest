@@ -142,7 +142,7 @@ export default function EditWalletPopup({
                         <Formik
                             initialValues={{
                                 wallet_name: wallet?.wallet_name || "",
-                                wallet_balance: wallet?.wallet_balance || "",
+                                wallet_balance: Math.abs(wallet?.wallet_balance) || "",
                                 wallet_description:
                                     wallet?.wallet_description || "",
                             }}
