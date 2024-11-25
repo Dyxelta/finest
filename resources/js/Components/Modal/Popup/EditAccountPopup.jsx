@@ -212,6 +212,7 @@ export default function EditAccountPopup({
                                             <CustomLabel
                                                 labelFor="Created Date"
                                                 className="button text-primary"
+                                                isRequired={false}
                                             />
                                             <CustomDatePicker
                                                 className="w-fit"
