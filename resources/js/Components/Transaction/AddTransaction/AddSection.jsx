@@ -272,6 +272,7 @@ const AddSection = ({
                                         type="number"
                                         className="w-full mt-1"
                                         onChange={(e) => {
+                                            
                                             setFieldValue(
                                                 "transaction_amount",
                                                 e.target.value
