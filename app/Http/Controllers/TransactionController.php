@@ -310,7 +310,7 @@ class TransactionController extends Controller
         $categoryCondition = function ($query) use ($request) {
             if ($request->category_name && $request->category_name != "All Category") {
                 $category = Category::where("category_name", $request->category_name)
-                ->firstOrFail();
+                    ->firstOrFail();
                 $query->where('category_id', $category->id);
             }
         };
@@ -338,12 +338,16 @@ class TransactionController extends Controller
             ->first();
 
         $highestTransaction = (clone $baseQuery)
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('categories.category_is_income', false)
             ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
             ->orderBy('transaction_amount', 'ASC')
             ->pluck('transaction_amount')
             ->first();
 
         $lowestTransaction = (clone $baseQuery)
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('categories.category_is_income', false)
             ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
             ->orderBy('transaction_amount', 'DESC')
             ->pluck('transaction_amount')
