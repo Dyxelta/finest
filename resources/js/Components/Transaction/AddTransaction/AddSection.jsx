@@ -219,7 +219,7 @@ const AddSection = ({
                         wallet_name: selectedWallet?.wallet_name,
                         category_id: "",
                         transaction_amount: "",
-                        transaction_date: "",
+                        transaction_date: new Date(),
                         transaction_note: "",
                     }}
                     enableReinitialize={true}
@@ -331,6 +331,7 @@ const AddSection = ({
                                             "transaction_date",
                                             moment(e).format("YYYY-MM-DD")
                                         );
+                                        console.log(values.transaction_date,"dsiuouohsodiuf")
                                     }}
                                     errors={errors?.transaction_date}
                                 />

@@ -64,8 +64,9 @@ const ShowNetIncomeOverview = ({
                     />
                       <Bar stackId="a" dataKey="value" barSize={40}>
                         {data.map((entry, index) => (
+                
                             <Cell
-                                fill={entry.value < 0 ? "#8B1E1E" : "#A52A2A"}
+                                fill={entry.value < 0 ? "#8B1E1E" : "#2D5074"}
                             />
                         ))}
                     </Bar>

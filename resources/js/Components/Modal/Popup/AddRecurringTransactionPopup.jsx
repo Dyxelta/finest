@@ -142,7 +142,7 @@ export default function AddRecurringTransactionPopup({
                                 wallet_id: "",
                                 category_id: "",
                                 recurring_transaction_amount: "",
-                                recurring_transaction_date: "",
+                                recurring_transaction_date: new Date(),
                                 recurring_transaction_note: "",
                             }}
                             enableReinitialize={true}
