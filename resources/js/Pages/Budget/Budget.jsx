@@ -390,7 +390,7 @@ export default function BudgetPage({
                 >
                     <div className="flex  border-light-grey h-full ">
                         <div className="flex border-r-2 h-full px-1 md:px-2">
-                            <div className="my-auto bg-primary p-2 md:p-3 rounded-full text-light header-5">
+                            <div className="my-auto  p-2 md:p-3 text-primary header-3">
                                 <LuDices />
                             </div>
                         </div>
@@ -446,7 +446,7 @@ export default function BudgetPage({
                 <div className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary h-[290px] ">
                     <div className="flex  border-light-grey h-full w-full ">
                         <div className="flex border-r-2 h-full px-1 md:px-2">
-                            <div className="my-auto bg-primary p-2 md:p-3 rounded-full text-light header-5">
+                            <div className="my-auto p-2 md:p-3 text-primary header-3">
                                 <GrInfo />
                             </div>
                         </div>

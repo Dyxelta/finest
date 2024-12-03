@@ -170,17 +170,29 @@ export default function TransactionRecordsPage({
         );
     };
 
-    const getFilteredTransactions = transactions.filter((transaction) =>
-        selectedWallet === "All Wallet"
-            ? transaction &&
-              (category === "Income"
-                  ? transaction.category.category_is_income === 1
-                  : transaction.category.category_is_income === 0)
-            : transaction.wallet_id === selectedWallet &&
-              (category === "Income"
-                  ? transaction.category.category_is_income === 1
-                  : transaction.category.category_is_income === 0)
-    );
+    const getFilteredTransactions = transactions.filter((transaction) => {
+
+        if (selectedWallet === "All Wallet" && category === "All") {
+            return true;
+        }
+
+        if (selectedWallet !== "All Wallet" && category === "All") {
+            return transaction.wallet_id === selectedWallet;
+        }
+
+        if (selectedWallet === "All Wallet") {
+            return category === "Income"
+                ? transaction.category.category_is_income === 1
+                : transaction.category.category_is_income === 0;
+        }
+     
+        return (
+            transaction.wallet_id === selectedWallet &&
+            (category === "Income"
+                ? transaction.category.category_is_income === 1
+                : transaction.category.category_is_income === 0)
+        );
+    });
 
     const walletOptions = initialWallets.map((wallet) => ({
         value: wallet?.id,
@@ -233,9 +245,22 @@ export default function TransactionRecordsPage({
                             <div className="bg-white pt-3 mt-1 rounded-xl px-4 lg:px-10 flex flex-col-reverse md:flex-row md:justify-between">
                                 <div className="flex items-center gap-4 md:gap-8 relative w-fit px-2 mt-4 md:mt-0">
                                     <div
-                                        className={`body md:header-5 pb-1 transition-all duration-500 cursor-pointer ${
+                                        className={`flex-1 text-center body md:header-5 pb-1  cursor-pointer ${
+                                            category === "All"
+                                                ? "text-primary border-b-2 border-primary"
+                                                : "hover:text-grey"
+                                        }`}
+                                        onClick={() => {
+                                            setCategory("All");
+                                            setPagination(1);
+                                        }}
+                                    >
+                                        All
+                                    </div>
+                                    <div
+                                        className={`flex-1 text-center body md:header-5 pb-1  cursor-pointer ${
                                             category === "Income"
-                                                ? "text-primary"
+                                                ? "text-primary border-b-2 border-primary"
                                                 : "hover:text-grey"
                                         }`}
                                         onClick={() => {
@@ -246,9 +271,9 @@ export default function TransactionRecordsPage({
                                         Income
                                     </div>
                                     <div
-                                        className={`body md:header-5 pb-1 transition-all duration-500 cursor-pointer ${
+                                        className={`flex-1 text-center body md:header-5 pb-1  cursor-pointer ${
                                             category === "Expense"
-                                                ? "text-primary"
+                                                ? "text-primary border-b-2 border-primary"
                                                 : "hover:text-grey"
                                         }`}
                                         onClick={() => {
@@ -258,13 +283,8 @@ export default function TransactionRecordsPage({
                                     >
                                         Expense
                                     </div>
-                                    <div
-                                        className={`w-1/2 absolute bottom-0 left-0 ${
-                                            category === "Income"
-                                                ? "translate-x-0"
-                                                : "translate-x-full"
-                                        } transition-transform border-primary border-2 rounded-md duration-300`}
-                                    ></div>
+                 
+                                
                                 </div>
 
                                 <div className="pb-1 flex flex-col md:flex-row gap-2 justify-between ">

@@ -45,16 +45,13 @@ const AddSection = ({
         setLoading(false);
     };
 
-    const handleRefresh = () => {
-        window.location.reload();
-    };
 
     const closeModal = () => {
         setLoading(false);
         showSuccessModal(
             "Success",
             "Transaction has been added successfully",
-            () => handleRefresh()
+            () => {}
         );
     };
 
