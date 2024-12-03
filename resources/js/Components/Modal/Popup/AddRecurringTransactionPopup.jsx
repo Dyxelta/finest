@@ -88,7 +88,7 @@ export default function AddRecurringTransactionPopup({
         xl: "sm:max-w-xl",
         "2xl": "sm:max-w-2xl",
     }[maxWidth];
-
+    const date = moment().toString();
     return (
         <Transition show={show} as={Fragment} leave="duration-200 ease-in-out">
             <Dialog
@@ -142,10 +142,10 @@ export default function AddRecurringTransactionPopup({
                                 wallet_id: "",
                                 category_id: "",
                                 recurring_transaction_amount: "",
-                                recurring_transaction_date: new Date(),
+                                recurring_transaction_date: date,
                                 recurring_transaction_note: "",
                             }}
-                            enableReinitialize={true}
+                
                             validationSchema={validationSchema}
                             onSubmit={() => close()}
                         >

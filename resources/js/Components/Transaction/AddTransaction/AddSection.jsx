@@ -45,7 +45,6 @@ const AddSection = ({
         setLoading(false);
     };
 
-
     const closeModal = () => {
         setLoading(false);
         showSuccessModal(
@@ -80,7 +79,7 @@ const AddSection = ({
             onSuccess: () => closeModal(),
         });
     };
-
+    const date = moment().toString();
     return (
         <div
             className={`w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:grid-rows-4 gap-3`}
@@ -219,10 +218,10 @@ const AddSection = ({
                         wallet_name: selectedWallet?.wallet_name,
                         category_id: "",
                         transaction_amount: "",
-                        transaction_date: new Date(),
+                        transaction_date: date,
                         transaction_note: "",
                     }}
-                    enableReinitialize={true}
+ 
                     validationSchema={validationSchema}
                     onSubmit={submitTransaction}
                 >
@@ -264,24 +263,16 @@ const AddSection = ({
                                         id="transaction_amount"
                                         name="transaction_amount"
                                         placeholder="Input the amount"
+                                        type="number"
                                         className="w-full mt-1"
                                         onChange={(e) => {
-                                            const rawValue =
-                                                e.target.value.replace(
-                                                    /,/g,
-                                                    ""
-                                                );
-                     
                                             setFieldValue(
                                                 "transaction_amount",
-                                                rawValue
+                                                e.target.value
                                             );
                                             setData(
                                                 "transaction_amount",
-                                                rawValue
-                                            );
-                                            e.target.value = addCommas(
-                                                removeNonNumeric(rawValue)
+                                                e.target.value
                                             );
                                         }}
                                     />
@@ -331,7 +322,10 @@ const AddSection = ({
                                             "transaction_date",
                                             moment(e).format("YYYY-MM-DD")
                                         );
-                                        console.log(values.transaction_date,"dsiuouohsodiuf")
+                                        console.log(
+                                            values.transaction_date,
+                                            "dsiuouohsodiuf"
+                                        );
                                     }}
                                     errors={errors?.transaction_date}
                                 />
