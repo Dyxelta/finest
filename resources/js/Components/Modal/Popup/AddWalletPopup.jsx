@@ -1,5 +1,7 @@
 import CustomField from "@/Components/CustomInput/CustomField";
+import CustomNumberInput from "@/Components/CustomInput/CustomNumberInput";
 import CustomLabel from "@/Components/CustomLabel";
+import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import Loader from "@/Components/Loader";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
@@ -12,7 +14,9 @@ import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-    wallet_name: Yup.string().required("Wallet name is required").max(30, "Maximum 30 Characters"),
+    wallet_name: Yup.string()
+        .required("Wallet name is required")
+        .max(30, "Maximum 30 Characters"),
     wallet_balance: Yup.number()
         .typeError("Balance must be number")
         .required("Wallet balance is required"),
@@ -60,9 +64,7 @@ export default function AddWalletPopup({
             onSuccess: () => closeModal(),
         });
     };
-    const empty = () => {
-        
-    };
+    const empty = () => {};
     const maxWidthClass = {
         sm: "sm:max-w-sm",
         md: "sm:max-w-md",
@@ -136,6 +138,7 @@ export default function AddWalletPopup({
                             {({
                                 errors,
                                 touched,
+                                values,
                                 setFieldValue,
                                 handleSubmit,
                             }) => (
@@ -174,23 +177,26 @@ export default function AddWalletPopup({
                                                     labelFor="Initial Wallet Balance"
                                                     className="button text-primary"
                                                 />
-                                                <CustomField
+                                                <CustomNumberInput
+                                                    value={
+                                                        values.wallet_balance
+                                                    }
                                                     id="wallet_balance"
                                                     name="wallet_balance"
-                                                    placeholder="Input your starting balance"
-                                                    type="number"
+                                                    placeholder="Input the amount"
                                                     className="w-full mt-1"
-                                                    onChange={(e) => {
+                                                    onChange={(value) => {
                                                         setFieldValue(
                                                             "wallet_balance",
-                                                            e.target.value
+                                                            value
                                                         );
                                                         setData(
                                                             "wallet_balance",
-                                                            e.target.value
+                                                            value
                                                         );
                                                     }}
                                                 />
+                                                <ErrorMessageInput name="wallet_balance" />
                                             </FormGroup>
                                         </FormGroup>
 
@@ -239,13 +245,13 @@ export default function AddWalletPopup({
                                                 >
                                                     {loading ? (
                                                         <div className="flex items-center">
-                                                        <Loader
-                                                            className={`w-[30px] h-6 mr-1`}
-                                                        />
-                                                        <span>
-                                                            Loading...
-                                                        </span>
-                                                    </div>
+                                                            <Loader
+                                                                className={`w-[30px] h-6 mr-1`}
+                                                            />
+                                                            <span>
+                                                                Loading...
+                                                            </span>
+                                                        </div>
                                                     ) : (
                                                         "Submit"
                                                     )}

@@ -9,16 +9,12 @@ import { Form, Formik } from "formik";
 import { Button, FormGroup } from "reactstrap";
 
 import CustomDatePicker from "@/Components/CustomInput/CustomDatePicker";
+import CustomNumberInput from "@/Components/CustomInput/CustomNumberInput";
 import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import Loader from "@/Components/Loader";
 import PrimaryButton from "@/Components/PrimaryButton";
-import {
-    addCommas,
-    formatDate,
-    formatToRupiah,
-    removeNonNumeric,
-} from "@/Helpers/helperFormat";
+import { formatDate, formatToRupiah } from "@/Helpers/helperFormat";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Link, useForm } from "@inertiajs/react";
 import moment from "moment";
@@ -39,7 +35,7 @@ const AddSection = ({
     categories,
 }) => {
     const [loading, setLoading] = useState(false);
-
+    const date = moment().format("YYYY-MM-DD");
     const openModal = (error) => {
         showErrorModal("Error", error);
         setLoading(false);
@@ -58,7 +54,7 @@ const AddSection = ({
         wallet_id: selectedWallet?.id,
         category_id: "",
         transaction_amount: "",
-        transaction_date: "",
+        transaction_date: date,
         transaction_note: "",
     });
 
@@ -79,7 +75,7 @@ const AddSection = ({
             onSuccess: () => closeModal(),
         });
     };
-    const date = moment().toString();
+
     return (
         <div
             className={`w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:grid-rows-4 gap-3`}
@@ -213,6 +209,7 @@ const AddSection = ({
                         </div>
                     </div>
                 </div>
+   
                 <Formik
                     initialValues={{
                         wallet_name: selectedWallet?.wallet_name,
@@ -221,7 +218,6 @@ const AddSection = ({
                         transaction_date: date,
                         transaction_note: "",
                     }}
- 
                     validationSchema={validationSchema}
                     onSubmit={submitTransaction}
                 >
@@ -233,6 +229,7 @@ const AddSection = ({
                         handleSubmit,
                     }) => (
                         <Form onSubmit={handleSubmit}>
+                            {console.log(values)}
                             <FormGroup className="w-full flex flex-col lg:flex-row gap-2 mt-4">
                                 <FormGroup className="flex-1">
                                     <CustomLabel
@@ -259,23 +256,26 @@ const AddSection = ({
                                         labelFor="Amount"
                                         className="button text-primary"
                                     />
-                                    <CustomField
+                                    <CustomNumberInput
+                                        value={values.transaction_amount}
                                         id="transaction_amount"
                                         name="transaction_amount"
                                         placeholder="Input the amount"
-                                        type="number"
+                                     
                                         className="w-full mt-1"
-                                        onChange={(e) => {
+                                        onChange={(value) => {
+              
                                             setFieldValue(
                                                 "transaction_amount",
-                                                e.target.value
+                                                value
                                             );
                                             setData(
                                                 "transaction_amount",
-                                                e.target.value
+                                                value
                                             );
                                         }}
                                     />
+                                    <ErrorMessageInput name="transaction_amount" />
                                 </FormGroup>
                             </FormGroup>
 

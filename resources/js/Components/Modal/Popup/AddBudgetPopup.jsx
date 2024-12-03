@@ -1,4 +1,5 @@
 import CustomField from "@/Components/CustomInput/CustomField";
+import CustomNumberInput from "@/Components/CustomInput/CustomNumberInput";
 import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import CustomLabel from "@/Components/CustomLabel";
 import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
@@ -14,12 +15,16 @@ import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-    budget_name: Yup.string().required("Budget name is required").max(30, "Maximum 30 Characters"),
+    budget_name: Yup.string()
+        .required("Budget name is required")
+        .max(30, "Maximum 30 Characters"),
     category_id: Yup.number().required("Category name is required"),
     budget_amount: Yup.number()
         .typeError("Limit must be number")
         .required("Budget limit is required"),
-    budget_description: Yup.string().required("Description is required").max(150, "Maximum 150 Characters"),
+    budget_description: Yup.string()
+        .required("Description is required")
+        .max(150, "Maximum 150 Characters"),
 });
 
 export default function AddBudgetPopup({
@@ -44,7 +49,7 @@ export default function AddBudgetPopup({
     useEffect(() => {
         setData("wallet_id", selectedWallet?.id);
     }, [selectedWallet]);
-    
+
     const openModal = (error) => {
         setLoading(false);
         showErrorModal("Error", error);
@@ -78,7 +83,7 @@ export default function AddBudgetPopup({
     };
 
     const empty = () => {};
-    
+
     const maxWidthClass = {
         sm: "sm:max-w-sm",
         md: "sm:max-w-md",
@@ -196,22 +201,21 @@ export default function AddBudgetPopup({
                                                     labelFor="Budget Category"
                                                     className="button text-primary"
                                                 />
-                                         
+
                                                 <CustomSelectCategories
                                                     options={categoryOptions}
                                                     onChange={(e) => {
-                                            
                                                         setFieldValue(
                                                             "category_id",
                                                             e.value
                                                         );
-                                                
+
                                                         setData(
                                                             "category_id",
                                                             e.value
                                                         );
                                                     }}
-                                                    className={'mt-2'}
+                                                    className={"mt-2"}
                                                     errors={errors?.category_id}
                                                 />
                                                 <ErrorMessageInput name="category_id" />
@@ -222,24 +226,26 @@ export default function AddBudgetPopup({
                                                     labelFor="Limit"
                                                     className="button text-primary"
                                                 />
-
-                                                <CustomField
+                                                <CustomNumberInput
+                                                    value={
+                                                        values.budget_amount
+                                                    }
                                                     id="budget_amount"
                                                     name="budget_amount"
-                                                    placeholder="Input your budget limit"
-                                                    type="number"
-                                                    className="w-full mt-2"
-                                                    onChange={(e) => {
+                                                    placeholder="Input the amount"
+                                                    className="w-full mt-1"
+                                                    onChange={(value) => {
                                                         setFieldValue(
                                                             "budget_amount",
-                                                            e.target.value
+                                                            value
                                                         );
                                                         setData(
                                                             "budget_amount",
-                                                            e.target.value
+                                                            value
                                                         );
                                                     }}
                                                 />
+                                                <ErrorMessageInput name="budget_amount" />
                                             </FormGroup>
                                         </FormGroup>
 

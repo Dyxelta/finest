@@ -1,5 +1,6 @@
 import CustomDatePicker from "@/Components/CustomInput/CustomDatePicker";
 import CustomField from "@/Components/CustomInput/CustomField";
+import CustomNumberInput from "@/Components/CustomInput/CustomNumberInput";
 import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 import CustomLabel from "@/Components/CustomLabel";
@@ -37,12 +38,13 @@ export default function AddRecurringTransactionPopup({
     walletOptions,
     onClose = () => {},
 }) {
+    const date = moment().format("YYYY-MM-DD");
     const [loading, setLoading] = useState(false);
     const { setData, post, data } = useForm({
         wallet_id: "",
         category_id: "",
         recurring_transaction_amount: "",
-        recurring_transaction_date: "",
+        recurring_transaction_date: date,
         recurring_transaction_note: "",
     });
 
@@ -88,7 +90,7 @@ export default function AddRecurringTransactionPopup({
         xl: "sm:max-w-xl",
         "2xl": "sm:max-w-2xl",
     }[maxWidth];
-    const date = moment().toString();
+
     return (
         <Transition show={show} as={Fragment} leave="duration-200 ease-in-out">
             <Dialog
@@ -145,7 +147,6 @@ export default function AddRecurringTransactionPopup({
                                 recurring_transaction_date: date,
                                 recurring_transaction_note: "",
                             }}
-                
                             validationSchema={validationSchema}
                             onSubmit={() => close()}
                         >
@@ -187,23 +188,26 @@ export default function AddRecurringTransactionPopup({
                                                 labelFor="Amount"
                                                 className="button text-primary"
                                             />
-                                            <CustomField
-                                                id="transaction_amount"
+                                            <CustomNumberInput
+                                                value={
+                                                    values.recurring_transaction_amount
+                                                }
+                                                id="recurring_transaction_amount"
                                                 name="recurring_transaction_amount"
                                                 placeholder="Input the amount"
-                                                type="number"
                                                 className="w-full mt-1"
-                                                onChange={(e) => {
+                                                onChange={(value) => {
                                                     setFieldValue(
                                                         "recurring_transaction_amount",
-                                                        e.target.value
+                                                        value
                                                     );
                                                     setData(
                                                         "recurring_transaction_amount",
-                                                        e.target.value
+                                                        value
                                                     );
                                                 }}
                                             />
+                                            <ErrorMessageInput name="recurring_transaction_amount" />
                                         </FormGroup>
                                     </FormGroup>
 
@@ -232,7 +236,9 @@ export default function AddRecurringTransactionPopup({
                                                         )
                                                     );
                                                 }}
-                                                errors={errors?.recurring_transaction_date}
+                                                errors={
+                                                    errors?.recurring_transaction_date
+                                                }
                                             />
                                             <ErrorMessageInput name="recurring_transaction_date" />
                                         </FormGroup>
@@ -243,7 +249,7 @@ export default function AddRecurringTransactionPopup({
                                                 className="button text-primary"
                                             />
                                             <CustomSelectCategories
-                                            className={'mt-1'}
+                                                className={"mt-1"}
                                                 options={categoryOptions}
                                                 onChange={(e) => {
                                                     setFieldValue(

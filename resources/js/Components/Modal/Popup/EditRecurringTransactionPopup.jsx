@@ -1,5 +1,6 @@
 import CustomDatePicker from "@/Components/CustomInput/CustomDatePicker";
 import CustomField from "@/Components/CustomInput/CustomField";
+import CustomNumberInput from "@/Components/CustomInput/CustomNumberInput";
 import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import CustomSelectInput from "@/Components/CustomInput/CustomSelectInput";
 import CustomLabel from "@/Components/CustomLabel";
@@ -39,7 +40,7 @@ export default function EditRecurringTransactionPopup({
     selectedTransaction,
 }) {
     const [loading, setLoading] = useState(false);
-    console.log(selectedTransaction)
+    console.log(selectedTransaction);
     const { setData, put, data } = useForm({
         id: selectedTransaction?.id,
         wallet_id: selectedTransaction?.wallet_id,
@@ -170,10 +171,8 @@ export default function EditRecurringTransactionPopup({
 
                         <Formik
                             initialValues={{
-                                wallet_id:
-                                    selectedTransaction?.wallet_id,
-                                    category_id:
-                                    selectedTransaction?.category_id,
+                                wallet_id: selectedTransaction?.wallet_id,
+                                category_id: selectedTransaction?.category_id,
                                 recurring_transaction_amount:
                                     Math.abs(
                                         selectedTransaction?.recurring_transaction_amount
@@ -208,7 +207,9 @@ export default function EditRecurringTransactionPopup({
                                                 defaultValue={
                                                     selectedTransaction && {
                                                         value: selectedTransaction?.wallet_id,
-                                                        label: selectedTransaction?.wallet?.wallet_name,
+                                                        label: selectedTransaction
+                                                            ?.wallet
+                                                            ?.wallet_name,
                                                     }
                                                 }
                                                 options={walletOptions}
@@ -233,23 +234,26 @@ export default function EditRecurringTransactionPopup({
                                                 labelFor="Amount"
                                                 className="button text-primary"
                                             />
-                                            <CustomField
-                                                id="transaction_amount"
+                                            <CustomNumberInput
+                                                value={
+                                                    values.recurring_transaction_amount
+                                                }
+                                                id="recurring_transaction_amount"
                                                 name="recurring_transaction_amount"
                                                 placeholder="Input the amount"
-                                                type="number"
                                                 className="w-full mt-1"
-                                                onChange={(e) => {
+                                                onChange={(value) => {
                                                     setFieldValue(
                                                         "recurring_transaction_amount",
-                                                        e.target.value
+                                                        value
                                                     );
                                                     setData(
                                                         "recurring_transaction_amount",
-                                                        e.target.value
+                                                        value
                                                     );
                                                 }}
                                             />
+                                            <ErrorMessageInput name="recurring_transaction_amount" />
                                         </FormGroup>
                                     </FormGroup>
 
@@ -278,7 +282,9 @@ export default function EditRecurringTransactionPopup({
                                                         )
                                                     );
                                                 }}
-                                                errors={errors?.recurring_transaction_date}
+                                                errors={
+                                                    errors?.recurring_transaction_date
+                                                }
                                             />
                                             <ErrorMessageInput name="recurring_transaction_date" />
                                         </FormGroup>
@@ -293,7 +299,9 @@ export default function EditRecurringTransactionPopup({
                                                 defaultValue={
                                                     selectedTransaction && {
                                                         values: selectedTransaction?.category_id,
-                                                        label: selectedTransaction?.category?.category_name,
+                                                        label: selectedTransaction
+                                                            ?.category
+                                                            ?.category_name,
                                                     }
                                                 }
                                                 options={categoryOptions}

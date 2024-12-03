@@ -3,10 +3,12 @@ export function formatToRupiah(value) {
     if (!value) {
         return 0;
     }
-    return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-    }).format(value);
+
+    // Format the value using Intl.NumberFormat
+    const rupiahValue = new Intl.NumberFormat("id-ID").format(value);
+
+    // Manually add the 'Rp' symbol and return the result without space
+    return `Rp${rupiahValue},00`;
 }
 
 export function formatDate(dateString) {
@@ -58,14 +60,4 @@ export const RupiahFormatTooltipPieChart = ({ active, payload, label }) => {
 
 export const formatYAxis = (tick) => formatToRupiah(tick);
 
-export const addCommas = (num) =>
-    num
-        .toString()
-        .replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ","
-        );
-export const removeNonNumeric = (num) =>
-    num
-        .toString()
-        .replace(/[^0-9]/g, "");
+export const handleRefresh = () => window.location.reload()
