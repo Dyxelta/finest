@@ -16,7 +16,7 @@ export default function CustomNumberInput({
         <React.Fragment>
             <div className="relative">
                 <NumericFormat
-                    thousandSeparator=","
+                    thousandSeparator="."
                     name={props.name}
                     value={value}
                     onValueChange={(values) => {
