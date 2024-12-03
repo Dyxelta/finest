@@ -17,6 +17,7 @@ export default function CustomNumberInput({
             <div className="relative">
                 <NumericFormat
                     thousandSeparator="."
+                    decimalSeparator=","
                     name={props.name}
                     value={value}
                     onValueChange={(values) => {
