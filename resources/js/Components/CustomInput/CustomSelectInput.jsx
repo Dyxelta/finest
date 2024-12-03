@@ -4,23 +4,17 @@ const customStyles = (hasError) => ({
     control: (provided, state) => ({
         ...provided,
         borderRadius: "6px",
-        borderColor: hasError
-            ? state.isFocused
-                ? "#F44336" 
-                : "#F44336" 
-            : state.isFocused
-            ? "#CAD8E7"
-            : provided.borderColor,
+        borderColor: hasError ? "#F44336" : "#CAD8E7", 
         "&:hover": {
-            borderColor: hasError
-                ? "#CD5C5C" 
-                : "#CAD8E7",
+            borderColor: hasError ? "#CD5C5C" : "#CAD8E7",
         },
-        boxShadow: hasError && state.isFocused ? "0 0 0 1px #FF0000" : provided.boxShadow,
+        boxShadow: "none", 
+        outline: "none",
     }),
+
     singleValue: (provided, state) => ({
         ...provided,
-        color:  state.isSelected ? "#2D5074" : provided.color,
+        color: state.isSelected ? "#2D5074" : provided.color,
     }),
     option: (provided, state) => ({
         ...provided,
@@ -50,6 +44,7 @@ const customStyles = (hasError) => ({
     }),
 });
 
+
 const CustomSelectInput = ({
     defaultValue = "",
     options,
@@ -58,12 +53,13 @@ const CustomSelectInput = ({
     placeholder = "Select an option",
     isDisabled = false,
     className = "",
-    isSearchable = false,
-    errors = false, 
+    isSearchable = true,
+    errors = false,
 }) => {
     return (
         <Select
-            className={className}
+         classNamePrefix="react-select"
+            className={`${className} remove-input-txt-border`}
             isDisabled={isDisabled}
             value={value}
             defaultValue={defaultValue}

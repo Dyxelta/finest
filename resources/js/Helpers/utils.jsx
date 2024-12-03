@@ -11,6 +11,9 @@ const ModalContent = ({
     onClose,
     maxWidth,
     showButton,
+    success="",
+    showCancel=false,
+    exit
 }) => {
     return (
         <CustomShowAlertModal
@@ -20,6 +23,9 @@ const ModalContent = ({
             maxWidth={maxWidth}
             showButton={showButton}
             onClose={onClose}
+            success={success}
+            showCancel={showCancel}
+            exit={exit}
         />
     );
 };
@@ -46,6 +52,7 @@ export const showSuccessModal = (
                         MySwal.close();
                         onClose();
                     }}
+                    success={true}
                     exit={() => {
                         MySwal.close();
                     }}
@@ -67,7 +74,8 @@ export const showErrorModal = (
     onClose = () => {},
     maxWidth,
     showButton = true,
-    outsideClick = false
+    outsideClick = false,
+    showCancel=false
 ) => {
     MySwal.fire({
         position: "center",
@@ -83,9 +91,11 @@ export const showErrorModal = (
                         onClose();
                         MySwal.close();
                     }}
+                    success={false}
                     exit={() => {
                         MySwal.close();
                     }}
+                    showCancel={showCancel}
                 />
             </div>
         ),

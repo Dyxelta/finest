@@ -113,7 +113,7 @@ const AverageSpendingAnalysis = ({
                             )}
                         </div>
                         <div className="sub-body md:body">
-                            {getProgressBarPercentage * 100}%
+                            {(getProgressBarPercentage * 100).toFixed(2)}%
                         </div>
                     </div>
                     <div

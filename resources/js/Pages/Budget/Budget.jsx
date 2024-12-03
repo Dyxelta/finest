@@ -143,6 +143,7 @@ export default function BudgetPage({
                     () => onClose(),
                     undefined,
                     true,
+                    true,
                     true
                 );
             } else {
@@ -155,7 +156,8 @@ export default function BudgetPage({
                 undefined,
                 undefined,
                 true,
-                true
+                true,
+                false
             );
         }
     };

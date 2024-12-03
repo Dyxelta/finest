@@ -11,3 +11,5 @@
   .custom-scrollbar::-webkit-scrollbar-track {
     background-color: transparent;
   }
+
+  .remove-input-txt-border input[type='text']:focus {   box-shadow: none; }

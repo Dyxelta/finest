@@ -13,7 +13,12 @@ import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategor
 import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import Loader from "@/Components/Loader";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { formatDate, formatToRupiah } from "@/Helpers/helperFormat";
+import {
+    addCommas,
+    formatDate,
+    formatToRupiah,
+    removeNonNumeric,
+} from "@/Helpers/helperFormat";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Link, useForm } from "@inertiajs/react";
 import moment from "moment";
@@ -21,21 +26,18 @@ import { BsExclamation } from "react-icons/bs";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-
     category_id: Yup.number().required("Category name is required"),
-    transaction_amount: Yup.number().required("Transaction amount is required"),
+    transaction_amount: Yup.string().required("Transaction amount is required"),
     transaction_date: Yup.date().required("Transaction date is required"),
-    transaction_note: Yup.string().max(150, "Maximum 150 Characters")
+    transaction_note: Yup.string().max(150, "Maximum 150 Characters"),
 });
 
 const AddSection = ({
-
     selectedWallet,
     setSelectedWallet,
     walletOptions,
     categories,
 }) => {
-
     const [loading, setLoading] = useState(false);
 
     const openModal = (error) => {
@@ -47,7 +49,7 @@ const AddSection = ({
         window.location.reload();
     };
 
-    const closeModal = () => {  
+    const closeModal = () => {
         setLoading(false);
         showSuccessModal(
             "Success",
@@ -82,7 +84,6 @@ const AddSection = ({
         });
     };
 
-    
     return (
         <div
             className={`w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:grid-rows-4 gap-3`}
@@ -115,9 +116,8 @@ const AddSection = ({
                         }
                         options={walletOptions}
                         onChange={(e) => {
-                
                             setSelectedWallet(e);
-                            setData("wallet_id", e.value)
+                            setData("wallet_id", e.value);
                         }}
                     />
                 </div>
@@ -158,7 +158,6 @@ const AddSection = ({
                                     <CustomField
                                         id="wallet_name"
                                         name="wallet_name"
-                                        type="email"
                                         className="w-full mt-1"
                                         icon={
                                             <BiWallet size={18} color="grey" />
@@ -176,7 +175,6 @@ const AddSection = ({
                                     <CustomField
                                         id="created_date"
                                         name="created_date"
-                                        type="email"
                                         className="w-full mt-1"
                                         icon={
                                             <BiCalendar
@@ -246,7 +244,7 @@ const AddSection = ({
                                         className="button text-primary"
                                     />
                                     <CustomSelectCategories
-                                    className={'mt-1'}
+                                        className={"mt-1"}
                                         options={categories}
                                         onChange={(e) => {
                                             setFieldValue(
@@ -269,21 +267,27 @@ const AddSection = ({
                                         id="transaction_amount"
                                         name="transaction_amount"
                                         placeholder="Input the amount"
-                                        type="number"
                                         className="w-full mt-1"
                                         onChange={(e) => {
-                                            
+                                            const rawValue =
+                                                e.target.value.replace(
+                                                    /,/g,
+                                                    ""
+                                                );
+                     
                                             setFieldValue(
                                                 "transaction_amount",
-                                                e.target.value
+                                                rawValue
                                             );
                                             setData(
                                                 "transaction_amount",
-                                                e.target.value
+                                                rawValue
+                                            );
+                                            e.target.value = addCommas(
+                                                removeNonNumeric(rawValue)
                                             );
                                         }}
                                     />
-                            
                                 </FormGroup>
                             </FormGroup>
 
@@ -312,7 +316,6 @@ const AddSection = ({
                                         );
                                     }}
                                 />
-             
                             </FormGroup>
 
                             <FormGroup>

@@ -50,7 +50,6 @@ class UserController extends Controller
         ]);
 
         if (Auth::attempt($request->only('email', 'password'))) {
-
             if (Auth::user()->email_verified_at == null) {
 
                 $request->user()->sendEmailVerificationNotification();

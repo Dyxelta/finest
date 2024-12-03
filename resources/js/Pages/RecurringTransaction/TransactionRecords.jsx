@@ -54,6 +54,7 @@ const ViewTable = ({
             () => onClose(),
             undefined,
             true,
+            true,
             true
         );
     };

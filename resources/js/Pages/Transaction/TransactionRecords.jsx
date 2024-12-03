@@ -40,6 +40,7 @@ const ViewTable = ({ transaction, onOpen, isOpen, index, pagination }) => {
             () => onClose(),
             undefined,
             true,
+            true,
             true
         );
     };

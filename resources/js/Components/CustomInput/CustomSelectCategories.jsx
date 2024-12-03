@@ -77,14 +77,15 @@ const CustomSelectCategories = ({
     errors = null,
 }) => (
     <Select
+
         defaultValue={defaultValue}
-        className={` ${className}`}
+        className={` ${className} remove-input-txt-border`}
         {...props}
         onChange={onChange}
         options={options}
         components={{ GroupHeading, Option: CustomOption }}
         styles={customStyles(errors)}
-        isSearchable={false}
+
         placeholder="Select Category"
         menuPortalTarget={document.body}
         theme={(theme) => ({

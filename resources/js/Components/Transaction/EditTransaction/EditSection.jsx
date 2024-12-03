@@ -157,7 +157,7 @@ console.log(categories)
                                     <CustomField
                                         id="wallet_name"
                                         name="wallet_name"
-                                        type="email"
+                                 
                                         className="w-full mt-1"
                                         icon={
                                             <BiWallet size={18} color="grey" />
@@ -175,7 +175,7 @@ console.log(categories)
                                     <CustomField
                                         id="created_date"
                                         name="created_date"
-                                        type="email"
+                                      
                                         className="w-full mt-1"
                                         icon={
                                             <BiCalendar

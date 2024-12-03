@@ -54,14 +54,16 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/login-user', [UserController::class, 'login'])->name('loginUser');
 });
+Route::middleware(['auth'])->group(function () {
+    //Authentication
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
     //Authentication
     Route::put('/edit-profile', [UserController::class, 'editUserData'])->name('editProfile');
     Route::put('/edit-password', [UserController::class, 'editPassword'])->name('editPassword');
-    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-
 
     //dashboard
     Route::get('/dashboard', function (Request $request) {

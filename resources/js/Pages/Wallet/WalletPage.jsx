@@ -85,6 +85,7 @@ export default function WalletPage({ auth, wallets }) {
                     () => onClose(),
                     undefined,
                     true,
+                    true,
                     true
                 );
             } else {
@@ -97,7 +98,8 @@ export default function WalletPage({ auth, wallets }) {
                 undefined,
                 undefined,
                 true,
-                true
+                true,
+                false
             );
         }
     };

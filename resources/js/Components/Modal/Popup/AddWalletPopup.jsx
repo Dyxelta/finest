@@ -61,7 +61,7 @@ export default function AddWalletPopup({
         });
     };
     const empty = () => {
-        onClose()
+        
     };
     const maxWidthClass = {
         sm: "sm:max-w-sm",
