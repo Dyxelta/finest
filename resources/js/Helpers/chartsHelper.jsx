@@ -111,9 +111,7 @@ export const usePieChartOuterRadius = () => {
 export const usePieChartInnerRadius = () => {
     const breakpoints = {
         mobile: 768,
-
         mobileMargin: 46,
-
         defaultMargins: 55,
     };
 
@@ -136,23 +134,46 @@ export const usePieChartInnerRadius = () => {
 };
 
 export const renderPercentage = (props) => {
-    const { cx, cy, percent, activeIndex, index } = props;
+    const truncateText = (text) => {
+        if (!text) return " ";
 
-    // Only render percentage for the active slice
-    if (index !== activeIndex || percent === undefined) {
+        return text.length > 17 ? `${text.slice(0, 17)}...` : text;
+    };
+
+    const { cx, cy, percent, activeIndex, index, payload } = props;
+
+    if (
+        cx === undefined ||
+        cy === undefined ||
+        index !== activeIndex ||
+        percent === undefined
+    ) {
         return null;
     }
 
     return (
-        <Text
-            x={cx}
-            y={cy}
-            dy={8}
-            textAnchor="middle"
-            fill="#000"
-            className="text-primary"
-        >
-            {(percent * 100).toFixed(2)}%
-        </Text>
+        <g>
+            <Text
+                x={cx}
+                y={cy}
+                dy={-10}
+                textAnchor="middle"
+                fill="#000"
+                fontSize={10}
+                className="text-primary w-[20px] text-ellipsis"
+            >
+                {truncateText(payload.name)}
+            </Text>
+            <Text
+                x={cx}
+                y={cy}
+                dy={8}
+                textAnchor="middle"
+                fill="#000"
+                className="text-primary"
+            >
+                {(percent * 100).toFixed(2)}%
+            </Text>
+        </g>
     );
 };

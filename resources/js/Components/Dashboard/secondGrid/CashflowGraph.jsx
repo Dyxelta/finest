@@ -14,9 +14,9 @@ const CashflowGraph = ({
     current_month_total_expense,
 }) => {
     const data = [
-        { name: "Income Graph Overview", value: current_month_total_income },
+        { name: "Income Overview", value: current_month_total_income },
         {
-            name: "Expense Graph Overview",
+            name: "Expense Overview",
             value: Math.abs(current_month_total_expense),
         },
     ];

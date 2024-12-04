@@ -40,7 +40,7 @@ const AllWalletOverview = ({ total_balance, wallets }) => {
 
     return (
         <div className="py-1 px-2 z-50 relative text-primary">
-            <div className="button md:header-5 flex justify-between w-full font-roboto z-50 mt-1">
+            <div className="button md:header-5 flex justify-between w-full font-roboto z-50 mt-1 p-1">
                 <div>
                     All Wallet Overview{" "}
                     <CustomTooltip content="All Wallet Overview displays balance of each wallet and the total balance of all wallet" />
@@ -71,6 +71,7 @@ const AllWalletOverview = ({ total_balance, wallets }) => {
                                     })
                                 }
                                 labelLine={false}
+                                minAngle={6}
                                 onMouseEnter={onPieEnter}
                                 isAnimationActive={false}
                             >
