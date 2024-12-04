@@ -52,6 +52,7 @@ export const generate6MonthsArray = () => {
 };
 
 import { useEffect, useState } from "react";
+import { Text } from "recharts";
 
 export const useChartMargin = () => {
     const breakpoints = {
@@ -113,7 +114,7 @@ export const usePieChartInnerRadius = () => {
 
         mobileMargin: 46,
 
-        defaultMargins: 60,
+        defaultMargins: 55,
     };
 
     const [innerRadius, setInnerRadius] = useState(breakpoints.defaultMargins);
@@ -132,4 +133,26 @@ export const usePieChartInnerRadius = () => {
     }, []);
 
     return innerRadius;
+};
+
+export const renderPercentage = (props) => {
+    const { cx, cy, percent, activeIndex, index } = props;
+
+    // Only render percentage for the active slice
+    if (index !== activeIndex || percent === undefined) {
+        return null;
+    }
+
+    return (
+        <Text
+            x={cx}
+            y={cy}
+            dy={8}
+            textAnchor="middle"
+            fill="#000"
+            className="text-primary"
+        >
+            {(percent * 100).toFixed(2)}%
+        </Text>
+    );
 };
