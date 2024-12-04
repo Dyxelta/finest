@@ -65,7 +65,7 @@ export default function Dashboard({
                         >
                             <div className="flex w-full justify-end z-50 items-center px-1 lg:px-4 relative">
                                 <div className="flex items-center gap-1 lg:gap-2 mt-2">
-                                    <div className="sub-body-bold lg:button    bg-light rounded-md px-4 py-2 m">
+                                    <div className="sub-body-bold lg:button rounded-md px-4 py-2 m">
                                         Net Income Overview{" "}
                                         <CustomTooltip content="Net Income Overview displays the net income for the current month, along with the previous month's figure." />
                                     </div>

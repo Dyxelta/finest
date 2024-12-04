@@ -12,7 +12,7 @@ const Reminder = ({
 }) => {
   return (
     <div ref={collapseRef} className=" text-primary relative">
-      <div onClick={toggleOpen} className="bg-none cursor-pointer bg-white p-3 rounded-md">
+      <div onClick={toggleOpen} className="bg-none cursor-pointer bg-white p-3 rounded-md hover:bg-gray-100 transition-all duration-300 ease-in-out">
         <FaBell size={24} />
       </div>
       <div className="absolute z-50 mt-1 text-primary right-0 bottom-0 translate-y-[100%]">
