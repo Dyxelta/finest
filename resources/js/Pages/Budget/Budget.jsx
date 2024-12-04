@@ -360,7 +360,7 @@ export default function BudgetPage({
                     </motion.div>
                 ) : (
                     <div className="flex flex-col w-full py-2  text-primary mt-2 rounded-xl gap-4">
-                        <div className="header-5 md:header-3">
+                        <div className="header-5 md:header-4">
                             No Budget Yet...
                         </div>
                     </div>
@@ -510,7 +510,7 @@ export default function BudgetPage({
                         <TbMoodEmpty />
                     </div>
                     <div className="header-5 md:header-3">
-                        No Budget Details Yet...
+                        you have not selected any budget...
                     </div>
                 </div>
             )}
