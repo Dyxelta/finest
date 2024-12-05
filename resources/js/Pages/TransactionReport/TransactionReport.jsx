@@ -127,23 +127,23 @@ export default function TransactionReportPage({
                 </div>
                 <div className="bg-light rounded-lg w-full h-[300px] md:h-[375px] p-3 col-span-2 md:col-span-1 ">
                     <ReusableDecorBackground
-                        DecorBG={DecorBG}
-                        className=" absolute right-[-80px] top-[-80px] w-[300px] h-[200px] -z-0"
+                        DecorBG={''}
+                        className=" absolute right-[-170px] bottom-[-150px] w-[400px] h-[300px] -z-0 rotate-[100deg]"
                     >
                         <div className="flex w-full justify-between z-50 items-center px-1 lg:px-4 relative">
-                            <div className="flex items-center gap-2 mt-2">
-                                <div className="sub-body-bold lg:button xl:header-5 bg-light rounded-md px-4 py-2 ">
-                                    {monthName}
+                            <div className="flex items-center gap-1 lg:gap-2 mt-2 ">
+                                <div className="sub-body-bold lg:button xl:header-5  ">
+                                    {" "}
+                                    <CgNotes />
                                 </div>
-                            </div>
-                            <div className="flex items-center gap-1 lg:gap-2 mt-2">
-                                <div className="sub-body-bold lg:button  xl:header-5  bg-light rounded-md px-4 py-2 m">
+                                <div className="sub-body-bold lg:button  xl:header-5 px-2">
                                     Net Income Overview{" "}
                                     <CustomTooltip content="Net Income Overview displays the net income for the selected month, along with the previous month's figure." />
                                 </div>
-                                <div className="sub-body-bold lg:button xl:header-5 bg-light rounded-full p-3 ">
-                                    {" "}
-                                    <CgNotes />
+                            </div>
+                            <div className="flex items-center gap-2 mt-2">
+                                <div className="sub-body-bold lg:button xl:header-5  px-4 py-2 ">
+                                    {monthName}
                                 </div>
                             </div>
                         </div>

@@ -193,9 +193,11 @@ const AverageSpendingAnalysis = ({
                                     total_transaction_this_month?.total_transaction >
                                 0
                                     ? formatToRupiah(
-                                          AverageSpendingRecommendation(
-                                              average_transaction_last_six_month?.average_total +
-                                                  total_transaction_this_month?.total_transaction
+                                          Math.round(
+                                              AverageSpendingRecommendation(
+                                                  average_transaction_last_six_month?.average_total +
+                                                      total_transaction_this_month?.total_transaction
+                                              )
                                           )
                                       )
                                     : "0"}
@@ -232,8 +234,10 @@ const AverageSpendingAnalysis = ({
                             You have overspent by{" "}
                             <span className="text-expense">
                                 {formatToRupiah(
-                                    total_transaction_this_month?.total_transaction -
-                                        average_transaction_last_six_month?.average_total
+                                    Math.round(
+                                        total_transaction_this_month?.total_transaction -
+                                            average_transaction_last_six_month?.average_total
+                                    )
                                 )}
                             </span>{" "}
                             and exceeded your
@@ -251,9 +255,11 @@ const AverageSpendingAnalysis = ({
                             <span className="sub-body-bold md:button">
                                 {formatToRupiah(
                                     AverageSpendingRecommendation(
-                                        Math.abs(
-                                            average_transaction_last_six_month?.average_total -
-                                                total_transaction_this_month?.total_transaction
+                                        Math.round(
+                                            Math.abs(
+                                                average_transaction_last_six_month?.average_total -
+                                                    total_transaction_this_month?.total_transaction
+                                            )
                                         )
                                     )
                                 )}{" "}
