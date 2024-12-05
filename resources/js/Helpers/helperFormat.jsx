@@ -4,11 +4,9 @@ export function formatToRupiah(value) {
         return 0;
     }
 
-    // Format the value using Intl.NumberFormat
-    const rupiahValue = new Intl.NumberFormat("id-ID").format(value);
+    const rupiahValue = new Intl.NumberFormat("id-ID").format(Math.abs(value));
 
-    // Manually add the 'Rp' symbol and return the result without space
-    return `Rp${rupiahValue},00`;
+    return value < 0 ? `- Rp${rupiahValue},00` : `Rp${rupiahValue},00`;
 }
 
 export function formatDate(dateString) {
