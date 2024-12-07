@@ -1,6 +1,4 @@
 import { formatToRupiah } from "@/Helpers/helperFormat";
-import React from "react";
-import { BsGraphUpArrow } from "react-icons/bs";
 
 const IncomeExpenseThisMonth = ({ type, amount, icon }) => {
     return (

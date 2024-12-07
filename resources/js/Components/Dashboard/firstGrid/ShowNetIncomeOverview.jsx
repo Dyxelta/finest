@@ -6,16 +6,13 @@ import {
     ResponsiveContainer,
     Tooltip,
     XAxis,
-    YAxis
+    YAxis,
 } from "recharts";
-
-
 
 const ShowNetIncomeOverview = ({
     current_month_net_income,
     last_month_net_income,
 }) => {
-
     const data = [
         {
             name: "Current Net Income",
@@ -47,10 +44,10 @@ const ShowNetIncomeOverview = ({
                         contentStyle={{
                             backgroundColor: "#EBF0F6",
                             borderRadius: "8px",
-                      
+
                             color: "#2D5074",
                         }}
-                        content={<RupiahFormatTooltip/>}
+                        content={<RupiahFormatTooltip />}
                     />
 
                     <XAxis type="number" className="sub-body lg:body" hide />
@@ -62,9 +59,8 @@ const ShowNetIncomeOverview = ({
                         tick={{ fill: "#2D5074" }}
                         className="sub-body lg:body"
                     />
-                      <Bar stackId="a" dataKey="value" barSize={40}>
+                    <Bar stackId="a" dataKey="value" barSize={40}>
                         {data.map((entry, index) => (
-                
                             <Cell
                                 fill={entry.value < 0 ? "#8B1E1E" : "#2D5074"}
                             />
