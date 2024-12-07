@@ -162,15 +162,9 @@ class TransactionController extends Controller
     {
         $userId = auth()->user()->id;
         $selectedMonth = $request->month ?? now()->month;
-        $currentYear = now()->year;
-
-        $year = ($selectedMonth > now()->month) ? $currentYear - 1 : $currentYear;
-
-        $startDate = Carbon::createFromDate($year, $selectedMonth, 1)->startOfMonth();
-        $endDate = Carbon::createFromDate($year, $selectedMonth, 1)->endOfMonth();
 
         $transactions = Transaction::where('user_id', $userId)
-            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->whereMonth('transaction_date', $selectedMonth)
             ->orderBy('transaction_date', 'desc')
             ->with(['wallet', 'category'])
             ->get();
