@@ -41,6 +41,10 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
+Route::post('/forgot-password', function() {
+
+});
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', function () {
         return Inertia::render('Auth/Login');
@@ -50,9 +54,19 @@ Route::middleware('guest')->group(function () {
         return Inertia::render('Auth/Register');
     })->name('register');
 
+    Route::get('/forgetPassword', function () {
+        return Inertia::render('Auth/ForgetPass');
+    })->name('forget');
+
+    Route::get('/reset-password/{token}', function (string $token) {
+        //return Inertia::render('Auth/ForgetPass');
+    })->middleware('guest')->name('password.reset');
+
     Route::post('/create-account', [UserController::class, 'register'])->name('createAccount');
 
     Route::post('/login-user', [UserController::class, 'login'])->name('loginUser');
+
+    Route::post('/forget-password', [UserController::class, 'forgetUserPassword'])->name('forgetpass');
 });
 Route::middleware(['auth'])->group(function () {
     //Authentication

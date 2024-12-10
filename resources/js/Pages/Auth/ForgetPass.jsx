@@ -19,14 +19,11 @@ import { showErrorModal } from "@/Helpers/utils";
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
-
-    password: Yup.string().required("Password is required"),
 });
 
 export default function Login() {
     const { setData, post } = useForm({
-        email: "",
-        password: "",
+        email: ""
     });
     const [loading, setLoading] = useState(false);
     const openModal = (error) => {
@@ -37,14 +34,12 @@ export default function Login() {
 
     const submit = () => {
         setLoading(true);
-        post(route("loginUser"), {
+        post(route("forgetpass"), {
             onError: (errors) => {
         
                 if (errors.email) {
                     openModal(errors.email);
-                } else if (errors.password) {
-                    openModal(errors.password);
-                } 
+                }
             },
             onSuccess: () => setLoading(false),
         });
@@ -111,8 +106,8 @@ export default function Login() {
                                     <div className=" flex flex-col justify-between bg-light px-5 sm:px-8 md:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[440px] md:h-[475px]">
                                         <FormGroup className="w-full">
                                             <CustomTitle
-                                                title="Welcome"
-                                                subtitle="Sign in to your account"
+                                                title="Forget password"
+                                                subtitle="Input your email"
                                                 className={"pt-3 md:pt-6 pb-8 "}
                                             />
                                             <FormGroup>
@@ -145,78 +140,6 @@ export default function Login() {
                                                     }}
                                                 />
                                             </FormGroup>
-
-                                            <FormGroup className="mt-3 md:mt-4 w-full">
-                                                <CustomLabel
-                                                    labelFor="Password"
-                                                    className="button text-primary"
-                                                />
-
-                                                <CustomField
-                                                    id="password"
-                                                    name="password"
-                                                    placeholder="Must be 8-20 Characters"
-                                                    type={
-                                                        openPass
-                                                            ? "text"
-                                                            : "password"
-                                                    }
-                                                    className="w-full mt-1"
-                                                    icon={
-                                                        <Lock
-                                                            size={18}
-                                                            color="grey"
-                                                        />
-                                                    }
-                                                    onKeyPress={(e) => {
-                                                        if (
-                                                            e.key ===
-                                                            "Enter"
-                                                        ) {
-                                                            setData(
-                                                                "password",
-                                                                e.target.value
-                                                            );
-                                                            setFieldValue(
-                                                                "password",
-                                                                e.target.value
-                                                            );
-                                                        }
-                                                    }}
-                                                    onChange={(e) => {
-                                                        setData(
-                                                            "password",
-                                                            e.target.value
-                                                        );
-                                                        setFieldValue(
-                                                            "password",
-                                                            e.target.value
-                                                        );
-                                                    }}
-                                                    password={
-                                                        <div
-                                                            onClick={() =>
-                                                                setOpenPass(
-                                                                    !openPass
-                                                                )
-                                                            }
-                                                            className="cursor-pointer relative"
-                                                        >
-                                                            {openPass ? (
-                                                                <FaRegEyeSlash
-                                                                    size={18}
-                                                                    color="grey"
-                                                                />
-                                                            ) : (
-                                                                <FaRegEye
-                                                                    size={18}
-                                                                    color="grey"
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    }
-                                                />
-                                            </FormGroup>
                                         </FormGroup>
 
                                         <div className="flex flex-col mb-6">
@@ -234,7 +157,7 @@ export default function Login() {
                                                         <span>Loading...</span>
                                                     </div>
                                                 ) : (
-                                                    "Login"
+                                                    "Submit"
                                                 )}
                                             </PrimaryButton>
 
