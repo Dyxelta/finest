@@ -161,10 +161,10 @@ export default function EditRecurringTransactionPopup({
                             </div>
                             <div className="flex flex-col">
                                 <h1 className="text-primary header-4">
-                                    Insert Recurring Transaction
+                                    Edit Recurring Transaction
                                 </h1>
                                 <h5 className="text-grey sub-body-14">
-                                    Add your recurring transaction
+                                    Edit your recurring transaction
                                 </h5>
                             </div>
                         </div>
