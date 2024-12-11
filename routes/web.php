@@ -59,14 +59,18 @@ Route::middleware('guest')->group(function () {
     })->name('forget');
 
     Route::get('/reset-password/{token}', function (string $token) {
-        return Inertia::render('Auth/ResetPass');
+        return Inertia::render('Auth/ResetPass', ['token' => $token]);
     })->middleware('guest')->name('password.reset');
 
     Route::post('/create-account', [UserController::class, 'register'])->name('createAccount');
 
     Route::post('/login-user', [UserController::class, 'login'])->name('loginUser');
 
-    Route::post('/forget-password', [UserController::class, 'forgetUserPassword'])->name('forgetpass');
+    Route::post('/forget-password', [UserController::class, 'sendForgetPasswordEmail'])->name('forgetpass');
+
+    Route::post('/forget_password', function(Request $request){
+        app(UserController::class)->resetUserPassword($request);
+    })->name('resetPass');
 });
 
 Route::middleware(['auth'])->group(function () {
