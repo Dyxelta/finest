@@ -39,7 +39,7 @@ const ResetPasswordSchema = Yup.object().shape({
         .required("Confirm password is required"),
 });
 
-export default function Login() {
+export default function ResetPass({token, email}) {
     const { setData, post } = useForm({
         confirm_pass: "",
         password: "",
@@ -53,7 +53,7 @@ export default function Login() {
 
     const submit = () => {
         setLoading(true);
-        post(route("loginUser"), {
+        post(route("resetPass", token), {
             onError: (errors) => {
                 if (errors.confirm_pass) {
                     openModal(errors.confirm_pass);
