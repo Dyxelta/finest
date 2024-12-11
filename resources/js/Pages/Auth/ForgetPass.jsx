@@ -15,13 +15,13 @@ import Loader from "@/Components/Loader";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
-import { showErrorModal } from "@/Helpers/utils";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 
 const ForgetPasswordSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
 });
 
-export default function Login() {
+export default function ForgetPassword() {
     const { setData, post } = useForm({
         email: "",
     });
@@ -40,7 +40,10 @@ export default function Login() {
                     openModal(errors.email);
                 }
             },
-            onSuccess: () => setLoading(false),
+            onSuccess: () => {
+                setLoading(false)
+                showSuccessModal('Success', "Reset password verification has been sent to your email")
+            },
         });
     };
 

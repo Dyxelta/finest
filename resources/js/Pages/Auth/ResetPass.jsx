@@ -16,6 +16,7 @@ import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
+import { useEffect } from "react";
 
 const ResetPasswordSchema = Yup.object().shape({
     password: Yup.string()
@@ -39,37 +40,49 @@ const ResetPasswordSchema = Yup.object().shape({
         .required("Confirm password is required"),
 });
 
-export default function ResetPass({token, email}) {
+export default function ResetPassword({token}) {
+ 
     const { setData, post } = useForm({
+        token: token,
+        email:"",
         confirm_pass: "",
         password: "",
     });
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        setData("email",params.get('email'));
+    }, []);
+
     const [loading, setLoading] = useState(false);
     const openModal = (error) => {
-        console.log(error);
         setLoading(false);
         showErrorModal("Error", error);
     };
 
     const submit = () => {
         setLoading(true);
-        post(route("resetPass", token), {
+        post(route("resetPass"), {
             onError: (errors) => {
                 if (errors.confirm_pass) {
                     openModal(errors.confirm_pass);
                 } else if (errors.password) {
                     openModal(errors.password);
+                }else if (errors.token) {
+                    openModal(errors.token);
+                }else if (errors.email) {
+                    openModal(errors.email);
                 }
             },
             onSuccess: () => {
                 setLoading(false)
-                showSuccessModal('Success', "Reset password verification has been sent to your email")
+                showSuccessModal('Success', "Reset password success")
             },
         });
     };
 
     const [openPass, setOpenPass] = useState();
-    const [openConfirmPass, setOpenConfirmPass] = useState();
+    const [openConfirmPass , setOpenConfirmPass] = useState();
     return (
         <div className="relative h-screen bg-background">
             <img
