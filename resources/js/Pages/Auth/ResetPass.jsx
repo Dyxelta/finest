@@ -15,7 +15,7 @@ import Loader from "@/Components/Loader";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
-import { showErrorModal } from "@/Helpers/utils";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 
 const ResetPasswordSchema = Yup.object().shape({
     password: Yup.string()
@@ -61,7 +61,10 @@ export default function Login() {
                     openModal(errors.password);
                 }
             },
-            onSuccess: () => setLoading(false),
+            onSuccess: () => {
+                setLoading(false)
+                showSuccessModal('Success', "Reset password verification has been sent to your email")
+            },
         });
     };
 
