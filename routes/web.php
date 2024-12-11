@@ -59,7 +59,7 @@ Route::middleware('guest')->group(function () {
     })->name('forget');
 
     Route::get('/reset-password/{token}', function (string $token) {
-        //return Inertia::render('Auth/ForgetPass');
+        return Inertia::render('Auth/ResetPass');
     })->middleware('guest')->name('password.reset');
 
     Route::post('/create-account', [UserController::class, 'register'])->name('createAccount');
@@ -68,6 +68,7 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/forget-password', [UserController::class, 'forgetUserPassword'])->name('forgetpass');
 });
+
 Route::middleware(['auth'])->group(function () {
     //Authentication
     Route::get('/logout', [UserController::class, 'logout'])->name('logout');

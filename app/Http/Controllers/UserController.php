@@ -148,7 +148,7 @@ class UserController extends Controller
 
     public function forgetUserPassword(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
+        $request->validate(['email' => 'required|email|exists:users,email']);
 
         $status = Password::sendResetLink(
             $request->only('email')

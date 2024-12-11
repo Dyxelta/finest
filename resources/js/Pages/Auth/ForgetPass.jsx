@@ -17,17 +17,17 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
 import { showErrorModal } from "@/Helpers/utils";
 
-const SignupSchema = Yup.object().shape({
+const ForgetPasswordSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
 });
 
 export default function Login() {
     const { setData, post } = useForm({
-        email: ""
+        email: "",
     });
     const [loading, setLoading] = useState(false);
     const openModal = (error) => {
-        console.log(error)
+
         setLoading(false);
         showErrorModal("Error", error);
     };
@@ -36,7 +36,6 @@ export default function Login() {
         setLoading(true);
         post(route("forgetpass"), {
             onError: (errors) => {
-        
                 if (errors.email) {
                     openModal(errors.email);
                 }
@@ -45,7 +44,6 @@ export default function Login() {
         });
     };
 
-    const [openPass, setOpenPass] = useState();
     return (
         <div className="relative h-screen bg-background">
             <img
@@ -90,7 +88,7 @@ export default function Login() {
                                 email: "",
                                 password: "",
                             }}
-                            validationSchema={SignupSchema}
+                            validationSchema={ForgetPasswordSchema}
                             onSubmit={submit}
                         >
                             {({
@@ -103,11 +101,12 @@ export default function Login() {
                                     onSubmit={handleSubmit}
                                     className="font-roboto flex flex-col justify-center max-w-[400px] w-full md:max-w-none sm:w-[400px] md:w-[420px] h-full"
                                 >
-                                    <div className=" flex flex-col justify-between bg-light px-5 sm:px-8 md:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[440px] md:h-[475px]">
+                                    <div className=" flex flex-col justify-between bg-light px-5 sm:px-8 md:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[350px]">
                                         <FormGroup className="w-full">
+                                            
                                             <CustomTitle
                                                 title="Forget password"
-                                                subtitle="Input your email"
+                                                subtitle="Input your email, verification link will be sent through your email"
                                                 className={"pt-3 md:pt-6 pb-8 "}
                                             />
                                             <FormGroup>
@@ -160,26 +159,6 @@ export default function Login() {
                                                     "Submit"
                                                 )}
                                             </PrimaryButton>
-
-                                            <span className="text-center pt-2 text-sm">
-                                                Don’t have an account? {""}
-                                                <Link
-                                                    href={route("register")}
-                                                    className="underline  text-primary  rounded-md fhover:outline-none  hover:ring-darker-primary hover:opacity-85 "
-                                                >
-                                                    Register
-                                                </Link>
-                                            </span>
-
-                                            <span className="text-center pt-2 text-sm">
-                                                {""}
-                                                <Link
-                                                    href={route("forget")}
-                                                    className="underline  text-primary  rounded-md fhover:outline-none  hover:ring-darker-primary hover:opacity-85 "
-                                                >
-                                                    Forget password?
-                                                </Link>
-                                            </span>
                                         </div>
                                     </div>
                                 </Form>
