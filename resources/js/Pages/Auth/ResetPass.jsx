@@ -76,7 +76,10 @@ export default function ResetPassword({token}) {
             },
             onSuccess: () => {
                 setLoading(false)
-                showSuccessModal('Success', "Reset password success")
+                showSuccessModal('Success', "Reset password success", ()=> {
+                    window.location.href = '/login';
+                })
+                
             },
         });
     };
