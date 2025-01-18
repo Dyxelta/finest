@@ -15,7 +15,8 @@ class TransactionSeeder extends Seeder
     public function run(): void
     {
 
-        $amountArray = [100000, 50000,40000, 35000, 30000, 25000, 20000, 15000, 10000];
+        $amountArray = [100000, 80000, 40000, 35000, 30000, 25000, 20000, 15000, 10000];
+        $amountArray1 = [20000, 15000, 10000, 20000, 15000, 10000, 20000, 15000, 10000];
         $categoryArray = [
             [2, 3, 4, 11, 12, 6, 17, 18, 1],
             [2, 3, 4, 11, 12, 16, 17, 18, 5],
@@ -29,14 +30,14 @@ class TransactionSeeder extends Seeder
         $MonthArray = [1, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2];
 
         //Expense Wallet User 1 Wallet Pertama 
-        for ($k = 1; $k < 13; $k++) { // bulan
-            for ($i = 0; $i < count($categoryArray[$k % 7]); $i++) { // category
+        for ($k = 1; $k < 13; $k++) {
+            for ($i = 0; $i < count($categoryArray[$k % 7]); $i++) { 
 
                 DB::table('transactions')->insert([
                     'user_id' => 1,
                     'wallet_id' => 1,
                     'category_id' => $categoryArray[$k % 7][$i],
-                    'transaction_amount' => -$amountArray[($k) % count($amountArray)],
+                    'transaction_amount' => -$amountArray[($k) % count($amountArray)]*$i,
                     'transaction_note' => 'Expense',
                     'transaction_date' => Carbon::create($k >= 2 ? 2024 : 2025, $MonthArray[$k - 1], 15),
                     'created_at' => now(),
@@ -99,10 +100,10 @@ class TransactionSeeder extends Seeder
         for ($k = 1; $k < 13; $k++) {
             for ($i = 0; $i < count($categoryArray[$k % 7]); $i++) {
                 DB::table('transactions')->insert([
-                    'user_id' => 1,
-                    'wallet_id' => 1,
+                    'user_id' => 2,
+                    'wallet_id' => 4,
                     'category_id' => $categoryArray[$k % 7][$i],
-                    'transaction_amount' => -$amountArray[($i + $k) % count($amountArray)],
+                    'transaction_amount' => -$amountArray1[($i + $k) % count($amountArray1)],
                     'transaction_note' => 'Expense',
                     'transaction_date' => Carbon::create($k >= 2 ? 2024 : 2025, $MonthArray[$k - 1], 15),
                     'created_at' => now(),

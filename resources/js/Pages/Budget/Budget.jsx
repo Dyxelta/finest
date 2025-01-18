@@ -177,10 +177,10 @@ export default function BudgetPage({
                 const createdAt = new Date(transaction.transaction_date);
                 return (
                     createdAt.getFullYear() === currentYear &&
-                    createdAt.getMonth() === currentMonth && transaction.wallet_id === id_wallet
+                    createdAt.getMonth() === currentMonth &&
+                    transaction.wallet_id === selectedWallet?.id
                 );
             }) || [];
-
 
         const dayDifference = getRemainingDays();
 
@@ -272,7 +272,8 @@ export default function BudgetPage({
                 const createdAt = new Date(transaction.transaction_date);
                 return (
                     createdAt.getFullYear() === currentYear &&
-                    createdAt.getMonth() === currentMonth && transaction.wallet_id === id_wallet
+                    createdAt.getMonth() === currentMonth &&
+                    transaction.wallet_id === selectedWallet?.id
                 );
             }) || [];
 
