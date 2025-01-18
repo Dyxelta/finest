@@ -167,9 +167,20 @@ export default function BudgetPage({
     };
 
     const progressBarRef = useRef(null);
-
     const countRecommendedBudgetAmount = () => {
-        const transactions = showInitialBudget?.category?.transactions ?? [];
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+
+        const transactions =
+            showInitialBudget?.category?.transactions?.filter((transaction) => {
+                const createdAt = new Date(transaction.transaction_date);
+                return (
+                    createdAt.getFullYear() === currentYear &&
+                    createdAt.getMonth() === currentMonth && transaction.wallet_id === id_wallet
+                );
+            }) || [];
+
 
         const dayDifference = getRemainingDays();
 
@@ -252,12 +263,24 @@ export default function BudgetPage({
     };
 
     const showSpendingLimit = () => {
-        const transactions = showInitialBudget?.category?.transactions ?? [];
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+
+        const transactions =
+            showInitialBudget?.category?.transactions?.filter((transaction) => {
+                const createdAt = new Date(transaction.transaction_date);
+                return (
+                    createdAt.getFullYear() === currentYear &&
+                    createdAt.getMonth() === currentMonth && transaction.wallet_id === id_wallet
+                );
+            }) || [];
 
         if (transactions.length !== 0) {
             const totalSpending = transactions.reduce((total, transaction) => {
                 return total + Math.abs(transaction.transaction_amount);
             }, 0);
+
             const finalResult =
                 showInitialBudget?.budget_amount - totalSpending;
             const getProgressBarPercentage =

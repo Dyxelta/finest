@@ -23,6 +23,7 @@ import {
 
 const IncomeReportOverview = ({ monthly_income_data }) => {
     const monthsArr = generateMonthsArray();
+ 
     const newMonthlydata = monthly_income_data.map((mon) => ({
         ...mon,
 

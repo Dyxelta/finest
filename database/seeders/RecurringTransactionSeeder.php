@@ -13,30 +13,28 @@ class RecurringTransactionSeeder extends Seeder
      */
     public function run(): void
     {
-        // for ($i = 0; $i < 30; $i++) {
-        //     DB::table('recurring_transactions')->insert([
-        //         'user_id' => 1,
-        //         'wallet_id' => 1,
-        //         'category_id' => 2,
-        //         'recurring_transaction_amount' => 2000000,
-        //         'recurring_transaction_note' => 'Rent',
-        //         'recurring_transaction_date' => now()->subDay(),
-        //         'created_at' => now(),
-        //         'updated_at' => now()
-        //     ]);
-        // }
 
-        // for ($i = 0; $i < 30; $i++) {
-        //     DB::table('recurring_transactions')->insert([
-        //         'user_id' => 1,
-        //         'wallet_id' => 2,
-        //         'category_id' => 1,
-        //         'recurring_transaction_amount' => 2000000,
-        //         'recurring_transaction_note' => 'Test Dummy',
-        //         'recurring_transaction_date' => now()->subDay(),
-        //         'created_at' => now(),
-        //         'updated_at' => now()
-        //     ]);
-        // }
+            DB::table('recurring_transactions')->insert([
+                'user_id' => 1,
+                'wallet_id' => 1,
+                'category_id' => 19,
+                'recurring_transaction_amount' => 200000,
+                'recurring_transaction_note' => 'Salary',
+                'recurring_transaction_date' => now()->subDay(),
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            DB::table('recurring_transactions')->insert([
+                'user_id' => 2,
+                'wallet_id' => 1,
+                'category_id' => 19,
+                'recurring_transaction_amount' => 2000000,
+                'recurring_transaction_note' => 'Salary',
+                'recurring_transaction_date' => now()->subDay(),
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
     }
 }

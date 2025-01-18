@@ -10,7 +10,6 @@ import { ReusableDecorBackground } from "@/Helpers/reusableDecorBackground";
 import { Head, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { CgNotes } from "react-icons/cg";
-import DecorBG from "../../../../public/image/public/DecorBG.png";
 
 export default function TransactionReportPage({
     auth,
@@ -24,6 +23,7 @@ export default function TransactionReportPage({
     current_month_net_income,
     last_month_net_income,
 }) {
+
     const { get, setData } = useForm({
         month: currMonth,
         wallet_name: currWallet?.wallet_name,

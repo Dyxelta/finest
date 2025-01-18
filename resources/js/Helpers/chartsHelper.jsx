@@ -5,16 +5,17 @@ export const generateMonthsArray = () => {
     const currentMonth = moment().month() + 1;
     const currentYear = moment().year();
     for (let i = 0; i < 12; i++) {
-        const month = currentMonth - i;
-        const year = currentYear - Math.floor((11 - month) / 12);
-        const adjustedMonth = (month + 12) % 12 || 12;
-        const monthName = moment(`${year}-${adjustedMonth}`, "YYYY-M").format(
-            "MMM"
-        );
+        const adjustedMonth = ((currentMonth - i - 1 + 12) % 12) + 1;
+        const adjustedYear =
+            currentYear - Math.floor((currentMonth - i - 1) / 12);
+        const monthName = moment(
+            `${adjustedYear}-${adjustedMonth}`,
+            "YYYY-M"
+        ).format("MMM");
 
         monthsArray.push({
             total_amount: 0,
-            month: month,
+            month: adjustedMonth,
             monthName: monthName,
         });
     }
@@ -23,6 +24,7 @@ export const generateMonthsArray = () => {
 };
 
 export const generateMonthsChart = (monthsArray, data) => {
+    console.log(monthsArray, "dihfiuoshdf");
     return monthsArray.map((mon) => {
         const matchingData = data.find((item) => item.month === mon.month);
         return matchingData || mon;
@@ -34,16 +36,16 @@ export const generate6MonthsArray = () => {
     const currentMonth = moment().month() + 1;
     const currentYear = moment().year();
     for (let i = 0; i < 6; i++) {
-        const month = currentMonth - i;
-        const year = currentYear - Math.floor((11 - month) / 12);
-        const adjustedMonth = (month + 12) % 12 || 12;
-        const monthName = moment(`${year}-${adjustedMonth}`, "YYYY-M").format(
+        const adjustedMonth = ((currentMonth - i - 1 + 12) % 12) + 1;
+        const adjustedYear =
+            currentYear - Math.floor((currentMonth - i - 1) / 12);
+        const monthName = moment(`${adjustedYear}-${adjustedMonth}`, "YYYY-M").format(
             "MMM"
         );
 
         monthsArray.push({
             total_amount: 0,
-            month: month,
+            month: adjustedMonth,
             monthName: monthName,
         });
     }
