@@ -15,7 +15,7 @@ class TransactionSeeder extends Seeder
     public function run(): void
     {
 
-        $amountArray = [100000, 80000, 40000, 35000, 30000, 25000, 20000, 15000, 10000];
+        $amountArray = [100000, 50000, 40000, 35000, 30000, 25000, 20000, 15000, 10000];
         $amountArray1 = [20000, 15000, 10000, 20000, 15000, 10000, 20000, 15000, 10000];
         $categoryArray = [
             [2, 3, 4, 11, 12, 6, 17, 18, 1],
@@ -37,7 +37,7 @@ class TransactionSeeder extends Seeder
                     'user_id' => 1,
                     'wallet_id' => 1,
                     'category_id' => $categoryArray[$k % 7][$i],
-                    'transaction_amount' => -$amountArray[($k) % count($amountArray)]*$i,
+                    'transaction_amount' => -$amountArray[($k) % count($amountArray)]*($i+1),
                     'transaction_note' => 'Expense',
                     'transaction_date' => Carbon::create($k >= 2 ? 2024 : 2025, $MonthArray[$k - 1], 15),
                     'created_at' => now(),

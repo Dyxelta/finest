@@ -58,7 +58,7 @@ class BudgetSeeder extends Seeder
             'category_id' => 12,
             'wallet_id' => 1,
             'budget_name' => 'Bengkel',
-            'budget_amount' => 500000,
+            'budget_amount' => 300000,
             'budget_description' => 'Budget description',
             'created_at' => now(),
             'updated_at' => now()
