@@ -37,14 +37,14 @@ class WalletController extends Controller
     public function editWallet(Request $request)
     {
         $user = auth()->user();
+        $walletId = $request->id;
 
         $request->validate([
-            'wallet_name' => 'required|string|max:30|unique:wallets,wallet_name,NULL,id,user_id,' . $user->id,
+            'wallet_name' => "required|string|max:30|unique:wallets,wallet_name,{$walletId},id,user_id,{$user->id}",
             'wallet_balance' => 'required|numeric|min:1|max:1000000000000',
-            'wallet_description' => 'nullable|string|max:255'
+            'wallet_description' => 'nullable|string|max:255',
         ]);
 
-        $walletId = $request->id;
         $walletName = $request->wallet_name;
         $walletBalance = $request->wallet_balance;
         $walletDescription = $request->wallet_description ?? '';

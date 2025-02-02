@@ -6,6 +6,7 @@ import "boxicons";
 import { formatToRupiah } from "@/Helpers/helperFormat";
 import CustomTooltip from "@/Helpers/Tooltip";
 import { getProgressBarBorder, getProgressBarColor } from "@/Helpers/progressBar";
+
 const TopBudgets = ({ top_budgets }) => {
     const progressBarRef = useRef(null);
     const [length, setLength] = useState();

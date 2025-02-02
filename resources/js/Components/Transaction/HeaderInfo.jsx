@@ -10,7 +10,7 @@ const HeaderInfo = ({ transactions, selectedWallet }) => {
 
     const getHeaderInfoTransaction = selectedWallet === "All Wallet" ? transactions : transactions.filter((transaction) => transaction?.wallet?.id === selectedWallet )
     const calculateTotalIncome = (transactions) => {
-        return getHeaderInfoTransaction.length !== 0
+        return transactions.length !== 0
             ? formatToRupiah(
                   transactions
                       .filter(
@@ -25,7 +25,7 @@ const HeaderInfo = ({ transactions, selectedWallet }) => {
     };
 
     const calculateTotalExpense = (transactions) => {
-        return getHeaderInfoTransaction.length !== 0
+        return transactions.length !== 0
             ? formatToRupiah(
                   transactions
                       .filter(
@@ -47,12 +47,12 @@ const HeaderInfo = ({ transactions, selectedWallet }) => {
         },
         {
             title: "Total Income Amount",
-            content: calculateTotalIncome(transactions || []),
+            content: calculateTotalIncome(getHeaderInfoTransaction || []),
             icon: <BsBoxArrowInLeft />,
         },
         {
             title: "Total Expense Amount",
-            content: calculateTotalExpense(transactions || []),
+            content: calculateTotalExpense(getHeaderInfoTransaction || []),
             icon: <BsBoxArrowRight />,
         },
     ];

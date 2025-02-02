@@ -5,16 +5,17 @@ export const generateMonthsArray = () => {
     const currentMonth = moment().month() + 1;
     const currentYear = moment().year();
     for (let i = 0; i < 12; i++) {
-        const month = currentMonth - i;
-        const year = currentYear - Math.floor((11 - month) / 12);
-        const adjustedMonth = (month + 12) % 12 || 12;
-        const monthName = moment(`${year}-${adjustedMonth}`, "YYYY-M").format(
-            "MMM"
-        );
+        const adjustedMonth = ((currentMonth - i - 1 + 12) % 12) + 1;
+        const adjustedYear =
+            currentYear - Math.floor((currentMonth - i - 1) / 12);
+        const monthName = moment(
+            `${adjustedYear}-${adjustedMonth}`,
+            "YYYY-M"
+        ).format("MMM");
 
         monthsArray.push({
             total_amount: 0,
-            month: month,
+            month: adjustedMonth,
             monthName: monthName,
         });
     }
@@ -23,6 +24,7 @@ export const generateMonthsArray = () => {
 };
 
 export const generateMonthsChart = (monthsArray, data) => {
+    console.log(monthsArray, "dihfiuoshdf");
     return monthsArray.map((mon) => {
         const matchingData = data.find((item) => item.month === mon.month);
         return matchingData || mon;
@@ -34,16 +36,16 @@ export const generate6MonthsArray = () => {
     const currentMonth = moment().month() + 1;
     const currentYear = moment().year();
     for (let i = 0; i < 6; i++) {
-        const month = currentMonth - i;
-        const year = currentYear - Math.floor((11 - month) / 12);
-        const adjustedMonth = (month + 12) % 12 || 12;
-        const monthName = moment(`${year}-${adjustedMonth}`, "YYYY-M").format(
+        const adjustedMonth = ((currentMonth - i - 1 + 12) % 12) + 1;
+        const adjustedYear =
+            currentYear - Math.floor((currentMonth - i - 1) / 12);
+        const monthName = moment(`${adjustedYear}-${adjustedMonth}`, "YYYY-M").format(
             "MMM"
         );
 
         monthsArray.push({
             total_amount: 0,
-            month: month,
+            month: adjustedMonth,
             monthName: monthName,
         });
     }
@@ -52,6 +54,7 @@ export const generate6MonthsArray = () => {
 };
 
 import { useEffect, useState } from "react";
+import { Text } from "recharts";
 
 export const useChartMargin = () => {
     const breakpoints = {
@@ -110,10 +113,8 @@ export const usePieChartOuterRadius = () => {
 export const usePieChartInnerRadius = () => {
     const breakpoints = {
         mobile: 768,
-
         mobileMargin: 46,
-
-        defaultMargins: 60,
+        defaultMargins: 55,
     };
 
     const [innerRadius, setInnerRadius] = useState(breakpoints.defaultMargins);
@@ -132,4 +133,49 @@ export const usePieChartInnerRadius = () => {
     }, []);
 
     return innerRadius;
+};
+
+export const renderPercentage = (props) => {
+    const truncateText = (text) => {
+        if (!text) return " ";
+
+        return text.length > 17 ? `${text.slice(0, 17)}...` : text;
+    };
+
+    const { cx, cy, percent, activeIndex, index, payload } = props;
+
+    if (
+        cx === undefined ||
+        cy === undefined ||
+        index !== activeIndex ||
+        percent === undefined
+    ) {
+        return null;
+    }
+
+    return (
+        <g>
+            <Text
+                x={cx}
+                y={cy}
+                dy={-10}
+                textAnchor="middle"
+                fill="#000"
+                fontSize={10}
+                className="text-primary w-[20px] text-ellipsis"
+            >
+                {truncateText(payload.name)}
+            </Text>
+            <Text
+                x={cx}
+                y={cy}
+                dy={8}
+                textAnchor="middle"
+                fill="#000"
+                className="text-primary"
+            >
+                {(percent * 100).toFixed(2)}%
+            </Text>
+        </g>
+    );
 };

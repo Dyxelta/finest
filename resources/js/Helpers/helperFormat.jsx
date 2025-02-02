@@ -3,10 +3,10 @@ export function formatToRupiah(value) {
     if (!value) {
         return 0;
     }
-    return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-    }).format(value);
+
+    const rupiahValue = new Intl.NumberFormat("id-ID").format(Math.abs(value));
+
+    return value < 0 ? `- Rp${rupiahValue},00` : `Rp${rupiahValue},00`;
 }
 
 export function formatDate(dateString) {
@@ -46,7 +46,7 @@ export const RupiahFormatTooltip = ({ active, payload, label }) => {
 export const RupiahFormatTooltipPieChart = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
         return (
-            <div className=" bg-lighter-primary p-2 shadow-lg rounded">
+            <div className=" bg-lighter-primary p-2 shadow-lg rounded opacity-90">
       
                 <p className="button">{`${payload[0].name}`}</p>
                 <p className="sub-body-14">{`Total Amount: ${formatToRupiah(payload[0].payload.value)}`}</p>
@@ -57,3 +57,5 @@ export const RupiahFormatTooltipPieChart = ({ active, payload, label }) => {
 };
 
 export const formatYAxis = (tick) => formatToRupiah(tick);
+
+export const handleRefresh = () => window.location.reload()

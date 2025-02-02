@@ -9,7 +9,7 @@ import AddWalletPopup from "@/Components/Modal/Popup/AddWalletPopup";
 import { ReusableDecorBackground } from "@/Helpers/reusableDecorBackground";
 import CustomTooltip from "@/Helpers/Tooltip";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { useState } from "react";
 import { BsGraphDownArrow, BsGraphUpArrow } from "react-icons/bs";
 import { CgNotes } from "react-icons/cg";
@@ -65,14 +65,20 @@ export default function Dashboard({
                         >
                             <div className="flex w-full justify-end z-50 items-center px-1 lg:px-4 relative">
                                 <div className="flex items-center gap-1 lg:gap-2 mt-2">
-                                    <div className="sub-body-bold lg:button    bg-light rounded-md px-4 py-2 m">
+                                    <div className="sub-body-bold lg:button rounded-md px-4 py-2 m">
                                         Net Income Overview{" "}
                                         <CustomTooltip content="Net Income Overview displays the net income for the current month, along with the previous month's figure." />
                                     </div>
-                                    <div className="sub-body-bold lg:button  bg-light rounded-full p-3 ">
-                                        {" "}
-                                        <CgNotes />
-                                    </div>
+
+                                    <Link
+                                        href={route("transactionReportPage")}
+                                        as="button"
+                                    >
+                                        <div className="sub-body-bold lg:button  bg-light rounded-full p-3 ">
+                                            {" "}
+                                            <CgNotes />
+                                        </div>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="flex justify-center w-full md:w-[95%] mx-auto relative px-2 h-full mt-2">
@@ -135,8 +141,8 @@ export default function Dashboard({
                     </div>
                     <div className="col-span-10 tablet:col-span-4 relative  rounded-md">
                         <ReusableDecorBackground
-                            DecorBG={DecorBG1}
-                            className=" absolute left-[-90px] top-[-85px] w-[250px] h-[300px] -z-0 rotate-[265deg]"
+                            DecorBG={DecorBG2}
+                            className=" absolute right-[-120px]  bottom-[-230px] md:bottom-[-200px] min-w-[400px] h-[350px] -z-0 rotate-[355deg]"
                         >
                             <CashflowGraph
                                 current_month_total_income={

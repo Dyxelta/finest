@@ -23,7 +23,24 @@ class WalletSeeder extends Seeder
         ]);
         DB::table('wallets')->insert([
             'user_id' => 1,
-            'wallet_name' => 'Wallet Namessss',
+            'wallet_name' => 'Wallet Name 2',
+            'wallet_balance' => 10000000,
+            'wallet_description' => 'Wallet description',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        DB::table('wallets')->insert([
+            'user_id' => 2,
+            'wallet_name' => 'Wallet Name 3',
+            'wallet_balance' => 10000000,
+            'wallet_description' => 'Wallet description',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        DB::table('wallets')->insert([
+            'user_id' => 2,
+            'wallet_name' => 'Wallet Name 4',
             'wallet_balance' => 10000000,
             'wallet_description' => 'Wallet description',
             'created_at' => now(),

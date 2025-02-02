@@ -32,7 +32,7 @@ export default function Authenticated({ user, header, children }) {
         };
     }, []);
     return (
-        <div className="min-h-screen bg-background w-full relative font-roboto">
+        <div className="min-h-screen bg-background w-full relative font-roboto pb-2">
             <Sidebar openNav={openNav} setOpenNav={setOpenNav} />
 
             <div

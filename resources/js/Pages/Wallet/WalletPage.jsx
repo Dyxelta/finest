@@ -85,6 +85,7 @@ export default function WalletPage({ auth, wallets }) {
                     () => onClose(),
                     undefined,
                     true,
+                    true,
                     true
                 );
             } else {
@@ -97,7 +98,8 @@ export default function WalletPage({ auth, wallets }) {
                 undefined,
                 undefined,
                 true,
-                true
+                true,
+                false
             );
         }
     };
@@ -154,7 +156,7 @@ export default function WalletPage({ auth, wallets }) {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.8 }}
                                 key={index}
-                                className={`min-w-[200px] md:min-w-[200px] h-full flex items-end rounded-3xl mx-2 transition-all duration-300 ${
+                                className={`min-w-[200px] md:min-w-[200px] max-w-[200px] h-full flex items-end rounded-3xl mx-2 transition-all duration-300 ${
                                     selectedIndex === index
                                         ? "bg-lighter-primary text-light"
                                         : "bg-lighter-primary text-primary"

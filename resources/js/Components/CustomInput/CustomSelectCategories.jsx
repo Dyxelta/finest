@@ -10,17 +10,18 @@ const customStyles = (hasError) => ({
         borderRadius: "6px",
         borderColor: hasError
             ? state.isFocused
-                ? "#F44336" 
-                : "#F44336" 
+                ? "#F44336"
+                : "#F44336"
             : state.isFocused
             ? "#CAD8E7"
             : provided.borderColor,
         "&:hover": {
-            borderColor: hasError
-                ? "#CD5C5C" 
-                : "#CAD8E7",
+            borderColor: hasError ? "#CD5C5C" : "#CAD8E7",
         },
-        boxShadow: hasError && state.isFocused ? "0 0 0 1px #FF0000" : provided.boxShadow,
+        boxShadow:
+            hasError && state.isFocused
+                ? "0 0 0 1px #FF0000"
+                : provided.boxShadow,
     }),
     singleValue: (provided, state) => ({
         ...provided,
@@ -63,8 +64,17 @@ const customStyles = (hasError) => ({
 });
 
 const GroupHeading = (props) => (
-    <div style={{ fontWeight: "bold", margin: "2px 0px 2px 10px" }}>
+    <div
+        style={{
+            fontWeight: "bold",
+            margin: "2px 0px 2px 10px",
+            fontSize: "20px",
+            color: "#2D5074",
+            textDecoration:"underline"
+        }}
+    >
         {props.children}
+
     </div>
 );
 
@@ -78,13 +88,12 @@ const CustomSelectCategories = ({
 }) => (
     <Select
         defaultValue={defaultValue}
-        className={` ${className}`}
+        className={` ${className} remove-input-txt-border`}
         {...props}
         onChange={onChange}
         options={options}
         components={{ GroupHeading, Option: CustomOption }}
         styles={customStyles(errors)}
-        isSearchable={false}
         placeholder="Select Category"
         menuPortalTarget={document.body}
         theme={(theme) => ({

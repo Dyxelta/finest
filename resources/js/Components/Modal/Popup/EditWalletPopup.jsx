@@ -1,7 +1,10 @@
 import CustomField from "@/Components/CustomInput/CustomField";
+import CustomNumberInput from "@/Components/CustomInput/CustomNumberInput";
 import CustomLabel from "@/Components/CustomLabel";
+import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import Loader from "@/Components/Loader";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { handleRefresh } from "@/Helpers/helperFormat";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "@inertiajs/react";
@@ -12,7 +15,9 @@ import { Button, FormGroup } from "reactstrap";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-    wallet_name: Yup.string().required("Wallet name is required").max(30, "Maximum 30 Characters"),
+    wallet_name: Yup.string()
+        .required("Wallet name is required")
+        .max(30, "Maximum 30 Characters"),
     wallet_balance: Yup.number()
         .typeError("Balance must be number")
         .required("Wallet balance is required"),
@@ -27,9 +32,8 @@ export default function EditWalletPopup({
     wallet,
     onClose = () => {},
 }) {
-
     const [loading, setLoading] = useState(false);
-    const { setData, put,data } = useForm({
+    const { setData, put, data } = useForm({
         id: wallet?.id,
         wallet_name: wallet?.wallet_name,
         wallet_balance: wallet?.wallet_balance,
@@ -53,15 +57,16 @@ export default function EditWalletPopup({
     };
 
     const closeModal = () => {
-        setLoading(false)
+        setLoading(false);
         onClose();
-        showSuccessModal("Success", "Wallet has been edited successfully");
+        showSuccessModal("Success", "Wallet has been edited successfully", () =>
+            handleRefresh()
+        );
     };
 
     const close = () => {
-        setLoading(true)
+        setLoading(true);
         put(route("editWallet"), {
-            
             onError: (errors) => {
                 if (errors.wallet_name) {
                     openModal();
@@ -142,7 +147,8 @@ export default function EditWalletPopup({
                         <Formik
                             initialValues={{
                                 wallet_name: wallet?.wallet_name || "",
-                                wallet_balance: Math.abs(wallet?.wallet_balance) || "",
+                                wallet_balance:
+                                    Math.abs(wallet?.wallet_balance) || "",
                                 wallet_description:
                                     wallet?.wallet_description || "",
                             }}
@@ -161,7 +167,6 @@ export default function EditWalletPopup({
                                     onSubmit={handleSubmit}
                                     className="font-roboto flex flex-col justify-center  w-full h-full"
                                 >
-                                    {console.log(wallet, "sodiuhgiosdhfhsdihf")}
                                     <div className="flex flex-col justify-between bg-light px-2 sm:px-4 pt-3 md:pt-3 pb-2 md:pb-3 w-full rounded-md ">
                                         <FormGroup className="w-full sm:flex  gap-2">
                                             <FormGroup className="flex-1">
@@ -194,23 +199,26 @@ export default function EditWalletPopup({
                                                     labelFor="Initial Wallet Balance"
                                                     className="button text-primary"
                                                 />
-                                                <CustomField
+                                                <CustomNumberInput
+                                                    value={
+                                                        values.wallet_balance
+                                                    }
                                                     id="wallet_balance"
                                                     name="wallet_balance"
-                                                    placeholder="Input your starting balance"
-                                                    type="number"
+                                                    placeholder="Input the amount"
                                                     className="w-full mt-1"
-                                                    onChange={(e) => {
+                                                    onChange={(value) => {
                                                         setFieldValue(
                                                             "wallet_balance",
-                                                            e.target.value
+                                                            value
                                                         );
                                                         setData(
                                                             "wallet_balance",
-                                                            e.target.value
+                                                            value
                                                         );
                                                     }}
                                                 />
+                                                <ErrorMessageInput name="wallet_balance" />
                                             </FormGroup>
                                         </FormGroup>
 

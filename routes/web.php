@@ -41,6 +41,10 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
+Route::post('/forgot-password', function() {
+
+});
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', function () {
         return Inertia::render('Auth/Login');
@@ -50,9 +54,28 @@ Route::middleware('guest')->group(function () {
         return Inertia::render('Auth/Register');
     })->name('register');
 
+    Route::get('/forgetPassword', function () {
+        return Inertia::render('Auth/ForgetPass');
+    })->name('forget');
+
+    Route::get('/reset-password/{token}', function (string $token) {
+        return Inertia::render('Auth/ResetPass', ['token' => $token]);
+    })->middleware('guest')->name('password.reset');
+
     Route::post('/create-account', [UserController::class, 'register'])->name('createAccount');
 
     Route::post('/login-user', [UserController::class, 'login'])->name('loginUser');
+
+    Route::post('/forget-password', [UserController::class, 'sendForgetPasswordEmail'])->name('forgetpass');
+
+    Route::post('/forget_password', function(Request $request){
+        app(UserController::class)->resetUserPassword($request);
+    })->name('resetPass');
+});
+
+Route::middleware(['auth'])->group(function () {
+    //Authentication
+    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -60,8 +83,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Authentication
     Route::put('/edit-profile', [UserController::class, 'editUserData'])->name('editProfile');
     Route::put('/edit-password', [UserController::class, 'editPassword'])->name('editPassword');
-    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-
 
     //dashboard
     Route::get('/dashboard', function (Request $request) {

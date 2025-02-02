@@ -162,15 +162,9 @@ class TransactionController extends Controller
     {
         $userId = auth()->user()->id;
         $selectedMonth = $request->month ?? now()->month;
-        $currentYear = now()->year;
-
-        $year = ($selectedMonth > now()->month) ? $currentYear - 1 : $currentYear;
-
-        $startDate = Carbon::createFromDate($year, $selectedMonth, 1)->startOfMonth();
-        $endDate = Carbon::createFromDate($year, $selectedMonth, 1)->endOfMonth();
 
         $transactions = Transaction::where('user_id', $userId)
-            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->whereMonth('transaction_date', $selectedMonth)
             ->orderBy('transaction_date', 'desc')
             ->with(['wallet', 'category'])
             ->get();
@@ -310,7 +304,7 @@ class TransactionController extends Controller
         $categoryCondition = function ($query) use ($request) {
             if ($request->category_name && $request->category_name != "All Category") {
                 $category = Category::where("category_name", $request->category_name)
-                ->firstOrFail();
+                    ->firstOrFail();
                 $query->where('category_id', $category->id);
             }
         };
@@ -338,12 +332,16 @@ class TransactionController extends Controller
             ->first();
 
         $highestTransaction = (clone $baseQuery)
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('categories.category_is_income', false)
             ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
             ->orderBy('transaction_amount', 'ASC')
             ->pluck('transaction_amount')
             ->first();
 
         $lowestTransaction = (clone $baseQuery)
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('categories.category_is_income', false)
             ->whereBetween('transaction_date', [$sixMonthsAgo, $today])
             ->orderBy('transaction_amount', 'DESC')
             ->pluck('transaction_amount')

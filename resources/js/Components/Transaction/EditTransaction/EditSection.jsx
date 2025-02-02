@@ -19,6 +19,7 @@ import { Link, useForm } from "@inertiajs/react";
 import moment from "moment";
 import { BsExclamation } from "react-icons/bs";
 import * as Yup from "yup";
+import CustomNumberInput from "@/Components/CustomInput/CustomNumberInput";
 
 const validationSchema = Yup.object().shape({
     category_id: Yup.number().required("Category name is required"),
@@ -35,14 +36,10 @@ const EditSection = ({
     categories,
 }) => {
     const [loading, setLoading] = useState(false);
-console.log(categories)
+    console.log(categories);
     const openModal = (error) => {
         showErrorModal("Error", error);
         setLoading(false);
-    };
-
-    const handleRefresh = () => {
-        window.location.reload();
     };
 
     const closeModal = () => {
@@ -50,10 +47,9 @@ console.log(categories)
         showSuccessModal(
             "Success",
             "Transaction has been Edited successfully",
-            () => handleRefresh()
+            () => {}
         );
     };
-
 
     const { setData, data, put } = useForm({
         id: transaction?.id,
@@ -82,7 +78,6 @@ console.log(categories)
         });
     };
 
-    
     return (
         <div
             className={`w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:grid-rows-4 gap-3`}
@@ -116,7 +111,7 @@ console.log(categories)
                         options={walletOptions}
                         onChange={(e) => {
                             setSelectedWallet(e);
-                            setData("wallet_id", e.value)
+                            setData("wallet_id", e.value);
                         }}
                     />
                 </div>
@@ -157,7 +152,6 @@ console.log(categories)
                                     <CustomField
                                         id="wallet_name"
                                         name="wallet_name"
-                                        type="email"
                                         className="w-full mt-1"
                                         icon={
                                             <BiWallet size={18} color="grey" />
@@ -175,7 +169,6 @@ console.log(categories)
                                     <CustomField
                                         id="created_date"
                                         name="created_date"
-                                        type="email"
                                         className="w-full mt-1"
                                         icon={
                                             <BiCalendar
@@ -221,8 +214,7 @@ console.log(categories)
                 <Formik
                     initialValues={{
                         wallet_name: selectedWallet?.wallet_name ?? "",
-                        category_id:
-                            transaction?.category_id ?? "",
+                        category_id: transaction?.category_id ?? "",
                         transaction_amount:
                             Math.abs(transaction?.transaction_amount) ?? "",
                         transaction_date: transaction?.transaction_date ?? "",
@@ -246,7 +238,9 @@ console.log(categories)
                                             transaction?.category_id
                                                 ? {
                                                       value: transaction?.category_id,
-                                                      label: transaction?.category?.category_name,
+                                                      label: transaction
+                                                          ?.category
+                                                          ?.category_name,
                                                   }
                                                 : {
                                                       value: "",
@@ -272,23 +266,24 @@ console.log(categories)
                                         labelFor="Amount"
                                         className="button text-primary"
                                     />
-                                    <CustomField
+                                    <CustomNumberInput
+                                        value={values.transaction_amount}
                                         id="transaction_amount"
                                         name="transaction_amount"
                                         placeholder="Input the amount"
-                                        type="number"
                                         className="w-full mt-1"
-                                        onChange={(e) => {
+                                        onChange={(value) => {
                                             setFieldValue(
                                                 "transaction_amount",
-                                                e.target.value
+                                                value
                                             );
                                             setData(
                                                 "transaction_amount",
-                                                e.target.value
+                                                value
                                             );
                                         }}
                                     />
+                                    <ErrorMessageInput name="transaction_amount" />
                                 </FormGroup>
                             </FormGroup>
 
@@ -339,7 +334,7 @@ console.log(categories)
                                     errors={errors?.transaction_date}
                                 />
                             </FormGroup>
-                        
+
                             <div className="lg:p-4 w-full">
                                 <div className="w-full flex justify-end items-center lg:mt-6 mt-4">
                                     <Button

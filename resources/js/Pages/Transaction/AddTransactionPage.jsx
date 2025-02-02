@@ -1,5 +1,8 @@
 import AddSection from "@/Components/Transaction/AddTransaction/AddSection";
-import { getCategoriesOptions, getWalletOptionsWithId } from "@/Helpers/options";
+import {
+    getCategoriesOptions,
+    getWalletOptionsWithId,
+} from "@/Helpers/options";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
@@ -12,10 +15,12 @@ export default function AddTransactionPage({
 }) {
     const [selectedWallet, setSelectedWallet] = useState(wallets[0]);
 
-    
-    const walletOptions = getWalletOptionsWithId(wallets)
-   
-    const categories = getCategoriesOptions(expenseCategories, incomeCategories)
+    const walletOptions = getWalletOptionsWithId(wallets);
+
+    const categories = getCategoriesOptions(
+        expenseCategories,
+        incomeCategories
+    );
 
     return (
         <AuthenticatedLayout

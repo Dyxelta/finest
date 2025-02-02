@@ -15,41 +15,38 @@ import Loader from "@/Components/Loader";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
-import { showErrorModal } from "@/Helpers/utils";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 
-const SignupSchema = Yup.object().shape({
+const ForgetPasswordSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
-
-    password: Yup.string().required("Password is required"),
 });
 
-export default function Login() {
+export default function ForgetPassword() {
     const { setData, post } = useForm({
         email: "",
-        password: "",
     });
     const [loading, setLoading] = useState(false);
     const openModal = (error) => {
-        console.log(error);
+
         setLoading(false);
         showErrorModal("Error", error);
     };
 
     const submit = () => {
         setLoading(true);
-        post(route("loginUser"), {
+        post(route("forgetpass"), {
             onError: (errors) => {
                 if (errors.email) {
                     openModal(errors.email);
-                } else if (errors.password) {
-                    openModal(errors.password);
                 }
             },
-            onSuccess: () => setLoading(false),
+            onSuccess: () => {
+                setLoading(false)
+                showSuccessModal('Success', "Reset password verification has been sent to your email")
+            },
         });
     };
 
-    const [openPass, setOpenPass] = useState();
     return (
         <div className="relative h-screen bg-background">
             <img
@@ -94,7 +91,7 @@ export default function Login() {
                                 email: "",
                                 password: "",
                             }}
-                            validationSchema={SignupSchema}
+                            validationSchema={ForgetPasswordSchema}
                             onSubmit={submit}
                         >
                             {({
@@ -107,11 +104,12 @@ export default function Login() {
                                     onSubmit={handleSubmit}
                                     className="font-roboto flex flex-col justify-center max-w-[400px] w-full md:max-w-none sm:w-[400px] md:w-[420px] h-full"
                                 >
-                                    <div className=" flex flex-col justify-between bg-light px-5 sm:px-8 md:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[440px] md:h-[475px]">
+                                    <div className=" flex flex-col justify-between bg-light px-5 sm:px-8 md:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[350px]">
                                         <FormGroup className="w-full">
+                                            
                                             <CustomTitle
-                                                title="Welcome"
-                                                subtitle="Sign in to your account"
+                                                title="Forget password"
+                                                subtitle="Input your email, verification link will be sent through your email"
                                                 className={"pt-3 md:pt-6 pb-8 "}
                                             />
                                             <FormGroup>
@@ -144,84 +142,6 @@ export default function Login() {
                                                     }}
                                                 />
                                             </FormGroup>
-
-                                            <FormGroup className="mt-3 md:mt-4 w-full">
-                                                <CustomLabel
-                                                    labelFor="Password"
-                                                    className="button text-primary"
-                                                />
-
-                                                <CustomField
-                                                    id="password"
-                                                    name="password"
-                                                    placeholder="Must be 8-20 Characters"
-                                                    type={
-                                                        openPass
-                                                            ? "text"
-                                                            : "password"
-                                                    }
-                                                    className="w-full mt-1"
-                                                    icon={
-                                                        <Lock
-                                                            size={18}
-                                                            color="grey"
-                                                        />
-                                                    }
-                                                    onKeyPress={(e) => {
-                                                        if (e.key === "Enter") {
-                                                            setData(
-                                                                "password",
-                                                                e.target.value
-                                                            );
-                                                            setFieldValue(
-                                                                "password",
-                                                                e.target.value
-                                                            );
-                                                        }
-                                                    }}
-                                                    onChange={(e) => {
-                                                        setData(
-                                                            "password",
-                                                            e.target.value
-                                                        );
-                                                        setFieldValue(
-                                                            "password",
-                                                            e.target.value
-                                                        );
-                                                    }}
-                                                    password={
-                                                        <div
-                                                            onClick={() =>
-                                                                setOpenPass(
-                                                                    !openPass
-                                                                )
-                                                            }
-                                                            className="cursor-pointer relative"
-                                                        >
-                                                            {openPass ? (
-                                                                <FaRegEyeSlash
-                                                                    size={18}
-                                                                    color="grey"
-                                                                />
-                                                            ) : (
-                                                                <FaRegEye
-                                                                    size={18}
-                                                                    color="grey"
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    }
-                                                />
-                                                <div className="text-end mt-2 text-sm">
-                                                    {""}
-                                                    <Link
-                                                        href={route("forget")}
-                                                        className="underline  text-primary  rounded-md fhover:outline-none  hover:ring-darker-primary hover:opacity-85 "
-                                                    >
-                                                        Forget password?
-                                                    </Link>
-                                                </div>
-                                            </FormGroup>
                                         </FormGroup>
 
                                         <div className="flex flex-col mb-6">
@@ -239,19 +159,9 @@ export default function Login() {
                                                         <span>Loading...</span>
                                                     </div>
                                                 ) : (
-                                                    "Login"
+                                                    "Submit"
                                                 )}
                                             </PrimaryButton>
-                                            <span className="text-center pt-2 text-sm">
-                                                Don’t have an account? {""}
-                                                <Link
-                                                    href={route("register")}
-                                                    className="underline  text-primary  rounded-md fhover:outline-none  hover:ring-darker-primary hover:opacity-85 "
-                                                >
-                                                    Register
-                                                </Link>
-                                            </span>
-                                            
                                         </div>
                                     </div>
                                 </Form>

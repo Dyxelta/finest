@@ -20,7 +20,10 @@ import { useEffect, useRef, useState } from "react";
 import { CgNotes } from "react-icons/cg";
 import { FiPlus } from "react-icons/fi";
 import { TbMoodEmpty } from "react-icons/tb";
-import { getCategoriesOptions, getWalletOptionsWithId } from "@/Helpers/options";
+import {
+    getCategoriesOptions,
+    getWalletOptionsWithId,
+} from "@/Helpers/options";
 
 const ViewTable = ({
     transaction,
@@ -53,6 +56,7 @@ const ViewTable = ({
             "Are you sure you want to delete this Transaction?",
             () => onClose(),
             undefined,
+            true,
             true,
             true
         );
@@ -157,16 +161,26 @@ export default function TransactionRecordsPage({
         wallets[0].wallet_name
     );
 
-    const mergedCategories = [...expenseCategories, ...incomeCategories];
+    const mergedCategories = [
+        {
+            category_name: "All Category",
+            icon: "grid-small",
+        },
+        ...expenseCategories,
+        ...incomeCategories,
+    ];
+
     const [category, setCategory] = useState(mergedCategories[0]);
 
-    const walletOptions = getWalletOptionsWithId(wallets)
+    const walletOptions = getWalletOptionsWithId(wallets);
 
-    const categoryOptions = getCategoriesOptions(expenseCategories, incomeCategories)
+    const categoryOptions = getCategoriesOptions(
+        expenseCategories,
+        incomeCategories
+    );
 
     const carousel = useRef(null);
 
-  
     const [openRecurringTransactionId, setOpenRecurringTransactionId] =
         useState(null);
 
@@ -180,13 +194,22 @@ export default function TransactionRecordsPage({
     };
 
     const getFilteredTransactions = recurring_transaction.filter(
-        (transaction) =>
-            transaction?.wallet?.wallet_name === selectedWallet &&
-            category?.category_name === transaction?.category?.category_name
+        (transaction) => {
+            if (category?.category_name === "All Category") {
+     
+                return true;
+            } else {
+                return (
+                    transaction?.wallet?.wallet_name === selectedWallet &&
+                    category?.category_name ===
+                        transaction?.category?.category_name
+                );
+            }
+        }
     );
     let totalAmount = getFilteredTransactions.reduce((total, transaction) => {
         return total + transaction?.recurring_transaction_amount;
-    }, 0); 
+    }, 0);
 
     return (
         <AuthenticatedLayout
@@ -223,7 +246,8 @@ export default function TransactionRecordsPage({
                             >
                                 <div
                                     className={`p-2 ${
-                                        category.category_name === cat.category_name
+                                        category.category_name ===
+                                        cat.category_name
                                             ? " bg-primary text-light"
                                             : "bg-lighter-primary text-primary "
                                     } flex justify-center items-center w-[40px] h-[40px] rounded-md`}
@@ -232,7 +256,8 @@ export default function TransactionRecordsPage({
                                         name={cat.icon}
                                         type="solid"
                                         color={
-                                            category.category_name === cat.category_name
+                                            category.category_name ===
+                                            cat.category_name
                                                 ? "white"
                                                 : "#2D5074"
                                         }
@@ -336,7 +361,8 @@ export default function TransactionRecordsPage({
                                             <TbMoodEmpty />
                                         </div>
                                         <div className="header-5 md:header-3">
-                                            No {category.category_name} Transactions Yet...
+                                            No {category.category_name}{" "}
+                                            Transactions Yet...
                                         </div>
                                     </div>
                                 )}

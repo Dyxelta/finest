@@ -15,41 +15,77 @@ import Loader from "@/Components/Loader";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import logoLetter from "../../../../public/image/app/Logo-letter.png";
-import { showErrorModal } from "@/Helpers/utils";
+import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
+import { useEffect } from "react";
 
-const SignupSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-
-    password: Yup.string().required("Password is required"),
+const ResetPasswordSchema = Yup.object().shape({
+    password: Yup.string()
+        .matches(
+            /[A-Z]+/,
+            "Password must contain at least one uppercase letter"
+        )
+        .matches(
+            /[a-z]+/,
+            "Password must contain at least one lowercase letter"
+        )
+        .matches(/[0-9]+/, "Password must contain at least one digit")
+        .matches(
+            /[!@#$%^&*()_,.?":{}|<>]+/,
+            "Password must contain at least one special character"
+        )
+        .min(8, "Password must be at least 8 characters")
+        .required("Password is required"),
+    confirm_pass: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Passwords must match")
+        .required("Confirm password is required"),
 });
 
-export default function Login() {
+export default function ResetPassword({token}) {
+ 
     const { setData, post } = useForm({
-        email: "",
+        token: token,
+        email:"",
+        confirm_pass: "",
         password: "",
     });
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        setData("email",params.get('email'));
+    }, []);
+
     const [loading, setLoading] = useState(false);
     const openModal = (error) => {
-        console.log(error);
         setLoading(false);
         showErrorModal("Error", error);
     };
 
     const submit = () => {
         setLoading(true);
-        post(route("loginUser"), {
+        post(route("resetPass"), {
             onError: (errors) => {
-                if (errors.email) {
-                    openModal(errors.email);
+                if (errors.confirm_pass) {
+                    openModal(errors.confirm_pass);
                 } else if (errors.password) {
                     openModal(errors.password);
+                }else if (errors.token) {
+                    openModal(errors.token);
+                }else if (errors.email) {
+                    openModal(errors.email);
                 }
             },
-            onSuccess: () => setLoading(false),
+            onSuccess: () => {
+                setLoading(false)
+                showSuccessModal('Success', "Reset password success", ()=> {
+                    window.location.href = '/login';
+                })
+                
+            },
         });
     };
 
     const [openPass, setOpenPass] = useState();
+    const [openConfirmPass , setOpenConfirmPass] = useState();
     return (
         <div className="relative h-screen bg-background">
             <img
@@ -72,29 +108,13 @@ export default function Login() {
 
             <div className="h-full container z-100 relative px-2 md:px-4 mx-auto">
                 <div className="h-full py-6  flex ">
-                    <div className="flex-1 hidden justify-center  flex-col lg:flex">
-                        <img
-                            src={logoLogin}
-                            alt="Logo"
-                            className="w-[320px] h-[250px]"
-                        />
-                        <div className=" pt-4 ">
-                            <h1 className="text-primary header-4-light">
-                                Your Journey Starts Here!
-                            </h1>
-                            <h6 className="text-primary header-2 xl:w-[600px]">
-                                Money Management Made Effortless: Thrive
-                                Financially!
-                            </h6>
-                        </div>
-                    </div>
                     <div className="flex-1 align-items-center h-full justify-center flex">
                         <Formik
                             initialValues={{
-                                email: "",
+                                confirm_pass: "",
                                 password: "",
                             }}
-                            validationSchema={SignupSchema}
+                            validationSchema={ResetPasswordSchema}
                             onSubmit={submit}
                         >
                             {({
@@ -110,40 +130,10 @@ export default function Login() {
                                     <div className=" flex flex-col justify-between bg-light px-5 sm:px-8 md:px-10 pt-3 md:pt-3 pb-2 md:pb-3 w-full shadow-lg rounded-md h-[440px] md:h-[475px]">
                                         <FormGroup className="w-full">
                                             <CustomTitle
-                                                title="Welcome"
-                                                subtitle="Sign in to your account"
+                                                title="Reset Password"
+                                                subtitle="Fill your new password and confirm password to proceed"
                                                 className={"pt-3 md:pt-6 pb-8 "}
                                             />
-                                            <FormGroup>
-                                                <CustomLabel
-                                                    labelFor="Email"
-                                                    className="button text-primary"
-                                                />
-
-                                                <CustomField
-                                                    id="email"
-                                                    name="email"
-                                                    placeholder="example@gmail.com"
-                                                    type="email"
-                                                    className="w-full mt-1"
-                                                    icon={
-                                                        <Mail
-                                                            size={18}
-                                                            color="grey"
-                                                        />
-                                                    }
-                                                    onChange={(e) => {
-                                                        setData(
-                                                            "email",
-                                                            e.target.value
-                                                        );
-                                                        setFieldValue(
-                                                            "email",
-                                                            e.target.value
-                                                        );
-                                                    }}
-                                                />
-                                            </FormGroup>
 
                                             <FormGroup className="mt-3 md:mt-4 w-full">
                                                 <CustomLabel
@@ -212,15 +202,63 @@ export default function Login() {
                                                         </div>
                                                     }
                                                 />
-                                                <div className="text-end mt-2 text-sm">
-                                                    {""}
-                                                    <Link
-                                                        href={route("forget")}
-                                                        className="underline  text-primary  rounded-md fhover:outline-none  hover:ring-darker-primary hover:opacity-85 "
-                                                    >
-                                                        Forget password?
-                                                    </Link>
-                                                </div>
+                                            </FormGroup>
+
+                                            <FormGroup className="mt-1">
+                                                <CustomLabel
+                                                    labelFor="Confirm Password"
+                                                    className="button text-primary"
+                                                />
+
+                                                <CustomField
+                                                    id="confirmPassword"
+                                                    name="confirm_pass"
+                                                    placeholder="Must be 8-20 Characters"
+                                                    type={
+                                                        openConfirmPass
+                                                            ? "text"
+                                                            : "password"
+                                                    }
+                                                    className="w-full mt-1"
+                                                    icon={
+                                                        <Lock
+                                                            size={18}
+                                                            color="grey"
+                                                        />
+                                                    }
+                                                    onChange={(e) => {
+                                                        setData(
+                                                            "confirm_pass",
+                                                            e.target.value
+                                                        );
+                                                        setFieldValue(
+                                                            "confirm_pass",
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                    password={
+                                                        <div
+                                                            onClick={() =>
+                                                                setOpenConfirmPass(
+                                                                    !openConfirmPass
+                                                                )
+                                                            }
+                                                            className="cursor-pointer relative"
+                                                        >
+                                                            {openConfirmPass ? (
+                                                                <FaRegEyeSlash
+                                                                    size={18}
+                                                                    color="grey"
+                                                                />
+                                                            ) : (
+                                                                <FaRegEye
+                                                                    size={18}
+                                                                    color="grey"
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    }
+                                                />
                                             </FormGroup>
                                         </FormGroup>
 
@@ -239,19 +277,9 @@ export default function Login() {
                                                         <span>Loading...</span>
                                                     </div>
                                                 ) : (
-                                                    "Login"
+                                                    "Confirm"
                                                 )}
                                             </PrimaryButton>
-                                            <span className="text-center pt-2 text-sm">
-                                                Don’t have an account? {""}
-                                                <Link
-                                                    href={route("register")}
-                                                    className="underline  text-primary  rounded-md fhover:outline-none  hover:ring-darker-primary hover:opacity-85 "
-                                                >
-                                                    Register
-                                                </Link>
-                                            </span>
-                                            
                                         </div>
                                     </div>
                                 </Form>

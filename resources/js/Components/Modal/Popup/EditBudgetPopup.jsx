@@ -1,4 +1,5 @@
 import CustomField from "@/Components/CustomInput/CustomField";
+import CustomNumberInput from "@/Components/CustomInput/CustomNumberInput";
 import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import CustomLabel from "@/Components/CustomLabel";
 import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
@@ -236,7 +237,9 @@ export default function EditBudgetPopup({
                                                         );
                                                     }}
                                                     className={"mt-2"}
-                                                    errors={errors?.category_name}
+                                                    errors={
+                                                        errors?.category_name
+                                                    }
                                                 />
                                                 <ErrorMessageInput name="category_name" />
                                             </FormGroup>
@@ -247,23 +250,26 @@ export default function EditBudgetPopup({
                                                     className="button text-primary"
                                                 />
 
-                                                <CustomField
+                                                <CustomNumberInput
+                                                    value={
+                                                        values.budget_amount
+                                                    }
                                                     id="budget_amount"
                                                     name="budget_amount"
-                                                    placeholder="Input your budget limit"
-                                                    type="number"
-                                                    className="w-full mt-2"
-                                                    onChange={(e) => {
+                                                    placeholder="Input the amount"
+                                                    className="w-full mt-1"
+                                                    onChange={(value) => {
                                                         setFieldValue(
                                                             "budget_amount",
-                                                            e.target.value
+                                                            value
                                                         );
                                                         setData(
                                                             "budget_amount",
-                                                            e.target.value
+                                                            value
                                                         );
                                                     }}
                                                 />
+                                                <ErrorMessageInput name="budget_amount" />
                                             </FormGroup>
                                         </FormGroup>
 

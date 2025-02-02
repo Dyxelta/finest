@@ -20,7 +20,11 @@ import { Button } from "reactstrap";
 import { showErrorModal, showSuccessModal } from "@/Helpers/utils";
 import { formatToRupiah } from "@/Helpers/helperFormat";
 import { getRemainingDays } from "@/Helpers/remainingDays";
-import { getProgressBarBorder, getProgressBarColor } from "@/Helpers/progressBar";
+import {
+    getProgressBarBorder,
+    getProgressBarColor,
+} from "@/Helpers/progressBar";
+import { TbMoodEmpty } from "react-icons/tb";
 
 export default function BudgetPage({
     auth,
@@ -143,6 +147,7 @@ export default function BudgetPage({
                     () => onClose(),
                     undefined,
                     true,
+                    true,
                     true
                 );
             } else {
@@ -155,31 +160,44 @@ export default function BudgetPage({
                 undefined,
                 undefined,
                 true,
-                true
+                true,
+                false
             );
         }
     };
 
     const progressBarRef = useRef(null);
-
     const countRecommendedBudgetAmount = () => {
-        const transactions = showInitialBudget?.category?.transactions ?? [];
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
 
-        const dayDifference = getRemainingDays()
+        const transactions =
+            showInitialBudget?.category?.transactions?.filter((transaction) => {
+                const createdAt = new Date(transaction.transaction_date);
+                return (
+                    createdAt.getFullYear() === currentYear &&
+                    createdAt.getMonth() === currentMonth &&
+                    transaction.wallet_id === selectedWallet?.id
+                );
+            }) || [];
+
+        const dayDifference = getRemainingDays();
 
         if (transactions.length !== 0) {
             const totalSpending = transactions.reduce((total, transaction) => {
                 return total + Math.abs(transaction.transaction_amount);
             }, 0);
 
-            const finalResult = showInitialBudget.budget_amount - totalSpending;
-      
+            const finalResult =
+                showInitialBudget?.budget_amount - totalSpending;
+
             if (finalResult < 0) {
                 return (
                     <div className="px-4 py-1 h-full flex-col sub-body md:body">
                         <div>
                             You’ve exceeded your budget for{" "}
-                            {selectedCategory.category_name} by{" "}
+                            {selectedCategory?.category_name} by{" "}
                             <span className="text-expense sub-body-bold md:button">
                                 {formatToRupiah(Math.abs(finalResult))}
                             </span>{" "}
@@ -220,7 +238,7 @@ export default function BudgetPage({
             }
         } else {
             const averageDailySpending =
-                showInitialBudget.budget_amount / dayDifference;
+                showInitialBudget?.budget_amount / dayDifference;
 
             return (
                 <div className="px-5 py-2 h-full flex-col sub-body md:body">
@@ -245,15 +263,29 @@ export default function BudgetPage({
     };
 
     const showSpendingLimit = () => {
-        const transactions = showInitialBudget?.category?.transactions ?? [];
- 
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+
+        const transactions =
+            showInitialBudget?.category?.transactions?.filter((transaction) => {
+                const createdAt = new Date(transaction.transaction_date);
+                return (
+                    createdAt.getFullYear() === currentYear &&
+                    createdAt.getMonth() === currentMonth &&
+                    transaction.wallet_id === selectedWallet?.id
+                );
+            }) || [];
+
         if (transactions.length !== 0) {
             const totalSpending = transactions.reduce((total, transaction) => {
                 return total + Math.abs(transaction.transaction_amount);
             }, 0);
-            const finalResult = showInitialBudget.budget_amount - totalSpending;
+
+            const finalResult =
+                showInitialBudget?.budget_amount - totalSpending;
             const getProgressBarPercentage =
-                totalSpending / showInitialBudget.budget_amount;
+                totalSpending / showInitialBudget?.budget_amount;
             const currProgressLength = length * getProgressBarPercentage;
 
             if (finalResult < 0) {
@@ -261,7 +293,7 @@ export default function BudgetPage({
                     <div className="flex items-end w-full flex-col body">
                         <div className="text-expense">
                             {formatToRupiah(totalSpending)} /{" "}
-                            {formatToRupiah(showInitialBudget.budget_amount)}
+                            {formatToRupiah(showInitialBudget?.budget_amount)}
                         </div>
                         <div
                             className="border-expense border h-5 w-full rounded-full relative overflow-hidden mt-2"
@@ -276,14 +308,18 @@ export default function BudgetPage({
                     <div className="flex items-end w-full flex-col body">
                         <div className="sub-body md:body">
                             {formatToRupiah(totalSpending)} /{" "}
-                            {formatToRupiah(showInitialBudget.budget_amount)}
+                            {formatToRupiah(showInitialBudget?.budget_amount)}
                         </div>
                         <div
-                            className={`${getProgressBarBorder(getProgressBarPercentage *100)} border h-3 md:h-5 w-full rounded-full relative overflow-hidden mt-2`}
+                            className={`${getProgressBarBorder(
+                                getProgressBarPercentage * 100
+                            )} border h-3 md:h-5 w-full rounded-full relative overflow-hidden mt-2`}
                             ref={progressBarRef}
                         >
                             <div
-                                className={`absolute left-0 ${getProgressBarColor(getProgressBarPercentage *100)} h-full rounded-full`}
+                                className={`absolute left-0 ${getProgressBarColor(
+                                    getProgressBarPercentage * 100
+                                )} h-full rounded-full`}
                                 style={{
                                     width: `${Math.ceil(currProgressLength)}px`,
                                 }}
@@ -296,7 +332,7 @@ export default function BudgetPage({
             return (
                 <div className="flex items-end w-full flex-col body">
                     <div className="">
-                        0 / {formatToRupiah(showInitialBudget.budget_amount)}
+                        0 / {formatToRupiah(showInitialBudget?.budget_amount)}
                     </div>
                     <div
                         className="border-primary border h-5 w-full rounded-full relative overflow-hidden mt-2"
@@ -332,19 +368,27 @@ export default function BudgetPage({
             />
             <div className="w-full bg-light rounded-xl py-2 text-primary px-4 md:px-12  md:py-3 mt-2">
                 <div className="text-primary header-5 mb-2">Category </div>
-                <motion.div
-                    ref={carousel}
-                    className="w-full flex items-center gap-4 overflow-x-auto whitespace-nowrap custom-scrollbar "
-                >
-                    {budgets?.map((budget) => (
-                        <CategoryCard
-                            budget={budget}
-                            showInitialBudget={showInitialBudget}
-                            setShowInitialBudget={setShowInitialBudget}
-                            setData={setData}
-                        />
-                    ))}
-                </motion.div>
+                {budgets && budgets.length !== 0 ? (
+                    <motion.div
+                        ref={carousel}
+                        className="w-full flex items-center gap-4 overflow-x-auto whitespace-nowrap custom-scrollbar "
+                    >
+                        {budgets?.map((budget) => (
+                            <CategoryCard
+                                budget={budget}
+                                showInitialBudget={showInitialBudget}
+                                setShowInitialBudget={setShowInitialBudget}
+                                setData={setData}
+                            />
+                        ))}
+                    </motion.div>
+                ) : (
+                    <div className="flex flex-col w-full py-2  text-primary mt-2 rounded-xl gap-4">
+                        <div className="header-5 md:header-4">
+                            No Budget Yet...
+                        </div>
+                    </div>
+                )}
             </div>
             <div className="w-full bg-light rounded-md py-2 text-primary px-4 md:px-12  md:py-3 mt-2 border-l-4 border-primary">
                 <div className="text-primary flex justify-between items-center">
@@ -381,98 +425,119 @@ export default function BudgetPage({
                 expenseCategories={expenseCategories}
                 selectedCategory={selectedCategory}
             />
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-2 lg:gap-4">
-                <div
-                    className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary
+            {showInitialBudget && showInitialBudget.length !== 0 ? (
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-2 lg:gap-4">
+                    <div
+                        className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary
                h-[290px]"
-                >
-                    <div className="flex  border-light-grey h-full ">
-                        <div className="flex border-r-2 h-full px-1 md:px-2">
-                            <div className="my-auto bg-primary p-2 md:p-3 rounded-full text-light header-5">
-                                <LuDices />
-                            </div>
-                        </div>
-                        <div className="flex flex-col w-full h-full px-2 md:px-8 py-2">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 h-full">
-                                <div >
-                                    <div className="button col-span-1 ">Budget Name :</div>
-                                    <div>{showInitialBudget?.budget_name}</div>
-                                </div>
-                                <div>
-                                    <div className="button">Category :</div>
-                                    <div>{selectedCategory?.category_name}</div>
-                                </div>
-                                <div className=" col-span-1 sm:col-span-2">
-                                    <div className="button">Limit :</div>
-                                    <div>
-                                        {formatToRupiah(showInitialBudget?.budget_amount)}
-                                    </div>
-                                </div>
-                                <div className="col-span-1 sm:col-span-2 md:col-span-3">
-                                    <div className="button">
-                                        Short Description :
-                                    </div>
-                                    <div>
-                                        {showInitialBudget?.budget_description}
-                                    </div>
+                    >
+                        <div className="flex  border-light-grey h-full ">
+                            <div className="flex border-r-2 h-full px-1 md:px-2">
+                                <div className="my-auto  p-2 md:p-3 text-primary header-3">
+                                    <LuDices />
                                 </div>
                             </div>
-                            <div className="w-full flex justify-end">
-                                <div className="flex gap-2 md:gap-4 h-fit">
-                                    <Button
-                                        className="border-2 border-expense p-2 md:p-3 rounded-full w-fit h-fit"
-                                        onClick={() => handleDelete()}
-                                    >
-                                        <FaRegTrashCan
-                                            className="text-expense"
-                                            size={17}
-                                        />
-                                    </Button>
-                                    <Button
-                                        className="bg-primary text-light rounded-full p-2 md:p-3 w-fit h-fit"
-                                        onClick={() =>
-                                            setShowEditBudgetPopup(true)
-                                        }
-                                    >
-                                        <HiPencil size={18} />
-                                    </Button>
+                            <div className="flex flex-col w-full h-full px-2 md:px-8 py-2">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 h-full">
+                                    <div>
+                                        <div className="button col-span-1 ">
+                                            Budget Name :
+                                        </div>
+                                        <div>
+                                            {showInitialBudget?.budget_name}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="button">Category :</div>
+                                        <div>
+                                            {selectedCategory?.category_name}
+                                        </div>
+                                    </div>
+                                    <div className=" col-span-1 sm:col-span-2">
+                                        <div className="button">Limit :</div>
+                                        <div>
+                                            {formatToRupiah(
+                                                showInitialBudget?.budget_amount
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="col-span-1 sm:col-span-2 md:col-span-3">
+                                        <div className="button">
+                                            Short Description :
+                                        </div>
+                                        <div>
+                                            {
+                                                showInitialBudget?.budget_description
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-full flex justify-end">
+                                    <div className="flex gap-2 md:gap-4 h-fit">
+                                        <Button
+                                            className="border-2 border-expense p-2 md:p-3 rounded-full w-fit h-fit"
+                                            onClick={() => handleDelete()}
+                                        >
+                                            <FaRegTrashCan
+                                                className="text-expense"
+                                                size={17}
+                                            />
+                                        </Button>
+                                        <Button
+                                            className="bg-primary text-light rounded-full p-2 md:p-3 w-fit h-fit"
+                                            onClick={() =>
+                                                setShowEditBudgetPopup(true)
+                                            }
+                                        >
+                                            <HiPencil size={18} />
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary h-[290px] ">
-                    <div className="flex  border-light-grey h-full w-full ">
-                        <div className="flex border-r-2 h-full px-1 md:px-2">
-                            <div className="my-auto bg-primary p-2 md:p-3 rounded-full text-light header-5">
-                                <GrInfo />
-                            </div>
-                        </div>
-                        <div className="flex flex-col w-full h-full px-2 md:px-4 py-1 gap-2 justify-center">
-                            <div className="rounded-lg overflow-hidden w-full  border border-primary flex flex-col ">
-                                <div className="px-4 py-2 bg-primary w-full">
-                                    <span className="button text-light w-full">
-                                        Recommendation
-                                    </span>
+                    <div className="w-full bg-light rounded-md py-2 text-primary  md:py-3 mt-2 border-l-4 border-primary h-[290px] ">
+                        <div className="flex  border-light-grey h-full w-full ">
+                            <div className="flex border-r-2 h-full px-1 md:px-2">
+                                <div className="my-auto p-2 md:p-3 text-primary header-3">
+                                    <GrInfo />
                                 </div>
-                                {countRecommendedBudgetAmount()}
                             </div>
-                            <div className="rounded-lg overflow-hidden w-full  border border-primary flex flex-col px-5 py-2">
-                                <div
-                                    className="  h-full flex 
+                            <div className="flex flex-col w-full h-full px-2 md:px-4 py-1 gap-2 justify-center">
+                                <div className="rounded-lg overflow-hidden w-full  border border-primary flex flex-col ">
+                                    <div className="px-4 py-2 bg-primary w-full">
+                                        <span className="button text-light w-full">
+                                            Recommendation
+                                        </span>
+                                    </div>
+                                    {countRecommendedBudgetAmount()}
+                                </div>
+                                <div className="rounded-lg overflow-hidden w-full  border border-primary flex flex-col px-5 py-2">
+                                    <div
+                                        className="  h-full flex 
                                 items-center gap-2  button"
-                                >
-                                    <div className="header-5">
-                                        <PiChartPieSliceLight />
+                                    >
+                                        <div className="header-5">
+                                            <PiChartPieSliceLight />
+                                        </div>
+                                        Spending Limit
                                     </div>
-                                    Spending Limit
+                                    {showSpendingLimit()}
                                 </div>
-                                {showSpendingLimit()}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <div className=" bg-light flex flex-col w-full h-[300px] md:h-[400px] justify-center items-center text-primary  border mt-2 rounded-xl gap-4">
+                    <div className="text-[64px] md:text-[84px] lg:text-[110px]">
+                        <TbMoodEmpty />
+                    </div>
+                    <div className="header-5 md:header-3">
+                        you have not selected any budget...
+                    </div>
+                </div>
+            )}
         </AuthenticatedLayout>
     );
 }

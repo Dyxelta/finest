@@ -9,6 +9,7 @@ import { Form, Formik } from "formik";
 import { Button, FormGroup } from "reactstrap";
 
 import CustomDatePicker from "@/Components/CustomInput/CustomDatePicker";
+import CustomNumberInput from "@/Components/CustomInput/CustomNumberInput";
 import CustomSelectCategories from "@/Components/CustomInput/CustomSelectCategories";
 import ErrorMessageInput from "@/Components/Errors/ErrorMessage";
 import Loader from "@/Components/Loader";
@@ -21,38 +22,31 @@ import { BsExclamation } from "react-icons/bs";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-
     category_id: Yup.number().required("Category name is required"),
-    transaction_amount: Yup.number().required("Transaction amount is required"),
+    transaction_amount: Yup.string().required("Transaction amount is required"),
     transaction_date: Yup.date().required("Transaction date is required"),
-    transaction_note: Yup.string().max(150, "Maximum 150 Characters")
+    transaction_note: Yup.string().max(150, "Maximum 150 Characters"),
 });
 
 const AddSection = ({
-
     selectedWallet,
     setSelectedWallet,
     walletOptions,
     categories,
 }) => {
-
     const [loading, setLoading] = useState(false);
-
+    const date = moment().format("YYYY-MM-DD");
     const openModal = (error) => {
         showErrorModal("Error", error);
         setLoading(false);
     };
 
-    const handleRefresh = () => {
-        window.location.reload();
-    };
-
-    const closeModal = () => {  
+    const closeModal = () => {
         setLoading(false);
         showSuccessModal(
             "Success",
             "Transaction has been added successfully",
-            () => handleRefresh()
+            () => {}
         );
     };
 
@@ -60,7 +54,7 @@ const AddSection = ({
         wallet_id: selectedWallet?.id,
         category_id: "",
         transaction_amount: "",
-        transaction_date: "",
+        transaction_date: date,
         transaction_note: "",
     });
 
@@ -82,7 +76,6 @@ const AddSection = ({
         });
     };
 
-    
     return (
         <div
             className={`w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 lg:grid-rows-4 gap-3`}
@@ -115,9 +108,8 @@ const AddSection = ({
                         }
                         options={walletOptions}
                         onChange={(e) => {
-                
                             setSelectedWallet(e);
-                            setData("wallet_id", e.value)
+                            setData("wallet_id", e.value);
                         }}
                     />
                 </div>
@@ -158,7 +150,6 @@ const AddSection = ({
                                     <CustomField
                                         id="wallet_name"
                                         name="wallet_name"
-                                        type="email"
                                         className="w-full mt-1"
                                         icon={
                                             <BiWallet size={18} color="grey" />
@@ -176,7 +167,6 @@ const AddSection = ({
                                     <CustomField
                                         id="created_date"
                                         name="created_date"
-                                        type="email"
                                         className="w-full mt-1"
                                         icon={
                                             <BiCalendar
@@ -219,15 +209,15 @@ const AddSection = ({
                         </div>
                     </div>
                 </div>
+   
                 <Formik
                     initialValues={{
                         wallet_name: selectedWallet?.wallet_name,
                         category_id: "",
                         transaction_amount: "",
-                        transaction_date: "",
+                        transaction_date: date,
                         transaction_note: "",
                     }}
-                    enableReinitialize={true}
                     validationSchema={validationSchema}
                     onSubmit={submitTransaction}
                 >
@@ -239,6 +229,7 @@ const AddSection = ({
                         handleSubmit,
                     }) => (
                         <Form onSubmit={handleSubmit}>
+                            {console.log(values)}
                             <FormGroup className="w-full flex flex-col lg:flex-row gap-2 mt-4">
                                 <FormGroup className="flex-1">
                                     <CustomLabel
@@ -246,7 +237,7 @@ const AddSection = ({
                                         className="button text-primary"
                                     />
                                     <CustomSelectCategories
-                                    className={'mt-1'}
+                                        className={"mt-1"}
                                         options={categories}
                                         onChange={(e) => {
                                             setFieldValue(
@@ -265,24 +256,26 @@ const AddSection = ({
                                         labelFor="Amount"
                                         className="button text-primary"
                                     />
-                                    <CustomField
+                                    <CustomNumberInput
+                                        value={values.transaction_amount}
                                         id="transaction_amount"
                                         name="transaction_amount"
                                         placeholder="Input the amount"
-                                        type="number"
+                                     
                                         className="w-full mt-1"
-                                        onChange={(e) => {
+                                        onChange={(value) => {
+              
                                             setFieldValue(
                                                 "transaction_amount",
-                                                e.target.value
+                                                value
                                             );
                                             setData(
                                                 "transaction_amount",
-                                                e.target.value
+                                                value
                                             );
                                         }}
                                     />
-                            
+                                    <ErrorMessageInput name="transaction_amount" />
                                 </FormGroup>
                             </FormGroup>
 
@@ -311,7 +304,6 @@ const AddSection = ({
                                         );
                                     }}
                                 />
-             
                             </FormGroup>
 
                             <FormGroup>
@@ -329,6 +321,10 @@ const AddSection = ({
                                         setData(
                                             "transaction_date",
                                             moment(e).format("YYYY-MM-DD")
+                                        );
+                                        console.log(
+                                            values.transaction_date,
+                                            "dsiuouohsodiuf"
                                         );
                                     }}
                                     errors={errors?.transaction_date}

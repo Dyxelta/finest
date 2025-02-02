@@ -167,6 +167,7 @@ export default function EditAccountPopup({
                                             <CustomField
                                                 id="username"
                                                 name="username"
+                                           
                                                 placeholder="Fill your username"
                                                 type="text"
                                                 className="w-full mt-1"
@@ -192,6 +193,7 @@ export default function EditAccountPopup({
                                             <CustomField
                                                 id="email"
                                                 name="email"
+                                                disabled
                                                 placeholder="Fill your email"
                                                 type="text"
                                                 className="w-full mt-1"
@@ -212,6 +214,7 @@ export default function EditAccountPopup({
                                             <CustomLabel
                                                 labelFor="Created Date"
                                                 className="button text-primary"
+                                                isRequired={false}
                                             />
                                             <CustomDatePicker
                                                 className="w-fit"

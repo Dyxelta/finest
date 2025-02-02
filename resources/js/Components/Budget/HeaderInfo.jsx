@@ -48,7 +48,7 @@ const HeaderInfo = ({
                         ? formatToRupiah(totalIncomeBudgetAmount)
                         : "",
                     selectedWallet: selectedWallet,
-                    monthName: monthName
+                    monthName: monthName,
                 }}
                 enableReinitialize={true}
             >
@@ -96,7 +96,6 @@ const HeaderInfo = ({
                             <div className="w-52 lg:w-96 mt-3">
                                 <CustomSelectInput
                                     isDisabled={true}
-                                 
                                     defaultValue={
                                         values.monthName
                                             ? {
@@ -108,7 +107,6 @@ const HeaderInfo = ({
                                                   label: "",
                                               }
                                     }
-                                
                                 />
                             </div>
                         </div>

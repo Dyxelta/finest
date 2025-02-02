@@ -17,7 +17,7 @@ const AverageExpenseIncome = ({
                 <div className="text-primary flex flex-col justify-center px-4 py-2">
                     <h1 className="button md:header-5">
                         Average Total Expense{" "}
-                        <CustomTooltip content="Shows the information of the average total income based on all income transaction records." />
+                        <CustomTooltip content="Shows the information of the average total expense based on all expense transaction records." />
                     </h1>
                     <h2 className="body md:header-5-light">
                         {formatToRupiah(
@@ -33,7 +33,7 @@ const AverageExpenseIncome = ({
                 <div className="text-primary flex  flex-col justify-center px-4 py-2">
                     <h1 className="button md:header-5">
                         Highest Total Expense{" "}
-                        <CustomTooltip content="Shows the information of the average total income based on all income transaction records." />
+                        <CustomTooltip content="Shows the information of the highest total expense based on all expense transaction records." />
                     </h1>
                     <h2 className="body md:header-5-light">
                         {formatToRupiah(Math.abs(highest_transaction) ?? 0)}
@@ -47,7 +47,7 @@ const AverageExpenseIncome = ({
                 <div className="text-primary flex flex-col justify-center px-4 py-2">
                     <h1 className="button md:header-5">
                         Lowest Total Expense{" "}
-                        <CustomTooltip content="Shows the information of the average total expense based on all expense transaction records." />
+                        <CustomTooltip content="Shows the information of the lowest total expense based on all expense transaction records." />
                     </h1>
                     <h2 className="body md:header-5-light">
                         {formatToRupiah(Math.abs(lowest_transaction) ?? 0)}

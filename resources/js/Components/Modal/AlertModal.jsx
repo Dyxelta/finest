@@ -11,6 +11,7 @@ export default function AlertModal({
     content,
     onClose = () => {},
     showButton = false,
+    showCancel = false,
 }) {
     const close = () => {
         onClose();
@@ -84,6 +85,7 @@ export default function AlertModal({
                                     __html: content,
                                 }}
                             ></span>
+                     
                             <div className="w-full mt-4 ">
                                 {showButton && (
                                     <Button
