@@ -174,12 +174,18 @@ const AverageSpendingAnalysis = ({
                             </div>
 
                             <div className="sub-body md:body ">
-                                {average_transaction_last_six_month?.average_total +
+                                {Math.abs(
+                                    average_transaction_last_six_month?.average_total
+                                ) +
                                     total_transaction_this_month?.total_transaction >
                                 0
                                     ? formatToRupiah(
-                                          average_transaction_last_six_month?.average_total +
-                                              total_transaction_this_month?.total_transaction
+                                          Math.abs(
+                                              average_transaction_last_six_month?.average_total +
+                                                  Math.abs(
+                                                      total_transaction_this_month?.total_transaction
+                                                  )
+                                          )
                                       )
                                     : "0"}
                             </div>
@@ -189,14 +195,20 @@ const AverageSpendingAnalysis = ({
                                 Spending Limit:
                             </div>
                             <div className="sub-body md:body ">
-                                {average_transaction_last_six_month?.average_total +
+                                {Math.abs(
+                                    average_transaction_last_six_month?.average_total
+                                ) +
                                     total_transaction_this_month?.total_transaction >
                                 0
                                     ? formatToRupiah(
-                                          Math.round(
-                                              AverageSpendingRecommendation(
-                                                  average_transaction_last_six_month?.average_total +
-                                                      total_transaction_this_month?.total_transaction
+                                          AverageSpendingRecommendation(
+                                              Math.round(
+                                                  Math.abs(
+                                                      average_transaction_last_six_month?.average_total +
+                                                          Math.abs(
+                                                              total_transaction_this_month?.total_transaction
+                                                          )
+                                                  )
                                               )
                                           )
                                       )
@@ -257,8 +269,10 @@ const AverageSpendingAnalysis = ({
                                     AverageSpendingRecommendation(
                                         Math.round(
                                             Math.abs(
-                                                average_transaction_last_six_month?.average_total -
-                                                    total_transaction_this_month?.total_transaction
+                                                average_transaction_last_six_month?.average_total +
+                                                    Math.abs(
+                                                        total_transaction_this_month?.total_transaction
+                                                    )
                                             )
                                         )
                                     )
